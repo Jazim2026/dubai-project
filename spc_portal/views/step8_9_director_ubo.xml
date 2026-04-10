@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ==================== STEP 8 DIRECTOR ==================== -->
+<template id="template_setup_company_step8" name="SPC Setup Company Step8">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Director Information | SPC Free Zone</title>
+    <style>
+<![CDATA[
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.spc-section-row{display:flex;gap:24px}
+.spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.spc-section-body{flex:1}
+.spc-section-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.count-field{position:relative;max-width:600px}
+.count-field label{position:absolute;top:8px;left:14px;font-size:11px;color:#888}
+.count-input{width:100%;padding:24px 14px 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:15px;color:#333;outline:none;background:#fff}
+.count-input:focus{border-bottom-color:#1abc9c}
+.accordion{border:1px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:visible}
+.accordion-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:#fff;font-weight:600;font-size:14px;color:#1a2340;border-radius:10px}
+.accordion-header:hover{background:#f8f9fa}
+.accordion-arrow{font-size:12px;transition:transform .2s}
+.accordion-arrow.open{transform:rotate(180deg)}
+.accordion-body{display:none;border-top:1px solid #e0e0e0;background:#f9f9f9;border-radius:0 0 10px 10px}
+.accordion-body.open{display:block}
+.person-card{background:#fff;border-radius:10px;margin:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.delete-btn{color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-bottom:16px}
+.question-label{font-size:14px;color:#333;font-weight:500;margin-bottom:8px;display:block}
+.radio-group{display:flex;gap:24px;flex-wrap:wrap;margin-top:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340;width:16px;height:16px}
+.sub-section{background:#f9f9f9;border-radius:8px;padding:20px;margin-bottom:16px;border:1px solid #eee}
+.sub-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hidden{display:none}
+.flat-input{width:100%;padding:10px 0 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent}
+.flat-input:focus{border-bottom-color:#1abc9c}
+.flat-input::placeholder{color:#aaa}
+.flat-textarea{width:100%;padding:10px 0 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;resize:none}
+.flat-textarea::placeholder{color:#aaa}
+.select-flat-wrap{position:relative}
+.select-flat-wrap label{display:block;font-size:12px;color:#aaa;margin-bottom:2px}
+.flat-select{width:100%;padding:10px 40px 8px 0;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer}
+.flat-select:focus{border-bottom-color:#1abc9c}
+.flat-arrow{position:absolute;right:28px;bottom:12px;pointer-events:none;font-size:12px;color:#888}
+.flat-clear{position:absolute;right:0;bottom:8px;width:22px;height:22px;border-radius:50%;background:#1a2340;border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.date-flat{width:100%;padding:10px 0 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;cursor:pointer}
+.date-flat:focus{border-bottom-color:#1abc9c}
+.upload-area{border:2px dashed #1abc9c;border-radius:8px;padding:20px;text-align:center;cursor:pointer;background:#fff;max-width:260px}
+.upload-icon{font-size:22px;color:#1a6fa8;margin-bottom:6px}
+.upload-text{font-size:13px;color:#1a6fa8;font-weight:500}
+.upload-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.upload-item{display:flex;flex-direction:column;gap:6px}
+.field-label-top{font-size:13px;color:#555;font-weight:600}
+.mobile-flat-wrap{position:relative}
+.mobile-flat-label{font-size:12px;color:#aaa;margin-bottom:2px;display:block}
+.mobile-flat-inner{display:flex;border-bottom:1px solid #d0d0d0;align-items:center}
+.mobile-flat-inner:focus-within{border-bottom-color:#1abc9c}
+.flag-btn-flat{display:flex;align-items:center;gap:4px;font-size:13px;color:#333;border:none;background:transparent;cursor:pointer;padding:8px 10px 8px 0;white-space:nowrap}
+.mobile-number-flat{flex:1;border:none;font-size:14px;color:#333;outline:none;background:transparent;padding:8px 0}
+.mobile-number-flat::placeholder{color:#aaa}
+.info-link-box{background:#fff;border-radius:8px;padding:16px 20px;margin-bottom:16px;border:1px solid #eee}
+.info-link-box p{font-size:13px;color:#555;margin-bottom:6px}
+.info-link-box a{color:#1a6fa8;font-size:13px}
+.sh-select-wrap{position:relative}
+.sh-dropdown{width:100%;padding:14px 40px 14px 0;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer}
+.search-btn{background:transparent;border:1px solid #1a2340;border-radius:6px;color:#1a2340;font-size:13px;font-weight:700;cursor:pointer;padding:10px 24px;text-transform:uppercase;letter-spacing:1px;margin-top:8px}
+.save-row{display:flex;justify-content:flex-end;margin:16px 16px 8px 0}
+.save-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;cursor:pointer}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:#fff}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
+]]>
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+                <t t-if="steps">
+            <t t-foreach="steps" t-as="s">
+                <t t-set="idx" t-value="s_index + 1"/>
+                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
+                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
+                    <div class="step-label"><t t-esc="s"/></div>
+                </div>
+            </t>
+        </t>
+        <t t-else="">
+<div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Facility</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Visa allocation</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder(s) information and Capital Structure</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Manager(s) information</div></div>
+        <div class="progress-step active"><div class="step-num">8</div><div class="step-label">Director(s) information</div></div>
+        <div class="progress-step"><div class="step-num">9</div><div class="step-label">UBO information</div></div>
+        <div class="progress-step"><div class="step-num">10</div><div class="step-label">Nature of business</div></div>
+        <div class="progress-step"><div class="step-num">11</div><div class="step-label">Corporate bank account</div></div>
+        <div class="progress-step"><div class="step-num">12</div><div class="step-label">Supporting document</div></div>
+        <div class="progress-step"><div class="step-num">13</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">14</div><div class="step-label">Payment</div></div>
+        </t>
+    </div>
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step8/submit'" method="post" enctype="multipart/form-data" id="step8Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- 01 -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">01</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">How many directors will be associated with the company?</h4>
+                        <div class="count-field">
+                            <label>Number of directors</label>
+                            <input type="number" id="dirCount" name="director_count" class="count-input" min="1" max="10" value="1" onchange="updateDirList(this.value)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 Director details -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">02</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">Director details</h4>
+                        <div id="dirList">
+                            <div class="accordion" id="dir_acc_1">
+                                <div class="accordion-header" onclick="togAcc8('dir_body_1','dir_arrow_1')">
+                                    <span>Director 1</span><span class="accordion-arrow open" id="dir_arrow_1">&#9660;</span>
+                                </div>
+                                <div class="accordion-body open" id="dir_body_1">
+                                    <div class="person-card">
+                                        <div class="delete-btn" onclick="delP('dir_acc_1')">&#128465; Delete Director</div>
+                                        <div class="sub-section">
+                                            <span class="question-label">Define the manager details from one of the following selections</span>
+                                            <div class="radio-group" style="flex-wrap:wrap;gap:16px">
+                                                <label class="radio-label"><input type="radio" name="dir_1_def" value="sh" onchange="togDef8('dir_1',this.value)"/> Shareholder of this entity</label>
+                                                <label class="radio-label"><input type="radio" name="dir_1_def" value="spc" onchange="togDef8('dir_1',this.value)"/> Current shareholder of another entity in SPC FZ</label>
+                                                <label class="radio-label"><input type="radio" name="dir_1_def" value="new" onchange="togDef8('dir_1',this.value)"/> Add new</label>
+                                            </div>
+                                        </div>
+                                        <div class="info-link-box">
+                                            <p>Please find instructional video on how to upload UID</p>
+                                            <a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a>
+                                        </div>
+                                        <!-- Shareholder of this entity -->
+                                        <div id="dir_1_sh_sec" class="hidden sub-section">
+                                            <span class="question-label">Choose existing shareholder</span>
+                                            <div class="sh-select-wrap">
+                                                <select class="sh-dropdown" name="dir_1_sh_val"><option value="">Select Shareholder</option></select>
+                                                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#888;pointer-events:none">&#9660;</span>
+                                            </div>
+                                        </div>
+                                        <!-- Current SPC shareholder -->
+                                        <div id="dir_1_spc_sec" class="hidden sub-section">
+                                            <div style="margin-bottom:16px">
+                                                <span class="question-label">Does the Director have a Nominee?</span>
+                                                <div class="radio-group">
+                                                    <label class="radio-label"><input type="radio" name="dir_1_nom_spc" value="yes"/> Yes</label>
+                                                    <label class="radio-label"><input type="radio" name="dir_1_nom_spc" value="no" checked="checked"/> No</label>
+                                                </div>
+                                            </div>
+                                            <span class="question-label">Existing user?</span>
+                                            <input class="flat-input" type="email" name="dir_1_spc_email" placeholder="Email" style="margin-bottom:12px"/>
+                                            <input class="flat-input" type="text" name="dir_1_spc_pass" placeholder="Passport number / Entity registration number" style="margin-bottom:12px"/>
+                                            <button type="button" class="search-btn">SEARCH</button>
+                                        </div>
+                                        <!-- Add new -->
+                                        <div id="dir_1_new_sec" class="hidden">
+                                            <div class="upload-row">
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload copy of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('dir_1_pf').click()">
+                                                        <input type="file" id="dir_1_pf" name="dir_1_pf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div><div class="upload-text">Upload copy of passport</div>
+                                                    </div>
+                                                </div>
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload special page of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('dir_1_spf').click()">
+                                                        <input type="file" id="dir_1_spf" name="dir_1_spf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div><div class="upload-text">Upload special page of passport</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="sub-section">
+                                                <div class="sub-title">Passport details</div>
+                                                <div class="two-col" style="margin-bottom:16px">
+                                                    <input class="flat-input" type="text" name="dir_1_fn" placeholder="First name"/>
+                                                    <input class="flat-input" type="text" name="dir_1_ln" placeholder="Last name"/>
+                                                </div>
+                                                <div class="select-flat-wrap" style="margin-bottom:16px">
+                                                    <label>Nationality</label>
+                                                    <select class="flat-select" name="dir_1_nat" id="dir_1_nat" onchange="showFC8('dir_1_natc',this)">
+                                                        <option value=""></option><option value="AE">United Arab Emirates</option><option value="IN">India</option><option value="PK">Pakistan</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="other">Other</option>
+                                                    </select>
+                                                    <span class="flat-arrow">&#9660;</span>
+                                                    <button type="button" class="flat-clear hidden" id="dir_1_natc" onclick="clearFC8('dir_1_nat','dir_1_natc')">&#10005;</button>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have an alternate nationality?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="dir_1_altn" value="yes" onchange="togShow8('dir_1_altnf',this,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="dir_1_altn" value="no" checked="checked" onchange="togShow8('dir_1_altnf',this,'yes')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="dir_1_altnf" class="hidden two-col" style="margin-bottom:16px">
+                                                    <div class="select-flat-wrap"><label>Alternate nationality</label><select class="flat-select" name="dir_1_anat"><option value=""></option><option value="AE">UAE</option><option value="IN">India</option><option value="other">Other</option></select><span class="flat-arrow">&#9660;</span></div>
+                                                    <input class="flat-input" type="text" name="dir_1_apno" placeholder="Alternate passport number"/>
+                                                </div>
+                                                <div class="select-flat-wrap" style="margin-bottom:16px">
+                                                    <label>Country of birth</label>
+                                                    <select class="flat-select" name="dir_1_cob" id="dir_1_cob" onchange="showFC8('dir_1_cobc',this)">
+                                                        <option value=""></option><option value="AE">United Arab Emirates</option><option value="IN">India</option><option value="PK">Pakistan</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="other">Other</option>
+                                                    </select>
+                                                    <span class="flat-arrow">&#9660;</span>
+                                                    <button type="button" class="flat-clear hidden" id="dir_1_cobc" onclick="clearFC8('dir_1_cob','dir_1_cobc')">&#10005;</button>
+                                                </div>
+                                            </div>
+                                            <div class="sub-section">
+                                                <div class="sub-title">Other details</div>
+                                                <div class="mobile-flat-wrap" style="margin-bottom:16px">
+                                                    <span class="mobile-flat-label">Mobile number</span>
+                                                    <div class="mobile-flat-inner">
+                                                        <button type="button" class="flag-btn-flat" id="dir_1_fb" onclick="togFlag8('dir_1_fm')">&#127482;&#127462; +971 &#9660;</button>
+                                                        <input type="tel" class="mobile-number-flat" name="dir_1_mob" placeholder="Mobile number"/>
+                                                    </div>
+                                                    <div id="dir_1_fm" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:180px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                                                        <div onclick="setFlag8('dir_1_fb','dir_1_fm','&#127482;&#127462;','+971')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
+                                                        <div onclick="setFlag8('dir_1_fb','dir_1_fm','&#127470;&#127475;','+91')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
+                                                        <div onclick="setFlag8('dir_1_fb','dir_1_fm','&#127477;&#127472;','+92')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have secondary contact number?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="dir_1_sec" value="yes" onchange="togShow8('dir_1_secf',this,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="dir_1_sec" value="no" onchange="togShow8('dir_1_secf',this,'yes')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="dir_1_secf" class="hidden" style="margin-bottom:16px">
+                                                    <div class="mobile-flat-wrap"><span class="mobile-flat-label">Secondary mobile number</span><div class="mobile-flat-inner"><button type="button" class="flag-btn-flat">&#127482;&#127462; +971 &#9660;</button><input type="tel" class="mobile-number-flat" name="dir_1_mob2"/></div></div>
+                                                </div>
+                                                <input class="flat-input" type="email" name="dir_1_email" placeholder="E-mail ID" style="margin-bottom:16px"/>
+                                                <div style="margin-bottom:4px">
+                                                    <textarea class="flat-textarea" name="dir_1_addr" maxlength="100" rows="2" placeholder="Current address" oninput="updCnt8(this,'dir_1_ac')"></textarea>
+                                                    <div style="text-align:right;font-size:11px;color:#aaa" id="dir_1_ac">0 / 100</div>
+                                                </div>
+                                                <div class="two-col" style="margin-bottom:16px">
+                                                    <input class="flat-input" type="text" name="dir_1_city" placeholder="City"/>
+                                                    <div class="select-flat-wrap">
+                                                        <label>Country</label>
+                                                        <select class="flat-select" name="dir_1_country" id="dir_1_country" onchange="showFC8('dir_1_countryc',this)">
+                                                            <option value=""></option><option value="AE">United Arab Emirates</option><option value="IN">India</option><option value="PK">Pakistan</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                        <button type="button" class="flat-clear hidden" id="dir_1_countryc" onclick="clearFC8('dir_1_country','dir_1_countryc')">&#10005;</button>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:4px"><label style="font-size:12px;color:#aaa">Director joining date</label></div>
+                                                <input class="date-flat" type="date" name="dir_1_join" style="margin-bottom:16px"/>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Is Director a resident of the UAE?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="dir_1_ures" value="yes" onchange="togRes8('dir_1',this.value)"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="dir_1_ures" value="no" onchange="togRes8('dir_1',this.value)"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <!-- Resident YES -->
+                                                <div id="dir_1_res_y" class="hidden">
+                                                    <div class="upload-row">
+                                                        <div class="upload-item">
+                                                            <span class="field-label-top">Upload UAE resident visa</span>
+                                                            <div class="upload-area" onclick="document.getElementById('dir_1_rvf').click()">
+                                                                <input type="file" id="dir_1_rvf" name="dir_1_rvf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <div class="upload-icon">&#11014;</div><div class="upload-text">Upload UAE resident visa</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="upload-item">
+                                                            <span class="field-label-top">Upload emirates ID</span>
+                                                            <div class="upload-area" onclick="document.getElementById('dir_1_eidf').click()">
+                                                                <input type="file" id="dir_1_eidf" name="dir_1_eidf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <div class="upload-icon">&#11014;</div><div class="upload-text">Upload emirates ID</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <input class="flat-input" type="text" name="dir_1_vno" placeholder="Resident visa number" style="margin-bottom:12px"/>
+                                                    <input class="flat-input" type="text" name="dir_1_eino" placeholder="Emirates ID number" style="margin-bottom:12px"/>
+                                                    <input class="flat-input" type="text" name="dir_1_uid" placeholder="Unified number (UID)" style="margin-bottom:12px"/>
+                                                    <div class="info-link-box" style="margin-top:8px">
+                                                        <p>Please find instructional video on how to upload UID</p>
+                                                        <a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a>
+                                                    </div>
+                                                    <div style="margin-bottom:4px"><label style="font-size:12px;color:#aaa">Emirates ID issue date</label></div>
+                                                    <input class="date-flat" type="date" name="dir_1_ei_iss" style="margin-bottom:12px"/>
+                                                    <div style="margin-bottom:4px"><label style="font-size:12px;color:#aaa">Emirates ID expiry date</label></div>
+                                                    <input class="date-flat" type="date" name="dir_1_ei_exp" style="margin-bottom:12px"/>
+                                                    <div class="select-flat-wrap" style="margin-bottom:16px">
+                                                        <label>Country of residence</label>
+                                                        <select class="flat-select" name="dir_1_res_cou">
+                                                            <option value="AE" selected="selected">United Arab Emirates</option><option value="IN">India</option><option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                    </div>
+                                                </div>
+                                                <!-- Resident NO -->
+                                                <div id="dir_1_res_n" class="hidden">
+                                                    <div style="margin-bottom:16px">
+                                                        <span class="question-label">Do you or your company operate elsewhere?</span>
+                                                        <div class="radio-group">
+                                                            <label class="radio-label"><input type="radio" name="dir_1_op_els" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" name="dir_1_op_els" value="no" checked="checked"/> No</label>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-bottom:16px">
+                                                        <span class="question-label">Does the Director have a Nominee?</span>
+                                                        <div class="radio-group">
+                                                            <label class="radio-label"><input type="radio" name="dir_1_nom_nr" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" name="dir_1_nom_nr" value="no"/> No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="save-row">
+                                        <button type="button" class="save-btn" onclick="saveP8('dir_acc_1')">SAVE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step7/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+<![CDATA[
+function togAcc8(bid,aid){var b=document.getElementById(bid);var a=document.getElementById(aid);if(b)b.classList.toggle('open');if(a)a.classList.toggle('open')}
+function togDef8(pre,val){['sh','spc','new'].forEach(function(k){var el=document.getElementById(pre+'_'+k+'_sec');if(el)el.classList.add('hidden')});var show=document.getElementById(pre+'_'+val+'_sec');if(show)show.classList.remove('hidden')}
+function togRes8(pre,val){var y=document.getElementById(pre+'_res_y');var n=document.getElementById(pre+'_res_n');if(val==='yes'){if(y)y.classList.remove('hidden');if(n)n.classList.add('hidden')}else{if(y)y.classList.add('hidden');if(n)n.classList.remove('hidden')}}
+function togShow8(id,radio,sv){var el=document.getElementById(id);if(!el)return;radio.value===sv?el.classList.remove('hidden'):el.classList.add('hidden')}
+function showFC8(cid,sel){var b=document.getElementById(cid);if(b)sel.value?b.classList.remove('hidden'):b.classList.add('hidden')}
+function clearFC8(sid,cid){var s=document.getElementById(sid);if(s)s.value='';var b=document.getElementById(cid);if(b)b.classList.add('hidden')}
+function togFlag8(mid){var m=document.getElementById(mid);if(m)m.classList.toggle('hidden')}
+function setFlag8(bid,mid,flag,code){var b=document.getElementById(bid);if(b)b.innerHTML=flag+' '+code+' &#9660;';var m=document.getElementById(mid);if(m)m.classList.add('hidden')}
+function updCnt8(el,id){var s=document.getElementById(id);if(s)s.textContent=el.value.length+' / 100'}
+function saveP8(accId){var b=document.querySelector('#'+accId+' .save-btn');if(b){b.textContent='&#10003; SAVED';b.style.background='#1abc9c'}}
+function delP(accId){var a=document.getElementById(accId);if(a)a.remove()}
+document.addEventListener('click',function(e){document.querySelectorAll('[id$="_fm"]').forEach(function(m){if(!m.classList.contains('hidden')&&m.parentElement&&!m.parentElement.contains(e.target))m.classList.add('hidden')})});
+function updateDirList(count){
+    count=Math.min(Math.max(parseInt(count)||1,1),10);
+    var list=document.getElementById('dirList');
+    var existing=list.querySelectorAll('.accordion').length;
+    if(count>existing){
+        for(var i=existing+1;i<=count;i++){
+            var d=document.createElement('div');d.className='accordion';d.id='dir_acc_'+i;
+            d.innerHTML='<div class="accordion-header" onclick="togAcc8(\'dir_body_'+i+'\',\'dir_arrow_'+i+'\')"><span>Director '+i+'</span><span class="accordion-arrow" id="dir_arrow_'+i+'">&#9660;</span></div>'+
+            '<div class="accordion-body" id="dir_body_'+i+'"><div class="person-card">'+
+            '<div class="delete-btn" onclick="delP(\'dir_acc_'+i+'\')">&#128465; Delete Director</div>'+
+            '<div class="sub-section"><span class="question-label">Define the manager details from one of the following selections</span>'+
+            '<div class="radio-group" style="flex-wrap:wrap;gap:16px">'+
+            '<label class="radio-label"><input type="radio" name="dir_'+i+'_def" value="sh" onchange="togDef8(\'dir_'+i+'\',this.value)"/> Shareholder of this entity</label>'+
+            '<label class="radio-label"><input type="radio" name="dir_'+i+'_def" value="spc" onchange="togDef8(\'dir_'+i+'\',this.value)"/> Current shareholder of another entity in SPC FZ</label>'+
+            '<label class="radio-label"><input type="radio" name="dir_'+i+'_def" value="new" onchange="togDef8(\'dir_'+i+'\',this.value)"/> Add new</label>'+
+            '</div></div>'+
+            '<div class="info-link-box"><p>Please find instructional video on how to upload UID</p><a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a></div>'+
+            '<div id="dir_'+i+'_sh_sec" class="hidden sub-section"><span class="question-label">Choose existing shareholder</span><div class="sh-select-wrap"><select class="sh-dropdown" name="dir_'+i+'_sh_val"><option value="">Select Shareholder</option></select><span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#888;pointer-events:none">&#9660;</span></div></div>'+
+            '<div id="dir_'+i+'_spc_sec" class="hidden sub-section"><div style="margin-bottom:16px"><span class="question-label">Does the Director have a Nominee?</span><div class="radio-group"><label class="radio-label"><input type="radio" name="dir_'+i+'_nom_spc" value="yes"/> Yes</label><label class="radio-label"><input type="radio" name="dir_'+i+'_nom_spc" value="no" checked="checked"/> No</label></div></div><span class="question-label">Existing user?</span><input class="flat-input" type="email" name="dir_'+i+'_spc_email" placeholder="Email" style="margin-bottom:12px"/><input class="flat-input" type="text" name="dir_'+i+'_spc_pass" placeholder="Passport number / Entity registration number" style="margin-bottom:12px"/><button type="button" class="search-btn">SEARCH</button></div>'+
+            '<div id="dir_'+i+'_new_sec" class="hidden"><p style="color:#aaa;font-size:13px;padding:8px 0">Full form for Director '+i+'</p></div>'+
+            '</div><div class="save-row"><button type="button" class="save-btn" onclick="saveP8(\'dir_acc_'+i+'\')">SAVE</button></div></div>';
+            list.appendChild(d);
+        }
+    } else if(count<existing){
+        for(var j=existing;j>count;j--){var el=document.getElementById('dir_acc_'+j);if(el)el.remove()}
+    }
+}
+]]>
+</script>
+</body>
+</html>
+</template>
+
+<!-- ==================== STEP 9 UBO ==================== -->
+<template id="template_setup_company_step9" name="SPC Setup Company Step9">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>UBO Information | SPC Free Zone</title>
+    <style>
+<![CDATA[
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.spc-section-row{display:flex;gap:24px}
+.spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.spc-section-body{flex:1}
+.spc-section-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.count-field{position:relative;max-width:600px}
+.count-field label{position:absolute;top:8px;left:14px;font-size:11px;color:#888}
+.count-input{width:100%;padding:24px 14px 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:15px;color:#333;outline:none;background:#fff}
+.count-input:focus{border-bottom-color:#1abc9c}
+.accordion{border:1px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:visible}
+.accordion-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:#fff;font-weight:600;font-size:14px;color:#1a2340;border-radius:10px}
+.accordion-header:hover{background:#f8f9fa}
+.accordion-arrow{font-size:12px;transition:transform .2s}
+.accordion-arrow.open{transform:rotate(180deg)}
+.accordion-body{display:none;border-top:1px solid #e0e0e0;background:#f9f9f9;border-radius:0 0 10px 10px}
+.accordion-body.open{display:block}
+.person-card{background:#fff;border-radius:10px;margin:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.delete-btn{color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-bottom:16px}
+.question-label{font-size:14px;color:#333;font-weight:500;margin-bottom:8px;display:block}
+.radio-group{display:flex;gap:24px;flex-wrap:wrap;margin-top:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340;width:16px;height:16px}
+.sub-section{background:#f9f9f9;border-radius:8px;padding:20px;margin-bottom:16px;border:1px solid #eee}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hidden{display:none}
+.flat-input{width:100%;padding:10px 0 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent}
+.flat-input:focus{border-bottom-color:#1abc9c}
+.flat-input::placeholder{color:#aaa}
+.flat-textarea{width:100%;padding:10px 0 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;resize:none}
+.flat-textarea::placeholder{color:#aaa}
+.select-flat-wrap{position:relative}
+.select-flat-wrap label{display:block;font-size:12px;color:#aaa;margin-bottom:2px}
+.flat-select{width:100%;padding:10px 40px 8px 0;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer}
+.flat-select:focus{border-bottom-color:#1abc9c}
+.flat-arrow{position:absolute;right:28px;bottom:12px;pointer-events:none;font-size:12px;color:#888}
+.flat-clear{position:absolute;right:0;bottom:8px;width:22px;height:22px;border-radius:50%;background:#1a2340;border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.date-flat{width:100%;padding:10px 0 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;cursor:pointer}
+.date-flat:focus{border-bottom-color:#1abc9c}
+.date-flat::placeholder{color:#aaa}
+.upload-area{border:2px dashed #1abc9c;border-radius:8px;padding:20px;text-align:center;cursor:pointer;background:#fff;max-width:260px}
+.upload-icon{font-size:22px;color:#1a6fa8;margin-bottom:6px}
+.upload-text{font-size:13px;color:#1a6fa8;font-weight:500}
+.upload-item{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field-label-top{font-size:13px;color:#555;font-weight:600}
+.info-link-box{background:#fff;border-radius:8px;padding:16px 20px;margin-bottom:16px;border:1px solid #eee}
+.info-link-box p{font-size:13px;color:#555;margin-bottom:6px}
+.info-link-box a{color:#1a6fa8;font-size:13px}
+.sh-select-wrap{position:relative}
+.sh-dropdown{width:100%;padding:14px 40px 14px 0;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer}
+.search-btn{background:transparent;border:1px solid #1a2340;border-radius:6px;color:#1a2340;font-size:13px;font-weight:700;cursor:pointer;padding:10px 24px;text-transform:uppercase;letter-spacing:1px;margin-top:8px}
+/* UBO type card selector */
+.ubo-type-cards{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.ubo-type-card{border:1px solid #e0e0e0;border-radius:10px;padding:20px 24px;text-align:center;cursor:pointer;min-width:160px;background:#fff;transition:border-color .2s}
+.ubo-type-card:hover{border-color:#1abc9c}
+.ubo-type-card.selected{border-color:#1a2340}
+.ubo-type-card .card-icon{font-size:28px;margin-bottom:8px}
+.ubo-type-card label{font-size:13px;color:#333;cursor:pointer;display:block}
+.ubo-type-card input[type="radio"]{accent-color:#1a2340;display:block;margin:8px auto 0}
+.added-ubo{font-size:13px;color:#555;margin-top:8px}
+.save-row{display:flex;justify-content:flex-end;margin:16px 16px 8px 0}
+.save-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;cursor:pointer}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:#fff}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
+]]>
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Facility</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Visa allocation</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder(s) information and Capital Structure</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Manager(s) information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Director(s) information</div></div>
+        <div class="progress-step active"><div class="step-num">9</div><div class="step-label">UBO information</div></div>
+        <div class="progress-step"><div class="step-num">10</div><div class="step-label">Nature of business</div></div>
+        <div class="progress-step"><div class="step-num">11</div><div class="step-label">Corporate bank account</div></div>
+        <div class="progress-step"><div class="step-num">12</div><div class="step-label">Supporting document</div></div>
+        <div class="progress-step"><div class="step-num">13</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">14</div><div class="step-label">Payment</div></div>
+    </div>
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step9/submit'" method="post" enctype="multipart/form-data" id="step9Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- 01 -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">01</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">How many UBOs will be associated with the company</h4>
+                        <div class="count-field">
+                            <label>Number of UBOs for Arjun Menon</label>
+                            <input type="number" id="uboCount" name="ubo_count" class="count-input" min="1" max="20" value="1" onchange="updateUboList(this.value)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 UBO Details -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">02</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">UBO Details</h4>
+                        <div id="uboList">
+                            <div class="accordion" id="ubo_acc_1">
+                                <div class="accordion-header" onclick="togAcc9('ubo_body_1','ubo_arrow_1')">
+                                    <span>Details for Shareholder Arjun Menon - UBO 1</span>
+                                    <span class="accordion-arrow open" id="ubo_arrow_1">&#9660;</span>
+                                </div>
+                                <div class="accordion-body open" id="ubo_body_1">
+                                    <div class="person-card">
+                                        <div class="delete-btn" onclick="delUbo('ubo_acc_1')">&#128465; Delete UBO</div>
+                                        <!-- Type card selector -->
+                                        <div class="sub-section">
+                                            <span class="question-label">Define the UBO details from one of the following selections</span>
+                                            <div class="ubo-type-cards">
+                                                <div class="ubo-type-card" id="ubo_1_card_sh" onclick="selectUboCard(1,'sh')">
+                                                    <div class="card-icon">&#128188;</div>
+                                                    <input type="radio" name="ubo_1_def" value="sh"/>
+                                                    <label>Shareholder of this entity</label>
+                                                </div>
+                                                <div class="ubo-type-card" id="ubo_1_card_spc" onclick="selectUboCard(1,'spc')">
+                                                    <div class="card-icon">&#128101;</div>
+                                                    <input type="radio" name="ubo_1_def" value="spc"/>
+                                                    <label>Current shareholder of another entity in SPC FZ</label>
+                                                </div>
+                                                <div class="ubo-type-card" id="ubo_1_card_new" onclick="selectUboCard(1,'new')">
+                                                    <div class="card-icon">&#128100;</div>
+                                                    <input type="radio" name="ubo_1_def" value="new"/>
+                                                    <label>Add new</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="info-link-box">
+                                            <p>Please find instructional video on how to upload UID</p>
+                                            <a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a>
+                                        </div>
+                                        <!-- Common fields always shown -->
+                                        <input class="flat-input" type="text" name="ubo_1_work_entity" placeholder="Work entity name" style="margin-bottom:12px"/>
+                                        <textarea class="flat-textarea" name="ubo_1_work_addr" rows="2" placeholder="Work entity address" style="margin-bottom:20px"></textarea>
+
+                                        <!-- Shareholder of this entity -->
+                                        <div id="ubo_1_sh_sec" class="hidden sub-section">
+                                            <span class="question-label">Choose existing shareholder</span>
+                                            <div class="sh-select-wrap">
+                                                <select class="sh-dropdown" name="ubo_1_sh_val"><option value="">Select Shareholder</option></select>
+                                                <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#888;pointer-events:none">&#9660;</span>
+                                            </div>
+                                            <div class="added-ubo" id="ubo_1_added">Added UBO:</div>
+                                        </div>
+
+                                        <!-- Current SPC shareholder -->
+                                        <div id="ubo_1_spc_sec" class="hidden sub-section">
+                                            <span class="question-label">Existing user?</span>
+                                            <input class="flat-input" type="email" name="ubo_1_spc_email" placeholder="Email" style="margin-bottom:12px"/>
+                                            <input class="flat-input" type="text" name="ubo_1_spc_pass" placeholder="Passport number / Entity registration number" style="margin-bottom:12px"/>
+                                            <button type="button" class="search-btn">SEARCH</button>
+                                        </div>
+
+                                        <!-- Add new -->
+                                        <div id="ubo_1_new_sec" class="hidden">
+                                            <div class="sub-section">
+                                                <span class="question-label">Select the type of UBO</span>
+                                                <div class="radio-group">
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_type" value="individual" onchange="togShow9('ubo_1_ind_sec',this,'individual')"/> Individual</label>
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_type" value="trust" onchange="togShow9('ubo_1_ind_sec',this,'individual')"/> Trust</label>
+                                                </div>
+                                            </div>
+                                            <!-- Individual fields -->
+                                            <div id="ubo_1_ind_sec" class="hidden">
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload copy of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('ubo_1_pf').click()">
+                                                        <input type="file" id="ubo_1_pf" name="ubo_1_pf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div><div class="upload-text">Upload copy of passport</div>
+                                                    </div>
+                                                </div>
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload special page of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('ubo_1_spf').click()">
+                                                        <input type="file" id="ubo_1_spf" name="ubo_1_spf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div><div class="upload-text">Upload special page of passport</div>
+                                                    </div>
+                                                </div>
+                                                <div class="sub-section">
+                                                    <div style="font-size:14px;font-weight:700;color:#1a2340;margin-bottom:16px">Passport details</div>
+                                                    <input class="flat-input" type="text" name="ubo_1_fn" placeholder="First name" style="margin-bottom:12px"/>
+                                                    <input class="flat-input" type="text" name="ubo_1_ln" placeholder="Last name" style="margin-bottom:12px"/>
+                                                    <div class="select-flat-wrap" style="margin-bottom:16px">
+                                                        <label>Nationality</label>
+                                                        <select class="flat-select" name="ubo_1_nat" id="ubo_1_nat" onchange="showFC9('ubo_1_natc',this)">
+                                                            <option value=""></option><option value="AE">United Arab Emirates</option><option value="IN">India</option><option value="PK">Pakistan</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                        <button type="button" class="flat-clear hidden" id="ubo_1_natc" onclick="clearFC9('ubo_1_nat','ubo_1_natc')">&#10005;</button>
+                                                    </div>
+                                                    <div class="select-flat-wrap" style="margin-bottom:16px">
+                                                        <label>Country of birth</label>
+                                                        <select class="flat-select" name="ubo_1_cob" id="ubo_1_cob" onchange="showFC9('ubo_1_cobc',this)">
+                                                            <option value=""></option><option value="AE">United Arab Emirates</option><option value="IN">India</option><option value="PK">Pakistan</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                        <button type="button" class="flat-clear hidden" id="ubo_1_cobc" onclick="clearFC9('ubo_1_cob','ubo_1_cobc')">&#10005;</button>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Is the Ultimate Beneficiary Owner a resident of the UAE?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="ubo_1_ures" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="ubo_1_ures" value="no"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div class="info-link-box">
+                                                    <p>Please find instructional video on how to upload UID</p>
+                                                    <a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a>
+                                                </div>
+                                            </div>
+                                            <!-- Common for all add new -->
+                                            <div style="margin-bottom:4px"><label style="font-size:12px;color:#aaa">Date of obtaining Shares</label></div>
+                                            <input class="date-flat" type="date" name="ubo_1_dos" style="margin-bottom:12px"/>
+                                            <div style="margin-bottom:4px"><label style="font-size:12px;color:#aaa">Select the date when the UBO obtained ownership</label></div>
+                                            <input class="date-flat" type="date" name="ubo_1_dow" style="margin-bottom:16px"/>
+                                            <div style="margin-bottom:16px">
+                                                <span class="question-label">Does the UBO hold voting rights?</span>
+                                                <div class="radio-group">
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_vote" value="yes"/> Yes</label>
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_vote" value="no"/> No</label>
+                                                </div>
+                                            </div>
+                                            <div class="sub-section">
+                                                <span class="question-label">Select the UBO stakeholder type</span>
+                                                <div class="radio-group">
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_stake" value="shareholder"/> Shareholder</label>
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_stake" value="manager"/> Manager</label>
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_stake" value="director"/> Director</label>
+                                                    <label class="radio-label"><input type="radio" name="ubo_1_stake" value="voting"/> Voting rights</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="save-row">
+                                        <button type="button" class="save-btn" onclick="saveUbo('ubo_acc_1')">SAVE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step8/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+<![CDATA[
+function togAcc9(bid,aid){var b=document.getElementById(bid);var a=document.getElementById(aid);if(b)b.classList.toggle('open');if(a)a.classList.toggle('open')}
+function selectUboCard(n,val){
+    ['sh','spc','new'].forEach(function(k){
+        var card=document.getElementById('ubo_'+n+'_card_'+k);
+        if(card)card.classList.remove('selected');
+        var radio=card?card.querySelector('input[type="radio"]'):null;
+        if(radio)radio.checked=false;
+        var sec=document.getElementById('ubo_'+n+'_'+k+'_sec');
+        if(sec)sec.classList.add('hidden');
+    });
+    var selCard=document.getElementById('ubo_'+n+'_card_'+val);
+    if(selCard){selCard.classList.add('selected');var r=selCard.querySelector('input[type="radio"]');if(r)r.checked=true;}
+    var selSec=document.getElementById('ubo_'+n+'_'+val+'_sec');
+    if(selSec)selSec.classList.remove('hidden');
+}
+function togShow9(id,radio,sv){var el=document.getElementById(id);if(!el)return;radio.value===sv?el.classList.remove('hidden'):el.classList.add('hidden')}
+function showFC9(cid,sel){var b=document.getElementById(cid);if(b)sel.value?b.classList.remove('hidden'):b.classList.add('hidden')}
+function clearFC9(sid,cid){var s=document.getElementById(sid);if(s)s.value='';var b=document.getElementById(cid);if(b)b.classList.add('hidden')}
+function saveUbo(accId){var b=document.querySelector('#'+accId+' .save-btn');if(b){b.textContent='&#10003; SAVED';b.style.background='#1abc9c'}}
+function delUbo(accId){var a=document.getElementById(accId);if(a)a.remove()}
+function updateUboList(count){
+    count=Math.min(Math.max(parseInt(count)||1,1),20);
+    var list=document.getElementById('uboList');
+    var existing=list.querySelectorAll('.accordion').length;
+    if(count>existing){
+        for(var i=existing+1;i<=count;i++){
+            var d=document.createElement('div');d.className='accordion';d.id='ubo_acc_'+i;
+            d.innerHTML='<div class="accordion-header" onclick="togAcc9(\'ubo_body_'+i+'\',\'ubo_arrow_'+i+'\')">'+
+            '<span>Details for Shareholder Arjun Menon - UBO '+i+'</span>'+
+            '<span class="accordion-arrow" id="ubo_arrow_'+i+'">&#9660;</span></div>'+
+            '<div class="accordion-body" id="ubo_body_'+i+'">'+
+            '<div class="person-card">'+
+            '<div class="delete-btn" onclick="delUbo(\'ubo_acc_'+i+'\')">&#128465; Delete UBO</div>'+
+            '<div class="sub-section"><span class="question-label">Define the UBO details from one of the following selections</span>'+
+            '<div class="ubo-type-cards">'+
+            '<div class="ubo-type-card" id="ubo_'+i+'_card_sh" onclick="selectUboCard('+i+',\'sh\')"><div class="card-icon">&#128188;</div><input type="radio" name="ubo_'+i+'_def" value="sh"/><label>Shareholder of this entity</label></div>'+
+            '<div class="ubo-type-card" id="ubo_'+i+'_card_spc" onclick="selectUboCard('+i+',\'spc\')"><div class="card-icon">&#128101;</div><input type="radio" name="ubo_'+i+'_def" value="spc"/><label>Current shareholder of another entity in SPC FZ</label></div>'+
+            '<div class="ubo-type-card" id="ubo_'+i+'_card_new" onclick="selectUboCard('+i+',\'new\')"><div class="card-icon">&#128100;</div><input type="radio" name="ubo_'+i+'_def" value="new"/><label>Add new</label></div>'+
+            '</div></div>'+
+            '<div class="info-link-box"><p>Please find instructional video on how to upload UID</p><a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a></div>'+
+            '<input class="flat-input" type="text" name="ubo_'+i+'_work_entity" placeholder="Work entity name" style="margin-bottom:12px"/>'+
+            '<textarea class="flat-textarea" name="ubo_'+i+'_work_addr" rows="2" placeholder="Work entity address" style="margin-bottom:20px"></textarea>'+
+            '<div id="ubo_'+i+'_sh_sec" class="hidden sub-section"><span class="question-label">Choose existing shareholder</span><div class="sh-select-wrap"><select class="sh-dropdown" name="ubo_'+i+'_sh_val"><option value="">Select Shareholder</option></select><span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#888;pointer-events:none">&#9660;</span></div><div class="added-ubo">Added UBO:</div></div>'+
+            '<div id="ubo_'+i+'_spc_sec" class="hidden sub-section"><span class="question-label">Existing user?</span><input class="flat-input" type="email" name="ubo_'+i+'_spc_email" placeholder="Email" style="margin-bottom:12px"/><input class="flat-input" type="text" name="ubo_'+i+'_spc_pass" placeholder="Passport number / Entity registration number" style="margin-bottom:12px"/><button type="button" class="search-btn">SEARCH</button></div>'+
+            '<div id="ubo_'+i+'_new_sec" class="hidden"><div class="sub-section"><span class="question-label">Select the type of UBO</span><div class="radio-group"><label class="radio-label"><input type="radio" name="ubo_'+i+'_type" value="individual"/> Individual</label><label class="radio-label"><input type="radio" name="ubo_'+i+'_type" value="trust"/> Trust</label></div></div>'+
+            '<div style="margin-bottom:4px"><label style="font-size:12px;color:#aaa">Date of obtaining Shares</label></div><input class="date-flat" type="date" name="ubo_'+i+'_dos" style="margin-bottom:12px"/>'+
+            '<div style="margin-bottom:4px"><label style="font-size:12px;color:#aaa">Select the date when the UBO obtained ownership</label></div><input class="date-flat" type="date" name="ubo_'+i+'_dow" style="margin-bottom:16px"/>'+
+            '<div style="margin-bottom:16px"><span class="question-label">Does the UBO hold voting rights?</span><div class="radio-group"><label class="radio-label"><input type="radio" name="ubo_'+i+'_vote" value="yes"/> Yes</label><label class="radio-label"><input type="radio" name="ubo_'+i+'_vote" value="no"/> No</label></div></div>'+
+            '<div class="sub-section"><span class="question-label">Select the UBO stakeholder type</span><div class="radio-group"><label class="radio-label"><input type="radio" name="ubo_'+i+'_stake" value="shareholder"/> Shareholder</label><label class="radio-label"><input type="radio" name="ubo_'+i+'_stake" value="manager"/> Manager</label><label class="radio-label"><input type="radio" name="ubo_'+i+'_stake" value="director"/> Director</label><label class="radio-label"><input type="radio" name="ubo_'+i+'_stake" value="voting"/> Voting rights</label></div></div></div>'+
+            '</div><div class="save-row"><button type="button" class="save-btn" onclick="saveUbo(\'ubo_acc_'+i+'\')">SAVE</button></div></div>';
+            list.appendChild(d);
+        }
+    } else if(count<existing){
+        for(var j=existing;j>count;j--){var el=document.getElementById('ubo_acc_'+j);if(el)el.remove()}
+    }
+}
+]]>
+</script>
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

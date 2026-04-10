@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step2" name="SPC Setup Company Step 2 - Business Activities">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Business Activities | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:260px;background:#1a3c6e;color:white;padding:28px 20px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:10}
+.progress-title{font-size:12px;font-weight:600;opacity:.7;margin-bottom:12px;letter-spacing:.5px}
+.progress-step{display:flex;align-items:center;gap:10px;padding:8px 0}
+.progress-step-num{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
+.progress-step-num.done{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)}
+.progress-step-label{font-size:12px;opacity:.7;line-height:1.3}
+.progress-step-label.active{opacity:1;font-weight:700}
+.progress-total{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.form-main{margin-left:260px;padding:40px 48px;min-height:100vh;background:#f5f6fa}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.step-label{font-size:12px;font-weight:700;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.step-label::after{content:"";flex:1;height:1px;background:#e5e7eb}
+.step-title{font-size:18px;font-weight:700;color:#111827;margin-bottom:4px}
+.step-sub{font-size:13px;color:#6b7280;margin-bottom:16px}
+.search-wrap{position:relative}
+.search-bar{width:100%;padding:13px 48px 13px 16px;border:1px solid #e5e7eb;border-bottom:none;background:white;font-size:14px;outline:none;border-radius:8px 8px 0 0}
+.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#9ca3af;pointer-events:none}
+.tabs{display:flex;border-bottom:2px solid #e5e7eb;background:white;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;overflow-x:auto}
+.tab{padding:12px 18px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;white-space:nowrap;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;background:none}
+.tab.active{color:#1a3c6e;border-bottom-color:#1a3c6e;font-weight:700}
+.tab:hover{color:#1a3c6e}
+.divisions-wrap{border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;background:white;margin-bottom:32px;overflow:hidden}
+.division-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:1px solid #f3f4f6;font-size:14px;font-weight:700;color:#111827}
+.division-header:hover{background:#f9fafb}
+.division-body{display:none}
+.division-body.open{display:block}
+.row-item{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid #f3f4f6;font-size:14px;color:#111827}
+.row-item:last-child{border-bottom:none}
+.row-item-left{display:flex;align-items:center;gap:12px}
+.row-item input[type="checkbox"]{width:16px;height:16px;accent-color:#1a3c6e;cursor:pointer;flex-shrink:0}
+.row-expand-btn{background:none;border:none;color:#1a3c6e;font-size:18px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;flex-shrink:0}
+.row-expand-btn:hover{background:#f0f4ff}
+.sub-items{display:none;background:#fafafa;border-top:1px solid #f3f4f6}
+.sub-items.open{display:block}
+.sub-item-label{font-size:12px;color:#6b7280;font-weight:600;padding:10px 20px 6px 52px}
+.sub-activity{display:flex;align-items:center;gap:12px;padding:8px 20px 8px 52px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#374151;cursor:pointer}
+.sub-activity:last-child{border-bottom:none}
+.sub-activity input[type="checkbox"]{width:15px;height:15px;accent-color:#1a3c6e;cursor:pointer;flex-shrink:0}
+.sub-activity:hover{background:#f0f4ff}
+.empty-tab-msg{padding:40px;text-align:center;color:#9ca3af;font-size:14px}
+.empty-state{text-align:center;padding:48px 20px;background:white;border-radius:8px;border:1px solid #e5e7eb}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-text{font-size:16px;font-weight:700;color:#111827;margin-bottom:4px}
+.empty-sub{font-size:13px;color:#6b7280}
+.btn-row{position:fixed;bottom:32px;right:40px;display:flex;gap:16px;z-index:100}
+.prev-btn{background:white;color:#1a3c6e;border:2px solid #1a3c6e;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.next-btn{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
+.footer-links{font-size:12px;color:#9ca3af;text-align:center;padding:20px 0 100px}
+.footer-links a{color:#6b7280;margin:0 8px;text-decoration:none}
+    </style>
+</head>
+<body>
+
+<div class="progress-sidebar">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px">K</div>
+        <div><div style="font-size:15px;font-weight:700">SPC</div><div style="font-size:10px;opacity:.6">Free Zone</div></div>
+    </div>
+    <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,.15)">
+        <div class="progress-title">Your progress</div>
+        <t t-foreach="steps" t-as="step">
+            <div class="progress-step">
+                <t t-if="step_index + 1 == current_step">
+                    <div class="progress-step-num active"><t t-esc="step_index + 1"/></div>
+                    <div class="progress-step-label active"><t t-esc="step"/></div>
+                </t>
+                <t t-elif="step_index + 1 &lt; current_step">
+                    <div class="progress-step-num done">&#10003;</div>
+                    <div class="progress-step-label"><t t-esc="step"/></div>
+                </t>
+                <t t-else="">
+                    <div class="progress-step-num"><t t-esc="step_index + 1"/></div>
+                    <div class="progress-step-label"><t t-esc="step"/></div>
+                </t>
+            </div>
+        </t>
+    </div>
+    <div class="progress-total">
+        <div style="font-size:11px;opacity:.6;margin-bottom:2px">Total</div>
+        <div style="font-size:11px;opacity:.6">AED</div>
+        <div style="font-size:20px;font-weight:700"><t t-esc="'%.2f' % fee"/> <span style="font-size:14px">&#9432;</span></div>
+    </div>
+    <a href="/spc/setup-new-company" style="color:white;font-size:11px;text-decoration:underline;display:block;margin-top:14px;opacity:.8">SAVE &amp; CONTINUE LATER</a>
+</div>
+
+<div class="form-main">
+    <t t-if="form_submit_url">
+        <input type="hidden" id="custom_submit_url" t-att-value="form_submit_url"/>
+    </t>
+    <div class="form-title"><t t-if="service_type == 'name_reservation'">Name Reservation - New</t><t t-else="">Company New</t></div>
+    <div class="step-label">01</div>
+    <div class="step-title">Select business activity(s)</div>
+    <div class="step-sub">What business activity(s) will the company practice?</div>
+
+    <div class="search-wrap">
+        <input type="text" class="search-bar" id="activitySearch" placeholder="Search by keyword" oninput="filterActivities(this.value)"/>
+        <span class="search-icon">&#128269;</span>
+    </div>
+
+    <div class="tabs" id="tabsRow">
+        <button class="tab active" onclick="filterByTab('',this)">All</button>
+        <button class="tab" onclick="filterByTab('publishing_media',this)">Publishing and Media</button>
+        <button class="tab" onclick="filterByTab('wholesale_retail',this)">Wholesale and Retail</button>
+        <button class="tab" onclick="filterByTab('services_consultancy',this)">Services and Consultancy</button>
+        <button class="tab" onclick="filterByTab('electronic_publishing',this)">Electronic Publishing</button>
+        <button class="tab" onclick="filterByTab('real_publishing',this)">Real Publishing</button>
+    </div>
+
+    <div class="divisions-wrap" id="divisionsWrap">
+        <div class="empty-tab-msg" id="emptyTabMsg">Select a category tab to view activities.</div>
+
+        <t t-foreach="categories" t-as="cat">
+            <t t-set="cat_data" t-value="activities_data.get(cat[0], {})"/>
+            <t t-foreach="cat_data.get('divisions', {}).items()" t-as="div_item">
+                <t t-set="div_name" t-value="div_item[0]"/>
+                <t t-set="div_acts" t-value="div_item[1]"/>
+                <div class="division-item" t-att-data-cat="cat[0]" style="display:none">
+                    <div class="division-header" onclick="toggleDivision(this)">
+                        <span><t t-esc="div_name"/></span>
+                        <span class="div-arrow">&#8964;</span>
+                    </div>
+                    <div class="division-body">
+                        <t t-foreach="div_acts" t-as="act">
+                            <!-- Check if this is a parent code (no dot) or child (has dot) -->
+                            <t t-if="'.' not in act['code']">
+                                <!-- Parent row - heading style or expandable -->
+                                <t t-set="child_prefix" t-value="act['code'] + '.'"/>
+                                <t t-set="has_children" t-value="any(child_prefix in a['code'] for a in div_acts)"/>
+                                <div class="row-item" t-att-data-parent="act['code']">
+                                    <div class="row-item-left">
+                                        <input type="checkbox" t-att-value="act['name']" t-att-id="'cb_' + act['code']" onchange="updateSelected(this)"/>
+                                        <label t-att-for="'cb_' + act['code']" style="cursor:pointer;font-weight:600"><t t-esc="act['name']"/></label>
+                                    </div>
+                                    <t t-if="has_children">
+                                        <button type="button" class="row-expand-btn" t-attf-onclick="toggleSub('#{act['code']}', this)" title="Expand">+</button>
+                                    </t>
+                                </div>
+                                <t t-if="has_children">
+                                    <div class="sub-items" t-att-id="'sub_' + act['code']">
+                                        <div class="sub-item-label">This class includes:</div>
+                                        <t t-foreach="div_acts" t-as="child">
+                                            <t t-if="child['code'].startswith(child_prefix)">
+                                                <label class="sub-activity">
+                                                    <input type="checkbox" t-att-value="child['name']" onchange="updateSelected(this)"/>
+                                                    <span><t t-esc="child['name']"/></span>
+                                                </label>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </t>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </div>
+
+    <div class="step-label" style="margin-top:40px">02</div>
+    <div class="step-title" style="margin-bottom:16px">List of business activity(s) selected</div>
+    <div id="emptyState" class="empty-state">
+        <div class="empty-icon">&#127881;</div>
+        <div class="empty-text">Woohoo!</div>
+        <div class="empty-sub">No Activity selected yet.</div>
+    </div>
+    <div id="selectedList" style="display:none;background:white;border-radius:8px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:20px"></div>
+
+    <div class="footer-links">
+        <a href="#">PRIVACY POLICY</a>
+        <a href="#">TERMS</a>
+        <span>&#169; SPC 2026</span>
+    </div>
+</div>
+
+<div class="btn-row">
+    <button class="prev-btn" onclick="window.history.back()">PREVIOUS</button>
+    <button class="next-btn" onclick="validateStep2()">NEXT</button>
+</div>
+
+<script>
+var selectedActivities = [];
+
+function toggleDivision(header) {
+    var body = header.nextElementSibling;
+    var arrow = header.querySelector('.div-arrow');
+    var isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    arrow.innerHTML = isOpen ? '&#8964;' : '&#8963;';
+}
+
+function toggleSub(code, btn) {
+    var sub = document.getElementById('sub_' + code);
+    if (!sub) return;
+    var isOpen = sub.classList.contains('open');
+    sub.classList.toggle('open', !isOpen);
+    btn.textContent = isOpen ? '+' : '-';
+    btn.style.color = isOpen ? '#1a3c6e' : '#e91e8c';
+}
+
+function updateSelected(cb) {
+    var val = cb.value;
+    if (cb.checked) {
+        if (!selectedActivities.includes(val)) selectedActivities.push(val);
+    } else {
+        selectedActivities = selectedActivities.filter(function(a){ return a !== val; });
+    }
+    renderSelected();
+}
+
+function renderSelected() {
+    var empty = document.getElementById('emptyState');
+    var list = document.getElementById('selectedList');
+    if (selectedActivities.length === 0) {
+        empty.style.display = 'block';
+        list.style.display = 'none';
+    } else {
+        empty.style.display = 'none';
+        list.style.display = 'block';
+        list.innerHTML = selectedActivities.map(function(a) {
+            return '<div style="padding:12px 20px;border-bottom:1px solid #f3f4f6;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#374151">' +
+                '<span>' + a + '</span>' +
+                '<button onclick="removeActivity(this)" data-val="' + encodeURIComponent(a) + '" style="background:none;border:none;color:#9ca3af;cursor:pointer;font-size:20px;line-height:1">&#215;</button>' +
+                '</div>';
+        }).join('');
+    }
+}
+
+function removeActivityByName(name) {
+    selectedActivities = selectedActivities.filter(function(a){ return a !== name; });
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+        if (cb.value === name) cb.checked = false;
+    });
+    renderSelected();
+}
+
+function filterActivities(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.division-item').forEach(function(div) {
+        div.style.display = div.textContent.toLowerCase().includes(q) ? 'block' : 'none';
+    });
+    document.getElementById('emptyTabMsg').style.display = 'none';
+}
+
+function filterByTab(cat, btn) {
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    btn.classList.add('active');
+    var msg = document.getElementById('emptyTabMsg');
+    if (!cat) {
+        document.querySelectorAll('.division-item').forEach(function(d){ d.style.display = 'none'; });
+        msg.style.display = 'block';
+    } else {
+        msg.style.display = 'none';
+        document.querySelectorAll('.division-item').forEach(function(d){
+            d.style.display = d.getAttribute('data-cat') === cat ? 'block' : 'none';
+        });
+    }
+}
+
+function validateStep2() {
+    if (selectedActivities.length === 0) {
+        var err = document.createElement('div');
+        err.style.cssText = 'position:fixed;top:24px;left:50%;transform:translateX(-50%);background:#fff;border:1.5px solid #e91e8c;border-radius:10px;padding:14px 28px;font-size:14px;color:#e91e8c;font-weight:600;box-shadow:0 8px 32px rgba(233,30,140,.15);z-index:99999;display:flex;align-items:center;gap:10px';
+        err.innerHTML = '&#9888; Please select at least one business activity.';
+        document.body.appendChild(err);
+        setTimeout(function(){ if(err.parentElement) err.remove(); }, 3000);
+        return;
+    }
+    var serviceType = window.location.pathname.split('/').pop();
+    // Submit via form POST to save to session
+    var form = document.createElement('form');
+    form.method = 'POST';
+    var submitUrl = '/spc/setup-new-company/apply/step2/submit';
+    if (serviceType === 'pre_approval') {
+        submitUrl = '/spc/setup-new-company/apply/pa-step2/submit';
+    }
+    // Support custom submit URL from hidden input
+    var customUrlInput = document.getElementById('custom_submit_url');
+    if (customUrlInput &amp;&amp; customUrlInput.value) { submitUrl = customUrlInput.value; }
+    form.action = submitUrl;
+    // CSRF token
+    var csrf = document.createElement('input');
+    csrf.type = 'hidden';
+    csrf.name = 'csrf_token';
+    csrf.value = document.querySelector('meta[name="csrf_token"]') ?
+        document.querySelector('meta[name="csrf_token"]').content : '';
+    form.appendChild(csrf);
+    // service_type
+    var st = document.createElement('input');
+    st.type = 'hidden';
+    st.name = 'service_type';
+    st.value = serviceType;
+    form.appendChild(st);
+    // Add each selected activity
+    selectedActivities.forEach(function(act) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden';
+        inp.name = 'business_activities';
+        inp.value = act;
+        form.appendChild(inp);
+    });
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

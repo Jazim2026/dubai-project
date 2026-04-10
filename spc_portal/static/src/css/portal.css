@@ -1,0 +1,38 @@
+
+/* ── Step 3 Company Styles ── */
+.spc-underline-select {
+    width: 320px; padding: 10px 4px;
+    border: none; border-bottom: 2px solid #c8a951;
+    background: transparent; font-size: 14px;
+    color: #333; appearance: none; cursor: pointer;
+    outline: none;
+}
+.spc-select-wrapper { display: flex; align-items: center; gap: 10px; }
+.spc-select-clear-btn {
+    cursor: pointer; color: #999; font-size: 16px;
+    background: #eee; border-radius: 50%;
+    width: 22px; height: 22px; display: flex;
+    align-items: center; justify-content: center;
+}
+.spc-note-box {
+    background: #fff5f5; border: 1px solid #f5c6cb;
+    border-radius: 8px; padding: 16px; margin-top: 20px;
+    font-size: 13px;
+}
+.spc-note-info {
+    display: flex; gap: 12px;
+    background: #fff3cd; border-radius: 6px;
+    padding: 12px; margin-top: 10px;
+}
+.spc-note-icon { font-size: 22px; color: #856404; flex-shrink: 0; }
+.spc-note-info p { margin: 4px 0; font-size: 12.5px; color: #555; }
+.spc-upload-area {
+    border: 2px dashed #ccc; border-radius: 10px;
+    padding: 32px 20px; text-align: center;
+    cursor: pointer; background: #fafafa;
+    transition: border-color 0.2s, background 0.2s;
+    max-width: 340px;
+}
+.spc-upload-area:hover { border-color: #c8a951; background: #fffdf5; }
+.spc-upload-icon { font-size: 30px; color: #1a6b7a; margin-bottom: 8px; }
+.spc-upload-text { color: #1a6b7a; font-size: 13px; font-weight: 500; }

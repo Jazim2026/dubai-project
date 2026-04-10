@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step4" name="SPC Setup Company Step4">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Facility | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.spc-section-number{font-size:13px;color:#aaa;font-weight:600;margin-bottom:16px}
+.spc-section-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.facility-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.facility-card{border:2px solid #e0e0e0;border-radius:10px;padding:20px 16px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative}
+.facility-card:hover{border-color:#1abc9c}
+.facility-card.selected{border-color:#1a2340;background:#f0f4ff}
+.facility-card input[type=radio]{position:absolute;top:12px;left:50%;transform:translateX(-50%)}
+.facility-card-name{font-size:14px;font-weight:700;margin-top:28px;color:#1a2340}
+.facility-card-avail{font-size:12px;color:#1abc9c;margin-top:4px}
+.facility-desc{font-size:13px;color:#555;line-height:1.6;margin-top:8px;display:none}
+.facility-desc.show{display:block}
+.submenu{display:none;margin-top:20px}
+.submenu.show{display:block}
+.dropdown-row{display:flex;align-items:center;border-bottom:1px solid #ddd;padding:12px 0;margin-bottom:8px}
+.dropdown-label{font-size:13px;color:#888;min-width:220px}
+.dropdown-select{flex:1;border:none;background:transparent;font-size:14px;color:#333;outline:none;cursor:pointer;appearance:none}
+.dropdown-clear{width:24px;height:24px;border-radius:50%;background:#e0e0e0;border:none;cursor:pointer;font-size:14px;color:#888;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;cursor:pointer}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <t t-if="steps">
+            <t t-foreach="steps" t-as="s">
+                <t t-set="idx" t-value="s_index + 1"/>
+                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
+                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
+                    <div class="step-label"><t t-esc="s"/></div>
+                </div>
+            </t>
+        </t>
+    </div>
+
+    <div class="main">
+        <div class="form-title">Company New</div>
+
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step4/submit'" method="post" id="step4Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <input type="hidden" name="facility_type" id="facilityTypeInput" value="coworking"/>
+
+            <div class="spc-section">
+                <div class="spc-section-number">01</div>
+                <div class="spc-section-title">Select facility type</div>
+
+                <div class="facility-grid">
+                    <div class="facility-card selected" id="card_coworking" onclick="selectFacility('coworking')">
+                        <input type="radio" name="facility_radio" value="coworking" checked="checked"/>
+                        <div class="facility-card-name">Coworking</div>
+                        <div class="facility-card-avail">Available</div>
+                    </div>
+                    <div class="facility-card" id="card_office" onclick="selectFacility('office')">
+                        <input type="radio" name="facility_radio" value="office"/>
+                        <div class="facility-card-name">Office</div>
+                        <div class="facility-card-avail">Available</div>
+                    </div>
+                    <div class="facility-card" id="card_store" onclick="selectFacility('store')">
+                        <input type="radio" name="facility_radio" value="store"/>
+                        <div class="facility-card-name">Store</div>
+                        <div class="facility-card-avail">Available</div>
+                    </div>
+                    <div class="facility-card" id="card_shell" onclick="selectFacility('shell')">
+                        <input type="radio" name="facility_radio" value="shell"/>
+                        <div class="facility-card-name">Shell &amp; Core</div>
+                        <div class="facility-card-avail">Available</div>
+                    </div>
+                </div>
+
+                <!-- Descriptions -->
+                <div id="desc_coworking" class="facility-desc show">A co-working space is a shared working area which allows businesses to have a professional address and use of business services.</div>
+                <div id="desc_office" class="facility-desc">An office is a dedicated workspace within the building, offering exclusive use and customization options.<br/><br/>A representative from SPC free zone will contact you to discuss the details of the facility.</div>
+                <div id="desc_store" class="facility-desc">A store is a dedicated storage space within the building, providing secure storage solutions for inventory, equipment, or supplies. This is ideal for businesses requiring additional storage capacity.<br/><br/>A representative from SPC free zone will contact you to discuss the details of the facility.</div>
+                <div id="desc_shell" class="facility-desc">Shell and core is the basic structure of a space, featuring bare walls, floors, and ceilings. It offers flexibility for tenants to customize interior finishes and layouts according to their needs.<br/><br/>A representative from SPC free zone will contact you to discuss the details of the facility.</div>
+
+                <!-- Coworking Submenu -->
+                <div id="submenu_coworking" class="submenu show">
+                    <div class="dropdown-row">
+                        <div class="dropdown-label">Co-working location (EN)</div>
+                        <select name="coworking_location_en" class="dropdown-select" onchange="syncArabic(this.value)">
+                            <option value="">Select location</option>
+                            <option value="business_centre">Business Centre</option>
+                            <option value="innovation_hub">Innovation Hub</option>
+                            <option value="tech_park">Tech Park</option>
+                        </select>
+                        <button type="button" class="dropdown-clear" onclick="clearDropdown('coworking_location_en','coworking_location_ar')">&#x2715;</button>
+                    </div>
+                    <div class="dropdown-row">
+                        <div class="dropdown-label">Co-working location (AR)</div>
+                        <select name="coworking_location_ar" id="coworkingAR" class="dropdown-select">
+                            <option value="">Select location</option>
+                            <option value="business_centre_ar">&#x645;&#x631;&#x643;&#x632; &#x627;&#x644;&#x623;&#x639;&#x645;&#x627;&#x644;</option>
+                            <option value="innovation_hub_ar">&#x645;&#x631;&#x643;&#x632; &#x627;&#x644;&#x627;&#x628;&#x62A;&#x643;&#x627;&#x631;</option>
+                            <option value="tech_park_ar">&#x645;&#x62F;&#x64A;&#x646;&#x629; &#x627;&#x644;&#x62A;&#x642;&#x646;&#x64A;&#x629;</option>
+                        </select>
+                        <button type="button" class="dropdown-clear" onclick="clearDropdown('coworking_location_ar',null)">&#x2715;</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step3/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+function selectFacility(type) {
+    // Remove selected from all cards
+    ['coworking','office','store','shell'].forEach(function(t) {
+        document.getElementById('card_' + t).classList.remove('selected');
+        document.getElementById('desc_' + t).classList.remove('show');
+    });
+    // Hide all submenus
+    var coworkSub = document.getElementById('submenu_coworking');
+    coworkSub.classList.remove('show');
+
+    // Select clicked card
+    document.getElementById('card_' + type).classList.add('selected');
+    document.getElementById('desc_' + type).classList.add('show');
+    document.getElementById('facilityTypeInput').value = type;
+
+    // Show coworking submenu only
+    if (type === 'coworking') {
+        coworkSub.classList.add('show');
+    }
+}
+
+function syncArabic(val) {
+    var map = {
+        'business_centre': 'business_centre_ar',
+        'innovation_hub': 'innovation_hub_ar',
+        'tech_park': 'tech_park_ar'
+    };
+    var arSelect = document.getElementById('coworkingAR');
+    if (arSelect) arSelect.value = map[val] || '';
+}
+
+function clearDropdown(enId, arId) {
+    document.getElementsByName(enId)[0].value = '';
+    if (arId) document.getElementsByName(arId)[0].value = '';
+}
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

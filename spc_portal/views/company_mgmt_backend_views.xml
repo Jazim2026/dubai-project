@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ══ LICENSE REISSUE ══ -->
+    <record id="view_spc_license_reissue_tree" model="ir.ui.view">
+        <field name="name">spc.license.reissue.tree</field>
+        <field name="model">spc.license.reissue</field>
+        <field name="arch" type="xml">
+            <tree string="License Reissue">
+                <field name="reference"/>
+                <field name="customer_id"/>
+                <field name="idn_number"/>
+                <field name="legal_type"/>
+                <field name="package_type"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_license_reissue_form" model="ir.ui.view">
+        <field name="name">spc.license.reissue.form</field>
+        <field name="model">spc.license.reissue</field>
+        <field name="arch" type="xml">
+            <form string="License Reissue">
+                <header>
+                    <button name="action_under_review" string="Mark Under Review" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,under_review,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="fee"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="IDN Details">
+                            <group>
+                                <field name="idn_company_id"/>
+                                <field name="idn_number"/>
+                            </group>
+                        </page>
+                        <page string="Legal Type">
+                            <group>
+                                <field name="legal_type"/>
+                                <field name="package_type"/>
+                            </group>
+                        </page>
+                        <page string="Business Activities">
+                            <field name="business_activity_ids" widget="many2many_tags"/>
+                            <field name="activity_names"/>
+                        </page>
+                        <page string="Admin Notes">
+                            <field name="admin_notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_spc_license_reissue" model="ir.actions.act_window">
+        <field name="name">License Reissue</field>
+        <field name="res_model">spc.license.reissue</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- ══ RENEWAL ══ -->
+    <record id="view_spc_renewal_tree" model="ir.ui.view">
+        <field name="name">spc.renewal.tree</field>
+        <field name="model">spc.renewal</field>
+        <field name="arch" type="xml">
+            <tree string="Renewals">
+                <field name="reference"/>
+                <field name="customer_id"/>
+                <field name="license_company_name"/>
+                <field name="legal_type"/>
+                <field name="license_validity"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_renewal_form" model="ir.ui.view">
+        <field name="name">spc.renewal.form</field>
+        <field name="model">spc.renewal</field>
+        <field name="arch" type="xml">
+            <form string="Renewal Application">
+                <header>
+                    <button name="action_under_review" string="Mark Under Review" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,under_review,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="fee"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Choose License">
+                            <group>
+                                <field name="license_company_id"/>
+                                <field name="license_company_name"/>
+                            </group>
+                        </page>
+                        <page string="Legal Details">
+                            <group>
+                                <field name="legal_type"/>
+                                <field name="package_type"/>
+                            </group>
+                        </page>
+                        <page string="Business Activities">
+                            <field name="business_activity_ids" widget="many2many_tags"/>
+                            <field name="activity_names"/>
+                        </page>
+                        <page string="Application Details">
+                            <group>
+                                <field name="license_validity"/>
+                                <field name="facility_type"/>
+                                <field name="visa_allocation"/>
+                            </group>
+                            <group string="Document">
+                                <field name="document_name"/>
+                                <field name="document_filename"/>
+                                <field name="document_file" widget="binary" filename="document_filename"/>
+                            </group>
+                        </page>
+                        <page string="Admin Notes">
+                            <field name="admin_notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_spc_renewal" model="ir.actions.act_window">
+        <field name="name">Renewals</field>
+        <field name="res_model">spc.renewal</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- ══ MENUS ══ -->
+    <menuitem id="menu_spc_company_management"
+              name="Company Management"
+              parent="menu_spc_root"
+              sequence="20"/>
+    <menuitem id="menu_spc_company_formation"
+              name="Company Formation"
+              parent="menu_spc_company_management"
+              sequence="5"/>
+    <menuitem id="menu_spc_establishment_card_group"
+              name="Establishment Card and E-Channel"
+              parent="menu_spc_company_management"
+              sequence="20"/>
+
+    <menuitem id="menu_spc_license_reissue"
+              name="License Reissue"
+              parent="menu_spc_company_formation"
+              action="action_spc_license_reissue"
+              sequence="10"/>
+
+    <menuitem id="menu_spc_renewal"
+              name="Renewal"
+              parent="menu_spc_company_formation"
+              action="action_spc_renewal"
+              sequence="20"/>
+
+    <!-- ══ RENEWAL AMENDMENT ══ -->
+    <record id="view_spc_renewal_amendment_tree" model="ir.ui.view">
+        <field name="name">spc.renewal.amendment.tree</field>
+        <field name="model">spc.renewal.amendment</field>
+        <field name="arch" type="xml">
+            <tree string="Renewal Amendments">
+                <field name="reference"/>
+                <field name="customer_id"/>
+                <field name="company_name"/>
+                <field name="legal_type"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+        <record id="view_spc_renewal_amendment_form" model="ir.ui.view">
+        <field name="name">spc.renewal.amendment.form</field>
+        <field name="model">spc.renewal.amendment</field>
+        <field name="arch" type="xml">
+            <form string="Renewal Amendment">
+                <header>
+                    <button name="action_under_review" string="Mark In Progress" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,in_progress,submitted,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="fee"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Company">
+                            <field name="company_id"/>
+                            <field name="company_name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Renewal Type">
+                            <group>
+                                <field name="renewal_type"/>
+                                <field name="amendment_types"/>
+                                <field name="acknowledgement"/>
+                            </group>
+                            <group string="Board Resolution">
+                                <field name="board_resolution_filename"/>
+                                <field name="board_resolution_file" widget="binary" filename="board_resolution_filename"/>
+                            </group>
+                        </page>
+                        <page string="Legal Type">
+                            <group>
+                                <field name="legal_type"/>
+                                <field name="package_type"/>
+                            </group>
+                        </page>
+                        <page string="Business Activities">
+                            <field name="business_activity_ids" widget="many2many_tags"/>
+                            <field name="activity_names"/>
+                        </page>
+                        <page string="Shareholders">
+                            <group>
+                                <field name="shareholder_count"/>
+                                <field name="total_shares"/>
+                                <field name="value_per_share"/>
+                                <field name="total_capital"/>
+                            </group>
+                            <field name="shareholder_ids" readonly="1">
+                                <tree>
+                                    <field name="shareholder_type" string="Type"/>
+                                    <field name="full_name" string="Full Name"/>
+                                    <field name="nationality" string="Nationality"/>
+                                    <field name="passport_no" string="Passport Number"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="mobile" string="Mobile"/>
+                                    <field name="shares_allocated" string="Shares Allocated"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Managers">
+                            <field name="manager_ids" readonly="1">
+                                <tree>
+                                    <field name="define_from" string="Defined From"/>
+                                    <field name="full_name" string="Full Name"/>
+                                    <field name="sh_val" string="Shareholder Selected"/>
+                                    <field name="spc_email" string="SPC Email"/>
+                                    <field name="passport_no" string="Passport No"/>
+                                    <field name="nationality" string="Nationality"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="mobile" string="Mobile"/>
+                                    <field name="has_uae_residence" string="UAE Residence"/>
+                                    <field name="visa_no" string="Visa No"/>
+                                    <field name="eid_no" string="Emirates ID"/>
+                                    <field name="uid" string="UID"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Directors">
+                            <field name="director_ids" readonly="1">
+                                <tree>
+                                    <field name="define_from" string="Defined From"/>
+                                    <field name="full_name" string="Full Name"/>
+                                    <field name="sh_val" string="Shareholder Selected"/>
+                                    <field name="spc_email" string="SPC Email"/>
+                                    <field name="passport_no" string="Passport No"/>
+                                    <field name="nationality" string="Nationality"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="mobile" string="Mobile"/>
+                                    <field name="has_uae_residence" string="UAE Residence"/>
+                                    <field name="visa_no" string="Visa No"/>
+                                    <field name="eid_no" string="Emirates ID"/>
+                                    <field name="uid" string="UID"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="UBO">
+                            <field name="ubo_ids" readonly="1">
+                                <tree>
+                                    <field name="define_from" string="Defined From"/>
+                                    <field name="full_name" string="Full Name"/>
+                                    <field name="sh_val" string="Shareholder Selected"/>
+                                    <field name="spc_email" string="SPC Email"/>
+                                    <field name="work_entity" string="Work Entity"/>
+                                    <field name="ubo_type" string="Type"/>
+                                    <field name="nationality" string="Nationality"/>
+                                    <field name="stakeholder_type" string="Stakeholder Type"/>
+                                    <field name="has_uae_residence" string="UAE Residence"/>
+                                    <field name="date_of_shares" string="Date of Shares"/>
+                                    <field name="voting_rights" string="Voting Rights"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Nature of Business">
+                            <group>
+                                <field name="annual_turnover"/>
+                                <field name="paid_up_capital"/>
+                                <field name="capital_range"/>
+                                <field name="has_website"/>
+                                <field name="website_url"/>
+                                <field name="multinational_group"/>
+                            </group>
+                            <group>
+                                <field name="customer_markets"/>
+                                <field name="supplier_markets"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids" readonly="1">
+                                <tree>
+                                    <field name="stage" string="Stage"/>
+                                    <field name="document_type" string="Document Type"/>
+                                    <field name="related_to" string="Related To (Person/Entity)"/>
+                                    <field name="file_name" string="File Name"/>
+                                    <field name="uploaded_on" string="Uploaded On"/>
+                                    <field name="file_data" widget="binary" filename="file_name" string="Download"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Admin Notes">
+                            <field name="admin_notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_spc_renewal_amendment" model="ir.actions.act_window">
+        <field name="name">Renewal Amendments</field>
+        <field name="res_model">spc.renewal.amendment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_renewal_amendment"
+              name="Renewal Amendments"
+              parent="menu_spc_company_formation"
+              action="action_spc_renewal_amendment"
+              sequence="30"/>
+
+    <!-- ══ AMENDMENT ══ -->
+    <record id="view_spc_amendment_tree" model="ir.ui.view">
+        <field name="name">spc.amendment.tree</field>
+        <field name="model">spc.amendment</field>
+        <field name="arch" type="xml">
+            <tree string="Amendments">
+                <field name="reference"/>
+                <field name="customer_id"/>
+                <field name="company_name"/>
+                <field name="amendment_types"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_amendment_form" model="ir.ui.view">
+        <field name="name">spc.amendment.form</field>
+        <field name="model">spc.amendment</field>
+        <field name="arch" type="xml">
+            <form string="Amendment">
+                <header>
+                    <button name="action_under_review" string="Mark In Progress" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,in_progress,submitted,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="fee"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Company">
+                            <field name="company_id"/>
+                            <field name="company_name"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Amendment Types">
+                            <group>
+                                <field name="amendment_types"/>
+                                <field name="acknowledgement"/>
+                            </group>
+                            <group string="Board Resolution">
+                                <field name="board_resolution_filename"/>
+                                <field name="board_resolution_file" widget="binary" filename="board_resolution_filename"/>
+                            </group>
+                            <group string="Formation Package">
+                                <field name="fp_activity_change"/>
+                                <field name="fp_shareholder_change"/>
+                                <field name="fp_name_change"/>
+                            </group>
+                        </page>
+                        <page string="Legal Type">
+                            <group>
+                                <field name="legal_type"/>
+                                <field name="package_type"/>
+                            </group>
+                        </page>
+                        <page string="Business Activities">
+                            <field name="business_activity_ids" widget="many2many_tags"/>
+                            <field name="activity_names"/>
+                        </page>
+                        <page string="Shareholders">
+                            <group><field name="shareholder_count"/></group>
+                            <field name="shareholder_ids" readonly="1">
+                                <tree>
+                                    <field name="shareholder_type" string="Type"/>
+                                    <field name="full_name" string="Full Name"/>
+                                    <field name="nationality" string="Nationality"/>
+                                    <field name="passport_no" string="Passport No"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="mobile" string="Mobile"/>
+                                    <field name="dob" string="DOB"/>
+                                    <field name="has_uae_visa" string="UAE Visa"/>
+                                    <field name="visa_no" string="Visa No"/>
+                                    <field name="eid_no" string="Emirates ID"/>
+                                    <field name="uid" string="UID"/>
+                                    <field name="shares_allocated" string="Shares"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Managers">
+                            <group><field name="manager_count"/></group>
+                            <field name="manager_ids" readonly="1">
+                                <tree>
+                                    <field name="define_from" string="Defined From"/>
+                                    <field name="full_name" string="Full Name"/>
+                                    <field name="nationality" string="Nationality"/>
+                                    <field name="passport_no" string="Passport No"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="mobile" string="Mobile"/>
+                                    <field name="has_uae_residence" string="UAE Residence"/>
+                                    <field name="visa_no" string="Visa No"/>
+                                    <field name="eid_no" string="Emirates ID"/>
+                                    <field name="uid" string="UID"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Directors">
+                            <group><field name="director_count"/></group>
+                            <field name="director_ids" readonly="1">
+                                <tree>
+                                    <field name="define_from" string="Defined From"/>
+                                    <field name="full_name" string="Full Name"/>
+                                    <field name="nationality" string="Nationality"/>
+                                    <field name="passport_no" string="Passport No"/>
+                                    <field name="email" string="Email"/>
+                                    <field name="mobile" string="Mobile"/>
+                                    <field name="has_uae_residence" string="UAE Residence"/>
+                                    <field name="visa_no" string="Visa No"/>
+                                    <field name="eid_no" string="Emirates ID"/>
+                                    <field name="uid" string="UID"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Company Information">
+                            <group>
+                                <field name="new_company_name"/>
+                                <field name="company_name_arabic"/>
+                                <field name="company_address"/>
+                                <field name="company_phone"/>
+                                <field name="company_email"/>
+                                <field name="company_website"/>
+                                <field name="company_info_notes"/>
+                            </group>
+                        </page>
+                        <page string="Facility Type">
+                            <group><field name="facility_type"/></group>
+                        </page>
+                        <page string="Nature of Business">
+                            <group>
+                                <field name="annual_turnover"/>
+                                <field name="paid_up_capital"/>
+                                <field name="capital_range"/>
+                                <field name="has_website"/>
+                                <field name="website_url"/>
+                                <field name="multinational_group"/>
+                                <field name="customer_markets"/>
+                                <field name="supplier_markets"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids" readonly="1">
+                                <tree>
+                                    <field name="stage"/>
+                                    <field name="document_type"/>
+                                    <field name="related_to"/>
+                                    <field name="file_name"/>
+                                    <field name="uploaded_on"/>
+                                    <field name="file_data" widget="binary" filename="file_name" string="Download"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Admin Notes">
+                            <field name="admin_notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_spc_amendment" model="ir.actions.act_window">
+        <field name="name">Amendments</field>
+        <field name="res_model">spc.amendment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_amendment"
+              name="Amendments"
+              parent="menu_spc_company_formation"
+              action="action_spc_amendment"
+              sequence="40"/>
+
+    <record id="view_spc_visa_allocation_amendment_tree" model="ir.ui.view">
+        <field name="name">spc.visa.allocation.amendment.tree</field>
+        <field name="model">spc.visa.allocation.amendment</field>
+        <field name="arch" type="xml">
+            <tree string="Visa Allocation Amendments">
+                <field name="reference"/>
+                <field name="customer_id"/>
+                <field name="company_name"/>
+                <field name="package_type"/>
+                <field name="upgrade_downgrade"/>
+                <field name="additional_visas"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_visa_allocation_amendment_form" model="ir.ui.view">
+        <field name="name">spc.visa.allocation.amendment.form</field>
+        <field name="model">spc.visa.allocation.amendment</field>
+        <field name="arch" type="xml">
+            <form string="Visa Allocation Amendment">
+                <header>
+                    <button name="action_under_review" string="Mark In Progress" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,in_progress,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Customer">
+                            <field name="customer_id"/>
+                            <field name="company_id"/>
+                            <field name="company_name"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                            <field name="fee"/>
+                        </group>
+                        <group string="Amendment Details">
+                            <field name="package_type"/>
+                            <field name="amendment_type"/>
+                            <field name="license_validity"/>
+                            <field name="facility_type"/>
+                        </group>
+                    </group>
+                    <group string="Visa Allocation">
+                        <group>
+                            <field name="existing_visa_allocation"/>
+                            <field name="upgrade_downgrade"/>
+                            <field name="additional_visas"/>
+                            <field name="final_visa_allocation"/>
+                        </group>
+                    </group>
+                    <group string="Customer Remarks">
+                        <field name="remarks" nolabel="1"/>
+                    </group>
+                    <group string="Admin Notes">
+                        <field name="admin_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_spc_visa_allocation_amendment" model="ir.actions.act_window">
+        <field name="name">Visa Allocation Amendments</field>
+        <field name="res_model">spc.visa.allocation.amendment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_visa_allocation_amendment"
+        name="Visa Allocation Amendments"
+        parent="menu_spc_company_formation"
+        action="action_spc_visa_allocation_amendment"
+        sequence="50"/>
+
+
+    <record id="view_spc_certify_tree" model="ir.ui.view">
+        <field name="name">spc.certify.tree</field>
+        <field name="model">spc.certify</field>
+        <field name="arch" type="xml">
+            <tree string="Certify">
+                <field name="reference"/>
+                <field name="customer_id"/>
+                <field name="document_names"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_spc_certify_form" model="ir.ui.view">
+        <field name="name">spc.certify.form</field>
+        <field name="model">spc.certify</field>
+        <field name="arch" type="xml">
+            <form string="Certify">
+                <header>
+                    <button name="action_under_review" string="Mark In Progress" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,in_progress,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                            <field name="fee"/>
+                        </group>
+                        <group string="Documents">
+                            <field name="document_names"/>
+                            <field name="declaration"/>
+                        </group>
+                    </group>
+                    <group string="Remarks">
+                        <field name="remarks" nolabel="1"/>
+                    </group>
+                    <group string="Admin Notes">
+                        <field name="admin_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_spc_certify" model="ir.actions.act_window">
+        <field name="name">Certify</field>
+        <field name="res_model">spc.certify</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_spc_certify" name="Certify"
+        parent="menu_spc_company_formation"
+        action="action_spc_certify" sequence="55"/>
+
+    <record id="view_spc_ec_tree" model="ir.ui.view">
+        <field name="name">spc.establishment.card.tree</field>
+        <field name="model">spc.establishment.card</field>
+        <field name="arch" type="xml">
+            <tree string="Establishment Card">
+                <field name="reference"/>
+                <field name="service_sub_type"/>
+                <field name="customer_id"/>
+                <field name="company_name"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_spc_ec_form" model="ir.ui.view">
+        <field name="name">spc.establishment.card.form</field>
+        <field name="model">spc.establishment.card</field>
+        <field name="arch" type="xml">
+            <form string="Establishment Card">
+                <header>
+                    <button name="action_under_review" string="Mark In Progress" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','in_progress']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,in_progress,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="reference"/></h1></div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="company_id"/>
+                            <field name="company_name"/>
+                            <field name="service_sub_type"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                            <field name="fee"/>
+                        </group>
+                        <group string="Application Details">
+                            <field name="confirm_establishment_card"/>
+                            <field name="establishment_card_validity"/>
+                            <field name="confirm_echannel"/>
+                            <field name="echannel_validity"/>
+                            <field name="declaration"/>
+                        </group>
+                    </group>
+                    <group string="Admin Notes">
+                        <field name="admin_notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_spc_ec_new" model="ir.actions.act_window">
+        <field name="name">New</field>
+        <field name="res_model">spc.establishment.card</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('service_sub_type','=','new')]</field>
+    </record>
+    <record id="action_spc_ec_renewal" model="ir.actions.act_window">
+        <field name="name">Renewal</field>
+        <field name="res_model">spc.establishment.card</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('service_sub_type','=','renewal')]</field>
+    </record>
+    <record id="action_spc_ec_amendment" model="ir.actions.act_window">
+        <field name="name">New - Amendment</field>
+        <field name="res_model">spc.establishment.card</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('service_sub_type','=','amendment')]</field>
+    </record>
+    <record id="action_spc_ec_cancellation" model="ir.actions.act_window">
+        <field name="name">Cancellation</field>
+        <field name="res_model">spc.establishment.card</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('service_sub_type','=','cancellation')]</field>
+    </record>
+    <menuitem id="menu_spc_ec_new" name="New"
+        parent="menu_spc_establishment_card_group"
+        action="action_spc_ec_new" sequence="10"/>
+    <menuitem id="menu_spc_ec_renewal" name="Renewal"
+        parent="menu_spc_establishment_card_group"
+        action="action_spc_ec_renewal" sequence="20"/>
+    <menuitem id="menu_spc_ec_amendment" name="New - Amendment"
+        parent="menu_spc_establishment_card_group"
+        action="action_spc_ec_amendment" sequence="30"/>
+    <menuitem id="menu_spc_ec_cancellation" name="Cancellation"
+        parent="menu_spc_establishment_card_group"
+        action="action_spc_ec_cancellation" sequence="40"/>
+</odoo>

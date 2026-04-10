@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step11" name="SPC Setup Company Step11">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Corporate Bank Account | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.hidden{display:none}
+.bank-dropdown{position:relative;max-width:600px;margin-top:16px}
+.bank-selected{display:flex;align-items:center;border:1px solid #e0e0e0;border-radius:8px;padding:12px 16px;background:#fff;cursor:pointer}
+.bank-selected-label{flex:1;font-size:14px;color:#888}
+.bank-clear{width:24px;height:24px;border-radius:50%;background:#1a2340;border:none;cursor:pointer;color:#fff;font-size:12px}
+.bank-options{display:none;position:absolute;z-index:200;width:100%;background:#fff;border:1px solid #ddd;border-radius:4px;margin-top:2px}
+.bank-options.show{display:block}
+.bank-search{width:100%;padding:8px 12px;border:none;border-bottom:1px solid #eee;outline:none;font-size:13px}
+.bank-option{padding:10px 14px;font-size:14px;cursor:pointer;color:#333}
+.bank-option:hover{background:#e8f8f5;color:#1a2340;font-weight:600}
+.bank-option.selected{color:#1abc9c;font-weight:700}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Facility</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Visa allocation</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder(s) information and Capital Structure</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Manager(s) information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Director(s) information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">UBO information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Nature of business</div></div>
+        <div class="progress-step active"><div class="step-num">11</div><div class="step-label">Corporate bank account</div></div>
+        <div class="progress-step"><div class="step-num">12</div><div class="step-label">Supporting document</div></div>
+        <div class="progress-step"><div class="step-num">13</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">14</div><div class="step-label">Payment</div></div>
+    </div>
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form action="/spc/setup-new-company/apply/step11/submit" method="post" id="step11Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <input type="hidden" name="bank_provider" id="bankProviderInput" value=""/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Is there a requirement to open a bank account?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="need_bank" value="yes" onchange="toggleBank('yes')"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="need_bank" value="no" checked="checked" onchange="toggleBank('no')"/> No</label>
+                    </div>
+                    <div id="bank_provider_div" class="hidden">
+                        <div class="bank-dropdown">
+                            <div class="bank-selected" onclick="toggleBankDrop()">
+                                <span class="bank-selected-label" id="bankLabel">Preferred financial services provider</span>
+                                <button type="button" class="bank-clear" onclick="clearBank(event)">&#x2715;</button>
+                            </div>
+                            <div class="bank-options" id="bankOptions">
+                                <input type="text" class="bank-search" placeholder="Search..." oninput="filterBanks(this)"/>
+                                <div class="bank-option" onclick="selectBank('WIO bank')">WIO bank</div>
+                                <div class="bank-option" onclick="selectBank('Mashreq Bank P.S.C')">Mashreq Bank P.S.C</div>
+                                <div class="bank-option" onclick="selectBank('RAK Bank')">RAK Bank</div>
+                                <div class="bank-option" onclick="selectBank('Bank Misr')">Bank Misr</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step10/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+<![CDATA[
+function toggleBank(val){
+    document.getElementById('bank_provider_div').classList.toggle('hidden', val !== 'yes');
+}
+function toggleBankDrop(){
+    document.getElementById('bankOptions').classList.toggle('show');
+}
+function selectBank(name){
+    document.getElementById('bankProviderInput').value = name;
+    document.getElementById('bankLabel').textContent = name;
+    document.getElementById('bankLabel').style.color = '#333';
+    document.getElementById('bankOptions').classList.remove('show');
+}
+function clearBank(e){
+    e.stopPropagation();
+    document.getElementById('bankProviderInput').value = '';
+    document.getElementById('bankLabel').textContent = 'Preferred financial services provider';
+    document.getElementById('bankLabel').style.color = '#888';
+}
+function filterBanks(input){
+    var q = input.value.toLowerCase();
+    document.querySelectorAll('.bank-option').forEach(function(o){
+        o.style.display = o.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+document.addEventListener('click', function(e){
+    var opts = document.getElementById('bankOptions');
+    if(opts && !opts.parentElement.contains(e.target)) opts.classList.remove('show');
+});
+]]>
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

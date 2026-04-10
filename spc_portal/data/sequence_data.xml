@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <record id="seq_spc_company_application" model="ir.sequence">
+      <field name="name">SPC Company Application</field>
+      <field name="code">spc.company.application</field>
+      <field name="prefix">SPC-APP-</field>
+      <field name="padding">5</field>
+      <field name="number_next">1</field>
+      <field name="number_increment">1</field>
+    </record>
+  </data>
+
+    <record id="seq_spc_pre_approval" model="ir.sequence">
+        <field name="name">SPC Pre-Approval</field>
+        <field name="code">spc.pre.approval</field>
+        <field name="prefix">PA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_license_reissue" model="ir.sequence">
+        <field name="name">SPC License Reissue</field>
+        <field name="code">spc.license.reissue</field>
+        <field name="prefix">LR/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_renewal" model="ir.sequence">
+        <field name="name">SPC Renewal</field>
+        <field name="code">spc.renewal</field>
+        <field name="prefix">RN/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_renewal_amendment" model="ir.sequence">
+        <field name="name">SPC Renewal Amendment</field>
+        <field name="code">spc.renewal.amendment</field>
+        <field name="prefix">RA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_amendment" model="ir.sequence">
+        <field name="name">SPC Amendment</field>
+        <field name="code">spc.amendment</field>
+        <field name="prefix">AMD/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_visa_allocation_amendment" model="ir.sequence">
+        <field name="name">SPC Visa Allocation Amendment</field>
+        <field name="code">spc.visa.allocation.amendment</field>
+        <field name="prefix">VAA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_certify" model="ir.sequence">
+        <field name="name">SPC Certify</field>
+        <field name="code">spc.certify</field>
+        <field name="prefix">CERT/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_establishment_card" model="ir.sequence">
+        <field name="name">SPC Establishment Card</field>
+        <field name="code">spc.establishment.card</field>
+        <field name="prefix">EC/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>
+<!-- This line should not be added - need to edit properly -->

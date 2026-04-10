@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+  <!-- ═══════════════════════════════════════════════
+       OTP LOGS (existing)
+  ═══════════════════════════════════════════════ -->
+  <record id="view_spc_otp_tree" model="ir.ui.view">
+    <field name="name">spc.otp.tree</field>
+    <field name="model">spc.otp</field>
+    <field name="arch" type="xml">
+      <tree string="OTP Logs">
+        <field name="email"/>
+        <field name="otp_code"/>
+        <field name="is_verified"/>
+        <field name="create_date"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       COMPANY APPLICATION — TREE
+  ═══════════════════════════════════════════════ -->
+  <record id="view_spc_company_application_tree" model="ir.ui.view">
+    <field name="name">spc.company.application.tree</field>
+    <field name="model">spc.company.application</field>
+    <field name="arch" type="xml">
+      <tree string="Company Applications" decoration-success="state=='approved'"
+            decoration-danger="state=='rejected'"
+            decoration-warning="state=='submitted'"
+            decoration-info="state=='under_review'">
+        <field name="reference"/>
+        <field name="partner_id"/>
+        <field name="service_type"/>
+        <field name="legal_type"/>
+        <field name="current_step"/>
+        <field name="create_date"/>
+        <field name="state" widget="badge"
+               decoration-success="state=='approved'"
+               decoration-danger="state=='rejected'"
+               decoration-warning="state=='submitted'"
+               decoration-info="state=='under_review'"/>
+      </tree>
+    </field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       COMPANY APPLICATION — FORM
+  ═══════════════════════════════════════════════ -->
+  <record id="view_spc_company_application_form" model="ir.ui.view">
+    <field name="name">spc.company.application.form</field>
+    <field name="model">spc.company.application</field>
+    <field name="arch" type="xml">
+      <form string="Company Application">
+
+        <!-- Status bar -->
+        <header>
+          <button name="action_under_review" string="Mark Under Review"
+                  type="object" class="btn-secondary"
+                  invisible="state not in ['submitted']"/>
+          <button name="action_approve" string="Approve"
+                  type="object" class="btn-primary"
+                  invisible="state not in ['submitted','under_review']"/>
+          <button name="action_reject" string="Reject"
+                  type="object" class="btn-danger"
+                  invisible="state not in ['submitted','under_review']"/>
+          <button name="action_reset_draft" string="Reset to Draft"
+                  type="object" class="btn-secondary"
+                  invisible="state not in ['rejected']"/>
+          <field name="state" widget="statusbar"
+                 statusbar_visible="draft,in_progress,submitted,under_review,approved"/>
+        </header>
+
+        <sheet>
+          <!-- Rejection reason banner -->
+          <div class="alert alert-danger" role="alert"
+               invisible="state != 'rejected'">
+            <strong>Rejection Reason: </strong>
+            <field name="rejection_reason" readonly="1"/>
+          </div>
+
+          <!-- Title row -->
+          <div class="oe_title">
+            <h1><field name="reference" readonly="1"/></h1>
+          </div>
+
+          <!-- Basic Info -->
+          <group string="Basic Information">
+            <group>
+              <field name="partner_id"/>
+              <field name="service_type"/>
+              <field name="current_step"/>
+            </group>
+            <group>
+              <field name="legal_type"/>
+              <field name="package_type"/>
+              <field name="fees"/>
+            </group>
+          </group>
+
+          <notebook>
+
+            <!-- Step 2: Business Activities -->
+            <page string="Business Activities" name="step2">
+              <field name="business_activity_ids">
+                <tree>
+                  <field name="code"/>
+                  <field name="name"/>
+                  <field name="category"/>
+                  <field name="division"/>
+                </tree>
+              </field>
+            </page>
+
+            <!-- Step 3: Company Name -->
+            <page string="Company Name" name="step3">
+              <group>
+                <group>
+                  <field name="license_years"/>
+                  <field name="name_reserved"/>
+                  <field name="reserved_name" invisible="name_reserved != 'yes'"/>
+                </group>
+                <group>
+                  <field name="name_preference_1"/>
+                  <field name="name_preference_2"/>
+                  <field name="name_preference_3"/>
+                  <field name="arabic_translation"/>
+                </group>
+              </group>
+            </page>
+
+            <!-- Step 4: Facility -->
+            <page string="Facility" name="step4">
+              <group>
+                <field name="facility_type"/>
+                <field name="coworking_location_en"/>
+                <field name="coworking_location_ar"/>
+              </group>
+            </page>
+
+            <!-- Step 5: Visa -->
+            <page string="Visa Allocation" name="step5">
+              <group>
+                <field name="visa_count"/>
+              </group>
+            </page>
+
+            <!-- Step 6: Shareholders -->
+            <page string="Shareholders" name="step6">
+              <group>
+                <group>
+                  <field name="shareholder_count"/>
+                  <field name="total_shares"/>
+                  <field name="value_per_share"/>
+                  <field name="total_capital"/>
+                </group>
+              </group>
+              <field name="shareholder_ids">
+                <tree editable="bottom">
+                  <field name="shareholder_type"/>
+                  <field name="full_name"/>
+                  <field name="nationality"/>
+                  <field name="passport_no"/>
+                  <field name="email"/>
+                  <field name="mobile"/>
+                  <field name="shares_allocated"/>
+                  <field name="total_share_value"/>
+                </tree>
+              </field>
+            </page>
+
+            <!-- Step 7: Managers -->
+            <page string="Managers" name="step7">
+              <field name="manager_ids">
+                <tree editable="bottom">
+                  <field name="define_from"/>
+                  <field name="full_name"/>
+                  <field name="nationality"/>
+                  <field name="passport_no"/>
+                  <field name="email"/>
+                  <field name="mobile"/>
+                  <field name="has_uae_residence"/>
+                </tree>
+              </field>
+            </page>
+
+            <!-- Step 8: Directors -->
+            <page string="Directors" name="step8">
+              <field name="director_ids">
+                <tree editable="bottom">
+                  <field name="define_from"/>
+                  <field name="full_name"/>
+                  <field name="nationality"/>
+                  <field name="passport_no"/>
+                  <field name="email"/>
+                  <field name="mobile"/>
+                  <field name="has_uae_residence"/>
+                </tree>
+              </field>
+            </page>
+
+            <!-- Step 9: UBO -->
+            <page string="UBO" name="step9">
+              <field name="ubo_ids">
+                <tree editable="bottom">
+                  <field name="full_name"/>
+                  <field name="ubo_type"/>
+                  <field name="nationality"/>
+                  <field name="passport_no"/>
+                  <field name="stakeholder_type"/>
+                  <field name="has_uae_residence"/>
+                </tree>
+              </field>
+            </page>
+
+            <!-- Step 10: Nature of Business -->
+            <page string="Nature of Business" name="step10">
+              <group>
+                <group>
+                  <field name="annual_turnover"/>
+                  <field name="paid_up_capital"/>
+                  <field name="capital_range"/>
+                  <field name="has_website"/>
+                  <field name="website_url" invisible="has_website != 'yes'"/>
+                </group>
+                <group>
+                  <field name="multinational_group"/>
+                  <field name="corporate_service_provider"/>
+                  <field name="customer_market_count"/>
+                  <field name="supplier_market_count"/>
+                </group>
+              </group>
+              <group string="Markets">
+                <field name="customer_markets" nolabel="1" placeholder="Customer markets..."/>
+                <field name="supplier_markets" nolabel="1" placeholder="Supplier markets..."/>
+              </group>
+              <group>
+                <field name="terms_agreed"/>
+                <field name="remarks"/>
+              </group>
+            </page>
+
+            <!-- Step 11: Bank -->
+            <page string="Bank Account" name="step11">
+              <group>
+                <field name="need_bank"/>
+                <field name="bank_provider" invisible="need_bank != 'yes'"/>
+              </group>
+            </page>
+
+            <!-- Step 12: Documents -->
+            <page string="Documents" name="step12">
+              <field name="document_ids">
+                <tree>
+                  <field name="step" string="Stage"/>
+                  <field name="doc_type" string="Document Type"/>
+                  <field name="related_to" string="Related To (Person/Entity)"/>
+                  <field name="filename" string="File Name"/>
+                  <field name="upload_date" string="Uploaded On"/>
+                  <field name="file" widget="binary" filename="filename" string="Download"/>
+                </tree>
+              </field>
+            </page>
+
+            <!-- Admin Notes -->
+            <page string="Admin Notes" name="admin">
+              <group>
+                <field name="admin_notes" nolabel="1"
+                       placeholder="Internal notes..."/>
+              </group>
+            </page>
+
+            <!-- Chatter -->
+            <page string="Log" name="log">
+              <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+              </div>
+            </page>
+
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       COMPANY APPLICATION — KANBAN
+  ═══════════════════════════════════════════════ -->
+  <record id="view_spc_company_application_kanban" model="ir.ui.view">
+    <field name="name">spc.company.application.kanban</field>
+    <field name="model">spc.company.application</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="state" class="o_kanban_small_column">
+        <field name="reference"/>
+        <field name="partner_id"/>
+        <field name="state"/>
+        <field name="legal_type"/>
+        <field name="current_step"/>
+        <templates>
+          <t t-name="kanban-box">
+            <div class="oe_kanban_global_click">
+              <div class="oe_kanban_details">
+                <strong><field name="reference"/></strong>
+                <div><field name="partner_id"/></div>
+                <div>Step: <field name="current_step"/>/13</div>
+                <div><field name="legal_type"/></div>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       REJECTION WIZARD
+  ═══════════════════════════════════════════════ -->
+  <record id="view_spc_rejection_wizard_form" model="ir.ui.view">
+    <field name="name">spc.rejection.wizard.form</field>
+    <field name="model">spc.rejection.wizard</field>
+    <field name="arch" type="xml">
+      <form string="Reject Application">
+        <group>
+          <field name="reason" nolabel="1"
+                 placeholder="Enter rejection reason..."/>
+        </group>
+        <footer>
+          <button name="action_confirm_reject" string="Confirm Reject"
+                  type="object" class="btn-danger"/>
+          <button string="Cancel" class="btn-secondary" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       ACTIONS
+  ═══════════════════════════════════════════════ -->
+  <record id="action_spc_company_applications" model="ir.actions.act_window">
+    <field name="name">Company Applications</field>
+    <field name="res_model">spc.company.application</field>
+    <field name="view_mode">tree,kanban,form</field>
+    <field name="context">{'search_default_submitted': 1}</field>
+  </record>
+
+  <record id="action_spc_company_applications_all" model="ir.actions.act_window">
+    <field name="name">All Applications</field>
+    <field name="res_model">spc.company.application</field>
+    <field name="view_mode">tree,kanban,form</field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       SEARCH VIEW
+  ═══════════════════════════════════════════════ -->
+  <record id="view_spc_company_application_search" model="ir.ui.view">
+    <field name="name">spc.company.application.search</field>
+    <field name="model">spc.company.application</field>
+    <field name="arch" type="xml">
+      <search string="Search Applications">
+        <field name="reference"/>
+        <field name="partner_id"/>
+        <field name="legal_type"/>
+        <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+        <filter string="Submitted" name="submitted" domain="[('state','=','submitted')]"/>
+        <filter string="Under Review" name="under_review" domain="[('state','=','under_review')]"/>
+        <filter string="Approved" name="approved" domain="[('state','=','approved')]"/>
+        <filter string="Rejected" name="rejected" domain="[('state','=','rejected')]"/>
+        <separator/>
+        <group expand="0" string="Group By">
+          <filter string="Status" name="group_state" context="{'group_by':'state'}"/>
+          <filter string="Customer" name="group_partner" context="{'group_by':'partner_id'}"/>
+          <filter string="Legal Type" name="group_legal" context="{'group_by':'legal_type'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- ═══════════════════════════════════════════════
+       MENUS
+  ═══════════════════════════════════════════════ -->
+  <menuitem id="menu_spc_root"
+            name="SPC Portal"
+            sequence="10"/>
+
+  <menuitem id="menu_spc_applications"
+            name="Company Applications"
+            parent="menu_spc_root"
+            sequence="10"/>
+
+  <menuitem id="menu_spc_applications_pending"
+            name="Pending Review"
+            parent="menu_spc_applications"
+            action="action_spc_company_applications"
+            sequence="10"/>
+
+  <menuitem id="menu_spc_applications_all"
+            name="All Applications"
+            parent="menu_spc_applications"
+            action="action_spc_company_applications_all"
+            sequence="20"/>
+
+</data>
+</odoo>

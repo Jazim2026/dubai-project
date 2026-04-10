@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step5" name="SPC Setup Company Step5">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Visa Allocation | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.spc-section-body{flex:1}
+.spc-section-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.dropdown-row{display:flex;align-items:center;border:1px solid #e0e0e0;border-radius:8px;padding:10px 16px;margin-bottom:12px;max-width:500px;background:#fff}
+.dropdown-select{flex:1;border:none;background:transparent;font-size:14px;color:#333;outline:none;cursor:pointer}
+.dropdown-clear{width:24px;height:24px;border-radius:50%;background:#1a2340;border:none;cursor:pointer;font-size:12px;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.info-box{background:#fdf0f5;border:1px solid #f5c0d0;border-radius:8px;padding:16px 20px;max-width:500px;display:flex;gap:12px;align-items:flex-start}
+.info-icon{color:#e91e8c;font-size:18px;flex-shrink:0;margin-top:2px}
+.info-text{font-size:13px;color:#555;line-height:1.6}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+.spc-btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <t t-if="steps">
+            <t t-foreach="steps" t-as="s">
+                <t t-set="idx" t-value="s_index + 1"/>
+                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
+                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
+                    <div class="step-label"><t t-esc="s"/></div>
+                </div>
+            </t>
+        </t>
+    </div>
+
+    <div class="main">
+        <div class="form-title">Company New</div>
+
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step5/submit'" method="post" id="step5Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <div class="spc-section">
+                <div class="spc-section-number">01</div>
+                <div class="spc-section-body">
+                    <h4 class="spc-section-title">How many visa allocations are required?</h4>
+                    <div class="dropdown-row">
+                        <select name="visa_count" id="visaCount" class="dropdown-select">
+                            <option value="">Number of visa allocations</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                        </select>
+                        <button type="button" class="dropdown-clear" onclick="document.getElementById('visaCount').value=''">&#x2715;</button>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-icon">&#9432;</div>
+                        <div class="info-text">
+                            Total number of visas required by the company.<br/><br/>
+                            Your current package allows you to have a maximum of 20 visas. If you need additional visas, kindly reach out to your business setup advisor for further assistance.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step4/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+</template>
+</data>
+</odoo>

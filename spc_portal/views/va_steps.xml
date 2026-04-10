@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- VA Steps sidebar CSS shared style -->
+<template id="template_va_step1" name="VA Step1 IDN Details">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}
+.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}
+.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-label{font-size:11px;opacity:.5;text-transform:uppercase}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.save-link{display:block;font-size:12px;color:#1abc9c;text-decoration:underline;margin-top:12px;cursor:pointer}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:6px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:4px}
+.sec-sub{font-size:13px;color:#888;margin-bottom:16px}
+.flat-select{width:100%;max-width:500px;padding:12px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;background:#fff;color:#333;outline:none;appearance:none;cursor:pointer}
+.flat-select:focus{border-bottom-color:#1abc9c}
+.flat-input{width:100%;max-width:500px;padding:12px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;background:#fff;outline:none}
+.flat-input:focus{border-bottom-color:#1abc9c}
+.info-box{background:#fff8f0;border:1px solid #fed7aa;border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;max-width:600px;margin-top:16px}
+.info-icon{color:#f97316;font-size:18px;flex-shrink:0}
+.info-text{font-size:13px;color:#555;line-height:1.6}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step active"><div class="step-circle">1</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step"><div class="step-circle">2</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step"><div class="step-circle">3</div><div class="step-text">Company information</div></div>
+    <div class="progress-step"><div class="step-circle">4</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step"><div class="step-circle">5</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step"><div class="step-circle">6</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step"><div class="step-circle">7</div><div class="step-text">Review application</div></div>
+    <div class="progress-step"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div class="total-label">Total</div>
+        <div style="font-size:11px;opacity:.5">AED</div>
+        <div class="total-amount">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Visa Allocation Amendment</div>
+    <form method="post" action="/spc/company-management/apply/va-step1/submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="form-card">
+            <div class="sec-num">01</div>
+            <div class="sec-title">Select license number</div>
+            <div style="display:flex;gap:0;margin-bottom:16px;max-width:500px">
+                <button type="button" id="btn_select" onclick="switchMode('select')"
+                    style="flex:1;padding:10px;border:1px solid #1abc9c;background:#1abc9c;color:#fff;font-size:13px;font-weight:600;cursor:pointer;border-radius:6px 0 0 6px">
+                    Select from list
+                </button>
+                <button type="button" id="btn_manual" onclick="switchMode('manual')"
+                    style="flex:1;padding:10px;border:1px solid #ddd;background:#fff;color:#555;font-size:13px;font-weight:600;cursor:pointer;border-radius:0 6px 6px 0">
+                    Enter manually
+                </button>
+            </div>
+            <div id="mode_select">
+                <select name="company_id" class="flat-select" style="max-width:500px;width:100%;padding:12px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;outline:none;background:#fff">
+                    <option value="">Company</option>
+                    <t t-foreach="companies" t-as="c">
+                        <option t-att-value="c.id"><t t-esc="c.name"/></option>
+                    </t>
+                </select>
+                <div style="background:#e8f8f5;border:1px solid #1abc9c;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:13px;color:#555;max-width:500px">
+                    &#9432; Making a selection here will auto-fill the fields with information from the initial application whenever available. Please verify and update the data as needed.
+                </div>
+            </div>
+            <div id="mode_manual" style="display:none">
+                <input type="text" name="company_name_manual" placeholder="Enter company name"
+                    style="max-width:500px;width:100%;padding:12px 16px;border:none;border-bottom:2px solid #1abc9c;font-size:14px;outline:none;display:block"/>
+            </div>
+            <div class="info-box">
+                <div class="info-icon">&#9432;</div>
+                <div class="info-text">If your Company license is about to expire. Please do an early license renewal to avoid paying for the visa allocation again at the time of license renewal/ duplicate charges.</div>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <a href="/spc/company-management" class="btn-prev">BACK</a>
+            <button type="submit" class="btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script>
+function switchMode(mode){
+    var sel = document.getElementById('mode_select');
+    var man = document.getElementById('mode_manual');
+    var btnSel = document.getElementById('btn_select');
+    var btnMan = document.getElementById('btn_manual');
+    if(mode === 'select'){
+        sel.style.display = 'block'; man.style.display = 'none';
+        btnSel.style.background='#1abc9c'; btnSel.style.color='#fff'; btnSel.style.borderColor='#1abc9c';
+        btnMan.style.background='#fff'; btnMan.style.color='#555'; btnMan.style.borderColor='#ddd';
+    } else {
+        sel.style.display = 'none'; man.style.display = 'block';
+        btnMan.style.background='#1abc9c'; btnMan.style.color='#fff'; btnMan.style.borderColor='#1abc9c';
+        btnSel.style.background='#fff'; btnSel.style.color='#555'; btnSel.style.borderColor='#ddd';
+    }
+}
+</script>
+</body>
+</html>
+</template>
+
+<template id="template_va_step2" name="VA Step2 Amendment Information">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}
+.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}
+.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-label{font-size:11px;opacity:.5;text-transform:uppercase}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:6px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.select-wrap{position:relative;max-width:500px;margin-bottom:16px;border-bottom:2px solid #ddd;display:flex;align-items:center}
+.select-wrap select{flex:1;padding:12px 16px;border:none;font-size:14px;background:#fff;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{outline:none}
+.select-clear{background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0 8px}
+.flat-input{width:100%;max-width:500px;padding:12px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;background:#fff;outline:none;display:block;margin-bottom:16px}
+.flat-input:focus{border-bottom-color:#1abc9c}
+.info-box{background:#fff8f0;border:1px solid #fed7aa;border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;max-width:600px;margin-top:8px}
+.info-icon{color:#f97316;font-size:18px;flex-shrink:0}
+.info-text{font-size:13px;color:#555;line-height:1.6}
+.checkbox-wrap{display:flex;align-items:center;gap:12px;font-size:14px;margin-top:8px}
+.checkbox-wrap input{width:18px;height:18px;accent-color:#1abc9c;cursor:pointer}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step active"><div class="step-circle">2</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step"><div class="step-circle">3</div><div class="step-text">Company information</div></div>
+    <div class="progress-step"><div class="step-circle">4</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step"><div class="step-circle">5</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step"><div class="step-circle">6</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step"><div class="step-circle">7</div><div class="step-text">Review application</div></div>
+    <div class="progress-step"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div class="total-label">Total</div>
+        <div style="font-size:11px;opacity:.5">AED</div>
+        <div class="total-amount">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Visa Allocation Amendment</div>
+    <form method="post" action="/spc/company-management/apply/va-step2/submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="form-card">
+            <div class="sec-num">01</div>
+            <div class="sec-title">Select company</div>
+            <div style="display:flex;gap:0;margin-bottom:16px;max-width:500px">
+                <button type="button" id="s2_btn_select" onclick="s2SwitchMode('select')"
+                    style="flex:1;padding:10px;border:1px solid #1abc9c;background:#1abc9c;color:#fff;font-size:13px;font-weight:600;cursor:pointer;border-radius:6px 0 0 6px">
+                    Select from list
+                </button>
+                <button type="button" id="s2_btn_manual" onclick="s2SwitchMode('manual')"
+                    style="flex:1;padding:10px;border:1px solid #ddd;background:#fff;color:#555;font-size:13px;font-weight:600;cursor:pointer;border-radius:0 6px 6px 0">
+                    Enter manually
+                </button>
+            </div>
+            <div id="s2_mode_select">
+                <div class="select-wrap">
+                    <select name="company_id">
+                        <option value="">Select Company</option>
+                        <t t-foreach="companies" t-as="c">
+                            <option t-att-value="c.id"><t t-esc="c.name"/></option>
+                        </t>
+                    </select>
+                    <button type="button" class="select-clear" onclick="this.previousElementSibling.value=''">&#215;</button>
+                </div>
+                <div style="background:#e8f8f5;border:1px solid #1abc9c;border-radius:8px;padding:12px 16px;margin-top:8px;font-size:13px;color:#555;max-width:500px">
+                    &#9432; Making a selection here will auto-fill the fields with information from the initial application whenever available. Please verify and update the data as needed.
+                </div>
+            </div>
+            <div id="s2_mode_manual" style="display:none">
+                <input type="text" name="company_name_manual" placeholder="Enter company name"
+                    style="max-width:500px;width:100%;padding:12px 16px;border:none;border-bottom:2px solid #1abc9c;font-size:14px;outline:none;display:block"/>
+            </div>
+            <div class="select-wrap">
+                <select name="package_type">
+                    <option value="">Current package type</option>
+                    <option value="standard">Standard</option>
+                    <option value="starter">Starter</option>
+                    <option value="professional">Professional</option>
+                    <option value="enterprise">Enterprise</option>
+                    <option value="publishing">Publishing</option>
+                </select>
+                <button type="button" class="select-clear" onclick="this.previousElementSibling.value=''">&#215;</button>
+            </div>
+            <div class="info-box">
+                <div class="info-icon">&#9432;</div>
+                <div class="info-text">If your Company license is about to expire. Please do an early license renewal to avoid paying for the visa allocation again at the time of license renewal/ duplicate charges.</div>
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="sec-num">02</div>
+            <div class="sec-title">What would you like to amend?</div>
+            <div style="font-size:13px;color:#888;margin-bottom:12px">Type of amendment</div>
+            <div class="checkbox-wrap">
+                <input type="checkbox" name="amendment_type" value="visa_allocation_upgrade_downgrade" id="va_amend"/>
+                <label for="va_amend">Visa allocation upgrade/downgrade</label>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
+            <button type="submit" class="btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script>
+function toggleManual(sel, divId){
+    var div = document.getElementById(divId);
+    if(div) div.style.display = sel.value === 'manual' ? 'block' : 'none';
+}
+</script>
+<script>
+function s2SwitchMode(mode){
+    var sel = document.getElementById('s2_mode_select');
+    var man = document.getElementById('s2_mode_manual');
+    var btnSel = document.getElementById('s2_btn_select');
+    var btnMan = document.getElementById('s2_btn_manual');
+    if(mode === 'select'){
+        sel.style.display='block'; man.style.display='none';
+        btnSel.style.background='#1abc9c'; btnSel.style.color='#fff'; btnSel.style.borderColor='#1abc9c';
+        btnMan.style.background='#fff'; btnMan.style.color='#555'; btnMan.style.borderColor='#ddd';
+    } else {
+        sel.style.display='none'; man.style.display='block';
+        btnMan.style.background='#1abc9c'; btnMan.style.color='#fff'; btnMan.style.borderColor='#1abc9c';
+        btnSel.style.background='#fff'; btnSel.style.color='#555'; btnSel.style.borderColor='#ddd';
+    }
+}
+</script>
+</body>
+</html>
+</template>
+
+<template id="template_va_step3" name="VA Step3 Company Information">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}
+.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}
+.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:6px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:4px}
+.sec-sub{font-size:13px;color:#f97316;margin-bottom:16px}
+.select-wrap{position:relative;max-width:500px;border-bottom:2px solid #ddd;display:flex;align-items:center}
+.select-wrap select{flex:1;padding:12px 16px;border:none;font-size:14px;background:#fff;outline:none;appearance:none;cursor:pointer}
+.select-clear{background:none;border:none;cursor:pointer;color:#aaa;font-size:18px;padding:0 8px}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step active"><div class="step-circle">3</div><div class="step-text">Company information</div></div>
+    <div class="progress-step"><div class="step-circle">4</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step"><div class="step-circle">5</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step"><div class="step-circle">6</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step"><div class="step-circle">7</div><div class="step-text">Review application</div></div>
+    <div class="progress-step"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div style="font-size:11px;opacity:.5">Total AED</div>
+        <div class="total-amount">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Visa Allocation Amendment</div>
+    <form method="post" action="/spc/company-management/apply/va-step3/submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="form-card">
+            <div class="sec-num">01</div>
+            <div class="sec-title">License validity</div>
+            <div class="sec-sub">Duration of time for which the license is valid</div>
+            <div class="select-wrap">
+                <select name="license_validity">
+                    <option value="">License validity---</option>
+                    <option value="6_months">6 Months</option>
+                    <option value="1_year">1 Year</option>
+                    <option value="2_years" selected="selected">2 Years</option>
+                    <option value="3_years">3 Years</option>
+                    <option value="4_years">4 Years</option>
+                    <option value="5_years">5 Years</option>
+                    <option value="6_years">6 Years</option>
+                    <option value="7_years">7 Years</option>
+                    <option value="8_years">8 Years</option>
+                    <option value="9_years">9 Years</option>
+                    <option value="10_years">10 Years</option>
+                </select>
+                <button type="button" class="select-clear" onclick="this.previousElementSibling.value=''">&#215;</button>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
+            <button type="submit" class="btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+<template id="template_va_step4" name="VA Step4 Office Facility">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}
+.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}
+.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:6px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.facility-type-label{font-size:13px;color:#888;margin-bottom:12px}
+.radio-option{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:14px;cursor:pointer}
+.radio-option input[type=radio]{width:18px;height:18px;accent-color:#1abc9c;cursor:pointer}
+.radio-option.selected{color:#1abc9c;font-weight:600}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Company information</div></div>
+    <div class="progress-step active"><div class="step-circle">4</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step"><div class="step-circle">5</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step"><div class="step-circle">6</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step"><div class="step-circle">7</div><div class="step-text">Review application</div></div>
+    <div class="progress-step"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div style="font-size:11px;opacity:.5">Total AED</div>
+        <div class="total-amount">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Visa Allocation Amendment</div>
+    <form method="post" action="/spc/company-management/apply/va-step4/submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="form-card">
+            <div class="sec-num">01</div>
+            <div class="sec-title">Select facility</div>
+            <div class="facility-type-label">Facility Type</div>
+            <label class="radio-option"><input type="radio" name="facility_type" value="coworking" checked="checked"/> Coworking</label>
+            <label class="radio-option"><input type="radio" name="facility_type" value="office"/> Office</label>
+            <label class="radio-option"><input type="radio" name="facility_type" value="retail"/> Retail</label>
+            <label class="radio-option"><input type="radio" name="facility_type" value="store"/> Store</label>
+            <label class="radio-option"><input type="radio" name="facility_type" value="shell_core"/> Shell &amp; Core</label>
+            <label class="radio-option"><input type="radio" name="facility_type" value="warehouse"/> Warehouse/Storage</label>
+        </div>
+        <div class="nav-bar">
+            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
+            <button type="submit" class="btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+<template id="template_va_step5" name="VA Step5 Visa Allocation">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}
+.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}
+.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:6px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.sec-sub{font-size:13px;color:#888;margin-bottom:12px}
+.flat-input{width:100%;max-width:600px;padding:12px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;background:#fff;outline:none;display:block}
+.flat-input:focus{border-bottom-color:#1abc9c}
+.radio-option{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;cursor:pointer;color:#1abc9c}
+.radio-option input[type=radio]{width:18px;height:18px;accent-color:#1abc9c}
+.num-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.num-btn{width:52px;height:52px;border-radius:8px;border:2px solid #e0e0e0;background:#fff;font-size:16px;font-weight:600;cursor:pointer;transition:.2s;color:#333}
+.num-btn.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.num-btn:hover{border-color:#1abc9c}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Company information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step active"><div class="step-circle">5</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step"><div class="step-circle">6</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step"><div class="step-circle">7</div><div class="step-text">Review application</div></div>
+    <div class="progress-step"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div style="font-size:11px;opacity:.5">Total AED</div>
+        <div class="total-amount" id="total_display">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Visa Allocation Amendment</div>
+    <form method="post" action="/spc/company-management/apply/va-step5/submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <input type="hidden" name="additional_visas" id="additional_visas_input" value="0"/>
+        <div class="form-card">
+            <div class="sec-num">01</div>
+            <div class="sec-title">Existing visa allocation</div>
+            <input class="flat-input" type="number" name="existing_visa_allocation" placeholder="Existing visa allocation" value="1"/>
+        </div>
+        <div class="form-card">
+            <div class="sec-num">02</div>
+            <div class="sec-title">Select upgrade or downgrade your visa allocation</div>
+            <div class="sec-sub">Do you want to upgrade or downgrade your visa allocation?</div>
+            <label class="radio-option"><input type="radio" name="upgrade_downgrade" value="upgrade" checked="checked"/> Upgrade Visa allocation</label>
+            <label class="radio-option" style="color:#333"><input type="radio" name="upgrade_downgrade" value="downgrade"/> Downgrade Visa allocation</label>
+        </div>
+        <div class="form-card">
+            <div class="sec-num">03</div>
+            <div class="sec-title">How many additional visa allocations would you like to upgrade?</div>
+            <div class="num-grid">
+                <button type="button" class="num-btn active" onclick="selectNum(this,0,'add')">0</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,1,'add')">1</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,2,'add')">2</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,3,'add')">3</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,4,'add')">4</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,5,'add')">5</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,6,'add')">6</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,99,'add')">7+</button>
+            </div>
+            <div style="background:#fff0f0;border:1px solid #ffb3b3;border-radius:8px;padding:12px 16px;margin-top:16px;font-size:13px;color:#555;max-width:600px">
+                &#9432; Total number of visas required by the company.<br/>
+                If you need visa allocation above 10, kindly reach out to your business setup advisor for further assistance
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="sec-num">04</div>
+            <div class="sec-title">Final Visa allocation</div>
+            <input type="hidden" name="final_visa_allocation" id="final_visa_input" value="1"/>
+            <div class="num-grid" id="final_visa_grid">
+                <button type="button" class="num-btn" onclick="selectNum(this,0,'final')">0</button>
+                <button type="button" class="num-btn active" onclick="selectNum(this,1,'final')">1</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,2,'final')">2</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,3,'final')">3</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,4,'final')">4</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,5,'final')">5</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,6,'final')">6</button>
+                <button type="button" class="num-btn" onclick="selectNum(this,99,'final')">7+</button>
+            </div>
+        </div>
+        <div class="nav-bar">
+            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
+            <button type="submit" class="btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script>
+function selectNum(btn, val, group){
+    if(group === 'add'){
+        document.querySelectorAll('#add_visa_grid .num-btn').forEach(function(b){b.classList.remove('active')});
+        btn.classList.add('active');
+        document.getElementById('additional_visas_input').value = val;
+    } else if(group === 'final'){
+        document.querySelectorAll('#final_visa_grid .num-btn').forEach(function(b){b.classList.remove('active')});
+        btn.classList.add('active');
+        document.getElementById('final_visa_input').value = val;
+    } else {
+        document.querySelectorAll('.num-btn').forEach(function(b){b.classList.remove('active')});
+        btn.classList.add('active');
+        document.getElementById('additional_visas_input').value = val;
+    }
+}
+</script>
+</body>
+</html>
+</template>
+
+<template id="template_va_step6" name="VA Step6 Declaration">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:6px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.ack-wrap{display:flex;align-items:flex-start;gap:12px;font-size:14px;line-height:1.6}
+.ack-wrap input{width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;flex-shrink:0}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Company information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step active"><div class="step-circle">6</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step"><div class="step-circle">7</div><div class="step-text">Review application</div></div>
+    <div class="progress-step"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div style="font-size:11px;opacity:.5">Total AED</div>
+        <div class="total-amount">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Visa Allocation Amendment</div>
+    <form method="post" action="/spc/company-management/apply/va-step6/submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="form-card">
+            <div class="sec-num">01</div>
+            <div class="sec-title">Declaration:</div>
+            <p style="font-size:13px;color:#555;line-height:1.7;margin-bottom:16px">
+                By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" style="color:#1abc9c">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.
+            </p>
+            <p style="font-size:13px;color:#555;line-height:1.7;margin-bottom:20px">
+                Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.
+            </p>
+            <div style="font-size:14px;font-weight:600;margin-bottom:12px">Acknowledgement</div>
+            <div class="ack-wrap">
+                <input type="checkbox" name="declaration" id="decl_check" required="required"/>
+                <label for="decl_check" style="font-weight:600">I have read and agree to the SPC Terms and Conditions.</label>
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="sec-num">02</div>
+            <div class="sec-title">Remarks</div>
+            <textarea name="remarks" placeholder="Comments"
+                style="width:100%;padding:12px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;outline:none;resize:none;background:#fff;min-height:60px"></textarea>
+            <div style="background:#fff0f5;border:1px solid #ffb3cc;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:13px;color:#555">
+                &#9432; This field is for the client to make special requests. Please note that requests are subject to approvals from the relevants departments.
+            </div>
+        </div>
+        <div class="nav-bar">
+            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
+            <button type="submit" class="btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+<template id="template_va_review" name="VA Review">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment - Review</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.review-card{background:#fff;border-radius:14px;padding:24px 28px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:16px}
+.review-section-title{font-size:14px;font-weight:700;color:#1abc9c;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.review-row{display:flex;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:14px}
+.review-row:last-child{border-bottom:none}
+.review-key{color:#888;width:200px;flex-shrink:0}
+.review-val{color:#1a2340;font-weight:500}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Company information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step active"><div class="step-circle">7</div><div class="step-text">Review application</div></div>
+    <div class="progress-step"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div style="font-size:11px;opacity:.5">Total AED</div>
+        <div class="total-amount">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Review Application</div>
+    <div class="review-card">
+        <div class="review-section-title">Company Details</div>
+        <div class="review-row"><span class="review-key">Company</span><span class="review-val"><t t-esc="step1.get('company_name', '-')"/></span></div>
+        <div class="review-row"><span class="review-key">Package Type</span><span class="review-val"><t t-esc="step2.get('package_type', '-')"/></span></div>
+        <div class="review-row"><span class="review-key">Amendment Type</span><span class="review-val"><t t-esc="step2.get('amendment_type', '-')"/></span></div>
+    </div>
+    <div class="review-card">
+        <div class="review-section-title">License &amp; Facility</div>
+        <div class="review-row"><span class="review-key">License Validity</span><span class="review-val"><t t-esc="step3.get('license_validity', '-')"/></span></div>
+        <div class="review-row"><span class="review-key">Facility Type</span><span class="review-val"><t t-esc="step4.get('facility_type', '-')"/></span></div>
+    </div>
+    <div class="review-card">
+        <div class="review-section-title">Visa Allocation</div>
+        <div class="review-row"><span class="review-key">Existing Allocation</span><span class="review-val"><t t-esc="step5.get('existing_visa_allocation', '-')"/></span></div>
+        <div class="review-row"><span class="review-key">Upgrade/Downgrade</span><span class="review-val"><t t-esc="step5.get('upgrade_downgrade', '-')"/></span></div>
+        <div class="review-row"><span class="review-key">Additional Visas</span><span class="review-val"><t t-esc="step5.get('additional_visas', '-')"/></span></div>
+    </div>
+    <form method="post" action="/spc/company-management/apply/va-payment/submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="nav-bar">
+            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
+            <button type="submit" class="btn-next">PROCEED TO PAYMENT</button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+<template id="template_va_payment" name="VA Payment">
+<html>
+<head><meta charset="utf-8"/><title>Visa Allocation Amendment - Payment</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1a2340}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
+.sidebar-logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-name{font-size:16px;font-weight:700}.sidebar-sub{font-size:11px;opacity:.6}
+.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.75}
+.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
+.step-text{font-size:13px;line-height:1.3}.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
+.main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.page-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:20px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.pay-option{display:flex;align-items:center;gap:12px;padding:14px 0;font-size:14px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.pay-option:last-child{border-bottom:none}
+.pay-option input[type=radio]{width:18px;height:18px;accent-color:#1abc9c}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-submit{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-top">
+        <div class="sidebar-logo-box">K</div>
+        <div><div class="sidebar-name">SPC</div><div class="sidebar-sub">Free Zone</div></div>
+    </div>
+    <div class="progress-label">Your progress</div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">IDN details</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Amendment information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Company information</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Office facility</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Visa allocation</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Declaration</div></div>
+    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Review application</div></div>
+    <div class="progress-step active"><div class="step-circle">8</div><div class="step-text">Payment</div></div>
+    <div class="total-section">
+        <div style="font-size:11px;opacity:.5">Total AED</div>
+        <div class="total-amount">10.00</div>
+    </div>
+</div>
+<div class="main">
+    <div class="page-title">Payment</div>
+    <form method="post" action="/spc/company-management/apply/va-final-submit">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="form-card">
+            <div class="sec-title">Select Payment Method</div>
+            <label class="pay-option"><input type="radio" name="payment_method" value="cash" checked="checked"/> Cash</label>
+            <label class="pay-option"><input type="radio" name="payment_method" value="bank_transfer"/> Bank Transfer</label>
+            <label class="pay-option"><input type="radio" name="payment_method" value="credit_card"/> Credit / Debit Card</label>
+            <label class="pay-option"><input type="radio" name="payment_method" value="online"/> Online Payment</label>
+        </div>
+        <div class="nav-bar">
+            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
+            <button type="submit" class="btn-submit">SUBMIT APPLICATION</button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

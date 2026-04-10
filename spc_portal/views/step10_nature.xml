@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step10" name="SPC Setup Company Step10">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Nature of Business | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:6px}
+.sec-sub{font-size:13px;color:#888;margin-bottom:16px}
+.field-input{width:100%;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;max-width:600px;display:block}
+.field-input:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;margin-top:8px;flex-wrap:wrap}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.dropdown-row{display:flex;align-items:center;border:1px solid #e0e0e0;border-radius:8px;padding:10px 16px;margin-bottom:10px;max-width:600px;background:#fff;position:relative}
+.dropdown-select{flex:1;border:none;background:transparent;font-size:14px;color:#333;outline:none;cursor:pointer}
+.dropdown-clear{width:24px;height:24px;border-radius:50%;background:#1a2340;border:none;cursor:pointer;font-size:12px;color:#fff;flex-shrink:0}
+.country-dropdowns{margin-top:12px}
+.hidden{display:none}
+.declaration-box{background:#f8f9fa;border-radius:8px;padding:20px;font-size:13px;color:#555;line-height:1.7;max-width:700px}
+.terms-link{color:#1abc9c;text-decoration:none;font-weight:600}
+.ack-row{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:14px;font-weight:600}
+.ack-row input{width:16px;height:16px;cursor:pointer}
+.remarks-textarea{width:100%;max-width:700px;padding:12px;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;resize:none;outline:none;min-height:80px}
+.info-box{background:#fdf0f5;border:1px solid #f5c0d0;border-radius:8px;padding:14px 18px;max-width:700px;display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-size:13px;color:#555}
+.info-icon{color:#e91e8c;font-size:16px;flex-shrink:0}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.searchable-select{position:relative;max-width:600px}
+.search-input-box{width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:4px;font-size:13px;outline:none;margin-bottom:4px}
+.options-list{max-height:180px;overflow-y:auto;border:1px solid #ddd;border-radius:4px;background:#fff;display:none;position:absolute;z-index:100;width:100%}
+.options-list.show{display:block}
+.option-item{padding:8px 12px;font-size:13px;cursor:pointer}
+.option-item:hover,.option-item.selected{background:#e8f8f5;color:#1a2340;font-weight:600}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <t t-if="steps">
+            <t t-foreach="steps" t-as="s">
+                <t t-set="idx" t-value="s_index + 1"/>
+                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
+                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
+                    <div class="step-label"><t t-esc="s"/></div>
+                </div>
+            </t>
+        </t>
+    </div>
+
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step10/submit'" method="post" id="step10Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- 01: Annual Turnover -->
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">How much is the estimated annual turnover for the company?</div>
+                    <input type="number" name="annual_turnover" class="field-input" placeholder="Annual turnover in AED"/>
+                </div>
+            </div>
+
+            <!-- 02: Customer Markets -->
+            <div class="spc-section">
+                <div class="sec-num">02</div>
+                <div class="sec-body">
+                    <div class="sec-title">Which countries will be the customer markets?</div>
+                    <div class="sec-sub">Select up to 5 key customer markets</div>
+                    <div class="dropdown-row">
+                        <select name="customer_market_count" id="customerCount" class="dropdown-select" onchange="updateMarkets('customer', this.value)">
+                            <option value="">Number of countries where the product(s) will be sold</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <button type="button" class="dropdown-clear" onclick="clearMarkets('customer')">&#x2715;</button>
+                    </div>
+                    <div id="customer_dropdowns" class="country-dropdowns"></div>
+                </div>
+            </div>
+
+            <!-- 03: Supplier Markets -->
+            <div class="spc-section">
+                <div class="sec-num">03</div>
+                <div class="sec-body">
+                    <div class="sec-title">Which countries will be the supplier markets?</div>
+                    <div class="sec-sub">Select up to 5 key supplier markets</div>
+                    <div class="dropdown-row">
+                        <select name="supplier_market_count" id="supplierCount" class="dropdown-select" onchange="updateMarkets('supplier', this.value)">
+                            <option value="">Number of countries that will supply the product(s)</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <button type="button" class="dropdown-clear" onclick="clearMarkets('supplier')">&#x2715;</button>
+                    </div>
+                    <div id="supplier_dropdowns" class="country-dropdowns"></div>
+                </div>
+            </div>
+
+            <!-- 04: Paid up capital -->
+            <div class="spc-section">
+                <div class="sec-num">04</div>
+                <div class="sec-body">
+                    <div class="sec-title">Does the company have paid up capital?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="paid_up_capital" value="yes" onchange="togglePaidCapital('yes')"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="paid_up_capital" value="no" onchange="togglePaidCapital('no')"/> No</label>
+                    </div>
+                    <div id="capital_range_div" class="hidden" style="margin-top:16px">
+                        <div class="dropdown-row">
+                            <select name="capital_range" id="capitalRange" class="dropdown-select">
+                                <option value="">Select the paid up capital range in AED</option>
+                                <option value="0-100000">0-100,000</option>
+                                <option value="100101-300000">100,101 - 300,000</option>
+                                <option value="300001-600000">300,001 - 600,000</option>
+                                <option value="600000+">600,000+</option>
+                            </select>
+                            <button type="button" class="dropdown-clear" onclick="document.getElementById('capitalRange').value=''">&#x2715;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05: Corporate Service Provider -->
+            <div class="spc-section">
+                <div class="sec-num">05</div>
+                <div class="sec-body">
+                    <div class="sec-title">Does the company have stakeholders who are employed by a Corporate Service Provider?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="corporate_service_provider" value="yes"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="corporate_service_provider" value="no"/> No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06: Website -->
+            <div class="spc-section">
+                <div class="sec-num">06</div>
+                <div class="sec-body">
+                    <div class="sec-title">Does the company have a website?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="has_website" value="yes" onchange="toggleWebsite('yes')"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="has_website" value="no" onchange="toggleWebsite('no')"/> No</label>
+                    </div>
+                    <div id="website_url_div" class="hidden" style="margin-top:16px">
+                        <input type="url" name="website_url" class="field-input" placeholder="Please enter website URL"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 07: Activity Declaration -->
+            <div class="spc-section">
+                <div class="sec-num">07</div>
+                <div class="sec-body">
+                    <div class="sec-title">Activity declaration</div>
+                    <div style="font-size:14px;color:#333;margin-bottom:10px">Are you a part of a multinational group?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="multinational_group" value="yes"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="multinational_group" value="no"/> No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08: Declaration -->
+            <div class="spc-section">
+                <div class="sec-num">08</div>
+                <div class="sec-body">
+                    <div class="sec-title">Declaration:</div>
+                    <div class="declaration-box">
+                        <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of SPC Terms and Conditions and the laws of the United Arab Emirates.</p>
+                        <br/>
+                        <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                        <br/>
+                        <a href="#" class="terms-link">&#8226; SPC Terms and Conditions</a>
+                        <div class="ack-row">
+                            <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+                            <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09: Remarks -->
+            <div class="spc-section">
+                <div class="sec-num">09</div>
+                <div class="sec-body">
+                    <div class="sec-title">Remarks</div>
+                    <textarea name="remarks" class="remarks-textarea" placeholder="Comments"></textarea>
+                    <div class="info-box">
+                        <div class="info-icon">&#9432;</div>
+                        <div>This field is for the client to make special requests. Please note that requests are subject to approvals from the relevants departments.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step9/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+<![CDATA[
+var COUNTRIES = ["Afghanistan","Aland Islands","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antarctica","Antigua and Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saudi Arabia","Senegal","Serbia","Sierra Leone","Singapore","Slovakia","Slovenia","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+
+function makeCountryDropdown(name, label, container) {
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;margin-bottom:10px;max-width:600px';
+    wrap.innerHTML = '<div style="display:flex;align-items:center;border:1px solid #e0e0e0;border-radius:8px;padding:10px 16px;background:#fff">' +
+        '<div style="flex:1;cursor:pointer;font-size:14px;color:#888" id="lbl_'+name+'" onclick="toggleDrop(\'drop_'+name+'\')">' + label + '</div>' +
+        '<button type="button" style="width:24px;height:24px;border-radius:50%;background:#1a2340;border:none;cursor:pointer;color:#fff;font-size:12px" onclick="clearDrop(\''+name+'\')">&#x2715;</button>' +
+        '</div>' +
+        '<input type="hidden" name="'+name+'" id="val_'+name+'"/>' +
+        '<div id="drop_'+name+'" style="display:none;position:absolute;z-index:200;width:100%;background:#fff;border:1px solid #ddd;border-radius:4px;max-height:200px;overflow:hidden">' +
+        '<input type="text" placeholder="Search..." oninput="filterDrop(this,\'list_'+name+'\')" style="width:100%;padding:8px 12px;border:none;border-bottom:1px solid #eee;outline:none;font-size:13px"/>' +
+        '<div id="list_'+name+'" style="max-height:160px;overflow-y:auto"></div></div>';
+    container.appendChild(wrap);
+    var list = document.getElementById('list_'+name);
+    COUNTRIES.forEach(function(c){
+        var d = document.createElement('div');
+        d.textContent = c;
+        d.style.cssText = 'padding:8px 12px;font-size:13px;cursor:pointer';
+        d.onmouseover = function(){this.style.background='#e8f8f5'};
+        d.onmouseout = function(){this.style.background=''};
+        d.onclick = function(){
+            document.getElementById('val_'+name).value = c;
+            document.getElementById('lbl_'+name).textContent = c;
+            document.getElementById('lbl_'+name).style.color = '#333';
+            document.getElementById('drop_'+name).style.display = 'none';
+        };
+        list.appendChild(d);
+    });
+}
+
+function toggleDrop(id){
+    var d = document.getElementById(id);
+    d.style.display = d.style.display === 'none' ? 'block' : 'none';
+}
+
+function filterDrop(input, listId){
+    var q = input.value.toLowerCase();
+    document.getElementById(listId).querySelectorAll('div').forEach(function(d){
+        d.style.display = d.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+
+function clearDrop(name){
+    document.getElementById('val_'+name).value = '';
+    document.getElementById('lbl_'+name).textContent = name.replace(/_/g,' ');
+    document.getElementById('lbl_'+name).style.color = '#888';
+}
+
+function updateMarkets(type, count){
+    var container = document.getElementById(type+'_dropdowns');
+    container.innerHTML = '';
+    count = parseInt(count) || 0;
+    for(var i=1; i<=count; i++){
+        makeCountryDropdown(type+'_market_'+i, type.charAt(0).toUpperCase()+type.slice(1)+' market '+i, container);
+    }
+}
+
+function clearMarkets(type){
+    document.getElementById(type+'Count').value = '';
+    document.getElementById(type+'_dropdowns').innerHTML = '';
+}
+
+function togglePaidCapital(val){
+    document.getElementById('capital_range_div').classList.toggle('hidden', val !== 'yes');
+}
+
+function toggleWebsite(val){
+    document.getElementById('website_url_div').classList.toggle('hidden', val !== 'yes');
+}
+
+document.addEventListener('click', function(e){
+    document.querySelectorAll('[id^="drop_"]').forEach(function(d){
+        if(!d.parentElement.contains(e.target)) d.style.display='none';
+    });
+});
+]]>
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

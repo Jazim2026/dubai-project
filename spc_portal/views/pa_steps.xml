@@ -1,0 +1,1099 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- PA Step 3: Company Name -->
+<template id="template_pa_step3" name="PA Step3 Company Name">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Company Name | Pre-Approval</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:24px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:500px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:16px;margin-top:16px;font-size:13px;line-height:1.6;max-width:600px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Company name</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">640.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">Pre-Approval - New</div>
+        <form action="/spc/setup-new-company/apply/pa-step3/submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Has a company name been reserved?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="name_reserved" value="yes"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="name_reserved" value="no" checked="checked"/> No</label>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-section">
+                <div class="sec-num">02</div>
+                <div class="sec-body">
+                    <div class="sec-title">Enter the proposed company name(s) in order of preference</div>
+                    <input type="text" class="field-input" name="name_preference_1" placeholder="First preference"/>
+                    <input type="text" class="field-input" name="name_preference_2" placeholder="Second preference"/>
+                    <input type="text" class="field-input" name="name_preference_3" placeholder="Third preference"/>
+                    <div class="note-box">
+                        <p><strong>Please note:</strong> Company Names will appear as entered (same letter case) at the time of application.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-section">
+                <div class="sec-num">03</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select the method of translating the company name into Arabic</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="translation_method" value="direct"/> Direct translation</label>
+                        <label class="radio-label"><input type="radio" name="translation_method" value="phonetic"/> Phonetic sound</label>
+                        <label class="radio-label"><input type="radio" name="translation_method" value="own"/> I will provide my own translations</label>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <button type="button" class="spc-btn-previous" onclick="window.history.back()">PREVIOUS</button>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+<!-- PA Step 4: Shareholder Details (same as step6) -->
+<template id="template_pa_step4" name="PA Step4 Shareholder Details">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Shareholder Details | Pre-Approval</title>
+    <meta charset="utf-8"/>
+    <title>Shareholder Information | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.spc-section-row{display:flex;gap:24px}
+.spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.spc-section-body{flex:1}
+.spc-section-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+
+/* Shareholder count input */
+.count-wrap{position:relative;max-width:600px}
+.count-wrap label{position:absolute;top:8px;left:14px;font-size:11px;color:#888}
+.count-input{width:100%;padding:24px 14px 8px;border:1px solid #d0d0d0;border-radius:8px;font-size:15px;color:#333;outline:none;background:#fff}
+.count-input:focus{border-color:#1abc9c}
+
+/* Accordion */
+.accordion{border:1px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.accordion-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:#fff;font-weight:600;font-size:14px;color:#1a2340}
+.accordion-header:hover{background:#f8f9fa}
+.accordion-arrow{font-size:12px;transition:transform .2s}
+.accordion-arrow.open{transform:rotate(180deg)}
+.accordion-body{display:none;padding:24px;border-top:1px solid #e0e0e0;background:#f9f9f9}
+.accordion-body.open{display:block}
+.delete-btn{color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-bottom:16px}
+
+/* Field styles — matching original screenshots */
+.field-group{margin-bottom:0}
+.field-row{position:relative;margin-bottom:16px}
+.field-row label{position:absolute;top:8px;left:14px;font-size:11px;color:#888;pointer-events:none;z-index:1}
+.field-input{
+    width:100%;
+    padding:24px 14px 8px;
+    border:1px solid #d0d0d0;
+    border-radius:8px;
+    font-size:14px;
+    color:#333;
+    outline:none;
+    background:#fff;
+    appearance:auto;
+    -webkit-appearance:auto;
+}
+.field-input:focus{border-color:#1abc9c}
+
+/* Date input — keep native calendar icon */
+input[type="date"].field-input{
+    padding:24px 40px 8px 14px;
+    cursor:pointer;
+    appearance:auto;
+    -webkit-appearance:auto;
+}
+
+/* Select with clear button */
+.select-wrap{position:relative;margin-bottom:16px}
+.select-wrap label{position:absolute;top:8px;left:14px;font-size:11px;color:#888;z-index:1;pointer-events:none}
+.field-select{
+    width:100%;
+    padding:24px 40px 8px 14px;
+    border:1px solid #d0d0d0;
+    border-radius:8px;
+    font-size:14px;
+    color:#333;
+    outline:none;
+    background:#fff;
+    appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
+}
+.field-select:focus{border-color:#1abc9c}
+.select-arrow{position:absolute;right:36px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:12px;color:#888}
+.select-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#1a2340;border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+
+/* Mobile with flag */
+.mobile-wrap{position:relative;margin-bottom:16px}
+.mobile-wrap label{position:absolute;top:8px;left:14px;font-size:11px;color:#888;z-index:2;pointer-events:none}
+.mobile-inner{display:flex;border:1px solid #d0d0d0;border-radius:8px;overflow:hidden;background:#fff}
+.mobile-inner:focus-within{border-color:#1abc9c}
+.flag-btn{display:flex;align-items:center;gap:4px;padding:24px 10px 8px 14px;font-size:13px;color:#333;border:none;background:transparent;cursor:pointer;border-right:1px solid #e0e0e0;white-space:nowrap}
+.mobile-number{flex:1;padding:24px 14px 8px 10px;border:none;font-size:14px;color:#333;outline:none;background:transparent}
+
+/* Radio */
+.radio-group{display:flex;gap:24px;flex-wrap:wrap;margin-top:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340;width:16px;height:16px}
+
+/* Upload */
+.upload-area{border:2px dashed #1abc9c;border-radius:8px;padding:24px 20px;text-align:center;cursor:pointer;background:#fff;max-width:280px}
+.upload-icon{font-size:24px;color:#1a6fa8;margin-bottom:6px}
+.upload-text{font-size:13px;color:#1a6fa8;font-weight:500}
+.upload-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.upload-item{display:flex;flex-direction:column;gap:6px}
+.upload-item .field-label-top{font-size:13px;color:#555;font-weight:500}
+
+/* Sub sections */
+.sub-section{background:#fff;border-radius:8px;padding:20px;margin-bottom:16px;border:1px solid #eee}
+.sub-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hidden{display:none}
+
+/* Search */
+.search-btn{background:transparent;border:1px solid #1a2340;border-radius:6px;color:#1a2340;font-size:13px;font-weight:700;cursor:pointer;padding:10px 24px;text-transform:uppercase;letter-spacing:1px;margin-top:8px}
+
+/* Save / nav buttons */
+.save-row{display:flex;justify-content:flex-end;margin-top:20px}
+.save-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;cursor:pointer}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:#fff}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
+
+.question-label{font-size:14px;color:#333;font-weight:500;margin-bottom:8px;display:block}
+    </style>
+
+</head>
+<body>
+
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company name</div></div>
+        <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">640.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form action="/spc/setup-new-company/apply/pa-step4/submit" method="post" enctype="multipart/form-data" id="step6Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- 01 -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">01</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">Enter number of shareholders that will be associated with the company</h4>
+                        <div class="count-wrap">
+                            <label>Number of shareholders</label>
+                            <input type="number" name="shareholder_count" id="shareholderCount"
+                                class="count-input" min="1" max="20" value="1"
+                                onchange="updateShareholderList(this.value)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">02</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">Shareholder details</h4>
+                        <div id="shareholderList">
+                            <div class="accordion" id="acc_1">
+                                <div class="accordion-header" onclick="toggleAccordion(1)">
+                                    <span>Shareholder 1</span>
+                                    <span class="accordion-arrow open" id="arrow_1">&#9660;</span>
+                                </div>
+                                <div class="accordion-body open" id="body_1">
+                                    <div class="delete-btn" onclick="deleteShareholder(1)">
+                                        &#128465; Delete Shareholder
+                                    </div>
+
+                                    <!-- SPC user -->
+                                    <div style="margin-bottom:20px">
+                                        <span class="question-label">Is the shareholder an existing SPC user?</span>
+                                        <div class="radio-group">
+                                            <label class="radio-label"><input type="radio" name="sh_1_spc_user" value="yes" onchange="toggleSpcUser(1,'yes')"/> Yes</label>
+                                            <label class="radio-label"><input type="radio" name="sh_1_spc_user" value="no" checked="checked" onchange="toggleSpcUser(1,'no')"/> No</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- SPC search (hidden) -->
+                                    <div id="sh_1_spc_search" class="hidden sub-section">
+                                        <div style="margin-bottom:16px">
+                                            <span class="question-label">Does the Shareholder have a Nominee?</span>
+                                            <div class="radio-group">
+                                                <label class="radio-label"><input type="radio" name="sh_1_nominee" value="yes"/> Yes</label>
+                                                <label class="radio-label"><input type="radio" name="sh_1_nominee" value="no"/> No</label>
+                                            </div>
+                                        </div>
+                                        <span class="question-label">Existing user?</span>
+                                        <div class="field-row"><label>Email</label><input type="text" class="field-input" name="sh_1_email"/></div>
+                                        <div class="field-row"><label>Passport number / Entity registration number</label><input type="text" class="field-input" name="sh_1_passport_search"/></div>
+                                        <button type="button" class="search-btn">SEARCH</button>
+                                    </div>
+
+                                    <!-- Type section -->
+                                    <div id="sh_1_type_section">
+                                        <div style="margin-bottom:20px">
+                                            <span class="question-label">Select shareholder type</span>
+                                            <div class="radio-group">
+                                                <label class="radio-label"><input type="radio" name="sh_1_type" value="individual" checked="checked" onchange="toggleShareholderType(1,'individual')"/> Individual</label>
+                                                <label class="radio-label"><input type="radio" name="sh_1_type" value="entity" onchange="toggleShareholderType(1,'entity')"/> Entity</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- INDIVIDUAL -->
+                                        <div id="sh_1_individual">
+                                            <div class="upload-row">
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload copy of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('sh_1_passport_file').click()">
+                                                        <input type="file" id="sh_1_passport_file" name="sh_1_passport_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div>
+                                                        <div class="upload-text">Upload copy of passport</div>
+                                                    </div>
+                                                </div>
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload special page of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('sh_1_passport_special').click()">
+                                                        <input type="file" id="sh_1_passport_special" name="sh_1_passport_special" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div>
+                                                        <div class="upload-text">Upload special page of passport</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="sub-section">
+                                                <div class="sub-title">Passport details</div>
+                                                <div class="field-row"><label>Passport number</label><input type="text" class="field-input" name="sh_1_passport_no"/></div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>First name</label><input type="text" class="field-input" name="sh_1_first_name"/></div>
+                                                    <div class="field-row"><label>Last name</label><input type="text" class="field-input" name="sh_1_last_name"/></div>
+                                                </div>
+                                                <div class="select-wrap">
+                                                    <label>Nationality</label>
+                                                    <select class="field-select" name="sh_1_nationality" id="sh_1_nationality" onchange="showClear('sh_1_nationality_clear',this)">
+                                                        <option value=""></option>
+                                                        <option value="AE">United Arab Emirates</option>
+                                                        <option value="IN">India</option>
+                                                        <option value="PK">Pakistan</option>
+                                                        <option value="GB">United Kingdom</option>
+                                                        <option value="US">United States</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                    <span class="select-arrow">&#9660;</span>
+                                                    <button type="button" class="select-clear hidden" id="sh_1_nationality_clear" onclick="clearSelect('sh_1_nationality','sh_1_nationality_clear')">&#10005;</button>
+                                                </div>
+
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have an alternate nationality?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_alt_nat" value="yes" onchange="toggleAltNat(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_alt_nat" value="no" checked="checked" onchange="toggleAltNat(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="sh_1_alt_nat_fields" class="hidden two-col">
+                                                    <div class="select-wrap">
+                                                        <label>Alternate nationality</label>
+                                                        <select class="field-select" name="sh_1_alt_nationality">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="PK">Pakistan</option>
+                                                            <option value="GB">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="select-arrow">&#9660;</span>
+                                                    </div>
+                                                    <div class="field-row"><label>Alternate passport number</label><input type="text" class="field-input" name="sh_1_alt_passport_no"/></div>
+                                                </div>
+
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>Date of birth</label><input type="date" class="field-input" name="sh_1_dob"/></div>
+                                                    <div class="field-row"><label>Place of birth</label><input type="text" class="field-input" name="sh_1_pob"/></div>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="select-wrap">
+                                                        <label>Country of birth</label>
+                                                        <select class="field-select" name="sh_1_cob" id="sh_1_cob" onchange="showClear('sh_1_cob_clear',this)">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="PK">Pakistan</option>
+                                                            <option value="GB">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="select-arrow">&#9660;</span>
+                                                        <button type="button" class="select-clear hidden" id="sh_1_cob_clear" onclick="clearSelect('sh_1_cob','sh_1_cob_clear')">&#10005;</button>
+                                                    </div>
+                                                    <div class="field-row"><label>Date of issue</label><input type="date" class="field-input" name="sh_1_doi"/></div>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>Date of expiry</label><input type="date" class="field-input" name="sh_1_doe"/></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="sub-section">
+                                                <div class="sub-title">Other details</div>
+                                                <div class="mobile-wrap">
+                                                    <label>Mobile number</label>
+                                                    <div class="mobile-inner">
+                                                        <button type="button" class="flag-btn" id="sh_1_flag_btn" onclick="toggleFlagMenu(1)">&#127482;&#127462; +971 &#9660;</button>
+                                                        <input type="tel" class="mobile-number" name="sh_1_mobile" placeholder=""/>
+                                                    </div>
+                                                    <div id="sh_1_flag_menu" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                                                        <div onclick="setFlag(1,'&#127482;&#127462;','+971','AE')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
+                                                        <div onclick="setFlag(1,'&#127470;&#127475;','+91','IN')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
+                                                        <div onclick="setFlag(1,'&#127477;&#127472;','+92','PK')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
+                                                        <div onclick="setFlag(1,'&#127468;&#127463;','+44','GB')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
+                                                        <div onclick="setFlag(1,'&#127482;&#127480;','+1','US')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
+                                                    </div>
+                                                </div>
+
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have secondary contact number?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_secondary" value="yes" onchange="toggleSecondary(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_secondary" value="no" onchange="toggleSecondary(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="sh_1_secondary_field" class="hidden">
+                                                    <div class="mobile-wrap">
+                                                        <label>Secondary mobile number</label>
+                                                        <div class="mobile-inner">
+                                                            <button type="button" class="flag-btn">&#127482;&#127462; +971 &#9660;</button>
+                                                            <input type="tel" class="mobile-number" name="sh_1_mobile2"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field-row"><label>E-mail ID</label><input type="email" class="field-input" name="sh_1_email_id"/></div>
+                                                <div class="field-row">
+                                                    <label>Current address</label>
+                                                    <textarea class="field-input" name="sh_1_address" maxlength="150" rows="3" style="padding-top:28px" oninput="updateCount(this,'sh_1_addr_count')"></textarea>
+                                                    <span id="sh_1_addr_count" style="font-size:11px;color:#aaa;float:right;margin-top:2px">0 / 150</span>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>City</label><input type="text" class="field-input" name="sh_1_city"/></div>
+                                                    <div class="select-wrap">
+                                                        <label>Country</label>
+                                                        <select class="field-select" name="sh_1_country" id="sh_1_country" onchange="showClear('sh_1_country_clear',this)">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="PK">Pakistan</option>
+                                                            <option value="GB">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="select-arrow">&#9660;</span>
+                                                        <button type="button" class="select-clear hidden" id="sh_1_country_clear" onclick="clearSelect('sh_1_country','sh_1_country_clear')">&#10005;</button>
+                                                    </div>
+                                                </div>
+                                                <div class="field-row"><label>Shareholder joining date</label><input type="date" class="field-input" name="sh_1_joining_date"/></div>
+                                            </div>
+
+                                            <!-- UAE Visa -->
+                                            <div class="sub-section">
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have a valid UAE residence visa?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_uae_visa" value="yes" onchange="toggleUaeVisa(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_uae_visa" value="no" onchange="toggleUaeVisa(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="sh_1_uae_visa_fields" class="hidden">
+                                                    <div class="upload-row">
+                                                        <div class="upload-item">
+                                                            <span class="field-label-top">Upload UAE resident visa</span>
+                                                            <div class="upload-area" onclick="document.getElementById('sh_1_visa_file').click()">
+                                                                <input type="file" id="sh_1_visa_file" name="sh_1_visa_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <div class="upload-icon">&#11014;</div>
+                                                                <div class="upload-text">Upload UAE resident visa</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="upload-item">
+                                                            <span class="field-label-top">Upload emirates ID</span>
+                                                            <div class="upload-area" onclick="document.getElementById('sh_1_eid_file').click()">
+                                                                <input type="file" id="sh_1_eid_file" name="sh_1_eid_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <div class="upload-icon">&#11014;</div>
+                                                                <div class="upload-text">Upload emirates ID</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="two-col">
+                                                        <div class="field-row"><label>Resident visa number</label><input type="text" class="field-input" name="sh_1_visa_no"/></div>
+                                                        <div class="field-row"><label>Emirates ID Number</label><input type="text" class="field-input" name="sh_1_eid_no"/></div>
+                                                        <div class="field-row"><label>Unified number (UID)</label><input type="text" class="field-input" name="sh_1_uid"/></div>
+                                                        <div class="field-row"><label>Emirates ID issue date</label><input type="date" class="field-input" name="sh_1_eid_issue"/></div>
+                                                        <div class="field-row"><label>Emirates ID expiry date</label><input type="date" class="field-input" name="sh_1_eid_expiry"/></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Nominee -->
+                                            <div class="sub-section">
+                                                <span class="question-label">Does the Shareholder have a Nominee?</span>
+                                                <div class="radio-group">
+                                                    <label class="radio-label"><input type="radio" name="sh_1_nominee_ind" value="yes"/> Yes</label>
+                                                    <label class="radio-label"><input type="radio" name="sh_1_nominee_ind" value="no"/> No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- ENTITY -->
+                                        <div id="sh_1_entity" class="hidden">
+                                            <div class="sub-section">
+                                                <div class="sub-title">Entity details</div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>Entity name</label><input type="text" class="field-input" name="sh_1_entity_name"/></div>
+                                                    <div class="field-row"><label>Entity name (Arabic)</label><input type="text" class="field-input" name="sh_1_entity_name_ar" style="text-align:right;direction:rtl"/></div>
+                                                    <div class="field-row"><label>Entity registration number</label><input type="text" class="field-input" name="sh_1_entity_reg_no"/></div>
+                                                    <div class="select-wrap">
+                                                        <label>Country of formation</label>
+                                                        <select class="field-select" name="sh_1_entity_country">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="GB">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="select-arrow">&#9660;</span>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you or your company operate elsewhere?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_operate_elsewhere" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_operate_elsewhere" value="no"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Select jurisdiction of the entity</span>
+                                                    <div class="radio-group" style="flex-wrap:wrap">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="mainland"/> Mainland UAE</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="financial_fz"/> Financial Free Zone</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="non_financial_fz"/> Non-Financial Free Zone</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="non_uae"/> Non-UAE Jurisdiction</label>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Select ownership type of the entity</span>
+                                                    <div class="radio-group" style="flex-wrap:wrap;gap:16px">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="private"/> Privately owned entity</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="semi_gov"/> Semi-government owned entity</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="gov"/> Government owned entity</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="public"/> Public listed company</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="branch"/> Branch foreign company</label>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Are any of the owners a legal entity?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_owners_legal" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_owners_legal" value="no"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Is company outside the UAE?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_outside_uae" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_outside_uae" value="no"/> No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="upload-row">
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload copy of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('sh_1_ent_passport').click()">
+                                                        <input type="file" id="sh_1_ent_passport" name="sh_1_ent_passport" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div>
+                                                        <div class="upload-text">Upload copy of passport</div>
+                                                    </div>
+                                                </div>
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload special page of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('sh_1_ent_passport_sp').click()">
+                                                        <input type="file" id="sh_1_ent_passport_sp" name="sh_1_ent_passport_sp" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div>
+                                                        <div class="upload-text">Upload special page of passport</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="sub-section">
+                                                <div class="sub-title">Passport details</div>
+                                                <div class="field-row"><label>Passport number</label><input type="text" class="field-input" name="sh_1_ent_passport_no"/></div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>First name</label><input type="text" class="field-input" name="sh_1_ent_first_name"/></div>
+                                                    <div class="field-row"><label>Last name</label><input type="text" class="field-input" name="sh_1_ent_last_name"/></div>
+                                                </div>
+                                                <div class="select-wrap">
+                                                    <label>Nationality</label>
+                                                    <select class="field-select" name="sh_1_ent_nationality">
+                                                        <option value=""></option>
+                                                        <option value="AE">United Arab Emirates</option>
+                                                        <option value="IN">India</option>
+                                                        <option value="PK">Pakistan</option>
+                                                        <option value="GB">United Kingdom</option>
+                                                        <option value="US">United States</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                    <span class="select-arrow">&#9660;</span>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have an alternate nationality?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_alt_nat" value="yes" onchange="toggleAltNatEnt(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_alt_nat" value="no" checked="checked" onchange="toggleAltNatEnt(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="sh_1_ent_alt_nat_fields" class="hidden two-col">
+                                                    <div class="select-wrap">
+                                                        <label>Alternate nationality</label>
+                                                        <select class="field-select" name="sh_1_ent_alt_nationality">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="select-arrow">&#9660;</span>
+                                                    </div>
+                                                    <div class="field-row"><label>Alternate passport number</label><input type="text" class="field-input" name="sh_1_ent_alt_passport_no"/></div>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>Date of birth</label><input type="date" class="field-input" name="sh_1_ent_dob"/></div>
+                                                    <div class="field-row"><label>Place of birth</label><input type="text" class="field-input" name="sh_1_ent_pob"/></div>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="select-wrap">
+                                                        <label>Country of birth</label>
+                                                        <select class="field-select" name="sh_1_ent_cob">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="select-arrow">&#9660;</span>
+                                                    </div>
+                                                    <div class="field-row"><label>Date of issue</label><input type="date" class="field-input" name="sh_1_ent_doi"/></div>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>Date of expiry</label><input type="date" class="field-input" name="sh_1_ent_doe"/></div>
+                                                </div>
+                                            </div>
+                                            <div class="sub-section">
+                                                <div class="sub-title">Other details</div>
+                                                <div class="mobile-wrap">
+                                                    <label>Mobile number</label>
+                                                    <div class="mobile-inner">
+                                                        <button type="button" class="flag-btn" id="sh_1_ent_flag_btn" onclick="toggleFlagMenu('1_ent')">&#127482;&#127462; +971 &#9660;</button>
+                                                        <input type="tel" class="mobile-number" name="sh_1_ent_mobile"/>
+                                                    </div>
+                                                    <div id="sh_1_ent_flag_menu" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                                                        <div onclick="setFlag('1_ent','&#127482;&#127462;','+971','AE')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
+                                                        <div onclick="setFlag('1_ent','&#127470;&#127475;','+91','IN')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
+                                                        <div onclick="setFlag('1_ent','&#127477;&#127472;','+92','PK')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
+                                                        <div onclick="setFlag('1_ent','&#127468;&#127463;','+44','GB')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
+                                                        <div onclick="setFlag('1_ent','&#127482;&#127480;','+1','US')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have secondary contact number?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_secondary" value="yes" onchange="toggleSecondaryEnt(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_secondary" value="no" onchange="toggleSecondaryEnt(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="sh_1_ent_secondary_field" class="hidden">
+                                                    <div class="mobile-wrap">
+                                                        <label>Secondary mobile number</label>
+                                                        <div class="mobile-inner">
+                                                            <button type="button" class="flag-btn">&#127482;&#127462; +971 &#9660;</button>
+                                                            <input type="tel" class="mobile-number" name="sh_1_ent_mobile2"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field-row"><label>E-mail ID</label><input type="email" class="field-input" name="sh_1_ent_email"/></div>
+                                                <div class="field-row">
+                                                    <label>Current address</label>
+                                                    <textarea class="field-input" name="sh_1_ent_address" maxlength="150" rows="3" style="padding-top:28px" oninput="updateCount(this,'sh_1_ent_addr_count')"></textarea>
+                                                    <span id="sh_1_ent_addr_count" style="font-size:11px;color:#aaa;float:right;margin-top:2px">0 / 150</span>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="field-row"><label>City</label><input type="text" class="field-input" name="sh_1_ent_city"/></div>
+                                                    <div class="select-wrap">
+                                                        <label>Country</label>
+                                                        <select class="field-select" name="sh_1_ent_country">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="select-arrow">&#9660;</span>
+                                                    </div>
+                                                </div>
+                                                <div class="field-row"><label>Shareholder joining date</label><input type="date" class="field-input" name="sh_1_ent_joining_date"/></div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Is Authorized Person a resident of the UAE?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="sh_1_auth_resident" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="sh_1_auth_resident" value="no"/> No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="save-row">
+                                        <button type="button" class="save-btn" onclick="saveShareholder(1)">SAVE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step5/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+<![CDATA[
+function toggleAccordion(n){var b=document.getElementById('body_'+n);var a=document.getElementById('arrow_'+n);b.classList.toggle('open');a.classList.toggle('open')}
+function toggleSpcUser(n,val){var s=document.getElementById('sh_'+n+'_spc_search');var t=document.getElementById('sh_'+n+'_type_section');if(val==='yes'){s.classList.remove('hidden');t.classList.add('hidden')}else{s.classList.add('hidden');t.classList.remove('hidden')}}
+function toggleShareholderType(n,val){var i=document.getElementById('sh_'+n+'_individual');var e=document.getElementById('sh_'+n+'_entity');if(val==='individual'){i.classList.remove('hidden');e.classList.add('hidden')}else{i.classList.add('hidden');e.classList.remove('hidden')}}
+function toggleAltNat(n,val){var f=document.getElementById('sh_'+n+'_alt_nat_fields');val==='yes'?f.classList.remove('hidden'):f.classList.add('hidden')}
+function toggleAltNatEnt(n,val){var f=document.getElementById('sh_'+n+'_ent_alt_nat_fields');val==='yes'?f.classList.remove('hidden'):f.classList.add('hidden')}
+function toggleSecondary(n,val){var f=document.getElementById('sh_'+n+'_secondary_field');val==='yes'?f.classList.remove('hidden'):f.classList.add('hidden')}
+function toggleSecondaryEnt(n,val){var f=document.getElementById('sh_'+n+'_ent_secondary_field');val==='yes'?f.classList.remove('hidden'):f.classList.add('hidden')}
+function toggleUaeVisa(n,val){var f=document.getElementById('sh_'+n+'_uae_visa_fields');val==='yes'?f.classList.remove('hidden'):f.classList.add('hidden')}
+function updateCount(el,id){document.getElementById(id).textContent=el.value.length+' / 150'}
+function deleteShareholder(n){var a=document.getElementById('acc_'+n);if(a)a.remove()}
+function saveShareholder(n){var b=document.querySelector('#acc_'+n+' .save-btn');if(b){b.textContent='✓ SAVED';b.style.background='#1abc9c'}}
+function showClear(clearId,sel){var btn=document.getElementById(clearId);if(btn){sel.value?btn.classList.remove('hidden'):btn.classList.add('hidden')}}
+function clearSelect(selId,clearId){var s=document.getElementById(selId);if(s)s.value='';var b=document.getElementById(clearId);if(b)b.classList.add('hidden')}
+function toggleFlagMenu(n){var m=document.getElementById('sh_'+n+'_flag_menu');if(m)m.classList.toggle('hidden')}
+function setFlag(n,flag,code,country){var btn=document.getElementById('sh_'+n+'_flag_btn');if(btn)btn.innerHTML=flag+' '+code+' &#9660;';var m=document.getElementById('sh_'+n+'_flag_menu');if(m)m.classList.add('hidden')}
+document.addEventListener('click',function(e){document.querySelectorAll('[id$="_flag_menu"]').forEach(function(m){if(!m.classList.contains('hidden')&&!m.parentElement.contains(e.target)){m.classList.add('hidden')}})})
+function updateShareholderList(count){
+    count=Math.min(Math.max(parseInt(count)||1,1),20);
+    var list=document.getElementById('shareholderList');
+    var existing=list.querySelectorAll('.accordion').length;
+    if(count>existing){
+        for(var i=existing+1;i<=count;i++){
+            var div=document.createElement('div');
+            div.className='accordion';
+            div.id='acc_'+i;
+            div.innerHTML='<div class="accordion-header" onclick="toggleAccordion('+i+')"><span>Shareholder '+i+'</span><span class="accordion-arrow" id="arrow_'+i+'">&#9660;</span></div><div class="accordion-body" id="body_'+i+'"><div class="delete-btn" onclick="deleteShareholder('+i+')">&#128465; Delete Shareholder</div><p style="color:#aaa;font-size:13px;padding:8px 0">Shareholder '+i+' details</p><div class="save-row"><button type="button" class="save-btn" onclick="saveShareholder('+i+')">SAVE</button></div></div>';
+            list.appendChild(div);
+        }
+    } else if(count<existing){
+        for(var j=existing;j>count;j--){
+            var el=document.getElementById('acc_'+j);
+            if(el)el.remove();
+        }
+    }
+}
+]]>
+</script>
+
+</body>
+</html>
+</template>
+
+<!-- PA Step 5: Declaration -->
+<template id="template_pa_step5" name="PA Step5 Declaration">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Declaration | Pre-Approval</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.declaration-text{font-size:14px;color:#374151;line-height:1.8;margin-bottom:20px}
+.checkbox-label{display:flex;align-items:flex-start;gap:12px;font-size:14px;cursor:pointer;margin-bottom:16px}
+.checkbox-label input{margin-top:2px;width:16px;height:16px;accent-color:#1a2340;flex-shrink:0}
+.field-input{width:100%;max-width:400px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;outline:none;margin-bottom:16px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company name</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">640.00 &#9432;</div></div>
+    </div>
+    <div class="main">
+        <div class="form-title">Pre-Approval - New</div>
+        <form action="/spc/setup-new-company/apply/pa-step5/submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <div class="spc-section">
+                <div class="sec-title">Declaration</div>
+                <div class="declaration-text">
+                    I hereby declare that all information provided in this application is true, accurate and complete to the best of my knowledge. I understand that providing false information may result in rejection of the application or cancellation of any approvals granted.
+                </div>
+                <label class="checkbox-label">
+                    <input type="checkbox" name="declaration_accepted" value="yes" required="required"/>
+                    <span>I confirm that I have read and agree to the above declaration</span>
+                </label>
+                <div style="margin-top:16px">
+                    <label style="font-size:12px;color:#888;display:block;margin-bottom:4px">Full Name</label>
+                    <input type="text" class="field-input" name="declarant_name" placeholder="Your full name" required="required"/>
+                </div>
+                <div>
+                    <label style="font-size:12px;color:#888;display:block;margin-bottom:4px">Date</label>
+                    <input type="date" class="field-input" name="declaration_date"/>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <button type="button" class="spc-btn-previous" onclick="window.history.back()">PREVIOUS</button>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+<!-- PA Step 6: Review & Payment -->
+<template id="template_pa_step6" name="PA Step6 Review and Payment">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Review Application | Pre-Approval</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
+.review-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f3f4f6}
+.review-row{display:flex;gap:16px;margin-bottom:8px;font-size:14px}
+.review-label{color:#888;min-width:180px}
+.review-val{color:#333;font-weight:500}
+.pay-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer;width:100%;margin-top:16px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company name</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">640.00 &#9432;</div></div>
+    </div>
+    <div class="main">
+        <div class="form-title">Pre-Approval - Review Application</div>
+        <div class="review-card">
+            <div class="review-title">Company Name</div>
+            <div class="review-row"><span class="review-label">First Preference</span><span class="review-val"><t t-esc="step3.get('name_preference_1', '-')"/></span></div>
+            <div class="review-row"><span class="review-label">Second Preference</span><span class="review-val"><t t-esc="step3.get('name_preference_2', '-')"/></span></div>
+            <div class="review-row"><span class="review-label">Translation Method</span><span class="review-val"><t t-esc="step3.get('translation_method', '-')"/></span></div>
+        </div>
+        <div class="review-card">
+            <div class="review-title">Shareholder Details</div>
+            <div class="review-row"><span class="review-label">Name</span><span class="review-val"><t t-esc="((step4.get('sh_first_name') or '') + ' ' + (step4.get('sh_last_name') or '')).strip() or '-'"/></span></div>
+            <div class="review-row"><span class="review-label">Nationality</span><span class="review-val"><t t-esc="step4.get('sh_nationality', '-')"/></span></div>
+            <div class="review-row"><span class="review-label">Email</span><span class="review-val"><t t-esc="step4.get('sh_email', '-')"/></span></div>
+            <div class="review-row"><span class="review-label">Shareholding</span><span class="review-val"><t t-esc="step4.get('sh_percent', '-')"/>%</span></div>
+        </div>
+        <div class="review-card">
+            <div class="review-title">Payment Summary</div>
+            <div class="review-row"><span class="review-label">Pre-Approval Fee</span><span class="review-val">AED 640.00</span></div>
+        </div>
+        <form action="/spc/setup-new-company/apply/pa-step6/submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <div class="spc-nav-buttons">
+                <button type="button" class="spc-btn-previous" onclick="window.history.back()">PREVIOUS</button>
+                <button type="submit" class="pay-btn">SUBMIT &amp; PAY</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+<!-- PA Payment -->
+<template id="template_pa_payment" name="PA Payment">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Payment | Pre-Approval</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:24px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.payment-card{background:#fff;border-radius:12px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,.06);max-width:600px}
+.payment-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.fee-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
+.fee-row:last-child{border-bottom:none;font-weight:700;font-size:16px;color:#1a2340}
+.fee-label{color:#555}
+.fee-value{color:#1a2340;font-weight:600}
+.pay-methods{margin-top:24px}
+.pay-method-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:12px}
+.pay-option{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:10px;cursor:pointer}
+.pay-option:hover{border-color:#1abc9c}
+.pay-option input{accent-color:#1a2340}
+.pay-option-label{font-size:14px;color:#333}
+.submit-btn{width:100%;background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company name</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">640.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+
+        <div class="form-title">Pre-Approval - New</div>
+        <form t-att-action="'/spc/setup-new-company/apply/pa-payment/submit'" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <div class="payment-card">
+                <div class="payment-title">Payment Summary</div>
+                <div class="fee-row">
+                    <span class="fee-label">Pre-Approval Fee</span>
+                    <span class="fee-value">AED 640.00</span>
+                </div>
+                <div class="fee-row">
+                    <span class="fee-label">Processing Fee</span>
+                    <span class="fee-value">AED 10.00</span>
+                </div>
+                <div class="fee-row">
+                    <span class="fee-label">Total</span>
+                    <span class="fee-value">AED 640.00</span>
+                </div>
+                <div class="pay-methods">
+                    <div class="pay-method-title">Select payment method</div>
+                    <label class="pay-option">
+                        <input type="radio" name="payment_method" value="card"/> 
+                        <span class="pay-option-label">Credit / Debit Card</span>
+                    </label>
+                    <label class="pay-option">
+                        <input type="radio" name="payment_method" value="online_transfer"/>
+                        <span class="pay-option-label">Online Bank Transfer</span>
+                    </label>
+                </div>
+                <button type="submit" class="submit-btn">SUBMIT</button>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/nr-step4/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+            </div>
+        </form>
+    
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+<!-- PA Success -->
+<template id="template_pa_success" name="PA Success">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Success | Pre-Approval</title>
+    <style>
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.success-card{background:#fff;border-radius:16px;padding:48px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.08);max-width:480px}
+.success-icon{font-size:64px;margin-bottom:16px}
+.success-title{font-size:24px;font-weight:700;color:#1a2340;margin-bottom:8px}
+.success-sub{font-size:14px;color:#6b7280;margin-bottom:24px}
+.dashboard-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+    </style>
+</head>
+<body>
+<div class="success-card">
+    <div class="success-icon">&#127881;</div>
+    <div class="success-title">Application Submitted!</div>
+    <div class="success-sub">Your Pre-Approval application has been submitted successfully. Our team will review and get back to you.</div>
+    <a href="/spc/customer-dashboard" class="dashboard-btn">BACK TO DASHBOARD</a>
+</div>
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

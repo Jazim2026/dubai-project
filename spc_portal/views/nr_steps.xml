@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- NR Step 2: Company Name -->
+<template id="template_nr_step2" name="NR Step2 Company Name">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Company Name | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:24px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:6px}
+.sec-sub{font-size:13px;color:#888;margin-bottom:16px}
+.field-input{width:100%;max-width:500px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:16px;margin-top:16px;font-size:13px;line-height:1.6;max-width:600px}
+.note-info{display:flex;gap:10px;margin-top:8px}
+.note-icon{color:#c8a951;font-size:18px;flex-shrink:0}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Company name</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">510.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">Name Reservation - New</div>
+        <form action="/spc/setup-new-company/apply/nr-step2/submit" method="post" id="nrStep2Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- Name Reserved? -->
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Has a company name been reserved?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="name_reserved" value="yes" onchange="toggleReserved('yes')"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="name_reserved" value="no" checked="checked" onchange="toggleReserved('no')"/> No</label>
+                    </div>
+                    <div id="reserved_section" style="display:none;margin-top:16px">
+                        <input type="text" class="field-input" name="reserved_name" placeholder="Reserved name"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proposed Names -->
+            <div class="spc-section" id="proposed_section">
+                <div class="sec-num">02</div>
+                <div class="sec-body">
+                    <div class="sec-title">Enter the proposed company name(s) in order of preference</div>
+                    <input type="text" class="field-input" name="name_preference_1" placeholder="First preference"/>
+                    <input type="text" class="field-input" name="name_preference_2" placeholder="Second preference"/>
+                    <input type="text" class="field-input" name="name_preference_3" placeholder="Third preference"/>
+                    <div class="note-box">
+                        <p><strong>Please note:</strong></p>
+                        <p>1. Company Names will appear as entered (same letter case) at the time of application.</p>
+                        <p style="color:#c0392b;margin-top:10px;"><strong>The following words cannot be used as company names:</strong></p>
+                        <div class="note-info">
+                            <span class="note-icon">&#9432;</span>
+                            <div>
+                                <p>1. Sharjah, Dubai, Abu Dhabi, RAK, Ras Al Khaimah, Ajman, Fujairah, Umm Al Quwain, UAE, United Arab Emirates, Limited, LTD, Financial, CAT, Elite, Vehicles &amp; Hotels, Islam, Islamic, Bomb, Import, Export, Manufacturing, Shipping, Forwarding, Oil, Gas and Refinery.</p>
+                                <p>2. Any animal names cannot be used.</p>
+                                <p>3. Any words related to any religion cannot be used.</p>
+                                <p>4. Any names indicating direct product such as food, beverages, Cars and Auto cannot be used.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arabic Translation -->
+            <div class="spc-section">
+                <div class="sec-num">03</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select the method of translating the company name into Arabic</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="arabic_translation" value="direct"/> Direct translation</label>
+                        <label class="radio-label"><input type="radio" name="arabic_translation" value="phonetic"/> Phonetic sound</label>
+                        <label class="radio-label"><input type="radio" name="arabic_translation" value="own"/> I will provide my own translations</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+<![CDATA[
+function toggleReserved(val) {
+    document.getElementById('reserved_section').style.display = val === 'yes' ? 'block' : 'none';
+    document.getElementById('proposed_section').style.display = val === 'yes' ? 'none' : 'flex';
+}
+]]>
+</script>
+</body>
+</html>
+</template>
+
+<!-- NR Step 3: Declaration -->
+<template id="template_nr_step3" name="NR Step3 Declaration">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Declaration | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:24px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.declaration-box{background:#f8f9fa;border-radius:8px;padding:20px;font-size:13px;color:#555;line-height:1.7;max-width:700px}
+.terms-link{color:#1abc9c;text-decoration:none;font-weight:600}
+.ack-row{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:14px;font-weight:600}
+.ack-row input{width:16px;height:16px;cursor:pointer}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company name</div></div>
+        <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">510.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">Name Reservation - New</div>
+        <form action="/spc/setup-new-company/apply/nr-step3/submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Declaration:</div>
+                    <div class="declaration-box">
+                        <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of SPC Terms and Conditions and the laws of the United Arab Emirates.</p>
+                        <br/>
+                        <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                        <br/>
+                        <a href="#" class="terms-link">&#8226; SPC Terms and Conditions</a>
+                        <div class="ack-row">
+                            <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+                            <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/nr-step2/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+<!-- NR Step 4: Review -->
+<template id="template_nr_step4" name="NR Step4 Review">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Review Application | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:24px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.review-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.review-sec-num{font-size:13px;color:#aaa;font-weight:600}
+.review-sec-title{font-size:16px;font-weight:700;color:#1a2340}
+.edit-btn{color:#1a2340;font-size:13px;font-weight:600;text-decoration:none}
+.review-row{display:flex;gap:40px;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.review-row:last-child{border-bottom:none}
+.review-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#aaa;font-weight:600;min-width:240px}
+.review-value{font-size:14px;color:#1a2340;font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company name</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">510.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">Name Reservation - New</div>
+        <form action="/spc/setup-new-company/apply/nr-step4/submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- Business Activities -->
+            <div class="review-section">
+                <div class="review-header">
+                    <div>
+                        <div class="review-sec-num">01</div>
+                        <div class="review-sec-title">Business activities</div>
+                    </div>
+                    <a t-att-href="'/spc/setup-new-company/apply/' + service_type" class="edit-btn">&#9998; EDIT</a>
+                </div>
+                <div class="review-row">
+                    <div class="review-label">SELECTED ACTIVITIES</div>
+                    <div class="review-value">N/A</div>
+                </div>
+            </div>
+
+            <!-- Company Name -->
+            <div class="review-section">
+                <div class="review-header">
+                    <div>
+                        <div class="review-sec-num">02</div>
+                        <div class="review-sec-title">Company name</div>
+                    </div>
+                    <a t-att-href="'/spc/setup-new-company/apply/nr-step2/' + service_type" class="edit-btn">&#9998; EDIT</a>
+                </div>
+                <div class="review-row">
+                    <div class="review-label">IS THERE A RESERVED COMPANY NAME?</div>
+                    <div class="review-value"><t t-esc="'Yes' if step2.get('name_reserved') == 'yes' else 'No'"/></div>
+                </div>
+                <div class="review-row">
+                    <div class="review-label">FIRST PREFERENCE</div>
+                    <div class="review-value"><t t-esc="step2.get('name_preference_1', '-')"/></div>
+                </div>
+                <div class="review-row">
+                    <div class="review-label">SECOND PREFERENCE</div>
+                    <div class="review-value"><t t-esc="step2.get('name_preference_2', '-')"/></div>
+                </div>
+                <div class="review-row">
+                    <div class="review-label">THIRD PREFERENCE</div>
+                    <div class="review-value"><t t-esc="step2.get('name_preference_3', '-')"/></div>
+                </div>
+                <div class="review-row">
+                    <div class="review-label">COMPANY NAME TRANSLATION</div>
+                    <div class="review-value"><t t-esc="step2.get('arabic_translation', '-')"/></div>
+                </div>
+            </div>
+
+            <!-- Declaration -->
+            <div class="review-section">
+                <div class="review-header">
+                    <div>
+                        <div class="review-sec-num">03</div>
+                        <div class="review-sec-title">Declaration</div>
+                    </div>
+                    <a t-att-href="'/spc/setup-new-company/apply/nr-step3/' + service_type" class="edit-btn">&#9998; EDIT</a>
+                </div>
+                <div class="review-row">
+                    <div class="review-label">TERMS AGREED</div>
+                    <div class="review-value"><t t-esc="'Yes' if step3.get('terms_agreed') == 'yes' else 'No'"/></div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/nr-step3/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+<!-- NR Step 5: Payment -->
+<template id="template_nr_step5" name="NR Step5 Payment">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Payment | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:24px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.payment-card{background:#fff;border-radius:12px;padding:32px;box-shadow:0 2px 8px rgba(0,0,0,.06);max-width:600px}
+.payment-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.fee-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px}
+.fee-row:last-child{border-bottom:none;font-weight:700;font-size:16px;color:#1a2340}
+.fee-label{color:#555}
+.fee-value{color:#1a2340;font-weight:600}
+.pay-methods{margin-top:24px}
+.pay-method-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:12px}
+.pay-option{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:10px;cursor:pointer}
+.pay-option:hover{border-color:#1abc9c}
+.pay-option input{accent-color:#1a2340}
+.pay-option-label{font-size:14px;color:#333}
+.submit-btn{width:100%;background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company name</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">510.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">Name Reservation - New</div>
+        <form action="#" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <div class="payment-card">
+                <div class="payment-title">Payment Summary</div>
+                <div class="fee-row">
+                    <span class="fee-label">Name Reservation Fee</span>
+                    <span class="fee-value">AED 500.00</span>
+                </div>
+                <div class="fee-row">
+                    <span class="fee-label">Processing Fee</span>
+                    <span class="fee-value">AED 10.00</span>
+                </div>
+                <div class="fee-row">
+                    <span class="fee-label">Total</span>
+                    <span class="fee-value">AED 510.00</span>
+                </div>
+                <div class="pay-methods">
+                    <div class="pay-method-title">Select payment method</div>
+                    <label class="pay-option">
+                        <input type="radio" name="payment_method" value="card"/> 
+                        <span class="pay-option-label">Credit / Debit Card</span>
+                    </label>
+                    <label class="pay-option">
+                        <input type="radio" name="payment_method" value="online_transfer"/>
+                        <span class="pay-option-label">Online Bank Transfer</span>
+                    </label>
+                </div>
+                <button type="submit" class="submit-btn">SUBMIT</button>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/nr-step4/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

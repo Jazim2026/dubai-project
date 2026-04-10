@@ -1,0 +1,34 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_spc_otp,spc.otp access,model_spc_otp,,1,1,1,1
+access_spc_registration,spc.registration access,model_spc_registration,,1,1,1,1
+access_spc_document,spc.document access,model_spc_document,,1,1,1,1
+access_spc_service_request,spc.service.request access,model_spc_service_request,,1,1,1,1
+access_spc_business_activity,spc.business.activity access,model_spc_business_activity,,1,1,1,1
+access_spc_service_document,spc.service.document access,model_spc_service_document,,1,1,1,1
+access_spc_company_application,spc.company.application access,model_spc_company_application,base.group_user,1,1,1,1
+access_spc_app_shareholder,spc.app.shareholder access,model_spc_app_shareholder,base.group_user,1,1,1,1
+access_spc_app_manager,spc.app.manager access,model_spc_app_manager,base.group_user,1,1,1,1
+access_spc_app_director,spc.app.director access,model_spc_app_director,base.group_user,1,1,1,1
+access_spc_app_ubo,spc.app.ubo access,model_spc_app_ubo,base.group_user,1,1,1,1
+access_spc_app_document,spc.app.document access,model_spc_app_document,base.group_user,1,1,1,1
+access_spc_rejection_wizard,spc.rejection.wizard access,model_spc_rejection_wizard,base.group_user,1,1,1,1
+access_spc_name_reservation,spc.name.reservation,model_spc_name_reservation,base.group_user,1,1,1,1
+access_spc_pre_approval,spc.pre.approval,model_spc_pre_approval,base.group_user,1,1,1,1
+access_spc_pa_document,spc.pa.document,model_spc_pa_document,base.group_user,1,1,1,1
+access_spc_license_reissue,spc.license.reissue,model_spc_license_reissue,base.group_user,1,1,1,1
+access_spc_renewal,spc.renewal,model_spc_renewal,base.group_user,1,1,1,1
+access_spc_renewal_amendment,spc.renewal.amendment,model_spc_renewal_amendment,base.group_user,1,1,1,1
+
+access_spc_ra_document,spc.ra.document access,model_spc_ra_document,base.group_user,1,1,1,1
+access_model_spc_ra_shareholder,spc.ra.shareholder access,model_spc_ra_shareholder,base.group_user,1,1,1,1
+access_model_spc_ra_manager,spc.ra.manager access,model_spc_ra_manager,base.group_user,1,1,1,1
+access_model_spc_ra_director,spc.ra.director access,model_spc_ra_director,base.group_user,1,1,1,1
+access_model_spc_ra_ubo,spc.ra.ubo access,model_spc_ra_ubo,base.group_user,1,1,1,1
+access_model_spc_amendment,spc.amendment access,model_spc_amendment,base.group_user,1,1,1,1
+access_model_spc_amd_document,spc.amd.document access,model_spc_amd_document,base.group_user,1,1,1,1
+access_model_spc_amd_shareholder,spc.amd.shareholder access,model_spc_amd_shareholder,base.group_user,1,1,1,1
+access_model_spc_amd_manager,spc.amd.manager access,model_spc_amd_manager,base.group_user,1,1,1,1
+access_model_spc_amd_director,spc.amd.director access,model_spc_amd_director,base.group_user,1,1,1,1
+access_model_spc_visa_allocation_amendment,spc.visa.allocation.amendment access,model_spc_visa_allocation_amendment,base.group_user,1,1,1,1
+access_model_spc_certify,spc.certify access,model_spc_certify,base.group_user,1,1,1,1
+access_model_spc_establishment_card,spc.establishment.card access,model_spc_establishment_card,base.group_user,1,1,1,1

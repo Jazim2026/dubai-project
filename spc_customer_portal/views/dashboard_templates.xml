@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<template id="template_customer_dashboard" name="SPC Customer Dashboard">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Customer Dashboard | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh;display:flex;flex-direction:column}
+/* TOP NAV */
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.cd-nav-logo{display:flex;align-items:center;gap:10px}
+.cd-nav-logo svg{width:44px;height:44px}
+.cd-nav-logo-text{display:flex;flex-direction:column}
+.cd-nav-logo-brand{font-size:20px;font-weight:700;color:#1a3c6e;letter-spacing:1px}
+.cd-nav-logo-sub{font-size:10px;color:#3cb89a;font-weight:600;letter-spacing:1px}
+.cd-nav-right{display:flex;align-items:center;gap:16px}
+.cd-nav-btn{background:#1a3c6e;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.5px}
+.cd-nav-btn:hover{background:#2a6db5}
+.cd-nav-icon{width:36px;height:36px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;position:relative}
+.cd-nav-icon:hover{background:#e5e7eb}
+.cd-nav-badge{position:absolute;top:4px;right:4px;width:8px;height:8px;background:#ef4444;border-radius:50%}
+.cd-company-sel{display:flex;align-items:center;gap:8px;background:#f3f4f6;border:none;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:#1a3c6e;cursor:pointer}
+.cd-company-sel svg{color:#6b7280}
+/* SIDEBAR */
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;z-index:90;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;cursor:pointer;text-decoration:none;transition:all .15s}
+.cd-sidebar-item:hover{background:#f0f4ff;color:#1a3c6e}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-item svg{width:18px;height:18px;flex-shrink:0;opacity:.7}
+.cd-sidebar-item.active svg{opacity:1}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-sidebar-section{font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;padding:8px 20px 4px;text-transform:uppercase}
+/* MAIN */
+.cd-main{margin-left:220px;margin-top:56px;padding:24px;min-height:calc(100vh - 56px)}
+/* HERO */
+.cd-hero{background:linear-gradient(135deg,#1a3c6e 0%,#2a6db5 60%,#3cb89a 100%);border-radius:16px;padding:32px;color:white;margin-bottom:24px;position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:flex-start}
+.cd-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border:48px solid rgba(255,255,255,.07);border-radius:50%}
+.cd-hero::after{content:'';position:absolute;bottom:-40px;right:120px;width:160px;height:160px;border:32px solid rgba(255,255,255,.05);border-radius:50%}
+.cd-hero-left{position:relative;z-index:1}
+.cd-hero-hello{font-size:28px;font-weight:700;margin-bottom:4px}
+.cd-hero-welcome{font-size:15px;opacity:.85;margin-bottom:24px}
+.cd-hero-stats{display:flex;flex-wrap:wrap;gap:32px}
+.cd-hero-stat{display:flex;flex-direction:column}
+.cd-hero-stat-num{font-size:28px;font-weight:800;line-height:1}
+.cd-hero-stat-label{font-size:12px;opacity:.8;margin-top:4px}
+.cd-hero-right{position:relative;z-index:1;text-align:right;background:rgba(255,255,255,.1);border-radius:12px;padding:16px 24px;min-width:220px}
+.cd-hero-info-row{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-bottom:12px}
+.cd-hero-info-row:last-child{margin-bottom:0}
+.cd-hero-info-label{font-size:11px;opacity:.75;text-align:right}
+.cd-hero-info-val{font-size:18px;font-weight:700}
+.cd-hero-badge{padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.5px}
+.cd-badge-green{background:#22c55e;color:white}
+.cd-badge-gray{background:#9ca3af;color:white}
+/* CARDS ROW */
+.cd-cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+.cd-card{background:white;border-radius:12px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.cd-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cd-card-title{font-size:15px;font-weight:700;color:#111827}
+.cd-view-all{font-size:12px;color:#2a6db5;text-decoration:none;font-weight:600;display:flex;align-items:center;gap:4px}
+.cd-view-all:hover{text-decoration:underline}
+/* TASKS */
+.cd-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;color:#6b7280}
+.cd-empty svg{width:64px;height:64px;margin-bottom:12px;opacity:.4}
+.cd-empty-title{font-size:16px;font-weight:600;margin-bottom:4px}
+.cd-empty-sub{font-size:13px;opacity:.8}
+.cd-task-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.cd-task-item:last-child{border-bottom:none}
+.cd-task-dot{width:8px;height:8px;border-radius:50%;background:#3cb89a;flex-shrink:0}
+.cd-task-name{font-size:13px;color:#374151;flex:1}
+.cd-task-date{font-size:11px;color:#9ca3af}
+/* ACTIVITY */
+.cd-activity-item{padding:10px 0;border-bottom:1px solid #f3f4f6}
+.cd-activity-item:last-child{border-bottom:none}
+.cd-activity-text{font-size:13px;color:#374151;margin-bottom:3px;line-height:1.4}
+.cd-activity-date{font-size:11px;color:#9ca3af}
+/* WA */
+.spc-wa{position:fixed;bottom:24px;right:24px;width:48px;height:48px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(37,211,102,.4);z-index:999;text-decoration:none}
+@media(max-width:860px){.cd-sidebar{display:none}.cd-main{margin-left:0}}
+    </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="cd-nav">
+    <div class="cd-nav-logo">
+        <svg viewBox="0 0 44 44" fill="none">
+            <rect x="2" y="2" width="18" height="18" rx="2" fill="#1a3c6e"/>
+            <rect x="24" y="2" width="18" height="18" rx="2" fill="#2a6db5"/>
+            <rect x="2" y="24" width="18" height="18" rx="2" fill="#2a6db5"/>
+            <rect x="24" y="24" width="18" height="18" rx="2" fill="#3cb89a"/>
+            <polygon points="13,10 6,22 13,34 20,22" fill="white" opacity=".9"/>
+        </svg>
+        <div class="cd-nav-logo-text">
+            <span class="cd-nav-logo-brand">SPC <span style="font-weight:300">| Free Zone</span></span>
+            <span class="cd-nav-logo-sub">WHERE MORE IS POSSIBLE</span>
+        </div>
+    </div>
+    <div class="cd-nav-right">
+        <button class="cd-nav-btn">Business Activities</button>
+        <button class="cd-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="cd-nav-badge"/>
+        </button>
+        <button class="cd-nav-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <button class="cd-company-sel">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            <span><t t-esc="customer.name if customer else 'No Customer'"/></span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+    </div>
+</nav>
+
+<!-- SIDEBAR -->
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Request Tracking
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Company Management
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Employee Management
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Facility Management
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Concierge services
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Facility Bookings
+    </a>
+    <div class="cd-sidebar-divider"/>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Kyc Report
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        Zone Bank Details
+    </a>
+    <div class="cd-sidebar-divider"/>
+    <a href="#" class="cd-sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help &amp; Support
+    </a>
+    <div class="cd-sidebar-divider"/>
+    <a href="/spc/customer-dashboard/logout" class="cd-sidebar-item" style="color:#ef4444;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log out
+    </a>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="cd-main">
+
+    <!-- HERO -->
+    <div class="cd-hero">
+        <div class="cd-hero-left">
+            <div class="cd-hero-hello">Hello,</div>
+            <div class="cd-hero-welcome">Welcome!</div>
+            <div class="cd-hero-stats">
+                <div class="cd-hero-stat">
+                    <span class="cd-hero-stat-num"><t t-esc="task_count"/></span>
+                    <span class="cd-hero-stat-label">Open tasks</span>
+                </div>
+                <div class="cd-hero-stat">
+                    <span class="cd-hero-stat-num"><t t-esc="doc_count"/></span>
+                    <span class="cd-hero-stat-label">Document</span>
+                </div>
+                <div class="cd-hero-stat">
+                    <span class="cd-hero-stat-num"><t t-esc="employee_count"/></span>
+                    <span class="cd-hero-stat-label">Employees</span>
+                </div>
+                <div class="cd-hero-stat">
+                    <span class="cd-hero-stat-num"><t t-esc="facility_count"/></span>
+                    <span class="cd-hero-stat-label">Facility Bookings</span>
+                </div>
+                <div class="cd-hero-stat">
+                    <span class="cd-hero-stat-num"><t t-esc="invoice_count"/></span>
+                    <span class="cd-hero-stat-label">Invoices</span>
+                </div>
+            </div>
+        </div>
+        <div class="cd-hero-right">
+            <div class="cd-hero-info-row">
+                <div>
+                    <div class="cd-hero-info-label">Formation Number</div>
+                    <div class="cd-hero-info-val">—</div>
+                </div>
+                <span class="cd-hero-badge cd-badge-green">Active</span>
+            </div>
+            <div class="cd-hero-info-row">
+                <div>
+                    <div class="cd-hero-info-label">License Number</div>
+                    <div class="cd-hero-info-val">—</div>
+                </div>
+                <span class="cd-hero-badge cd-badge-green">Active</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="cd-cards">
+        <!-- Open Tasks -->
+        <div class="cd-card">
+            <div class="cd-card-header">
+                <span class="cd-card-title">Open tasks (<t t-esc="task_count"/>)</span>
+                <a href="#" class="cd-view-all">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    VIEW ALL
+                </a>
+            </div>
+            <t t-if="not open_tasks">
+                <div class="cd-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/>
+                    </svg>
+                    <div class="cd-empty-title">Woohoo!</div>
+                    <div class="cd-empty-sub">there are no tasks pending for you.</div>
+                </div>
+            </t>
+            <t t-if="open_tasks">
+                <t t-foreach="open_tasks" t-as="task">
+                    <div class="cd-task-item">
+                        <div class="cd-task-dot"/>
+                        <span class="cd-task-name"><t t-esc="task.name"/></span>
+                        <span class="cd-task-date"><t t-esc="str(task.date_deadline) if task.date_deadline else ''"/></span>
+                    </div>
+                </t>
+            </t>
+        </div>
+
+        <!-- Account Activity -->
+        <div class="cd-card">
+            <div class="cd-card-header">
+                <span class="cd-card-title">Account activity</span>
+                <a href="#" class="cd-view-all">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    VIEW ALL
+                </a>
+            </div>
+            <t t-if="not activities">
+                <div class="cd-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div class="cd-empty-title">No activity yet</div>
+                    <div class="cd-empty-sub">Recent account activity will appear here.</div>
+                </div>
+            </t>
+            <t t-if="activities">
+                <t t-foreach="activities" t-as="act">
+                    <div class="cd-activity-item">
+                        <div class="cd-activity-text"><t t-esc="act.body or act.subject or 'Activity'"/></div>
+                        <div class="cd-activity-date"><t t-esc="str(act.date)[:10] if act.date else ''"/></div>
+                    </div>
+                </t>
+            </t>
+        </div>
+    </div>
+
+</main>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/971000000000" class="spc-wa" target="_blank">
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

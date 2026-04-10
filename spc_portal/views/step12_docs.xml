@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step12" name="SPC Setup Company Step12">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Supporting Document | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.upload-area{border:2px dashed #1abc9c;border-radius:8px;padding:32px;text-align:center;cursor:pointer;max-width:280px;background:#fff}
+.upload-icon{font-size:28px;color:#1abc9c;margin-bottom:8px}
+.upload-text{font-size:13px;color:#1abc9c;font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Facility</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Visa allocation</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder(s) information and Capital Structure</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Manager(s) information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Director(s) information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">UBO information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Nature of business</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate bank account</div></div>
+        <div class="progress-step active"><div class="step-num">12</div><div class="step-label">Supporting document</div></div>
+        <div class="progress-step"><div class="step-num">13</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">14</div><div class="step-label">Payment</div></div>
+    </div>
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step12/submit'" method="post" enctype="multipart/form-data" id="step12Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Supporting Document</div>
+                    <div class="upload-area" onclick="document.getElementById('supportingDoc').click()">
+                        <input type="file" id="supportingDoc" name="supporting_doc"
+                            style="display:none" accept=".pdf,.jpg,.jpeg,.png"
+                            onchange="showFileName(this)"/>
+                        <div class="upload-icon">&#11014;</div>
+                        <div class="upload-text" id="docLabel">Upload supporting document if any</div>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step11/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+<![CDATA[
+function showFileName(input){
+    if(input.files && input.files[0]){
+        document.getElementById('docLabel').textContent = input.files[0].name;
+    }
+}
+]]>
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

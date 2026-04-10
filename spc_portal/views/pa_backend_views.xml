@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_spc_pre_approval_tree" model="ir.ui.view">
+        <field name="name">spc.pre.approval.tree</field>
+        <field name="model">spc.pre.approval</field>
+        <field name="arch" type="xml">
+            <tree string="Pre-Approval Applications">
+                <field name="reference"/>
+                <field name="customer_id"/>
+                <field name="name_preference_1"/>
+                <field name="sh_first_name"/>
+                <field name="sh_last_name"/>
+                <field name="fee"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_spc_pre_approval_form" model="ir.ui.view">
+        <field name="name">spc.pre.approval.form</field>
+        <field name="model">spc.pre.approval</field>
+        <field name="arch" type="xml">
+            <form string="Pre-Approval Application">
+                <header>
+                    <button name="action_under_review" string="Mark Under Review" type="object"
+                            invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-danger"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,under_review,approved,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="reference"/></h1>
+                    </div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="fee"/>
+                            <field name="payment_method"/>
+                            <field name="payment_status"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Business Activities">
+                            <field name="business_activity_ids" widget="many2many_tags"/>
+                            <field name="activity_names"/>
+                        </page>
+                        <page string="Company Name">
+                            <group>
+                                <field name="name_reserved"/>
+                                <field name="reserved_name" invisible="name_reserved != 'yes'"/>
+                                <field name="name_preference_1"/>
+                                <field name="name_preference_2"/>
+                                <field name="name_preference_3"/>
+                                <field name="translation_method"/>
+                            </group>
+                        </page>
+                        <page string="Shareholder Details">
+                            <group>
+                                <group>
+                                    <field name="sh_first_name"/>
+                                    <field name="sh_last_name"/>
+                                    <field name="sh_nationality"/>
+                                    <field name="sh_email"/>
+                                </group>
+                                <group>
+                                    <field name="sh_mobile"/>
+                                    <field name="sh_passport"/>
+                                    <field name="sh_uae_resident"/>
+                                    <field name="sh_percent"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group>
+                                <field name="declaration_accepted"/>
+                                <field name="declarant_name"/>
+                                <field name="declaration_date"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <tree>
+                                    <field name="document_name"/>
+                                    <field name="document_type"/>
+                                    <field name="file_name"/>
+                                    <field name="file_data" widget="binary" filename="file_name"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Admin Notes">
+                            <field name="admin_notes"/>
+                            <field name="rejection_reason"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_spc_pre_approval" model="ir.actions.act_window">
+        <field name="name">Pre-Approval Applications</field>
+        <field name="res_model">spc.pre.approval</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_spc_pre_approval"
+              name="Name Pre-Approval"
+              parent="menu_spc_applications"
+              action="action_spc_pre_approval"
+              sequence="30"/>
+</odoo>

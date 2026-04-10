@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step7" name="SPC Setup Company Step7">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Manager Information | SPC Free Zone</title>
+    <style>
+<![CDATA[
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px;display:flex;align-items:center;gap:10px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.spc-section-row{display:flex;gap:24px}
+.spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.spc-section-body{flex:1}
+.spc-section-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+
+/* Count input */
+.count-field{position:relative;max-width:600px;margin-bottom:0}
+.count-field label{position:absolute;top:8px;left:14px;font-size:11px;color:#888}
+.count-input{width:100%;padding:24px 14px 8px;border:none;border-bottom:1px solid #d0d0d0;font-size:15px;color:#333;outline:none;background:#fff}
+.count-input:focus{border-bottom-color:#1abc9c}
+
+/* Manager accordion */
+.accordion{border:1px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:visible}
+.accordion-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:#fff;font-weight:600;font-size:14px;color:#1a2340;border-radius:10px}
+.accordion-header:hover{background:#f8f9fa}
+.accordion-arrow{font-size:12px;transition:transform .2s}
+.accordion-arrow.open{transform:rotate(180deg)}
+.accordion-body{display:none;padding:0 0 16px 0;border-top:1px solid #e0e0e0;background:#f9f9f9}
+.accordion-body.open{display:block}
+
+/* Manager inner card */
+.manager-card{background:#fff;border-radius:10px;margin:16px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.delete-mgr-btn{color:#e74c3c;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-bottom:16px}
+
+/* Field styles */
+.field-row{position:relative;margin-bottom:16px}
+.field-row label{position:absolute;top:8px;left:14px;font-size:11px;color:#888;pointer-events:none;z-index:1}
+.field-input{width:100%;padding:24px 14px 8px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;color:#333;outline:none;background:#fff}
+.field-input:focus{border-color:#1abc9c}
+
+/* Flat underline fields (like screenshot) */
+.field-flat{position:relative;margin-bottom:0}
+.field-flat label{display:block;font-size:12px;color:#aaa;margin-bottom:2px}
+.flat-input{width:100%;padding:10px 0 8px 0;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent}
+.flat-input:focus{border-bottom-color:#1abc9c}
+
+/* Select flat */
+.select-flat-wrap{position:relative;margin-bottom:0}
+.select-flat-wrap label{display:block;font-size:12px;color:#aaa;margin-bottom:2px}
+.flat-select{width:100%;padding:10px 40px 8px 0;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer}
+.flat-select:focus{border-bottom-color:#1abc9c}
+.flat-arrow{position:absolute;right:28px;bottom:12px;pointer-events:none;font-size:12px;color:#888}
+.flat-clear{position:absolute;right:0;bottom:8px;width:22px;height:22px;border-radius:50%;background:#1a2340;border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Mobile flat */
+.mobile-flat-wrap{position:relative;margin-bottom:0}
+.mobile-flat-label{font-size:12px;color:#aaa;margin-bottom:2px;display:block}
+.mobile-flat-inner{display:flex;border-bottom:1px solid #d0d0d0;align-items:center;padding-bottom:4px}
+.mobile-flat-inner:focus-within{border-bottom-color:#1abc9c}
+.flag-btn-flat{display:flex;align-items:center;gap:4px;font-size:13px;color:#333;border:none;background:transparent;cursor:pointer;padding:8px 10px 8px 0;white-space:nowrap}
+.mobile-number-flat{flex:1;border:none;font-size:14px;color:#333;outline:none;background:transparent;padding:8px 0}
+
+/* Radio */
+.radio-group{display:flex;gap:24px;flex-wrap:wrap;margin-top:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340;width:16px;height:16px}
+.question-label{font-size:14px;color:#333;font-weight:500;margin-bottom:8px;display:block}
+
+/* Upload */
+.upload-area{border:2px dashed #1abc9c;border-radius:8px;padding:20px;text-align:center;cursor:pointer;background:#fff;max-width:260px}
+.upload-icon{font-size:22px;color:#1a6fa8;margin-bottom:6px}
+.upload-text{font-size:13px;color:#1a6fa8;font-weight:500}
+.upload-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.upload-item{display:flex;flex-direction:column;gap:6px}
+.upload-item .field-label-top{font-size:13px;color:#555;font-weight:600}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hidden{display:none}
+.sub-section{background:#f9f9f9;border-radius:8px;padding:20px;margin-bottom:16px;border:1px solid #eee}
+.sub-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:16px}
+
+/* Info link */
+.info-link-box{background:#fff;border-radius:8px;padding:16px 20px;margin-bottom:16px;border:1px solid #eee}
+.info-link-box p{font-size:13px;color:#555;margin-bottom:6px}
+.info-link-box a{color:#1a6fa8;font-size:13px}
+
+/* Select shareholder dropdown */
+.sh-dropdown-wrap{margin-bottom:0}
+.sh-dropdown-wrap label{display:block;font-size:13px;color:#555;font-weight:600;margin-bottom:10px}
+.sh-dropdown{width:100%;padding:14px 40px 14px 14px;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer}
+.sh-dropdown:focus{border-bottom-color:#1abc9c}
+
+/* Save/nav */
+.save-row{display:flex;justify-content:flex-end;margin-top:20px;margin-right:16px;margin-bottom:8px}
+.save-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;cursor:pointer}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:#fff}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
+
+/* Date flat */
+.date-flat-wrap{position:relative;margin-bottom:0}
+.date-flat-label{font-size:12px;color:#aaa;margin-bottom:2px;display:block}
+.date-flat{width:100%;padding:10px 36px 8px 0;border:none;border-bottom:1px solid #d0d0d0;font-size:14px;color:#333;outline:none;background:transparent;appearance:auto;-webkit-appearance:auto;cursor:pointer}
+.date-flat:focus{border-bottom-color:#1abc9c}
+]]>
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <t t-if="steps">
+            <t t-foreach="steps" t-as="s">
+                <t t-set="idx" t-value="s_index + 1"/>
+                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
+                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
+                    <div class="step-label"><t t-esc="s"/></div>
+                </div>
+            </t>
+        </t>
+    </div>
+
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step7/submit'" method="post" enctype="multipart/form-data" id="step7Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- 01 Number of managers -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">01</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">How many managers will be associated with the company</h4>
+                        <div class="count-field">
+                            <label>Number of managers</label>
+                            <input type="number" id="managerCount" name="manager_count" class="count-input" min="1" max="10" value="1" onchange="updateManagerList(this.value)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 Manager details -->
+            <div class="spc-section">
+                <div class="spc-section-row">
+                    <div class="spc-section-number">02</div>
+                    <div class="spc-section-body">
+                        <h4 class="spc-section-title">Manager details</h4>
+                        <div id="managerList">
+                            <!-- Manager 1 accordion -->
+                            <div class="accordion" id="mgr_acc_1">
+                                <div class="accordion-header" onclick="toggleMgrAccordion(1)">
+                                    <span>Manager 1</span>
+                                    <span class="accordion-arrow open" id="mgr_arrow_1">&#9660;</span>
+                                </div>
+                                <div class="accordion-body open" id="mgr_body_1">
+                                    <div class="manager-card">
+                                        <div class="delete-mgr-btn" onclick="deleteManager(1)">&#128465; Delete Manager</div>
+
+                                        <!-- Define manager type -->
+                                        <div class="sub-section">
+                                            <span class="question-label">Define the manager details from one of the following selections</span>
+                                            <div class="radio-group" style="flex-wrap:wrap;gap:16px">
+                                                <label class="radio-label"><input type="radio" name="mgr_1_define" value="shareholder" onchange="toggleMgrDefine(1,'shareholder')"/> Shareholder of this entity</label>
+                                                <label class="radio-label"><input type="radio" name="mgr_1_define" value="spc_shareholder" onchange="toggleMgrDefine(1,'spc_shareholder')"/> Current shareholder of another entity in SPC FZ</label>
+                                                <label class="radio-label"><input type="radio" name="mgr_1_define" value="add_new" onchange="toggleMgrDefine(1,'add_new')"/> Add new</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- UID video info box (always visible) -->
+                                        <div class="info-link-box">
+                                            <p>Please find instructional video on how to upload UID</p>
+                                            <a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a>
+                                        </div>
+
+                                        <!-- Option A: Shareholder of this entity -->
+                                        <div id="mgr_1_sh_section" class="hidden sub-section">
+                                            <div class="sh-dropdown-wrap">
+                                                <label>Choose existing shareholder</label>
+                                                <select class="sh-dropdown" name="mgr_1_sh_select">
+                                                    <option value="">Select Shareholder</option>
+                                                    <!-- populated dynamically if needed -->
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Option B: Current shareholder of another entity in SPC FZ -->
+                                        <div id="mgr_1_spc_sh_section" class="hidden sub-section">
+                                            <div style="margin-bottom:16px">
+                                                <span class="question-label">Does the Manager have a Nominee?</span>
+                                                <div class="radio-group">
+                                                    <label class="radio-label"><input type="radio" name="mgr_1_nominee_spc" value="yes"/> Yes</label>
+                                                    <label class="radio-label"><input type="radio" name="mgr_1_nominee_spc" value="no" checked="checked"/> No</label>
+                                                </div>
+                                            </div>
+                                            <span class="question-label">Existing user?</span>
+                                            <div style="margin-bottom:12px">
+                                                <div class="field-flat" style="margin-bottom:16px">
+                                                    <input class="flat-input" type="email" name="mgr_1_spc_email" placeholder="Email"/>
+                                                </div>
+                                                <div class="field-flat">
+                                                    <input class="flat-input" type="text" name="mgr_1_spc_passport" placeholder="Passport number / Entity registration number"/>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="save-btn" style="background:transparent;border:1px solid #1a2340;color:#1a2340;padding:10px 24px;letter-spacing:1px;font-size:13px">SEARCH</button>
+                                        </div>
+
+                                        <!-- Option C: Add new — full form -->
+                                        <div id="mgr_1_add_new_section" class="hidden">
+
+                                            <!-- Passport uploads -->
+                                            <div class="upload-row">
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload copy of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('mgr_1_passport_file').click()">
+                                                        <input type="file" id="mgr_1_passport_file" name="mgr_1_passport_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div>
+                                                        <div class="upload-text">Upload copy of passport</div>
+                                                    </div>
+                                                </div>
+                                                <div class="upload-item">
+                                                    <span class="field-label-top">Upload special page of passport</span>
+                                                    <div class="upload-area" onclick="document.getElementById('mgr_1_passport_sp').click()">
+                                                        <input type="file" id="mgr_1_passport_sp" name="mgr_1_passport_sp" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-icon">&#11014;</div>
+                                                        <div class="upload-text">Upload special page of passport</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Passport details -->
+                                            <div class="sub-section">
+                                                <div class="sub-title">Passport details</div>
+                                                <div class="two-col">
+                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_first_name" placeholder="First name"/></div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_last_name" placeholder="Last name"/></div>
+                                                </div>
+                                                <div style="height:16px"></div>
+                                                <div class="select-flat-wrap" style="margin-bottom:16px">
+                                                    <label>Nationality</label>
+                                                    <select class="flat-select" name="mgr_1_nationality" id="mgr_1_nationality" onchange="showFlatClear('mgr_1_nat_clear',this)">
+                                                        <option value=""></option>
+                                                        <option value="AE">United Arab Emirates</option>
+                                                        <option value="IN">India</option>
+                                                        <option value="PK">Pakistan</option>
+                                                        <option value="GB">United Kingdom</option>
+                                                        <option value="US">United States</option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+                                                    <span class="flat-arrow">&#9660;</span>
+                                                    <button type="button" class="flat-clear hidden" id="mgr_1_nat_clear" onclick="clearFlatSelect('mgr_1_nationality','mgr_1_nat_clear')">&#10005;</button>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have an alternate nationality?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="mgr_1_alt_nat" value="yes" onchange="toggleMgrAltNat(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="mgr_1_alt_nat" value="no" checked="checked" onchange="toggleMgrAltNat(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="mgr_1_alt_nat_fields" class="hidden two-col" style="margin-bottom:16px">
+                                                    <div class="select-flat-wrap">
+                                                        <label>Alternate nationality</label>
+                                                        <select class="flat-select" name="mgr_1_alt_nationality">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                    </div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_alt_passport_no" placeholder="Alternate passport number"/></div>
+                                                </div>
+                                                <div class="two-col" style="margin-bottom:16px">
+                                                    <div class="date-flat-wrap">
+                                                        <span class="date-flat-label">Date of birth</span>
+                                                        <input type="date" class="date-flat" name="mgr_1_dob"/>
+                                                    </div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_pob" placeholder="Place of birth"/></div>
+                                                </div>
+                                                <div class="two-col" style="margin-bottom:16px">
+                                                    <div class="select-flat-wrap">
+                                                        <label>Country of birth</label>
+                                                        <select class="flat-select" name="mgr_1_cob" id="mgr_1_cob" onchange="showFlatClear('mgr_1_cob_clear',this)">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="PK">Pakistan</option>
+                                                            <option value="GB">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                        <button type="button" class="flat-clear hidden" id="mgr_1_cob_clear" onclick="clearFlatSelect('mgr_1_cob','mgr_1_cob_clear')">&#10005;</button>
+                                                    </div>
+                                                    <div class="date-flat-wrap">
+                                                        <span class="date-flat-label">Date of issue</span>
+                                                        <input type="date" class="date-flat" name="mgr_1_doi"/>
+                                                    </div>
+                                                </div>
+                                                <div class="two-col">
+                                                    <div class="date-flat-wrap">
+                                                        <span class="date-flat-label">Date of expiry</span>
+                                                        <input type="date" class="date-flat" name="mgr_1_doe"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Other details -->
+                                            <div class="sub-section">
+                                                <div class="sub-title">Other details</div>
+                                                <div class="mobile-flat-wrap" style="margin-bottom:16px">
+                                                    <span class="mobile-flat-label">Mobile number</span>
+                                                    <div class="mobile-flat-inner">
+                                                        <button type="button" class="flag-btn-flat" id="mgr_1_flag_btn" onclick="toggleMgrFlagMenu(1)">&#127482;&#127462; +971 &#9660;</button>
+                                                        <input type="tel" class="mobile-number-flat" name="mgr_1_mobile" placeholder="Mobile number"/>
+                                                    </div>
+                                                    <div id="mgr_1_flag_menu" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                                                        <div onclick="setMgrFlag(1,'&#127482;&#127462;','+971')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
+                                                        <div onclick="setMgrFlag(1,'&#127470;&#127475;','+91')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
+                                                        <div onclick="setMgrFlag(1,'&#127477;&#127472;','+92')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
+                                                        <div onclick="setMgrFlag(1,'&#127468;&#127463;','+44')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
+                                                        <div onclick="setMgrFlag(1,'&#127482;&#127480;','+1')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Do you have secondary contact number?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="mgr_1_secondary" value="yes" onchange="toggleMgrSecondary(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="mgr_1_secondary" value="no" onchange="toggleMgrSecondary(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+                                                <div id="mgr_1_secondary_field" class="hidden" style="margin-bottom:16px">
+                                                    <div class="mobile-flat-wrap">
+                                                        <span class="mobile-flat-label">Secondary mobile number</span>
+                                                        <div class="mobile-flat-inner">
+                                                            <button type="button" class="flag-btn-flat">&#127482;&#127462; +971 &#9660;</button>
+                                                            <input type="tel" class="mobile-number-flat" name="mgr_1_mobile2"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="field-flat" style="margin-bottom:16px"><input class="flat-input" type="email" name="mgr_1_email" placeholder="E-mail ID"/></div>
+                                                <div style="margin-bottom:16px">
+                                                    <div class="field-flat">
+                                                        <textarea class="flat-input" name="mgr_1_address" maxlength="100" rows="2" placeholder="Current address" oninput="updateMgrCount(this,'mgr_1_addr_count')"></textarea>
+                                                    </div>
+                                                    <div style="text-align:right;font-size:11px;color:#aaa" id="mgr_1_addr_count">0 / 100</div>
+                                                </div>
+                                                <div class="two-col" style="margin-bottom:16px">
+                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_city" placeholder="City"/></div>
+                                                    <div class="select-flat-wrap">
+                                                        <label>Country</label>
+                                                        <select class="flat-select" name="mgr_1_country" id="mgr_1_country" onchange="showFlatClear('mgr_1_country_clear',this)">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="PK">Pakistan</option>
+                                                            <option value="GB">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                        <button type="button" class="flat-clear hidden" id="mgr_1_country_clear" onclick="clearFlatSelect('mgr_1_country','mgr_1_country_clear')">&#10005;</button>
+                                                    </div>
+                                                </div>
+                                                <div class="date-flat-wrap" style="margin-bottom:16px">
+                                                    <span class="date-flat-label">Manager joining date</span>
+                                                    <input type="date" class="date-flat" name="mgr_1_joining_date"/>
+                                                </div>
+
+                                                <!-- UAE resident -->
+                                                <div style="margin-bottom:16px">
+                                                    <span class="question-label">Is Manager a resident of the UAE?</span>
+                                                    <div class="radio-group">
+                                                        <label class="radio-label"><input type="radio" name="mgr_1_uae_resident" value="yes" onchange="toggleMgrUaeResident(1,'yes')"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" name="mgr_1_uae_resident" value="no" onchange="toggleMgrUaeResident(1,'no')"/> No</label>
+                                                    </div>
+                                                </div>
+
+                                                <!-- UAE resident = No → upload entry/tourist visa + non-resident fields -->
+                                                <div id="mgr_1_non_resident_section" class="hidden">
+                                                    <div class="info-link-box" style="margin-top:8px">
+                                                        <p>Please find instructional video on how to upload UID</p>
+                                                        <a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a>
+                                                    </div>
+                                                    <div class="upload-item" style="margin-bottom:16px">
+                                                        <span class="field-label-top">Upload UAE entry visa or tourist visa</span>
+                                                        <div class="upload-area" onclick="document.getElementById('mgr_1_entry_visa').click()">
+                                                            <input type="file" id="mgr_1_entry_visa" name="mgr_1_entry_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                            <div class="upload-icon">&#11014;</div>
+                                                            <div class="upload-text">Upload UAE entry visa or tourist visa</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field-flat" style="margin-bottom:16px"><input class="flat-input" type="text" name="mgr_1_id_number" placeholder="ID number"/></div>
+                                                    <div class="two-col" style="margin-bottom:16px">
+                                                        <div class="date-flat-wrap">
+                                                            <span class="date-flat-label">ID issue date</span>
+                                                            <input type="date" class="date-flat" name="mgr_1_id_issue_date"/>
+                                                        </div>
+                                                        <div class="date-flat-wrap">
+                                                            <span class="date-flat-label">ID expiry date</span>
+                                                            <input type="date" class="date-flat" name="mgr_1_id_expiry_date"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="select-flat-wrap" style="margin-bottom:16px">
+                                                        <label>Country of Residence</label>
+                                                        <select class="flat-select" name="mgr_1_country_residence" id="mgr_1_country_res" onchange="showFlatClear('mgr_1_cres_clear',this)">
+                                                            <option value=""></option>
+                                                            <option value="AE">United Arab Emirates</option>
+                                                            <option value="IN">India</option>
+                                                            <option value="PK">Pakistan</option>
+                                                            <option value="GB">United Kingdom</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                        <span class="flat-arrow">&#9660;</span>
+                                                        <button type="button" class="flat-clear hidden" id="mgr_1_cres_clear" onclick="clearFlatSelect('mgr_1_country_res','mgr_1_cres_clear')">&#10005;</button>
+                                                    </div>
+                                                    <div style="margin-bottom:16px">
+                                                        <span class="question-label">Do you or your company operate elsewhere?</span>
+                                                        <div class="radio-group">
+                                                            <label class="radio-label"><input type="radio" name="mgr_1_operate_elsewhere" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" name="mgr_1_operate_elsewhere" value="no" checked="checked"/> No</label>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-bottom:16px">
+                                                        <span class="question-label">Does the Manager have a Nominee?</span>
+                                                        <div class="radio-group">
+                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee" value="no"/> No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- UAE resident = Yes → resident fields -->
+                                                <div id="mgr_1_resident_section" class="hidden">
+                                                    <div class="upload-row" style="margin-top:8px">
+                                                        <div class="upload-item">
+                                                            <span class="field-label-top">Upload UAE resident visa</span>
+                                                            <div class="upload-area" onclick="document.getElementById('mgr_1_res_visa').click()">
+                                                                <input type="file" id="mgr_1_res_visa" name="mgr_1_res_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <div class="upload-icon">&#11014;</div>
+                                                                <div class="upload-text">Upload UAE resident visa</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="upload-item">
+                                                            <span class="field-label-top">Upload emirates ID</span>
+                                                            <div class="upload-area" onclick="document.getElementById('mgr_1_eid').click()">
+                                                                <input type="file" id="mgr_1_eid" name="mgr_1_eid" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <div class="upload-icon">&#11014;</div>
+                                                                <div class="upload-text">Upload emirates ID</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="two-col" style="margin-bottom:16px">
+                                                        <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_visa_no" placeholder="Resident visa number"/></div>
+                                                        <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_eid_no" placeholder="Emirates ID number"/></div>
+                                                    </div>
+                                                    <div class="two-col" style="margin-bottom:16px">
+                                                        <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_uid" placeholder="Unified number (UID)"/></div>
+                                                        <div class="date-flat-wrap">
+                                                            <span class="date-flat-label">Emirates ID issue date</span>
+                                                            <input type="date" class="date-flat" name="mgr_1_eid_issue"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="two-col" style="margin-bottom:16px">
+                                                        <div class="date-flat-wrap">
+                                                            <span class="date-flat-label">Emirates ID expiry date</span>
+                                                            <input type="date" class="date-flat" name="mgr_1_eid_expiry"/>
+                                                        </div>
+                                                    </div>
+                                                    <div style="margin-bottom:16px">
+                                                        <span class="question-label">Does the Manager have a Nominee?</span>
+                                                        <div class="radio-group">
+                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee_res" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee_res" value="no"/> No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="save-row">
+                                        <button type="button" class="save-btn" onclick="saveMgr(1)">SAVE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step6/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+<![CDATA[
+/* ---- Manager accordion ---- */
+function toggleMgrAccordion(n) {
+    var b = document.getElementById('mgr_body_' + n);
+    var a = document.getElementById('mgr_arrow_' + n);
+    b.classList.toggle('open');
+    a.classList.toggle('open');
+}
+
+/* ---- Define manager type toggle ---- */
+function toggleMgrDefine(n, val) {
+    var sh  = document.getElementById('mgr_' + n + '_sh_section');
+    var spc = document.getElementById('mgr_' + n + '_spc_sh_section');
+    var an  = document.getElementById('mgr_' + n + '_add_new_section');
+    [sh, spc, an].forEach(function(el) { if (el) el.classList.add('hidden'); });
+    if (val === 'shareholder' && sh)  sh.classList.remove('hidden');
+    if (val === 'spc_shareholder' && spc) spc.classList.remove('hidden');
+    if (val === 'add_new' && an)  an.classList.remove('hidden');
+}
+
+/* ---- UAE resident toggle ---- */
+function toggleMgrUaeResident(n, val) {
+    var nr = document.getElementById('mgr_' + n + '_non_resident_section');
+    var rs = document.getElementById('mgr_' + n + '_resident_section');
+    if (val === 'yes') {
+        if (nr) nr.classList.add('hidden');
+        if (rs) rs.classList.remove('hidden');
+    } else {
+        if (nr) nr.classList.remove('hidden');
+        if (rs) rs.classList.add('hidden');
+    }
+}
+
+/* ---- Alternate nationality ---- */
+function toggleMgrAltNat(n, val) {
+    var f = document.getElementById('mgr_' + n + '_alt_nat_fields');
+    if (f) val === 'yes' ? f.classList.remove('hidden') : f.classList.add('hidden');
+}
+
+/* ---- Secondary contact ---- */
+function toggleMgrSecondary(n, val) {
+    var f = document.getElementById('mgr_' + n + '_secondary_field');
+    if (f) val === 'yes' ? f.classList.remove('hidden') : f.classList.add('hidden');
+}
+
+/* ---- Flag menu ---- */
+function toggleMgrFlagMenu(n) {
+    var m = document.getElementById('mgr_' + n + '_flag_menu');
+    if (m) m.classList.toggle('hidden');
+}
+function setMgrFlag(n, flag, code) {
+    var btn = document.getElementById('mgr_' + n + '_flag_btn');
+    if (btn) btn.innerHTML = flag + ' ' + code + ' &#9660;';
+    var m = document.getElementById('mgr_' + n + '_flag_menu');
+    if (m) m.classList.add('hidden');
+}
+document.addEventListener('click', function(e) {
+    document.querySelectorAll('[id$="_flag_menu"]').forEach(function(m) {
+        if (!m.classList.contains('hidden') && !m.parentElement.contains(e.target)) m.classList.add('hidden');
+    });
+});
+
+/* ---- Flat select helpers ---- */
+function showFlatClear(clearId, sel) {
+    var btn = document.getElementById(clearId);
+    if (btn) sel.value ? btn.classList.remove('hidden') : btn.classList.add('hidden');
+}
+function clearFlatSelect(selId, clearId) {
+    var s = document.getElementById(selId); if (s) s.value = '';
+    var b = document.getElementById(clearId); if (b) b.classList.add('hidden');
+}
+
+/* ---- Address counter ---- */
+function updateMgrCount(el, id) {
+    var sp = document.getElementById(id);
+    if (sp) sp.textContent = el.value.length + ' / 100';
+}
+
+/* ---- Save manager ---- */
+function saveMgr(n) {
+    var b = document.querySelector('#mgr_acc_' + n + ' .save-btn:last-of-type');
+    if (b) { b.textContent = '&#10003; SAVED'; b.style.background = '#1abc9c'; }
+}
+
+/* ---- Delete manager ---- */
+function deleteManager(n) {
+    var a = document.getElementById('mgr_acc_' + n);
+    if (a) a.remove();
+}
+
+/* ---- Dynamic manager list ---- */
+function updateManagerList(count) {
+    count = Math.min(Math.max(parseInt(count) || 1, 1), 10);
+    var list = document.getElementById('managerList');
+    var existing = list.querySelectorAll('.accordion').length;
+    if (count > existing) {
+        for (var i = existing + 1; i <= count; i++) {
+            var div = document.createElement('div');
+            div.className = 'accordion';
+            div.id = 'mgr_acc_' + i;
+            div.innerHTML = '<div class="accordion-header" onclick="toggleMgrAccordion(' + i + ')"><span>Manager ' + i + '</span><span class="accordion-arrow" id="mgr_arrow_' + i + '">&#9660;</span></div>' +
+                '<div class="accordion-body" id="mgr_body_' + i + '">' +
+                '<div class="manager-card">' +
+                '<div class="delete-mgr-btn" onclick="deleteManager(' + i + ')">&#128465; Delete Manager</div>' +
+                '<div class="sub-section"><span class="question-label">Define the manager details from one of the following selections</span>' +
+                '<div class="radio-group" style="flex-wrap:wrap;gap:16px">' +
+                '<label class="radio-label"><input type="radio" name="mgr_' + i + '_define" value="shareholder" onchange="toggleMgrDefine(' + i + ',\'shareholder\')"/> Shareholder of this entity</label>' +
+                '<label class="radio-label"><input type="radio" name="mgr_' + i + '_define" value="spc_shareholder" onchange="toggleMgrDefine(' + i + ',\'spc_shareholder\')"/> Current shareholder of another entity in SPC FZ</label>' +
+                '<label class="radio-label"><input type="radio" name="mgr_' + i + '_define" value="add_new" onchange="toggleMgrDefine(' + i + ',\'add_new\')"/> Add new</label>' +
+                '</div></div>' +
+                '<div class="info-link-box"><p>Please find instructional video on how to upload UID</p><a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a></div>' +
+                '</div>' +
+                '<div class="save-row"><button type="button" class="save-btn" onclick="saveMgr(' + i + ')">SAVE</button></div>' +
+                '</div>';
+            list.appendChild(div);
+        }
+    } else if (count < existing) {
+        for (var j = existing; j > count; j--) {
+            var el = document.getElementById('mgr_acc_' + j);
+            if (el) el.remove();
+        }
+    }
+}
+]]>
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

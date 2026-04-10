@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step3" name="SPC Setup Company Step3">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Company | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{display:flex;gap:24px;margin-bottom:32px;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.spc-section-body{flex:1}
+.spc-section-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.spc-section-sub{font-size:13px;color:#888;margin-bottom:12px}
+.spc-field-group{margin-bottom:16px}
+.spc-field-label{font-size:13px;color:#555;display:block;margin-bottom:6px}
+.spc-underline-input,.spc-underline-select{width:320px;padding:10px 4px;border:none;border-bottom:2px solid #c8a951;background:transparent;font-size:14px;color:#333;outline:none}
+.spc-underline-select{appearance:none;cursor:pointer}
+.spc-select-wrapper{display:flex;align-items:center;gap:10px}
+.spc-select-clear-btn{cursor:pointer;color:#999;font-size:16px;background:#eee;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.spc-radio-group{display:flex;gap:24px;flex-wrap:wrap}
+.spc-radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.spc-upload-area{border:2px dashed #c8a951;border-radius:8px;padding:24px;text-align:center;cursor:pointer;max-width:400px}
+.spc-upload-icon{font-size:24px;color:#c8a951;margin-bottom:8px}
+.spc-upload-text{font-size:13px;color:#888}
+.spc-note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:16px;margin-top:16px;font-size:13px;line-height:1.6}
+.spc-note-info{display:flex;gap:10px;margin-top:8px}
+.spc-note-icon{color:#c8a951;font-size:18px;flex-shrink:0}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;cursor:pointer}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
+.spc-error-toast{background:#fff;border:1.5px solid #e91e8c;border-radius:10px;padding:14px 28px;font-size:14px;color:#e91e8c;font-weight:600;margin-bottom:20px}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <t t-if="steps">
+            <t t-foreach="steps" t-as="s">
+                <t t-set="idx" t-value="s_index + 1"/>
+                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
+                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
+                    <div class="step-label"><t t-esc="s"/></div>
+                </div>
+            </t>
+        </t>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+        <div class="form-title">Company New</div>
+
+        <t t-if="errors">
+            <div class="spc-error-toast">
+                <t t-foreach="errors" t-as="error">
+                    <div><t t-esc="error"/></div>
+                </t>
+            </div>
+        </t>
+
+        <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step3/submit'" method="post" enctype="multipart/form-data" id="step3Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+
+            <!-- 01: License Validity -->
+            <div class="spc-section">
+                <div class="spc-section-number">01</div>
+                <div class="spc-section-body">
+                    <h4 class="spc-section-title">Select license validity period</h4>
+                    <div class="spc-field-group">
+                        <div class="spc-select-wrapper">
+                            <select name="license_years" id="licenseYears" class="spc-underline-select">
+                                <option value="">Number of years</option>
+                                <option value="1" t-att-selected="'selected' if form_data and form_data.get('license_years') == '1' else None">1</option>
+                                <option value="2" t-att-selected="'selected' if form_data and form_data.get('license_years') == '2' else None">2</option>
+                                <option value="3" t-att-selected="'selected' if form_data and form_data.get('license_years') == '3' else None">3</option>
+                            </select>
+                            <span class="spc-select-clear-btn" onclick="clearSelect('licenseYears')">&#x2715;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02: Name Reserved -->
+            <div class="spc-section">
+                <div class="spc-section-number">02</div>
+                <div class="spc-section-body">
+                    <h4 class="spc-section-title">Has a company name been reserved?</h4>
+                    <div class="spc-radio-group">
+                        <label class="spc-radio-label">
+                            <input type="radio" name="name_reserved" value="yes" id="nameReservedYes"
+                                t-att-checked="'checked' if form_data and form_data.get('name_reserved') == 'yes' else None"
+                                onchange="toggleNameSection('yes')"/>
+                            <span>Yes</span>
+                        </label>
+                        <label class="spc-radio-label">
+                            <input type="radio" name="name_reserved" value="no" id="nameReservedNo"
+                                t-att-checked="'checked' if form_data and form_data.get('name_reserved') == 'no' else None"
+                                onchange="toggleNameSection('no')"/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 YES: Reserved Name Details -->
+            <div class="spc-section" id="sectionReservedYes" style="display:none;">
+                <div class="spc-section-number">03</div>
+                <div class="spc-section-body">
+                    <h4 class="spc-section-title">Reserved company name details</h4>
+                    <p class="spc-section-sub">Select the company and enter the reserved name</p>
+                    <div class="spc-field-group">
+                        <input type="text" name="reserved_name" class="spc-underline-input"
+                            placeholder="Reserved name"
+                            t-att-value="form_data.get('reserved_name', '') if form_data else ''"/>
+                    </div>
+                    <div class="spc-field-group" style="margin-top:20px;">
+                        <label class="spc-field-label">Upload name reservation document</label>
+                        <div class="spc-upload-area" onclick="document.getElementById('reservationDoc').click()">
+                            <input type="file" id="reservationDoc" name="reservation_doc"
+                                style="display:none;" accept=".pdf,.jpg,.jpeg,.png"
+                                onchange="showFileName(this,'reservationDocName')"/>
+                            <div class="spc-upload-icon">&#11014;</div>
+                            <div class="spc-upload-text" id="reservationDocName">Upload name reservation document</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 NO: Proposed Names -->
+            <div class="spc-section" id="sectionReservedNo" style="display:none;">
+                <div class="spc-section-number">03</div>
+                <div class="spc-section-body">
+                    <h4 class="spc-section-title">Enter the proposed company name(s) in order of preference</h4>
+                    <div class="spc-field-group">
+                        <input type="text" name="name_preference_1" class="spc-underline-input"
+                            placeholder="First preference"
+                            t-att-value="form_data.get('name_preference_1', '') if form_data else ''"/>
+                    </div>
+                    <div class="spc-field-group">
+                        <input type="text" name="name_preference_2" class="spc-underline-input"
+                            placeholder="Second preference"
+                            t-att-value="form_data.get('name_preference_2', '') if form_data else ''"/>
+                    </div>
+                    <div class="spc-field-group">
+                        <input type="text" name="name_preference_3" class="spc-underline-input"
+                            placeholder="Third preference"
+                            t-att-value="form_data.get('name_preference_3', '') if form_data else ''"/>
+                    </div>
+                    <div class="spc-note-box">
+                        <p><strong>Please note:</strong></p>
+                        <p>1. Company Names will appear as entered (same letter case) at the time of application.</p>
+                        <p style="color:#c0392b;margin-top:10px;"><strong>The following words cannot be used as company names:</strong></p>
+                        <div class="spc-note-info">
+                            <span class="spc-note-icon">&#9432;</span>
+                            <div>
+                                <p>1. Sharjah, Dubai, Abu Dhabi, RAK, Ras Al Khaimah, Ajman, Fujairah, Umm Al Quwain, UAE, United Arab Emirates, Limited, LTD, Financial, CAT, Elite, Vehicles &amp; Hotels, Islam, Islamic, Bomb, Import, Export, Manufacturing, Shipping, Forwarding, Oil, Gas and Refinery.</p>
+                                <p>2. Any animal names cannot be used.</p>
+                                <p>3. Any words related to any religion cannot be used.</p>
+                                <p>4. Any names indicating direct product such as food, beverages, Cars and Auto cannot be used.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04: Arabic Translation -->
+            <div class="spc-section">
+                <div class="spc-section-number">04</div>
+                <div class="spc-section-body">
+                    <h4 class="spc-section-title">Select the method of translating the company name into Arabic</h4>
+                    <div class="spc-radio-group">
+                        <label class="spc-radio-label">
+                            <input type="radio" name="arabic_translation" value="direct"
+                                t-att-checked="'checked' if form_data and form_data.get('arabic_translation') == 'direct' else None"/>
+                            <span>Direct translation</span>
+                        </label>
+                        <label class="spc-radio-label">
+                            <input type="radio" name="arabic_translation" value="phonetic"
+                                t-att-checked="'checked' if form_data and form_data.get('arabic_translation') == 'phonetic' else None"/>
+                            <span>Phonetic sound</span>
+                        </label>
+                        <label class="spc-radio-label">
+                            <input type="radio" name="arabic_translation" value="own"
+                                t-att-checked="'checked' if form_data and form_data.get('arabic_translation') == 'own' else None"/>
+                            <span>I will provide my own translations</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step2/' + service_type"
+                    class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    (function() {
+        var yesRadio = document.getElementById('nameReservedYes');
+        var noRadio  = document.getElementById('nameReservedNo');
+        if (yesRadio &amp;&amp; yesRadio.checked) toggleNameSection('yes');
+        if (noRadio  &amp;&amp; noRadio.checked)  toggleNameSection('no');
+    })();
+
+    function toggleNameSection(value) {
+        document.getElementById('sectionReservedYes').style.display = (value === 'yes') ? 'block' : 'none';
+        document.getElementById('sectionReservedNo').style.display  = (value === 'no')  ? 'block' : 'none';
+    }
+
+    function clearSelect(id) {
+        document.getElementById(id).value = '';
+    }
+
+    function showFileName(input, labelId) {
+        var label = document.getElementById(labelId);
+        if (input.files &amp;&amp; input.files[0]) {
+            label.textContent = input.files[0].name;
+        }
+    }
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

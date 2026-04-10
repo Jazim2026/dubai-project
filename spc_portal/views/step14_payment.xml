@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_setup_company_step14" name="SPC Setup Company Step14">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Payment | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.sidebar-total{margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.15)}
+.sidebar-total-label{font-size:12px;opacity:.6;margin-bottom:4px}
+.sidebar-total-amount{font-size:22px;font-weight:700;display:flex;align-items:center;gap:6px}
+.sidebar-total-currency{font-size:13px;opacity:.7;font-weight:400}
+.info-circle{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);display:inline-flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;flex-shrink:0}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.sec-row{display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:18px;font-weight:700;color:#1a2340;margin-bottom:24px}
+.fee-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.fee-table td{padding:10px 0;font-size:13px;border-bottom:1px solid #f5f5f5}
+.fee-table td:first-child{color:#aaa;text-transform:uppercase;letter-spacing:.5px;font-size:11px;font-weight:600}
+.fee-table td:last-child{text-align:right;font-size:14px;color:#1a2340;font-weight:500}
+.fee-table tr.subtotal td{border-top:2px solid #e0e0e0;border-bottom:none;padding-top:14px;font-weight:600}
+.fee-table tr.grandtotal td{border-bottom:none;padding-top:6px}
+.fee-table tr.grandtotal td:last-child{font-size:16px;font-weight:700;color:#1a2340}
+.promo-row{display:flex;gap:0;max-width:340px;margin-top:8px}
+.promo-input{flex:1;padding:12px 16px;border:1px solid #e0e0e0;border-right:none;border-radius:8px 0 0 8px;font-size:13px;color:#aaa;outline:none;background:#fff}
+.promo-input::placeholder{color:#bbb;font-size:12px;letter-spacing:1px;text-transform:uppercase}
+.promo-btn{padding:12px 24px;background:#1a2340;color:#fff;border:none;border-radius:0 8px 8px 0;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px}
+.sec-content{display:flex;gap:40px;align-items:flex-start}
+.sec-left{flex:1}
+.sec-right{width:220px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.illustration{width:200px;height:180px;position:relative}
+.illus-svg{width:100%;height:100%}
+.payment-options{display:flex;flex-direction:column;gap:16px;margin-top:4px}
+.payment-option{display:flex;align-items:flex-start;gap:12px;cursor:pointer}
+.payment-option input[type=radio]{margin-top:3px;accent-color:#1a2340;width:16px;height:16px;flex-shrink:0;cursor:pointer}
+.payment-label{font-size:14px;font-weight:600;color:#1a2340}
+.payment-desc{font-size:13px;color:#888;margin-top:4px;line-height:1.5;display:none}
+.payment-option.selected .payment-desc{display:block}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:#fff}
+.spc-btn-submit{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3);letter-spacing:.5px}
+    </style>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Facility</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Visa allocation</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder(s) information and Capital Structure</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Manager(s) information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Director(s) information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">UBO information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Nature of business</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate bank account</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Supporting document</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">14</div><div class="step-label">Payment</div></div>
+        <div class="sidebar-total">
+            <div class="sidebar-total-label">Total</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+                <span class="sidebar-total-currency">AED</span>
+                <span class="sidebar-total-amount" id="sidebarTotal">12,750.00</span>
+                <span class="info-circle">&#9432;</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">Company New</div>
+        <form t-att-action="payment_action if payment_action else '/spc/setup-new-company/apply/step14/submit'" method="post" id="step14Form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="service_type" t-att-value="service_type"/>
+            <input type="hidden" name="payment_method" id="paymentMethodInput" value="cash"/>
+
+            <!-- 01: Fee Summary -->
+            <div class="spc-section">
+                <div class="sec-row">
+                    <div class="sec-num">01</div>
+                    <div class="sec-body">
+                        <div class="sec-content">
+                            <div class="sec-left">
+                                <div class="sec-title">Summary &amp; breakdown of fees</div>
+                                <table class="fee-table">
+                                    <tr>
+                                        <td>Knowledge fee</td>
+                                        <td>AED 10.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sports activities</td>
+                                        <td>AED 0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Number of years</td>
+                                        <td id="yearsFee">AED 12,740.00</td>
+                                    </tr>
+                                    <tr class="subtotal">
+                                        <td>Sub-total</td>
+                                        <td id="subtotal">AED 12,750.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax</td>
+                                        <td>AED 0.00</td>
+                                    </tr>
+                                    <tr class="grandtotal">
+                                        <td>Grand total</td>
+                                        <td id="grandtotal">AED 12,750.00</td>
+                                    </tr>
+                                </table>
+                                <div class="promo-row">
+                                    <input type="text" class="promo-input" id="promoCode" name="promo_code" placeholder="HAVE A PROMO CODE?"/>
+                                    <button type="button" class="promo-btn" onclick="applyPromo()">Apply</button>
+                                </div>
+                            </div>
+                            <div class="sec-right">
+                                <div class="illustration">
+                                    <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" class="illus-svg">
+                                        <!-- Chair -->
+                                        <rect x="60" y="120" width="80" height="8" rx="4" fill="#c8a951" opacity=".7"/>
+                                        <rect x="70" y="128" width="8" height="40" rx="4" fill="#c8a951" opacity=".5"/>
+                                        <rect x="122" y="128" width="8" height="40" rx="4" fill="#c8a951" opacity=".5"/>
+                                        <rect x="60" y="70" width="12" height="55" rx="4" fill="#1a2340" opacity=".15"/>
+                                        <rect x="128" y="70" width="12" height="55" rx="4" fill="#1a2340" opacity=".15"/>
+                                        <!-- Seat back -->
+                                        <rect x="58" y="68" width="84" height="56" rx="8" fill="#e8f4f0"/>
+                                        <!-- Person body -->
+                                        <ellipse cx="115" cy="105" rx="22" ry="28" fill="#e8834a"/>
+                                        <!-- Head -->
+                                        <circle cx="118" cy="72" r="16" fill="#f5c5a0"/>
+                                        <!-- Hair -->
+                                        <ellipse cx="118" cy="60" rx="16" ry="10" fill="#7c5cbf"/>
+                                        <ellipse cx="102" cy="72" rx="8" ry="14" fill="#7c5cbf"/>
+                                        <!-- Laptop -->
+                                        <rect x="82" y="108" width="50" height="32" rx="4" fill="#1a2340" opacity=".8"/>
+                                        <rect x="84" y="110" width="46" height="28" rx="3" fill="#2a9d8f" opacity=".6"/>
+                                        <rect x="74" y="140" width="66" height="5" rx="2" fill="#1a2340" opacity=".4"/>
+                                        <!-- Plant -->
+                                        <rect x="148" y="100" width="8" height="60" rx="3" fill="#8B6914" opacity=".6"/>
+                                        <ellipse cx="148" cy="95" rx="18" ry="22" fill="#2a9d8f" opacity=".5"/>
+                                        <ellipse cx="158" cy="88" rx="12" ry="16" fill="#1abc9c" opacity=".4"/>
+                                        <ellipse cx="138" cy="90" rx="10" ry="14" fill="#2a9d8f" opacity=".6"/>
+                                        <!-- Flowers -->
+                                        <circle cx="148" cy="76" r="5" fill="#e91e8c" opacity=".7"/>
+                                        <circle cx="158" cy="74" r="4" fill="#c8a951" opacity=".8"/>
+                                        <circle cx="140" cy="78" r="4" fill="#e91e8c" opacity=".5"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02: Payment Method -->
+            <div class="spc-section">
+                <div class="sec-row">
+                    <div class="sec-num">02</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Choose your payment method</div>
+                        <div class="payment-options">
+                            <div class="payment-option selected" id="opt_cash" onclick="selectPayment('cash')">
+                                <input type="radio" name="payment_radio" value="cash" checked="checked"/>
+                                <div>
+                                    <div class="payment-label">Cash</div>
+                                    <div class="payment-desc">Payments reflect within one business day once cleared from SPC bank account, Cash Deposits reflects instantly once done at any of SPC branches.</div>
+                                </div>
+                            </div>
+                            <div class="payment-option" id="opt_cheque" onclick="selectPayment('cheque')">
+                                <input type="radio" name="payment_radio" value="cheque"/>
+                                <div>
+                                    <div class="payment-label">Cheque</div>
+                                    <div class="payment-desc">Please make the cheque payable to SPC Free Zone. Payments reflect within 3-5 business days after cheque clearance.</div>
+                                </div>
+                            </div>
+                            <div class="payment-option" id="opt_bank" onclick="selectPayment('bank')">
+                                <input type="radio" name="payment_radio" value="bank"/>
+                                <div>
+                                    <div class="payment-label">Bank Transfer</div>
+                                    <div class="payment-desc">Transfer directly to our bank account. Please use your application reference number as the transfer reference. Payments reflect within 1-2 business days.</div>
+                                </div>
+                            </div>
+                            <div class="payment-option" id="opt_card_manual" onclick="selectPayment('card_manual')">
+                                <input type="radio" name="payment_radio" value="card_manual"/>
+                                <div>
+                                    <div class="payment-label">Credit/Debit Card (Manual Link)</div>
+                                    <div class="payment-desc">A payment link will be sent to your registered email address. Please complete the payment within 24 hours of receiving the link.</div>
+                                </div>
+                            </div>
+                            <div class="payment-option" id="opt_card" onclick="selectPayment('card')">
+                                <input type="radio" name="payment_radio" value="card"/>
+                                <div>
+                                    <div class="payment-label">Credit/Debit Card</div>
+                                    <div class="payment-desc">Pay securely online using your credit or debit card. You will be redirected to our secure payment gateway.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/setup-new-company/apply/step13/' + service_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-submit">SUBMIT</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+function selectPayment(type) {
+    ['cash','cheque','bank','card_manual','card'].forEach(function(t) {
+        var opt = document.getElementById('opt_' + t);
+        if (opt) opt.classList.remove('selected');
+    });
+    var sel = document.getElementById('opt_' + type);
+    if (sel) sel.classList.add('selected');
+    document.getElementById('paymentMethodInput').value = type;
+    var radios = document.querySelectorAll('input[name="payment_radio"]');
+    radios.forEach(function(r) { r.checked = (r.value === type); });
+}
+
+function applyPromo() {
+    var code = document.getElementById('promoCode').value.trim();
+    if (!code) return;
+    // Promo logic placeholder — show feedback
+    var btn = document.querySelector('.promo-btn');
+    btn.textContent = 'Applied!';
+    btn.style.background = '#1abc9c';
+    setTimeout(function() {
+        btn.textContent = 'Apply';
+        btn.style.background = '#1a2340';
+    }, 2000);
+}
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

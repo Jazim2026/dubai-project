@@ -10,20 +10,28 @@
 <![CDATA[
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px;display:flex;align-items:center;gap:10px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
 .step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:28px}
 .spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
 .spc-section-row{display:flex;gap:24px}
 .spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
@@ -123,22 +131,32 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </style>
 </head>
 <body>
-<div class="layout">
-    <div class="sidebar">
+<div style="display:flex;min-height:100vh">
+    <div class="progress-sidebar">
         <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <t t-if="steps">
             <t t-foreach="steps" t-as="s">
                 <t t-set="idx" t-value="s_index + 1"/>
-                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
-                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
-                    <div class="step-label"><t t-esc="s"/></div>
+                <div class="progress-step">
+                    <t t-if="idx == current_step">
+                        <div class="ps-num active"><t t-esc="idx"/></div>
+                        <div class="ps-label active"><t t-esc="s"/></div>
+                    </t>
+                    <t t-elif="idx &lt; current_step">
+                        <div class="ps-num done">&#10003;</div>
+                        <div class="ps-label"><t t-esc="s"/></div>
+                    </t>
+                    <t t-else="">
+                        <div class="ps-num"><t t-esc="idx"/></div>
+                        <div class="ps-label"><t t-esc="s"/></div>
+                    </t>
                 </div>
             </t>
         </t>
     </div>
 
-    <div class="main">
+    <div class="form-main">
         <div class="form-title">Company New</div>
         <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step7/submit'" method="post" enctype="multipart/form-data" id="step7Form">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
@@ -152,7 +170,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                         <h4 class="spc-section-title">How many managers will be associated with the company</h4>
                         <div class="count-field">
                             <label>Number of managers</label>
-                            <input type="number" id="managerCount" name="manager_count" class="count-input" min="1" max="10" value="1" onchange="updateManagerList(this.value)"/>
+                            <input type="number" id="managerCount" name="manager_count" class="count-input" min="1" max="10" t-att-value="mgr_count"
+                                t-att-onchange="'var c=this.value;window.location.href=\'' + (step_base_url or '/spc/setup-new-company/apply/step7/') + '\'+ document.querySelector(\'[name=service_type]\').value+\'?manager_count=\'+c;'"
+                                t-att-onkeydown="'if(event.key===\'Enter\'){event.preventDefault();var c=this.value;window.location.href=\'' + (step_base_url or '/spc/setup-new-company/apply/step7/') + '\'+ document.querySelector(\'[name=service_type]\').value+\'?manager_count=\'+c;}'"/>
                         </div>
                     </div>
                 </div>
@@ -165,23 +185,23 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                     <div class="spc-section-body">
                         <h4 class="spc-section-title">Manager details</h4>
                         <div id="managerList">
-                            <!-- Manager 1 accordion -->
-                            <div class="accordion" id="mgr_acc_1">
-                                <div class="accordion-header" onclick="toggleMgrAccordion(1)">
-                                    <span>Manager 1</span>
-                                    <span class="accordion-arrow open" id="mgr_arrow_1">&#9660;</span>
+                            <t t-foreach="mgr_range" t-as="mgr_num">
+                                <div class="accordion" t-att-id="'mgr_acc_' + str(mgr_num)">
+                                <div class="accordion-header" t-att-onclick="'toggleMgrAccordion(' + str(mgr_num) + ')'">
+                                    <span>Manager <t t-esc="mgr_num"/></span>
+                                    <span class="accordion-arrow open" t-att-id="'mgr_arrow_' + str(mgr_num)">&#9660;</span>
                                 </div>
-                                <div class="accordion-body open" id="mgr_body_1">
+                                <div class="accordion-body open" t-att-id="'mgr_body_' + str(mgr_num)">
                                     <div class="manager-card">
-                                        <div class="delete-mgr-btn" onclick="deleteManager(1)">&#128465; Delete Manager</div>
+                                        <div class="delete-mgr-btn" t-att-onclick="'deleteManager(' + str(mgr_num) + ')'">&#128465; Delete Manager</div>
 
                                         <!-- Define manager type -->
                                         <div class="sub-section">
                                             <span class="question-label">Define the manager details from one of the following selections</span>
                                             <div class="radio-group" style="flex-wrap:wrap;gap:16px">
-                                                <label class="radio-label"><input type="radio" name="mgr_1_define" value="shareholder" onchange="toggleMgrDefine(1,'shareholder')"/> Shareholder of this entity</label>
-                                                <label class="radio-label"><input type="radio" name="mgr_1_define" value="spc_shareholder" onchange="toggleMgrDefine(1,'spc_shareholder')"/> Current shareholder of another entity in SPC FZ</label>
-                                                <label class="radio-label"><input type="radio" name="mgr_1_define" value="add_new" onchange="toggleMgrDefine(1,'add_new')"/> Add new</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_define'" value="shareholder" t-att-onchange="'toggleMgrDefine(' + str(mgr_num) + ',\'shareholder\')'"/> Shareholder of this entity</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_define'" value="spc_shareholder" t-att-onchange="'toggleMgrDefine(' + str(mgr_num) + ',\'spc_shareholder\')'"/> Current shareholder of another entity in SPC FZ</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_define'" value="add_new" t-att-onchange="'toggleMgrDefine(' + str(mgr_num) + ',\'add_new\')'"/> Add new</label>
                                             </div>
                                         </div>
 
@@ -192,10 +212,10 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                         </div>
 
                                         <!-- Option A: Shareholder of this entity -->
-                                        <div id="mgr_1_sh_section" class="hidden sub-section">
+                                        <div t-att-id="'mgr_' + str(mgr_num) + '_sh_section'" class="hidden sub-section">
                                             <div class="sh-dropdown-wrap">
                                                 <label>Choose existing shareholder</label>
-                                                <select class="sh-dropdown" name="mgr_1_sh_select">
+                                                <select class="sh-dropdown" t-att-name="'mgr_' + str(mgr_num) + '_sh_select'">
                                                     <option value="">Select Shareholder</option>
                                                     <!-- populated dynamically if needed -->
                                                 </select>
@@ -203,43 +223,43 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                         </div>
 
                                         <!-- Option B: Current shareholder of another entity in SPC FZ -->
-                                        <div id="mgr_1_spc_sh_section" class="hidden sub-section">
+                                        <div t-att-id="'mgr_' + str(mgr_num) + '_spc_sh_section'" class="hidden sub-section">
                                             <div style="margin-bottom:16px">
                                                 <span class="question-label">Does the Manager have a Nominee?</span>
                                                 <div class="radio-group">
-                                                    <label class="radio-label"><input type="radio" name="mgr_1_nominee_spc" value="yes"/> Yes</label>
-                                                    <label class="radio-label"><input type="radio" name="mgr_1_nominee_spc" value="no" checked="checked"/> No</label>
+                                                    <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_nominee_spc'" value="yes"/> Yes</label>
+                                                    <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_nominee_spc'" value="no" checked="checked"/> No</label>
                                                 </div>
                                             </div>
                                             <span class="question-label">Existing user?</span>
                                             <div style="margin-bottom:12px">
                                                 <div class="field-flat" style="margin-bottom:16px">
-                                                    <input class="flat-input" type="email" name="mgr_1_spc_email" placeholder="Email"/>
+                                                    <input class="flat-input" type="email" t-att-name="'mgr_' + str(mgr_num) + '_spc_email'" placeholder="Email"/>
                                                 </div>
                                                 <div class="field-flat">
-                                                    <input class="flat-input" type="text" name="mgr_1_spc_passport" placeholder="Passport number / Entity registration number"/>
+                                                    <input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_spc_passport'" placeholder="Passport number / Entity registration number"/>
                                                 </div>
                                             </div>
                                             <button type="button" class="save-btn" style="background:transparent;border:1px solid #1a2340;color:#1a2340;padding:10px 24px;letter-spacing:1px;font-size:13px">SEARCH</button>
                                         </div>
 
                                         <!-- Option C: Add new — full form -->
-                                        <div id="mgr_1_add_new_section" class="hidden">
+                                        <div t-att-id="'mgr_' + str(mgr_num) + '_add_new_section'" class="hidden">
 
                                             <!-- Passport uploads -->
                                             <div class="upload-row">
                                                 <div class="upload-item">
                                                     <span class="field-label-top">Upload copy of passport</span>
-                                                    <div class="upload-area" onclick="document.getElementById('mgr_1_passport_file').click()">
-                                                        <input type="file" id="mgr_1_passport_file" name="mgr_1_passport_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                    <div class="upload-area" t-att-onclick="'document.getElementById(\'mgr_' + str(mgr_num) + '_passport_file\').click()'">
+                                                        <input type="file" t-att-id="'mgr_' + str(mgr_num) + '_passport_file'" t-att-name="'mgr_' + str(mgr_num) + '_passport_file'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                         <div class="upload-icon">&#11014;</div>
                                                         <div class="upload-text">Upload copy of passport</div>
                                                     </div>
                                                 </div>
                                                 <div class="upload-item">
                                                     <span class="field-label-top">Upload special page of passport</span>
-                                                    <div class="upload-area" onclick="document.getElementById('mgr_1_passport_sp').click()">
-                                                        <input type="file" id="mgr_1_passport_sp" name="mgr_1_passport_sp" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                    <div class="upload-area" t-att-onclick="'document.getElementById(\'mgr_' + str(mgr_num) + '_passport_sp\').click()'">
+                                                        <input type="file" t-att-id="'mgr_' + str(mgr_num) + '_passport_sp'" t-att-name="'mgr_' + str(mgr_num) + '_passport_sp'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                         <div class="upload-icon">&#11014;</div>
                                                         <div class="upload-text">Upload special page of passport</div>
                                                     </div>
@@ -250,13 +270,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                             <div class="sub-section">
                                                 <div class="sub-title">Passport details</div>
                                                 <div class="two-col">
-                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_first_name" placeholder="First name"/></div>
-                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_last_name" placeholder="Last name"/></div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_first_name'" placeholder="First name"/></div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_last_name'" placeholder="Last name"/></div>
                                                 </div>
                                                 <div style="height:16px"></div>
                                                 <div class="select-flat-wrap" style="margin-bottom:16px">
                                                     <label>Nationality</label>
-                                                    <select class="flat-select" name="mgr_1_nationality" id="mgr_1_nationality" onchange="showFlatClear('mgr_1_nat_clear',this)">
+                                                    <select class="flat-select" t-att-name="'mgr_' + str(mgr_num) + '_nationality'" t-att-id="'mgr_' + str(mgr_num) + '_nationality'" t-att-onchange="'showFlatClear(\'mgr_' + str(mgr_num) + '_nat_clear\',this)'">
                                                         <option value=""></option>
                                                         <option value="AE">United Arab Emirates</option>
                                                         <option value="IN">India</option>
@@ -266,19 +286,19 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                                         <option value="other">Other</option>
                                                     </select>
                                                     <span class="flat-arrow">&#9660;</span>
-                                                    <button type="button" class="flat-clear hidden" id="mgr_1_nat_clear" onclick="clearFlatSelect('mgr_1_nationality','mgr_1_nat_clear')">&#10005;</button>
+                                                    <button type="button" class="flat-clear hidden" t-att-id="'mgr_' + str(mgr_num) + '_nat_clear'" t-att-onclick="'clearFlatSelect(\'mgr_' + str(mgr_num) + '_nationality\',\'mgr_' + str(mgr_num) + '_nat_clear\')'">&#10005;</button>
                                                 </div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you have an alternate nationality?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="mgr_1_alt_nat" value="yes" onchange="toggleMgrAltNat(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="mgr_1_alt_nat" value="no" checked="checked" onchange="toggleMgrAltNat(1,'no')"/> No</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_alt_nat'" value="yes" t-att-onchange="'toggleMgrAltNat(' + str(mgr_num) + ',\'yes\')'"/> Yes</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_alt_nat'" value="no" checked="checked" t-att-onchange="'toggleMgrAltNat(' + str(mgr_num) + ',\'no\')'"/> No</label>
                                                     </div>
                                                 </div>
-                                                <div id="mgr_1_alt_nat_fields" class="hidden two-col" style="margin-bottom:16px">
+                                                <div t-att-id="'mgr_' + str(mgr_num) + '_alt_nat_fields'" class="hidden two-col" style="margin-bottom:16px">
                                                     <div class="select-flat-wrap">
                                                         <label>Alternate nationality</label>
-                                                        <select class="flat-select" name="mgr_1_alt_nationality">
+                                                        <select class="flat-select" t-att-name="'mgr_' + str(mgr_num) + '_alt_nationality'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -286,19 +306,19 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                                         </select>
                                                         <span class="flat-arrow">&#9660;</span>
                                                     </div>
-                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_alt_passport_no" placeholder="Alternate passport number"/></div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_alt_passport_no'" placeholder="Alternate passport number"/></div>
                                                 </div>
                                                 <div class="two-col" style="margin-bottom:16px">
                                                     <div class="date-flat-wrap">
                                                         <span class="date-flat-label">Date of birth</span>
-                                                        <input type="date" class="date-flat" name="mgr_1_dob"/>
+                                                        <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_dob'"/>
                                                     </div>
-                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_pob" placeholder="Place of birth"/></div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_pob'" placeholder="Place of birth"/></div>
                                                 </div>
                                                 <div class="two-col" style="margin-bottom:16px">
                                                     <div class="select-flat-wrap">
                                                         <label>Country of birth</label>
-                                                        <select class="flat-select" name="mgr_1_cob" id="mgr_1_cob" onchange="showFlatClear('mgr_1_cob_clear',this)">
+                                                        <select class="flat-select" t-att-name="'mgr_' + str(mgr_num) + '_cob'" t-att-id="'mgr_' + str(mgr_num) + '_cob'" t-att-onchange="'showFlatClear(\'mgr_' + str(mgr_num) + '_cob_clear\',this)'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -308,17 +328,17 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                                             <option value="other">Other</option>
                                                         </select>
                                                         <span class="flat-arrow">&#9660;</span>
-                                                        <button type="button" class="flat-clear hidden" id="mgr_1_cob_clear" onclick="clearFlatSelect('mgr_1_cob','mgr_1_cob_clear')">&#10005;</button>
+                                                        <button type="button" class="flat-clear hidden" t-att-id="'mgr_' + str(mgr_num) + '_cob_clear'" t-att-onclick="'clearFlatSelect(\'mgr_' + str(mgr_num) + '_cob\',\'mgr_' + str(mgr_num) + '_cob_clear\')'">&#10005;</button>
                                                     </div>
                                                     <div class="date-flat-wrap">
                                                         <span class="date-flat-label">Date of issue</span>
-                                                        <input type="date" class="date-flat" name="mgr_1_doi"/>
+                                                        <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_doi'"/>
                                                     </div>
                                                 </div>
                                                 <div class="two-col">
                                                     <div class="date-flat-wrap">
                                                         <span class="date-flat-label">Date of expiry</span>
-                                                        <input type="date" class="date-flat" name="mgr_1_doe"/>
+                                                        <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_doe'"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -329,45 +349,45 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                                 <div class="mobile-flat-wrap" style="margin-bottom:16px">
                                                     <span class="mobile-flat-label">Mobile number</span>
                                                     <div class="mobile-flat-inner">
-                                                        <button type="button" class="flag-btn-flat" id="mgr_1_flag_btn" onclick="toggleMgrFlagMenu(1)">&#127482;&#127462; +971 &#9660;</button>
-                                                        <input type="tel" class="mobile-number-flat" name="mgr_1_mobile" placeholder="Mobile number"/>
+                                                        <button type="button" class="flag-btn-flat" t-att-id="'mgr_' + str(mgr_num) + '_flag_btn'" t-att-onclick="'toggleMgrFlagMenu(' + str(mgr_num) + ')'">&#127482;&#127462; +971 &#9660;</button>
+                                                        <input type="tel" class="mobile-number-flat" t-att-name="'mgr_' + str(mgr_num) + '_mobile'" placeholder="Mobile number"/>
                                                     </div>
-                                                    <div id="mgr_1_flag_menu" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
-                                                        <div onclick="setMgrFlag(1,'&#127482;&#127462;','+971')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
-                                                        <div onclick="setMgrFlag(1,'&#127470;&#127475;','+91')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
-                                                        <div onclick="setMgrFlag(1,'&#127477;&#127472;','+92')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
-                                                        <div onclick="setMgrFlag(1,'&#127468;&#127463;','+44')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
-                                                        <div onclick="setMgrFlag(1,'&#127482;&#127480;','+1')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
+                                                    <div t-att-id="'mgr_' + str(mgr_num) + '_flag_menu'" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                                                        <div onclick="setMgrFlag(this.closest('[id^=mgr_acc_]').id.replace('mgr_acc_',''),'&#127482;&#127462;','+971')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
+                                                        <div onclick="setMgrFlag(this.closest('[id^=mgr_acc_]').id.replace('mgr_acc_',''),'&#127470;&#127475;','+91')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
+                                                        <div onclick="setMgrFlag(this.closest('[id^=mgr_acc_]').id.replace('mgr_acc_',''),'&#127477;&#127472;','+92')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
+                                                        <div onclick="setMgrFlag(this.closest('[id^=mgr_acc_]').id.replace('mgr_acc_',''),'&#127468;&#127463;','+44')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
+                                                        <div onclick="setMgrFlag(this.closest('[id^=mgr_acc_]').id.replace('mgr_acc_',''),'&#127482;&#127480;','+1')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you have secondary contact number?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="mgr_1_secondary" value="yes" onchange="toggleMgrSecondary(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="mgr_1_secondary" value="no" onchange="toggleMgrSecondary(1,'no')"/> No</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_secondary'" value="yes" t-att-onchange="'toggleMgrSecondary(' + str(mgr_num) + ',\'yes\')'"/> Yes</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_secondary'" value="no" t-att-onchange="'toggleMgrSecondary(' + str(mgr_num) + ',\'no\')'"/> No</label>
                                                     </div>
                                                 </div>
-                                                <div id="mgr_1_secondary_field" class="hidden" style="margin-bottom:16px">
+                                                <div t-att-id="'mgr_' + str(mgr_num) + '_secondary_field'" class="hidden" style="margin-bottom:16px">
                                                     <div class="mobile-flat-wrap">
                                                         <span class="mobile-flat-label">Secondary mobile number</span>
                                                         <div class="mobile-flat-inner">
                                                             <button type="button" class="flag-btn-flat">&#127482;&#127462; +971 &#9660;</button>
-                                                            <input type="tel" class="mobile-number-flat" name="mgr_1_mobile2"/>
+                                                            <input type="tel" class="mobile-number-flat" t-att-name="'mgr_' + str(mgr_num) + '_mobile2'"/>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="field-flat" style="margin-bottom:16px"><input class="flat-input" type="email" name="mgr_1_email" placeholder="E-mail ID"/></div>
+                                                <div class="field-flat" style="margin-bottom:16px"><input class="flat-input" type="email" t-att-name="'mgr_' + str(mgr_num) + '_email'" placeholder="E-mail ID"/></div>
                                                 <div style="margin-bottom:16px">
                                                     <div class="field-flat">
-                                                        <textarea class="flat-input" name="mgr_1_address" maxlength="100" rows="2" placeholder="Current address" oninput="updateMgrCount(this,'mgr_1_addr_count')"></textarea>
+                                                        <textarea class="flat-input" t-att-name="'mgr_' + str(mgr_num) + '_address'" maxlength="100" rows="2" placeholder="Current address" t-att-oninput="'updateMgrCount(this,\'mgr_' + str(mgr_num) + '_addr_count\')'"></textarea>
                                                     </div>
-                                                    <div style="text-align:right;font-size:11px;color:#aaa" id="mgr_1_addr_count">0 / 100</div>
+                                                    <div style="text-align:right;font-size:11px;color:#aaa" t-att-id="'mgr_' + str(mgr_num) + '_addr_count'">0 / 100</div>
                                                 </div>
                                                 <div class="two-col" style="margin-bottom:16px">
-                                                    <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_city" placeholder="City"/></div>
+                                                    <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_city'" placeholder="City"/></div>
                                                     <div class="select-flat-wrap">
                                                         <label>Country</label>
-                                                        <select class="flat-select" name="mgr_1_country" id="mgr_1_country" onchange="showFlatClear('mgr_1_country_clear',this)">
+                                                        <select class="flat-select" t-att-name="'mgr_' + str(mgr_num) + '_country'" t-att-id="'mgr_' + str(mgr_num) + '_country'" t-att-onchange="'showFlatClear(\'mgr_' + str(mgr_num) + '_country_clear\',this)'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -377,51 +397,51 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                                             <option value="other">Other</option>
                                                         </select>
                                                         <span class="flat-arrow">&#9660;</span>
-                                                        <button type="button" class="flat-clear hidden" id="mgr_1_country_clear" onclick="clearFlatSelect('mgr_1_country','mgr_1_country_clear')">&#10005;</button>
+                                                        <button type="button" class="flat-clear hidden" t-att-id="'mgr_' + str(mgr_num) + '_country_clear'" t-att-onclick="'clearFlatSelect(\'mgr_' + str(mgr_num) + '_country\',\'mgr_' + str(mgr_num) + '_country_clear\')'">&#10005;</button>
                                                     </div>
                                                 </div>
                                                 <div class="date-flat-wrap" style="margin-bottom:16px">
                                                     <span class="date-flat-label">Manager joining date</span>
-                                                    <input type="date" class="date-flat" name="mgr_1_joining_date"/>
+                                                    <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_joining_date'"/>
                                                 </div>
 
                                                 <!-- UAE resident -->
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Is Manager a resident of the UAE?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="mgr_1_uae_resident" value="yes" onchange="toggleMgrUaeResident(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="mgr_1_uae_resident" value="no" onchange="toggleMgrUaeResident(1,'no')"/> No</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_uae_resident'" value="yes" t-att-onchange="'toggleMgrUaeResident(' + str(mgr_num) + ',\'yes\')'"/> Yes</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_uae_resident'" value="no" t-att-onchange="'toggleMgrUaeResident(' + str(mgr_num) + ',\'no\')'"/> No</label>
                                                     </div>
                                                 </div>
 
                                                 <!-- UAE resident = No → upload entry/tourist visa + non-resident fields -->
-                                                <div id="mgr_1_non_resident_section" class="hidden">
+                                                <div t-att-id="'mgr_' + str(mgr_num) + '_non_resident_section'" class="hidden">
                                                     <div class="info-link-box" style="margin-top:8px">
                                                         <p>Please find instructional video on how to upload UID</p>
                                                         <a href="https://youtu.be/T536np8xm_w" target="_blank">https://youtu.be/T536np8xm_w</a>
                                                     </div>
                                                     <div class="upload-item" style="margin-bottom:16px">
                                                         <span class="field-label-top">Upload UAE entry visa or tourist visa</span>
-                                                        <div class="upload-area" onclick="document.getElementById('mgr_1_entry_visa').click()">
-                                                            <input type="file" id="mgr_1_entry_visa" name="mgr_1_entry_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <div class="upload-area" t-att-onclick="'document.getElementById(\'mgr_' + str(mgr_num) + '_entry_visa\').click()'">
+                                                            <input type="file" t-att-id="'mgr_' + str(mgr_num) + '_entry_visa'" t-att-name="'mgr_' + str(mgr_num) + '_entry_visa'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                             <div class="upload-icon">&#11014;</div>
                                                             <div class="upload-text">Upload UAE entry visa or tourist visa</div>
                                                         </div>
                                                     </div>
-                                                    <div class="field-flat" style="margin-bottom:16px"><input class="flat-input" type="text" name="mgr_1_id_number" placeholder="ID number"/></div>
+                                                    <div class="field-flat" style="margin-bottom:16px"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_id_number'" placeholder="ID number"/></div>
                                                     <div class="two-col" style="margin-bottom:16px">
                                                         <div class="date-flat-wrap">
                                                             <span class="date-flat-label">ID issue date</span>
-                                                            <input type="date" class="date-flat" name="mgr_1_id_issue_date"/>
+                                                            <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_id_issue_date'"/>
                                                         </div>
                                                         <div class="date-flat-wrap">
                                                             <span class="date-flat-label">ID expiry date</span>
-                                                            <input type="date" class="date-flat" name="mgr_1_id_expiry_date"/>
+                                                            <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_id_expiry_date'"/>
                                                         </div>
                                                     </div>
                                                     <div class="select-flat-wrap" style="margin-bottom:16px">
                                                         <label>Country of Residence</label>
-                                                        <select class="flat-select" name="mgr_1_country_residence" id="mgr_1_country_res" onchange="showFlatClear('mgr_1_cres_clear',this)">
+                                                        <select class="flat-select" t-att-name="'mgr_' + str(mgr_num) + '_country_residence'" t-att-id="'mgr_' + str(mgr_num) + '_country_res'" t-att-onchange="'showFlatClear(\'mgr_' + str(mgr_num) + '_cres_clear\',this)'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -431,66 +451,66 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                                             <option value="other">Other</option>
                                                         </select>
                                                         <span class="flat-arrow">&#9660;</span>
-                                                        <button type="button" class="flat-clear hidden" id="mgr_1_cres_clear" onclick="clearFlatSelect('mgr_1_country_res','mgr_1_cres_clear')">&#10005;</button>
+                                                        <button type="button" class="flat-clear hidden" t-att-id="'mgr_' + str(mgr_num) + '_cres_clear'" t-att-onclick="'clearFlatSelect(\'mgr_' + str(mgr_num) + '_country_res\',\'mgr_' + str(mgr_num) + '_cres_clear\')'">&#10005;</button>
                                                     </div>
                                                     <div style="margin-bottom:16px">
                                                         <span class="question-label">Do you or your company operate elsewhere?</span>
                                                         <div class="radio-group">
-                                                            <label class="radio-label"><input type="radio" name="mgr_1_operate_elsewhere" value="yes"/> Yes</label>
-                                                            <label class="radio-label"><input type="radio" name="mgr_1_operate_elsewhere" value="no" checked="checked"/> No</label>
+                                                            <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_operate_elsewhere'" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_operate_elsewhere'" value="no" checked="checked"/> No</label>
                                                         </div>
                                                     </div>
                                                     <div style="margin-bottom:16px">
                                                         <span class="question-label">Does the Manager have a Nominee?</span>
                                                         <div class="radio-group">
-                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee" value="yes"/> Yes</label>
-                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee" value="no"/> No</label>
+                                                            <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_nominee'" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_nominee'" value="no"/> No</label>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                                 <!-- UAE resident = Yes → resident fields -->
-                                                <div id="mgr_1_resident_section" class="hidden">
+                                                <div t-att-id="'mgr_' + str(mgr_num) + '_resident_section'" class="hidden">
                                                     <div class="upload-row" style="margin-top:8px">
                                                         <div class="upload-item">
                                                             <span class="field-label-top">Upload UAE resident visa</span>
-                                                            <div class="upload-area" onclick="document.getElementById('mgr_1_res_visa').click()">
-                                                                <input type="file" id="mgr_1_res_visa" name="mgr_1_res_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                            <div class="upload-area" t-att-onclick="'document.getElementById(\'mgr_' + str(mgr_num) + '_res_visa\').click()'">
+                                                                <input type="file" t-att-id="'mgr_' + str(mgr_num) + '_res_visa'" t-att-name="'mgr_' + str(mgr_num) + '_res_visa'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                                 <div class="upload-icon">&#11014;</div>
                                                                 <div class="upload-text">Upload UAE resident visa</div>
                                                             </div>
                                                         </div>
                                                         <div class="upload-item">
                                                             <span class="field-label-top">Upload emirates ID</span>
-                                                            <div class="upload-area" onclick="document.getElementById('mgr_1_eid').click()">
-                                                                <input type="file" id="mgr_1_eid" name="mgr_1_eid" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                            <div class="upload-area" t-att-onclick="'document.getElementById(\'mgr_' + str(mgr_num) + '_eid\').click()'">
+                                                                <input type="file" t-att-id="'mgr_' + str(mgr_num) + '_eid'" t-att-name="'mgr_' + str(mgr_num) + '_eid'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                                 <div class="upload-icon">&#11014;</div>
                                                                 <div class="upload-text">Upload emirates ID</div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="two-col" style="margin-bottom:16px">
-                                                        <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_visa_no" placeholder="Resident visa number"/></div>
-                                                        <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_eid_no" placeholder="Emirates ID number"/></div>
+                                                        <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_visa_no'" placeholder="Resident visa number"/></div>
+                                                        <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_eid_no'" placeholder="Emirates ID number"/></div>
                                                     </div>
                                                     <div class="two-col" style="margin-bottom:16px">
-                                                        <div class="field-flat"><input class="flat-input" type="text" name="mgr_1_uid" placeholder="Unified number (UID)"/></div>
+                                                        <div class="field-flat"><input class="flat-input" type="text" t-att-name="'mgr_' + str(mgr_num) + '_uid'" placeholder="Unified number (UID)"/></div>
                                                         <div class="date-flat-wrap">
                                                             <span class="date-flat-label">Emirates ID issue date</span>
-                                                            <input type="date" class="date-flat" name="mgr_1_eid_issue"/>
+                                                            <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_eid_issue'"/>
                                                         </div>
                                                     </div>
                                                     <div class="two-col" style="margin-bottom:16px">
                                                         <div class="date-flat-wrap">
                                                             <span class="date-flat-label">Emirates ID expiry date</span>
-                                                            <input type="date" class="date-flat" name="mgr_1_eid_expiry"/>
+                                                            <input type="date" class="date-flat" t-att-name="'mgr_' + str(mgr_num) + '_eid_expiry'"/>
                                                         </div>
                                                     </div>
                                                     <div style="margin-bottom:16px">
                                                         <span class="question-label">Does the Manager have a Nominee?</span>
                                                         <div class="radio-group">
-                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee_res" value="yes"/> Yes</label>
-                                                            <label class="radio-label"><input type="radio" name="mgr_1_nominee_res" value="no"/> No</label>
+                                                            <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_nominee_res'" value="yes"/> Yes</label>
+                                                            <label class="radio-label"><input type="radio" t-att-name="'mgr_' + str(mgr_num) + '_nominee_res'" value="no"/> No</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -498,10 +518,11 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                                         </div>
                                     </div>
                                     <div class="save-row">
-                                        <button type="button" class="save-btn" onclick="saveMgr(1)">SAVE</button>
+                                        <button type="button" class="save-btn" t-att-onclick="'saveMgr(' + str(mgr_num) + ')'">SAVE</button>
                                     </div>
                                 </div>
-                            </div>
+                                </div>
+                            </t>
                         </div>
                     </div>
                 </div>

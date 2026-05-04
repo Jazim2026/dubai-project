@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<template id="cl_css" name="CL CSS">
+<style>
+.radio-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.radio-card{border:1.5px solid #e5e7eb;border-radius:8px;padding:12px 20px;cursor:pointer;font-size:13px;color:#374151;display:flex;align-items:center;gap:8px;transition:all .2s}
+.radio-card.selected{border-color:#1abc9c;background:#f0fdf9;color:#1a2340;font-weight:600}
+.flat-input{width:100%;padding:10px 0;border:none;border-bottom:1.5px solid #d1d5db;font-size:14px;color:#1a2340;outline:none;background:transparent;display:block;margin-bottom:16px}
+.flat-input:focus{border-bottom-color:#1abc9c}
+.flat-select{width:100%;padding:10px 0;border:none;border-bottom:1.5px solid #d1d5db;font-size:14px;color:#1a2340;outline:none;background:transparent;cursor:pointer}
+.sel-row{position:relative;margin-bottom:20px}
+.sel-clear{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:18px;height:18px;background:#6b7280;border-radius:50%;color:#fff;border:none;cursor:pointer;font-size:11px}
+.info-box{background:#fef3c7;border-left:3px solid #f59e0b;padding:12px 16px;border-radius:6px;font-size:12px;color:#92400e;margin-top:12px;display:flex;gap:8px}
+.field-lbl{font-size:12px;color:#6b7280;font-weight:500;margin-top:2px}
+.upload-area{border:2px solid #1abc9c;border-radius:8px;padding:20px;text-align:center;cursor:pointer;background:#fff;max-width:260px}
+.upload-icon{font-size:22px;color:#1a6fa8;margin-bottom:6px}
+.upload-text{font-size:13px;color:#1a6fa8;font-weight:500}
+.upload-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px}
+.upload-item{display:flex;flex-direction:column;gap:6px}
+.upload-item .field-label-top{font-size:13px;color:#555;font-weight:600}
+</style>
+</template>
+
+<template id="cl_sidebar" name="CL Sidebar">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">YOUR PROGRESS</div>
+    <t t-foreach="steps" t-as="step">
+        <div class="progress-step" t-attf-class="progress-step #{step_index + 1 &lt; current_step and 'done' or (step_index + 1 == current_step and 'active' or '')}">
+            <div class="step-num" t-attf-class="step-num">
+                <t t-if="step_index + 1 &lt; current_step">&#10003;</t>
+                <t t-else=""><t t-out="step_index + 1"/></t>
+            </div>
+            <div class="step-label" t-attf-class="step-label #{step_index + 1 == current_step and 'active' or ''}">
+                <t t-out="step"/>
+            </div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">360.00</div></div>
+    <div class="sidebar-links">
+        <a href="/spc/company-management/corporate-letters/save-later">SAVE &amp; CONTINUE LATER</a>
+        <a href="/spc/company-management/corporate-letters/cancel" style="color:#f87171">CANCEL APPLICATION</a>
+    </div>
+</div>
+</template>
+
+<template id="template_cl_main" name="CL Main">
+<html><head><meta charset="utf-8"/><title>Corporate Letters</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+</div>
+<div class="main">
+<div class="form-title">Corporate Letters</div>
+<div style="font-size:13px;font-weight:600;color:#1a2340;margin-bottom:12px">Corporate Letters/NOC</div>
+<a href="/spc/company-management/corporate-letters/additional" style="display:inline-block;width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);text-decoration:none">
+    <div style="width:100%;height:140px;background:linear-gradient(135deg,#1a2340,#2d6a9f);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;text-align:center">
+        <div><div style="font-size:28px;margin-bottom:4px">&#9993;</div><div>Corporate<br/>Letters</div></div>
+    </div>
+    <div style="padding:16px">
+        <span style="background:#1abc9c;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;margin-bottom:6px;display:inline-block">New</span>
+        <div style="font-size:14px;font-weight:700;color:#1a2340;margin-bottom:4px">Corporate Letters</div>
+        <div style="font-size:12px;color:#6b7280">Starting from AED 360</div>
+    </div>
+</a>
+</div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cl_service_detail" name="CL Service Detail">
+<html><head><meta charset="utf-8"/><title>Corporate Letters - New</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+</div>
+<div class="main">
+    <a href="/spc/company-management" class="back-link">&#8592; BACK TO COMPANY MANAGEMENT</a>
+    <div class="page-header">
+        <div class="page-title">Corporate Letters - New</div>
+        <a href="/spc/company-management/apply/corporate_letters" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a2340 60%,#2d6a9f)">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">Corporate<br/>Letters</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px">Description</h4>
+        <hr class="detail-divider"/>
+        <p class="detail-desc">Companies can request corporate letters from SPC Free Zone for specific external transactions. The request must include the letter's purpose and relevant details.</p>
+        <h4 style="font-weight:700;margin:16px 0 8px">Requirements</h4>
+        <hr class="detail-divider"/>
+        <ol style="padding-left:20px;font-size:13px;color:#374151;line-height:2.2">
+            <li>Valid Trade License</li>
+            <li>Purpose of the letter</li>
+            <li>Supporting documents (if applicable)</li>
+            <li>Payment</li>
+        </ol>
+        <h4 style="font-weight:700;margin:16px 0 8px">Timeline</h4>
+        <hr class="detail-divider"/>
+        <p class="detail-desc">3-5 business days</p>
+        <h4 style="font-weight:700;margin:16px 0 8px">SPC fees</h4>
+        <hr class="detail-divider"/>
+        <p class="detail-desc">AED 360</p>
+    </div>
+</div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cl_step1" name="CL Step1">
+<html><head><meta charset="utf-8"/><title>Corporate Letters</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<t t-call="spc_portal.cl_css"/>
+</head><body>
+<div class="layout">
+<t t-call="spc_portal.cl_sidebar"/>
+<div class="main">
+<div class="form-title">Corporate Letters</div>
+<form method="post" action="/spc/company-management/corporate-letters/step1/submit" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+            <div class="sec-title">Select type of corporate letter</div>
+            <div class="sel-row">
+                <select class="flat-select" name="company_name">
+                    <option value="">Select company</option>
+                    <t t-foreach="companies" t-as="comp">
+                        <option t-att-value="comp" t-att-selected="cl_data.get('company_name')==comp and 'selected' or False"><t t-out="comp"/></option>
+                    </t>
+                </select>
+            </div>
+            <div class="sel-row">
+                <select class="flat-select" name="letter_type" id="letterType" onchange="handleLetterType(this.value)">
+                    <option value="">Corporate letter type</option>
+                    <option value="noc">No objection certificate</option>
+                    <option value="other">Other</option>
+                    <option value="incumbency">Certificate of Incumbency</option>
+                    <option value="good_standing">Certificate of Good Standing</option>
+                </select>
+                <button type="button" class="sel-clear" onclick="document.getElementById('letterType').value='';handleLetterType('')">&#215;</button>
+            </div>
+            <div id="otherNameField" style="display:none">
+                <input class="flat-input" type="text" name="other_letter_name" placeholder="Enter the name of the corporate letter"/>
+            </div>
+            <div>
+                <input class="flat-input" type="date" name="license_expiry_date" t-att-value="cl_data.get('license_expiry_date','')"/>
+                <div class="field-lbl">License Expiry Date</div>
+            </div>
+            <div class="info-box">
+                <span>i</span>
+                <span>As per SPC rules, ancillary services are frozen 30 days before license expiry. Renew your license to apply for corporate services.</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="nocSection" style="display:none">
+        <div class="spc-section" id="nocTypeSection">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Select the type of NOC</div>
+                <div class="sel-row" style="margin-top:12px">
+                    <select class="flat-select" name="noc_type" id="nocType" onchange="handleNocType(this.value)">
+                        <option value="">NOC type</option>
+                        <option value="police_report">NOC to file police report for lost documents</option>
+                        <option value="establish_ded">NOC to establish a company (DED)</option>
+                        <option value="register_vehicle">NOC to register a vehicle</option>
+                        <option value="transfer_vehicle">NOC to transfer a vehicle registration</option>
+                    </select>
+                    <button type="button" class="sel-clear" onclick="document.getElementById('nocType').value='';handleNocType('')">&#215;</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="policeSection" class="spc-section" style="display:none">
+            <div class="sec-num">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Police station details</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+                    <input class="flat-input" type="text" name="police_station_name" placeholder="Police station name"/>
+                    <div class="sel-row" style="margin-bottom:0">
+                        <select class="flat-select" name="police_emirate">
+                            <option value="">Emirate</option>
+                            <option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option>
+                            <option>Ajman</option><option>Fujairah</option><option>Ras Al Khaimah</option><option>Umm Al Quwain</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dedSection" class="spc-section" style="display:none">
+            <div class="sec-num">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Established company/office location details</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px">
+                    <div class="sel-row" style="margin-bottom:0">
+                        <select class="flat-select" name="ded_emirate">
+                            <option value="">Emirate</option>
+                            <option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option>
+                            <option>Ajman</option><option>Fujairah</option><option>Ras Al Khaimah</option><option>Umm Al Quwain</option>
+                        </select>
+                    </div>
+                    <input class="flat-input" type="text" name="ded_office_location" placeholder="Office location (manual)"/>
+                </div>
+            </div>
+        </div>
+
+        <div id="vehicleSection" class="spc-section" style="display:none">
+            <div class="sec-num">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Vehicle details</div>
+                <div class="radio-row" id="vTypeRow">
+                    <label class="radio-card" onclick="selectVType('lmv',this)">
+                        <input type="radio" name="vehicle_type" value="lmv" style="display:none"/>Light motor vehicle (LMV)
+                    </label>
+                    <label class="radio-card" onclick="selectVType('hmv',this)">
+                        <input type="radio" name="vehicle_type" value="hmv" style="display:none"/>Heavy motor vehicle (HMV)
+                    </label>
+                    <label class="radio-card" onclick="selectVType('other',this)">
+                        <input type="radio" name="vehicle_type" value="other" style="display:none"/>Other
+                    </label>
+                </div>
+                <div id="vFields" style="display:none;margin-top:16px">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <input class="flat-input" type="text" name="vehicle_chassis" placeholder="Chassis number"/>
+                        <input class="flat-input" type="text" name="vehicle_engine" placeholder="Engine number"/>
+                        <input class="flat-input" type="text" name="vehicle_model_year" placeholder="Model year"/>
+                        <div class="sel-row" style="margin-bottom:0"><select class="flat-select" name="vehicle_color">
+                            <option value="">Vehicle color</option>
+                            <option>White</option><option>Black</option><option>Blue</option>
+                            <option>Red</option><option>Silver</option><option>Grey</option><option>Other</option>
+                        </select></div>
+                        <div class="sel-row" style="margin-bottom:0"><select class="flat-select" name="vehicle_country_origin">
+                            <option value="">Country of origin</option>
+                            <t t-foreach="countries" t-as="c"><option t-att-value="c.id"><t t-out="c.name"/></option></t>
+                        </select></div>
+                        <div id="vNameField" style="display:none">
+                            <input class="flat-input" type="text" name="vehicle_name" placeholder="Vehicle name"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="transferSection" class="spc-section" style="display:none">
+            <div class="sec-num">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Vehicle details</div>
+                <div class="radio-row" id="tVTypeRow">
+                    <label class="radio-card" onclick="selectTVType('lmv',this)">
+                        <input type="radio" name="transfer_vehicle_type" value="lmv" style="display:none"/>Light motor vehicle (LMV)
+                    </label>
+                    <label class="radio-card" onclick="selectTVType('hmv',this)">
+                        <input type="radio" name="transfer_vehicle_type" value="hmv" style="display:none"/>Heavy motor vehicle (HMV)
+                    </label>
+                    <label class="radio-card" onclick="selectTVType('other',this)">
+                        <input type="radio" name="transfer_vehicle_type" value="other" style="display:none"/>Other
+                    </label>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+                    <div class="sel-row" style="margin-bottom:0">
+                        <select class="flat-select" name="vehicle_authority_select">
+                            <option value="">Authority</option>
+                            <option>RTA</option><option>Police</option><option>Other</option>
+                        </select>
+                    </div>
+                    <input class="flat-input" type="text" name="vehicle_authority" placeholder="Authority (manual)"/>
+                </div>
+                <div id="tLmvFields" style="display:none;margin-top:16px">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                        <input class="flat-input" type="text" name="transfer_chassis" placeholder="Chassis number"/>
+                        <input class="flat-input" type="text" name="transfer_engine" placeholder="Engine number"/>
+                        <div class="sel-row" style="margin-bottom:0"><select class="flat-select" name="transfer_color">
+                            <option value="">Vehicle color</option>
+                            <option>White</option><option>Black</option><option>Blue</option>
+                            <option>Red</option><option>Silver</option><option>Grey</option>
+                        </select></div>
+                        <div class="sel-row" style="margin-bottom:0"><select class="flat-select" name="transfer_country_origin">
+                            <option value="">Country of origin</option>
+                            <t t-foreach="countries" t-as="c"><option t-att-value="c.id"><t t-out="c.name"/></option></t>
+                        </select></div>
+                        <input class="flat-input" type="text" name="transfer_make_model" placeholder="Vehicle make and model"/>
+                    </div>
+                    <div class="upload-row" style="margin-top:16px">
+                        <div class="upload-item">
+                            <span class="field-label-top">Upload online car registration copy</span>
+                            <div class="upload-area" onclick="document.getElementById('regFile').click()">
+                                <input type="file" id="regFile" name="vehicle_reg_copy" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                <div class="upload-icon">&#11014;</div>
+                                <div class="upload-text">Upload online car registration</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spc-section" id="nocRemarks">
+            <div class="sec-num" id="remarksNum">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Remarks</div>
+                <textarea class="flat-input" name="remarks" rows="3" placeholder="Comments" style="resize:none;padding-top:10px"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div id="generalRemarks" class="spc-section" style="display:none">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+            <div class="sec-title">Remarks</div>
+            <textarea class="flat-input" name="general_remarks" rows="3" placeholder="Comments" style="resize:none;padding-top:10px"></textarea>
+        </div>
+    </div>
+
+    <div class="spc-nav-buttons">
+        <a href="/spc/company-management" class="spc-btn-prev">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+<script>
+function handleLetterType(v){
+    document.getElementById("otherNameField").style.display=v==="other"?"":"none";
+    document.getElementById("nocSection").style.display=v?"":"none";
+    document.getElementById("nocRemarks").style.display=v?"":"none";
+    document.getElementById("generalRemarks").style.display="none";
+}
+function handleNocType(v){
+    ["policeSection","dedSection","vehicleSection","transferSection"].forEach(function(id){
+        document.getElementById(id).style.display="none";
+    });
+    if(v==="police_report") document.getElementById("policeSection").style.display="";
+    else if(v==="establish_ded") document.getElementById("dedSection").style.display="";
+    else if(v==="register_vehicle") document.getElementById("vehicleSection").style.display="";
+    else if(v==="transfer_vehicle") document.getElementById("transferSection").style.display="";
+    document.getElementById("remarksNum").textContent=v?"04":"03";
+}
+function selectVType(t,el){
+    document.querySelectorAll("#vTypeRow .radio-card").forEach(function(c){c.classList.remove("selected");});
+    el.classList.add("selected");
+    el.querySelector("input").checked=true;
+    document.getElementById("vFields").style.display=t?"":"none";
+    document.getElementById("vNameField").style.display=t==="lmv"?"":"none";
+}
+function selectTVType(t,el){
+    document.querySelectorAll("#tVTypeRow .radio-card").forEach(function(c){c.classList.remove("selected");});
+    el.classList.add("selected");
+    el.querySelector("input").checked=true;
+    document.getElementById("tLmvFields").style.display=t==="lmv"?"":"none";
+}
+</script>
+</body></html>
+</template>
+
+<template id="template_cl_step2" name="CL Step2 Declaration">
+<html><head><meta charset="utf-8"/><title>Corporate Letters</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<t t-call="spc_portal.cl_sidebar"/>
+<div class="main">
+<div class="form-title">Corporate Letters</div>
+<form method="post" action="/spc/company-management/corporate-letters/step2/submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+            <div class="sec-title">Declaration:</div>
+            <div class="decl-box">
+                <p style="margin-bottom:14px">By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" style="color:#1abc9c">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+                <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+            </div>
+            <p style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:16px">Acknowledgement</p>
+            <label class="ack-row">
+                <input type="checkbox" name="declaration" value="yes" style="width:16px;height:16px"/>
+                I have read and agree to the SPC Terms and Conditions.
+            </label>
+        </div>
+    </div>
+    <div class="spc-nav-buttons">
+        <a href="/spc/company-management/corporate-letters/step1" class="spc-btn-prev">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cl_review" name="CL Review">
+<html><head><meta charset="utf-8"/><title>Corporate Letters - Review</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<t t-call="spc_portal.cl_sidebar"/>
+<div class="main">
+<div class="form-title">Review Application</div>
+<div class="review-card">
+    <div class="review-header"><div class="review-sec-title">Application Details</div></div>
+    <div class="review-row"><div class="review-lbl">COMPANY</div><div class="review-val"><t t-out="cl_data.get('company_name','')"/></div></div>
+    <div class="review-row"><div class="review-lbl">LETTER TYPE</div><div class="review-val"><t t-out="cl_data.get('letter_type','')"/></div></div>
+    <div class="review-row"><div class="review-lbl">LICENSE EXPIRY</div><div class="review-val"><t t-out="cl_data.get('license_expiry_date','')"/></div></div>
+    <div class="review-row"><div class="review-lbl">NOC TYPE</div><div class="review-val"><t t-out="cl_data.get('noc_type','')"/></div></div>
+    <div class="review-row"><div class="review-lbl">REMARKS</div><div class="review-val"><t t-out="cl_data.get('remarks','')"/></div></div>
+    <div class="review-row"><div class="review-lbl">DECLARATION</div><div class="review-val"><t t-out="cl_data.get('declaration','')"/></div></div>
+</div>
+<div class="spc-nav-buttons">
+    <a href="/spc/company-management/corporate-letters/step2" class="spc-btn-prev">PREVIOUS</a>
+    <a href="/spc/company-management/corporate-letters/payment" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+</div>
+</div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cl_payment" name="CL Payment">
+<html><head><meta charset="utf-8"/><title>Corporate Letters - Payment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<t t-call="spc_portal.cl_sidebar"/>
+<div class="main">
+<div class="form-title">Payment</div>
+<form method="post" action="/spc/company-management/corporate-letters/final-submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+            <div class="sec-title">Order Summary</div>
+            <div class="review-row"><div class="review-lbl">Corporate Letter Fee</div><div class="review-val">AED 360.00</div></div>
+            <div class="review-row" style="border-top:2px solid #e5e7eb;margin-top:8px;padding-top:8px">
+                <div class="review-lbl" style="font-weight:700;color:#1a2340">Total</div>
+                <div class="review-val" style="font-weight:700;color:#1a2340;font-size:15px">AED 360.00</div>
+            </div>
+            <div style="margin-top:20px">
+                <div class="sec-title">Select payment method</div>
+                <select class="flat-select" name="payment_method" style="max-width:300px">
+                    <option value="">Select payment method</option>
+                    <option value="online">Online Payment</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                    <option value="cash">Cash</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="spc-nav-buttons">
+        <a href="/spc/company-management/corporate-letters/review" class="spc-btn-prev">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">SUBMIT</button>
+    </div>
+</form>
+</div>
+</div>
+</body></html>
+</template>
+
+</data>
+</odoo>

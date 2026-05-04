@@ -9,20 +9,28 @@
     <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
 .step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:28px}
 .spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
 .spc-section-row{display:flex;gap:24px}
 .spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
@@ -30,9 +38,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 .spc-section-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
 
 /* Shareholder count input */
-.count-wrap{position:relative;max-width:600px}
-.count-wrap label{position:absolute;top:8px;left:14px;font-size:11px;color:#888}
-.count-input{width:100%;padding:24px 14px 8px;border:1px solid #d0d0d0;border-radius:8px;font-size:15px;color:#333;outline:none;background:#fff}
+.count-wrap{max-width:600px}
+.count-wrap label{font-size:13px;color:#555;margin-bottom:8px;display:block}
+.count-input{width:120px;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:15px;color:#333;outline:none;background:#fff}
 .count-input:focus{border-color:#1abc9c}
 
 /* Accordion */
@@ -132,23 +140,34 @@ input[type="date"].field-input{
     </style>
 </head>
 <body>
-<div class="layout">
-    <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+<div style="display:flex;min-height:100vh">
+    <div class="progress-sidebar">
+        <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+        <div class="ps-subtitle">Free Zone</div>
         <div class="progress-title">Your progress</div>
         <t t-if="steps">
             <t t-foreach="steps" t-as="s">
                 <t t-set="idx" t-value="s_index + 1"/>
-                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
-                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
-                    <div class="step-label"><t t-esc="s"/></div>
+                <div class="progress-step">
+                    <t t-if="idx == current_step">
+                        <div class="ps-num active"><t t-esc="idx"/></div>
+                        <div class="ps-label active"><t t-esc="s"/></div>
+                    </t>
+                    <t t-elif="idx &lt; current_step">
+                        <div class="ps-num done">&#10003;</div>
+                        <div class="ps-label"><t t-esc="s"/></div>
+                    </t>
+                    <t t-else="">
+                        <div class="ps-num"><t t-esc="idx"/></div>
+                        <div class="ps-label"><t t-esc="s"/></div>
+                    </t>
                 </div>
             </t>
         </t>
     </div>
 
-    <div class="main">
-        <div class="form-title">Company New</div>
+    <div class="form-main">
+        <div class="form-title"><t t-if="form_title"><t t-esc="form_title"/></t><t t-else="">Company New</t></div>
         <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step6/submit'" method="post" enctype="multipart/form-data" id="step6Form">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <input type="hidden" name="service_type" t-att-value="service_type"/>
@@ -159,30 +178,34 @@ input[type="date"].field-input{
                     <div class="spc-section-number">01</div>
                     <div class="spc-section-body">
                         <h4 class="spc-section-title">Enter number of shareholders that will be associated with the company</h4>
-                        <div class="count-wrap">
-                            <label>Number of shareholders</label>
-                            <input type="number" name="shareholder_count" id="shareholderCount"
-                                class="count-input" min="1" max="20" value="1"
-                                onchange="updateShareholderList(this.value)"/>
+                        <div style="margin-bottom:16px">
+                            <label style="font-size:13px;color:#555;display:block;margin-bottom:8px">Number of shareholders</label>
+                            <span id="svcType" style="display:none"><t t-esc="service_type"/></span>
+                            <input type="number" id="shareholderCount" name="shareholder_count"
+                                style="width:120px;padding:10px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:15px;color:#333;outline:none;background:#fff"
+                                min="1" max="20" t-att-value="sh_count"
+                                t-att-onchange="'var c=this.value;window.location.href=\'' + (step_base_url or '/spc/setup-new-company/apply/step6/') + '\'+service_type+\'?shareholder_count=\'+c;'"
+                                t-att-onkeydown="'if(event.key===\'Enter\'){event.preventDefault();var c=this.value;window.location.href=\'' + (step_base_url or '/spc/setup-new-company/apply/step6/') + '\'+service_type+\'?shareholder_count=\'+c;}'"/>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- 02 -->
             <div class="spc-section">
                 <div class="spc-section-row">
                     <div class="spc-section-number">02</div>
                     <div class="spc-section-body">
                         <h4 class="spc-section-title">Shareholder details</h4>
+
                         <div id="shareholderList">
-                            <div class="accordion" id="acc_1">
-                                <div class="accordion-header" onclick="toggleAccordion(1)">
-                                    <span>Shareholder 1</span>
-                                    <span class="accordion-arrow open" id="arrow_1">&#9660;</span>
+                            <t t-foreach="sh_range" t-as="sh_num">
+                                <div class="accordion" t-att-id="'acc_' + str(sh_num)">
+                                <div class="accordion-header" t-att-onclick="'toggleAccordion(' + str(sh_num) + ')'" >
+                                    <span>Shareholder <t t-esc="sh_num"/></span>
+                                    <span class="accordion-arrow open" t-att-id="'arrow_' + str(sh_num)">&#9660;</span>
                                 </div>
-                                <div class="accordion-body open" id="body_1">
-                                    <div class="delete-btn" onclick="deleteShareholder(1)">
+                                <div class="accordion-body open" t-att-id="'body_' + str(sh_num)">
+                                    <div class="delete-btn" t-att-onclick="'deleteShareholder(' + str(sh_num) + ')'" >
                                         &#128465; Delete Shareholder
                                     </div>
 
@@ -190,43 +213,43 @@ input[type="date"].field-input{
                                     <div style="margin-bottom:20px">
                                         <span class="question-label">Is the shareholder an existing SPC user?</span>
                                         <div class="radio-group">
-                                            <label class="radio-label"><input type="radio" name="sh_1_spc_user" value="yes" onchange="toggleSpcUser(1,'yes')"/> Yes</label>
-                                            <label class="radio-label"><input type="radio" name="sh_1_spc_user" value="no" checked="checked" onchange="toggleSpcUser(1,'no')"/> No</label>
+                                            <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_spc_user'" value="yes" t-att-onchange="'toggleSpcUser(' + str(sh_num) + ',\'yes\')'" /> Yes</label>
+                                            <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_spc_user'" value="no" checked="checked" t-att-onchange="'toggleSpcUser(' + str(sh_num) + ',\'no\')'" /> No</label>
                                         </div>
                                     </div>
 
                                     <!-- SPC search (hidden) -->
-                                    <div id="sh_1_spc_search" class="hidden sub-section">
+                                    <div t-att-id="'sh_' + str(sh_num) + '_spc_search'" class="hidden sub-section">
                                         <div style="margin-bottom:16px">
                                             <span class="question-label">Does the Shareholder have a Nominee?</span>
                                             <div class="radio-group">
-                                                <label class="radio-label"><input type="radio" name="sh_1_nominee" value="yes"/> Yes</label>
-                                                <label class="radio-label"><input type="radio" name="sh_1_nominee" value="no"/> No</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_nominee'" value="yes"/> Yes</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_nominee'" value="no"/> No</label>
                                             </div>
                                         </div>
                                         <span class="question-label">Existing user?</span>
-                                        <div class="field-row"><label>Email</label><input type="text" class="field-input" name="sh_1_email"/></div>
-                                        <div class="field-row"><label>Passport number / Entity registration number</label><input type="text" class="field-input" name="sh_1_passport_search"/></div>
+                                        <div class="field-row"><label>Email</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_email'"/></div>
+                                        <div class="field-row"><label>Passport number / Entity registration number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_passport_search'"/></div>
                                         <button type="button" class="search-btn">SEARCH</button>
                                     </div>
 
                                     <!-- Type section -->
-                                    <div id="sh_1_type_section">
+                                    <div t-att-id="'sh_' + str(sh_num) + '_type_section'">
                                         <div style="margin-bottom:20px">
                                             <span class="question-label">Select shareholder type</span>
                                             <div class="radio-group">
-                                                <label class="radio-label"><input type="radio" name="sh_1_type" value="individual" checked="checked" onchange="toggleShareholderType(1,'individual')"/> Individual</label>
-                                                <label class="radio-label"><input type="radio" name="sh_1_type" value="entity" onchange="toggleShareholderType(1,'entity')"/> Entity</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_type'" value="individual" checked="checked" t-att-onchange="'toggleShareholderType(' + str(sh_num) + ',\'individual\')'" /> Individual</label>
+                                                <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_type'" value="entity" t-att-onchange="'toggleShareholderType(' + str(sh_num) + ',\'entity\')'" /> Entity</label>
                                             </div>
                                         </div>
 
                                         <!-- INDIVIDUAL -->
-                                        <div id="sh_1_individual">
+                                        <div t-att-id="'sh_' + str(sh_num) + '_individual'">
                                             <div class="upload-row">
                                                 <div class="upload-item">
                                                     <span class="field-label-top">Upload copy of passport</span>
                                                     <div class="upload-area" onclick="document.getElementById('sh_1_passport_file').click()">
-                                                        <input type="file" id="sh_1_passport_file" name="sh_1_passport_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <input type="file" t-att-id="'sh_' + str(sh_num) + '_passport_file'" t-att-name="'sh_' + str(sh_num) + '_passport_file'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                         <div class="upload-icon">&#11014;</div>
                                                         <div class="upload-text">Upload copy of passport</div>
                                                     </div>
@@ -234,7 +257,7 @@ input[type="date"].field-input{
                                                 <div class="upload-item">
                                                     <span class="field-label-top">Upload special page of passport</span>
                                                     <div class="upload-area" onclick="document.getElementById('sh_1_passport_special').click()">
-                                                        <input type="file" id="sh_1_passport_special" name="sh_1_passport_special" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <input type="file" t-att-id="'sh_' + str(sh_num) + '_passport_special'" t-att-name="'sh_' + str(sh_num) + '_passport_special'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                         <div class="upload-icon">&#11014;</div>
                                                         <div class="upload-text">Upload special page of passport</div>
                                                     </div>
@@ -243,14 +266,14 @@ input[type="date"].field-input{
 
                                             <div class="sub-section">
                                                 <div class="sub-title">Passport details</div>
-                                                <div class="field-row"><label>Passport number</label><input type="text" class="field-input" name="sh_1_passport_no"/></div>
+                                                <div class="field-row"><label>Passport number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_passport_no'"/></div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>First name</label><input type="text" class="field-input" name="sh_1_first_name"/></div>
-                                                    <div class="field-row"><label>Last name</label><input type="text" class="field-input" name="sh_1_last_name"/></div>
+                                                    <div class="field-row"><label>First name</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_first_name'"/></div>
+                                                    <div class="field-row"><label>Last name</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_last_name'"/></div>
                                                 </div>
                                                 <div class="select-wrap">
                                                     <label>Nationality</label>
-                                                    <select class="field-select" name="sh_1_nationality" id="sh_1_nationality" onchange="showClear('sh_1_nationality_clear',this)">
+                                                    <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_nationality'" t-att-id="'sh_' + str(sh_num) + '_nationality'" onchange="showClear('sh_1_nationality_clear',this)">
                                                         <option value=""></option>
                                                         <option value="AE">United Arab Emirates</option>
                                                         <option value="IN">India</option>
@@ -260,20 +283,20 @@ input[type="date"].field-input{
                                                         <option value="other">Other</option>
                                                     </select>
                                                     <span class="select-arrow">&#9660;</span>
-                                                    <button type="button" class="select-clear hidden" id="sh_1_nationality_clear" onclick="clearSelect('sh_1_nationality','sh_1_nationality_clear')">&#10005;</button>
+                                                    <button type="button" class="select-clear hidden" t-att-id="'sh_' + str(sh_num) + '_nationality_clear'" onclick="clearSelect('sh_1_nationality','sh_1_nationality_clear')">&#10005;</button>
                                                 </div>
 
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you have an alternate nationality?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_alt_nat" value="yes" onchange="toggleAltNat(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_alt_nat" value="no" checked="checked" onchange="toggleAltNat(1,'no')"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_alt_nat'" value="yes" t-att-onchange="'toggleAltNat(' + str(sh_num) + ',\'yes\')'" /> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_alt_nat'" value="no" checked="checked" t-att-onchange="'toggleAltNat(' + str(sh_num) + ',\'no\')'" /> No</label>
                                                     </div>
                                                 </div>
-                                                <div id="sh_1_alt_nat_fields" class="hidden two-col">
+                                                <div t-att-id="'sh_' + str(sh_num) + '_alt_nat_fields'" class="hidden two-col">
                                                     <div class="select-wrap">
                                                         <label>Alternate nationality</label>
-                                                        <select class="field-select" name="sh_1_alt_nationality">
+                                                        <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_alt_nationality'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -284,17 +307,17 @@ input[type="date"].field-input{
                                                         </select>
                                                         <span class="select-arrow">&#9660;</span>
                                                     </div>
-                                                    <div class="field-row"><label>Alternate passport number</label><input type="text" class="field-input" name="sh_1_alt_passport_no"/></div>
+                                                    <div class="field-row"><label>Alternate passport number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_alt_passport_no'"/></div>
                                                 </div>
 
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>Date of birth</label><input type="date" class="field-input" name="sh_1_dob"/></div>
-                                                    <div class="field-row"><label>Place of birth</label><input type="text" class="field-input" name="sh_1_pob"/></div>
+                                                    <div class="field-row"><label>Date of birth</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_dob'"/></div>
+                                                    <div class="field-row"><label>Place of birth</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_pob'"/></div>
                                                 </div>
                                                 <div class="two-col">
                                                     <div class="select-wrap">
                                                         <label>Country of birth</label>
-                                                        <select class="field-select" name="sh_1_cob" id="sh_1_cob" onchange="showClear('sh_1_cob_clear',this)">
+                                                        <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_cob'" t-att-id="'sh_' + str(sh_num) + '_cob'" onchange="showClear('sh_1_cob_clear',this)">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -304,12 +327,12 @@ input[type="date"].field-input{
                                                             <option value="other">Other</option>
                                                         </select>
                                                         <span class="select-arrow">&#9660;</span>
-                                                        <button type="button" class="select-clear hidden" id="sh_1_cob_clear" onclick="clearSelect('sh_1_cob','sh_1_cob_clear')">&#10005;</button>
+                                                        <button type="button" class="select-clear hidden" t-att-id="'sh_' + str(sh_num) + '_cob_clear'" onclick="clearSelect('sh_1_cob','sh_1_cob_clear')">&#10005;</button>
                                                     </div>
-                                                    <div class="field-row"><label>Date of issue</label><input type="date" class="field-input" name="sh_1_doi"/></div>
+                                                    <div class="field-row"><label>Date of issue</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_doi'"/></div>
                                                 </div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>Date of expiry</label><input type="date" class="field-input" name="sh_1_doe"/></div>
+                                                    <div class="field-row"><label>Date of expiry</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_doe'"/></div>
                                                 </div>
                                             </div>
 
@@ -318,46 +341,46 @@ input[type="date"].field-input{
                                                 <div class="mobile-wrap">
                                                     <label>Mobile number</label>
                                                     <div class="mobile-inner">
-                                                        <button type="button" class="flag-btn" id="sh_1_flag_btn" onclick="toggleFlagMenu(1)">&#127482;&#127462; +971 &#9660;</button>
-                                                        <input type="tel" class="mobile-number" name="sh_1_mobile" placeholder=""/>
+                                                        <button type="button" class="flag-btn" t-att-id="'sh_' + str(sh_num) + '_flag_btn'" t-att-onclick="'toggleFlagMenu(' + str(sh_num) + ')'" >&#127482;&#127462; +971 &#9660;</button>
+                                                        <input type="tel" class="mobile-number" t-att-name="'sh_' + str(sh_num) + '_mobile'" placeholder=""/>
                                                     </div>
-                                                    <div id="sh_1_flag_menu" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
-                                                        <div onclick="setFlag(1,'&#127482;&#127462;','+971','AE')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
-                                                        <div onclick="setFlag(1,'&#127470;&#127475;','+91','IN')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
-                                                        <div onclick="setFlag(1,'&#127477;&#127472;','+92','PK')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
-                                                        <div onclick="setFlag(1,'&#127468;&#127463;','+44','GB')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
-                                                        <div onclick="setFlag(1,'&#127482;&#127480;','+1','US')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
+                                                    <div t-att-id="'sh_' + str(sh_num) + '_flag_menu'" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127482;&#127462;','+971','AE')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127470;&#127475;','+91','IN')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127477;&#127472;','+92','PK')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127468;&#127463;','+44','GB')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127482;&#127480;','+1','US')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
                                                     </div>
                                                 </div>
 
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you have secondary contact number?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_secondary" value="yes" onchange="toggleSecondary(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_secondary" value="no" onchange="toggleSecondary(1,'no')"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_secondary'" value="yes" t-att-onchange="'toggleSecondary(' + str(sh_num) + ',\'yes\')'" /> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_secondary'" value="no" t-att-onchange="'toggleSecondary(' + str(sh_num) + ',\'no\')'" /> No</label>
                                                     </div>
                                                 </div>
-                                                <div id="sh_1_secondary_field" class="hidden">
+                                                <div t-att-id="'sh_' + str(sh_num) + '_secondary_field'" class="hidden">
                                                     <div class="mobile-wrap">
                                                         <label>Secondary mobile number</label>
                                                         <div class="mobile-inner">
                                                             <button type="button" class="flag-btn">&#127482;&#127462; +971 &#9660;</button>
-                                                            <input type="tel" class="mobile-number" name="sh_1_mobile2"/>
+                                                            <input type="tel" class="mobile-number" t-att-name="'sh_' + str(sh_num) + '_mobile2'"/>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="field-row"><label>E-mail ID</label><input type="email" class="field-input" name="sh_1_email_id"/></div>
+                                                <div class="field-row"><label>E-mail ID</label><input type="email" class="field-input" t-att-name="'sh_' + str(sh_num) + '_email_id'"/></div>
                                                 <div class="field-row">
                                                     <label>Current address</label>
-                                                    <textarea class="field-input" name="sh_1_address" maxlength="150" rows="3" style="padding-top:28px" oninput="updateCount(this,'sh_1_addr_count')"></textarea>
-                                                    <span id="sh_1_addr_count" style="font-size:11px;color:#aaa;float:right;margin-top:2px">0 / 150</span>
+                                                    <textarea class="field-input" t-att-name="'sh_' + str(sh_num) + '_address'" maxlength="150" rows="3" style="padding-top:28px" oninput="updateCount(this,'sh_1_addr_count')"></textarea>
+                                                    <span t-att-id="'sh_' + str(sh_num) + '_addr_count'" style="font-size:11px;color:#aaa;float:right;margin-top:2px">0 / 150</span>
                                                 </div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>City</label><input type="text" class="field-input" name="sh_1_city"/></div>
+                                                    <div class="field-row"><label>City</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_city'"/></div>
                                                     <div class="select-wrap">
                                                         <label>Country</label>
-                                                        <select class="field-select" name="sh_1_country" id="sh_1_country" onchange="showClear('sh_1_country_clear',this)">
+                                                        <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_country'" t-att-id="'sh_' + str(sh_num) + '_country'" onchange="showClear('sh_1_country_clear',this)">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -367,10 +390,10 @@ input[type="date"].field-input{
                                                             <option value="other">Other</option>
                                                         </select>
                                                         <span class="select-arrow">&#9660;</span>
-                                                        <button type="button" class="select-clear hidden" id="sh_1_country_clear" onclick="clearSelect('sh_1_country','sh_1_country_clear')">&#10005;</button>
+                                                        <button type="button" class="select-clear hidden" t-att-id="'sh_' + str(sh_num) + '_country_clear'" onclick="clearSelect('sh_1_country','sh_1_country_clear')">&#10005;</button>
                                                     </div>
                                                 </div>
-                                                <div class="field-row"><label>Shareholder joining date</label><input type="date" class="field-input" name="sh_1_joining_date"/></div>
+                                                <div class="field-row"><label>Shareholder joining date</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_joining_date'"/></div>
                                             </div>
 
                                             <!-- UAE Visa -->
@@ -378,16 +401,16 @@ input[type="date"].field-input{
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you have a valid UAE residence visa?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_uae_visa" value="yes" onchange="toggleUaeVisa(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_uae_visa" value="no" onchange="toggleUaeVisa(1,'no')"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_uae_visa'" value="yes" t-att-onchange="'toggleUaeVisa(' + str(sh_num) + ',\'yes\')'" /> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_uae_visa'" value="no" t-att-onchange="'toggleUaeVisa(' + str(sh_num) + ',\'no\')'" /> No</label>
                                                     </div>
                                                 </div>
-                                                <div id="sh_1_uae_visa_fields" class="hidden">
+                                                <div t-att-id="'sh_' + str(sh_num) + '_uae_visa_fields'" class="hidden">
                                                     <div class="upload-row">
                                                         <div class="upload-item">
                                                             <span class="field-label-top">Upload UAE resident visa</span>
                                                             <div class="upload-area" onclick="document.getElementById('sh_1_visa_file').click()">
-                                                                <input type="file" id="sh_1_visa_file" name="sh_1_visa_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <input type="file" t-att-id="'sh_' + str(sh_num) + '_visa_file'" t-att-name="'sh_' + str(sh_num) + '_visa_file'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                                 <div class="upload-icon">&#11014;</div>
                                                                 <div class="upload-text">Upload UAE resident visa</div>
                                                             </div>
@@ -395,18 +418,18 @@ input[type="date"].field-input{
                                                         <div class="upload-item">
                                                             <span class="field-label-top">Upload emirates ID</span>
                                                             <div class="upload-area" onclick="document.getElementById('sh_1_eid_file').click()">
-                                                                <input type="file" id="sh_1_eid_file" name="sh_1_eid_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                                <input type="file" t-att-id="'sh_' + str(sh_num) + '_eid_file'" t-att-name="'sh_' + str(sh_num) + '_eid_file'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                                 <div class="upload-icon">&#11014;</div>
                                                                 <div class="upload-text">Upload emirates ID</div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="two-col">
-                                                        <div class="field-row"><label>Resident visa number</label><input type="text" class="field-input" name="sh_1_visa_no"/></div>
-                                                        <div class="field-row"><label>Emirates ID Number</label><input type="text" class="field-input" name="sh_1_eid_no"/></div>
-                                                        <div class="field-row"><label>Unified number (UID)</label><input type="text" class="field-input" name="sh_1_uid"/></div>
-                                                        <div class="field-row"><label>Emirates ID issue date</label><input type="date" class="field-input" name="sh_1_eid_issue"/></div>
-                                                        <div class="field-row"><label>Emirates ID expiry date</label><input type="date" class="field-input" name="sh_1_eid_expiry"/></div>
+                                                        <div class="field-row"><label>Resident visa number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_visa_no'"/></div>
+                                                        <div class="field-row"><label>Emirates ID Number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_eid_no'"/></div>
+                                                        <div class="field-row"><label>Unified number (UID)</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_uid'"/></div>
+                                                        <div class="field-row"><label>Emirates ID issue date</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_eid_issue'"/></div>
+                                                        <div class="field-row"><label>Emirates ID expiry date</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_eid_expiry'"/></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -415,23 +438,23 @@ input[type="date"].field-input{
                                             <div class="sub-section">
                                                 <span class="question-label">Does the Shareholder have a Nominee?</span>
                                                 <div class="radio-group">
-                                                    <label class="radio-label"><input type="radio" name="sh_1_nominee_ind" value="yes"/> Yes</label>
-                                                    <label class="radio-label"><input type="radio" name="sh_1_nominee_ind" value="no"/> No</label>
+                                                    <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_nominee_ind'" value="yes"/> Yes</label>
+                                                    <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_nominee_ind'" value="no"/> No</label>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- ENTITY -->
-                                        <div id="sh_1_entity" class="hidden">
+                                        <div t-att-id="'sh_' + str(sh_num) + '_entity'" class="hidden">
                                             <div class="sub-section">
                                                 <div class="sub-title">Entity details</div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>Entity name</label><input type="text" class="field-input" name="sh_1_entity_name"/></div>
-                                                    <div class="field-row"><label>Entity name (Arabic)</label><input type="text" class="field-input" name="sh_1_entity_name_ar" style="text-align:right;direction:rtl"/></div>
-                                                    <div class="field-row"><label>Entity registration number</label><input type="text" class="field-input" name="sh_1_entity_reg_no"/></div>
+                                                    <div class="field-row"><label>Entity name</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_entity_name'"/></div>
+                                                    <div class="field-row"><label>Entity name (Arabic)</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_entity_name_ar'" style="text-align:right;direction:rtl"/></div>
+                                                    <div class="field-row"><label>Entity registration number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_entity_reg_no'"/></div>
                                                     <div class="select-wrap">
                                                         <label>Country of formation</label>
-                                                        <select class="field-select" name="sh_1_entity_country">
+                                                        <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_entity_country'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -445,41 +468,41 @@ input[type="date"].field-input{
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you or your company operate elsewhere?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_operate_elsewhere" value="yes"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_operate_elsewhere" value="no"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_operate_elsewhere'" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_operate_elsewhere'" value="no"/> No</label>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Select jurisdiction of the entity</span>
                                                     <div class="radio-group" style="flex-wrap:wrap">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="mainland"/> Mainland UAE</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="financial_fz"/> Financial Free Zone</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="non_financial_fz"/> Non-Financial Free Zone</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_jurisdiction" value="non_uae"/> Non-UAE Jurisdiction</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_jurisdiction'" value="mainland"/> Mainland UAE</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_jurisdiction'" value="financial_fz"/> Financial Free Zone</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_jurisdiction'" value="non_financial_fz"/> Non-Financial Free Zone</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_jurisdiction'" value="non_uae"/> Non-UAE Jurisdiction</label>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Select ownership type of the entity</span>
                                                     <div class="radio-group" style="flex-wrap:wrap;gap:16px">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="private"/> Privately owned entity</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="semi_gov"/> Semi-government owned entity</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="gov"/> Government owned entity</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="public"/> Public listed company</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ownership" value="branch"/> Branch foreign company</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ownership'" value="private"/> Privately owned entity</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ownership'" value="semi_gov"/> Semi-government owned entity</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ownership'" value="gov"/> Government owned entity</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ownership'" value="public"/> Public listed company</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ownership'" value="branch"/> Branch foreign company</label>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Are any of the owners a legal entity?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_owners_legal" value="yes"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_owners_legal" value="no"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_owners_legal'" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_owners_legal'" value="no"/> No</label>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Is company outside the UAE?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_outside_uae" value="yes"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_outside_uae" value="no"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_outside_uae'" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_outside_uae'" value="no"/> No</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -487,7 +510,7 @@ input[type="date"].field-input{
                                                 <div class="upload-item">
                                                     <span class="field-label-top">Upload copy of passport</span>
                                                     <div class="upload-area" onclick="document.getElementById('sh_1_ent_passport').click()">
-                                                        <input type="file" id="sh_1_ent_passport" name="sh_1_ent_passport" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <input type="file" t-att-id="'sh_' + str(sh_num) + '_ent_passport'" t-att-name="'sh_' + str(sh_num) + '_ent_passport'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                         <div class="upload-icon">&#11014;</div>
                                                         <div class="upload-text">Upload copy of passport</div>
                                                     </div>
@@ -495,7 +518,7 @@ input[type="date"].field-input{
                                                 <div class="upload-item">
                                                     <span class="field-label-top">Upload special page of passport</span>
                                                     <div class="upload-area" onclick="document.getElementById('sh_1_ent_passport_sp').click()">
-                                                        <input type="file" id="sh_1_ent_passport_sp" name="sh_1_ent_passport_sp" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                                                        <input type="file" t-att-id="'sh_' + str(sh_num) + '_ent_passport_sp'" t-att-name="'sh_' + str(sh_num) + '_ent_passport_sp'" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
                                                         <div class="upload-icon">&#11014;</div>
                                                         <div class="upload-text">Upload special page of passport</div>
                                                     </div>
@@ -503,14 +526,14 @@ input[type="date"].field-input{
                                             </div>
                                             <div class="sub-section">
                                                 <div class="sub-title">Passport details</div>
-                                                <div class="field-row"><label>Passport number</label><input type="text" class="field-input" name="sh_1_ent_passport_no"/></div>
+                                                <div class="field-row"><label>Passport number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_passport_no'"/></div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>First name</label><input type="text" class="field-input" name="sh_1_ent_first_name"/></div>
-                                                    <div class="field-row"><label>Last name</label><input type="text" class="field-input" name="sh_1_ent_last_name"/></div>
+                                                    <div class="field-row"><label>First name</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_first_name'"/></div>
+                                                    <div class="field-row"><label>Last name</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_last_name'"/></div>
                                                 </div>
                                                 <div class="select-wrap">
                                                     <label>Nationality</label>
-                                                    <select class="field-select" name="sh_1_ent_nationality">
+                                                    <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_ent_nationality'">
                                                         <option value=""></option>
                                                         <option value="AE">United Arab Emirates</option>
                                                         <option value="IN">India</option>
@@ -524,14 +547,14 @@ input[type="date"].field-input{
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you have an alternate nationality?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_alt_nat" value="yes" onchange="toggleAltNatEnt(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_alt_nat" value="no" checked="checked" onchange="toggleAltNatEnt(1,'no')"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ent_alt_nat'" value="yes" t-att-onchange="'toggleAltNatEnt(' + str(sh_num) + ',\'yes\')'" /> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ent_alt_nat'" value="no" checked="checked" t-att-onchange="'toggleAltNatEnt(' + str(sh_num) + ',\'no\')'" /> No</label>
                                                     </div>
                                                 </div>
-                                                <div id="sh_1_ent_alt_nat_fields" class="hidden two-col">
+                                                <div t-att-id="'sh_' + str(sh_num) + '_ent_alt_nat_fields'" class="hidden two-col">
                                                     <div class="select-wrap">
                                                         <label>Alternate nationality</label>
-                                                        <select class="field-select" name="sh_1_ent_alt_nationality">
+                                                        <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_ent_alt_nationality'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -539,16 +562,16 @@ input[type="date"].field-input{
                                                         </select>
                                                         <span class="select-arrow">&#9660;</span>
                                                     </div>
-                                                    <div class="field-row"><label>Alternate passport number</label><input type="text" class="field-input" name="sh_1_ent_alt_passport_no"/></div>
+                                                    <div class="field-row"><label>Alternate passport number</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_alt_passport_no'"/></div>
                                                 </div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>Date of birth</label><input type="date" class="field-input" name="sh_1_ent_dob"/></div>
-                                                    <div class="field-row"><label>Place of birth</label><input type="text" class="field-input" name="sh_1_ent_pob"/></div>
+                                                    <div class="field-row"><label>Date of birth</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_dob'"/></div>
+                                                    <div class="field-row"><label>Place of birth</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_pob'"/></div>
                                                 </div>
                                                 <div class="two-col">
                                                     <div class="select-wrap">
                                                         <label>Country of birth</label>
-                                                        <select class="field-select" name="sh_1_ent_cob">
+                                                        <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_ent_cob'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -556,10 +579,10 @@ input[type="date"].field-input{
                                                         </select>
                                                         <span class="select-arrow">&#9660;</span>
                                                     </div>
-                                                    <div class="field-row"><label>Date of issue</label><input type="date" class="field-input" name="sh_1_ent_doi"/></div>
+                                                    <div class="field-row"><label>Date of issue</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_doi'"/></div>
                                                 </div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>Date of expiry</label><input type="date" class="field-input" name="sh_1_ent_doe"/></div>
+                                                    <div class="field-row"><label>Date of expiry</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_doe'"/></div>
                                                 </div>
                                             </div>
                                             <div class="sub-section">
@@ -567,44 +590,44 @@ input[type="date"].field-input{
                                                 <div class="mobile-wrap">
                                                     <label>Mobile number</label>
                                                     <div class="mobile-inner">
-                                                        <button type="button" class="flag-btn" id="sh_1_ent_flag_btn" onclick="toggleFlagMenu('1_ent')">&#127482;&#127462; +971 &#9660;</button>
-                                                        <input type="tel" class="mobile-number" name="sh_1_ent_mobile"/>
+                                                        <button type="button" class="flag-btn" t-att-id="'sh_' + str(sh_num) + '_ent_flag_btn'" onclick="toggleFlagMenu('1_ent')">&#127482;&#127462; +971 &#9660;</button>
+                                                        <input type="tel" class="mobile-number" t-att-name="'sh_' + str(sh_num) + '_ent_mobile'"/>
                                                     </div>
-                                                    <div id="sh_1_ent_flag_menu" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
-                                                        <div onclick="setFlag('1_ent','&#127482;&#127462;','+971','AE')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
-                                                        <div onclick="setFlag('1_ent','&#127470;&#127475;','+91','IN')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
-                                                        <div onclick="setFlag('1_ent','&#127477;&#127472;','+92','PK')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
-                                                        <div onclick="setFlag('1_ent','&#127468;&#127463;','+44','GB')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
-                                                        <div onclick="setFlag('1_ent','&#127482;&#127480;','+1','US')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
+                                                    <div t-att-id="'sh_' + str(sh_num) + '_ent_flag_menu'" class="hidden" style="position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;z-index:100;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.1)">
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127482;&#127462;','+971','AE')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127462; UAE +971</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127470;&#127475;','+91','IN')" style="padding:8px;cursor:pointer;font-size:13px">&#127470;&#127475; India +91</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127477;&#127472;','+92','PK')" style="padding:8px;cursor:pointer;font-size:13px">&#127477;&#127472; Pakistan +92</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127468;&#127463;','+44','GB')" style="padding:8px;cursor:pointer;font-size:13px">&#127468;&#127463; UK +44</div>
+                                        <div onclick="setFlag(this.closest('[id^=acc_]').id.replace('acc_',''),'&#127482;&#127480;','+1','US')" style="padding:8px;cursor:pointer;font-size:13px">&#127482;&#127480; USA +1</div>
                                                     </div>
                                                 </div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Do you have secondary contact number?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_secondary" value="yes" onchange="toggleSecondaryEnt(1,'yes')"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_ent_secondary" value="no" onchange="toggleSecondaryEnt(1,'no')"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ent_secondary'" value="yes" t-att-onchange="'toggleSecondaryEnt(' + str(sh_num) + ',\'yes\')'" /> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_ent_secondary'" value="no" t-att-onchange="'toggleSecondaryEnt(' + str(sh_num) + ',\'no\')'" /> No</label>
                                                     </div>
                                                 </div>
-                                                <div id="sh_1_ent_secondary_field" class="hidden">
+                                                <div t-att-id="'sh_' + str(sh_num) + '_ent_secondary_field'" class="hidden">
                                                     <div class="mobile-wrap">
                                                         <label>Secondary mobile number</label>
                                                         <div class="mobile-inner">
                                                             <button type="button" class="flag-btn">&#127482;&#127462; +971 &#9660;</button>
-                                                            <input type="tel" class="mobile-number" name="sh_1_ent_mobile2"/>
+                                                            <input type="tel" class="mobile-number" t-att-name="'sh_' + str(sh_num) + '_ent_mobile2'"/>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="field-row"><label>E-mail ID</label><input type="email" class="field-input" name="sh_1_ent_email"/></div>
+                                                <div class="field-row"><label>E-mail ID</label><input type="email" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_email'"/></div>
                                                 <div class="field-row">
                                                     <label>Current address</label>
-                                                    <textarea class="field-input" name="sh_1_ent_address" maxlength="150" rows="3" style="padding-top:28px" oninput="updateCount(this,'sh_1_ent_addr_count')"></textarea>
-                                                    <span id="sh_1_ent_addr_count" style="font-size:11px;color:#aaa;float:right;margin-top:2px">0 / 150</span>
+                                                    <textarea class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_address'" maxlength="150" rows="3" style="padding-top:28px" oninput="updateCount(this,'sh_1_ent_addr_count')"></textarea>
+                                                    <span t-att-id="'sh_' + str(sh_num) + '_ent_addr_count'" style="font-size:11px;color:#aaa;float:right;margin-top:2px">0 / 150</span>
                                                 </div>
                                                 <div class="two-col">
-                                                    <div class="field-row"><label>City</label><input type="text" class="field-input" name="sh_1_ent_city"/></div>
+                                                    <div class="field-row"><label>City</label><input type="text" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_city'"/></div>
                                                     <div class="select-wrap">
                                                         <label>Country</label>
-                                                        <select class="field-select" name="sh_1_ent_country">
+                                                        <select class="field-select" t-att-name="'sh_' + str(sh_num) + '_ent_country'">
                                                             <option value=""></option>
                                                             <option value="AE">United Arab Emirates</option>
                                                             <option value="IN">India</option>
@@ -613,22 +636,23 @@ input[type="date"].field-input{
                                                         <span class="select-arrow">&#9660;</span>
                                                     </div>
                                                 </div>
-                                                <div class="field-row"><label>Shareholder joining date</label><input type="date" class="field-input" name="sh_1_ent_joining_date"/></div>
+                                                <div class="field-row"><label>Shareholder joining date</label><input type="date" class="field-input" t-att-name="'sh_' + str(sh_num) + '_ent_joining_date'"/></div>
                                                 <div style="margin-bottom:16px">
                                                     <span class="question-label">Is Authorized Person a resident of the UAE?</span>
                                                     <div class="radio-group">
-                                                        <label class="radio-label"><input type="radio" name="sh_1_auth_resident" value="yes"/> Yes</label>
-                                                        <label class="radio-label"><input type="radio" name="sh_1_auth_resident" value="no"/> No</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_auth_resident'" value="yes"/> Yes</label>
+                                                        <label class="radio-label"><input type="radio" t-att-name="'sh_' + str(sh_num) + '_auth_resident'" value="no"/> No</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="save-row">
-                                        <button type="button" class="save-btn" onclick="saveShareholder(1)">SAVE</button>
+                                        <button type="button" class="save-btn" t-att-onclick="'saveShareholder(' + str(sh_num) + ')'" >SAVE</button>
                                     </div>
                                 </div>
-                            </div>
+                                </div>
+                            </t>
                         </div>
                     </div>
                 </div>
@@ -636,7 +660,7 @@ input[type="date"].field-input{
 
             <div class="spc-nav-buttons">
                 <a t-att-href="'/spc/setup-new-company/apply/step5/' + service_type" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="document.getElementById('step6Form').submit()">NEXT</button>
             </div>
         </form>
     </div>
@@ -654,22 +678,98 @@ function toggleSecondaryEnt(n,val){var f=document.getElementById('sh_'+n+'_ent_s
 function toggleUaeVisa(n,val){var f=document.getElementById('sh_'+n+'_uae_visa_fields');val==='yes'?f.classList.remove('hidden'):f.classList.add('hidden')}
 function updateCount(el,id){document.getElementById(id).textContent=el.value.length+' / 150'}
 function deleteShareholder(n){var a=document.getElementById('acc_'+n);if(a)a.remove()}
-function saveShareholder(n){var b=document.querySelector('#acc_'+n+' .save-btn');if(b){b.textContent='✓ SAVED';b.style.background='#1abc9c'}}
+function saveShareholder(n){
+    var b=document.querySelector('#acc_'+n+' .save-btn');
+    if(b){b.textContent='✓ SAVED';b.style.background='#1abc9c';}
+    // Collapse the accordion body
+    var body=document.getElementById('body_'+n);
+    var arrow=document.getElementById('arrow_'+n);
+    if(body){body.classList.remove('open');}
+    if(arrow){arrow.classList.remove('open');}
+    // Update header to show saved state
+    var header=document.querySelector('#acc_'+n+' .accordion-header span:first-child');
+    if(header){header.textContent='Shareholder '+n+' ✓';}
+}
 function showClear(clearId,sel){var btn=document.getElementById(clearId);if(btn){sel.value?btn.classList.remove('hidden'):btn.classList.add('hidden')}}
 function clearSelect(selId,clearId){var s=document.getElementById(selId);if(s)s.value='';var b=document.getElementById(clearId);if(b)b.classList.add('hidden')}
 function toggleFlagMenu(n){var m=document.getElementById('sh_'+n+'_flag_menu');if(m)m.classList.toggle('hidden')}
 function setFlag(n,flag,code,country){var btn=document.getElementById('sh_'+n+'_flag_btn');if(btn)btn.innerHTML=flag+' '+code+' &#9660;';var m=document.getElementById('sh_'+n+'_flag_menu');if(m)m.classList.add('hidden')}
 document.addEventListener('click',function(e){document.querySelectorAll('[id$="_flag_menu"]').forEach(function(m){if(!m.classList.contains('hidden')&&!m.parentElement.contains(e.target)){m.classList.add('hidden')}})})
+
+function buildShareholderHTML(i){
+    var div = document.createElement('div');
+    div.className = 'accordion';
+    div.id = 'acc_' + i;
+    div.innerHTML = '<div class="accordion-header" onclick="toggleAccordion('+i+')">' +
+        '<span>Shareholder ' + i + '</span>' +
+        '<span class="accordion-arrow open" id="arrow_'+i+'">&#9660;</span></div>' +
+        '<div class="accordion-body open" id="body_'+i+'">' +
+        '<div class="delete-btn" onclick="deleteShareholder('+i+')" style="color:#e53e3e;cursor:pointer;margin-bottom:16px;text-align:right">&#128465; Delete Shareholder</div>' +
+        '<div style="margin-bottom:16px"><span style="font-size:13px;font-weight:600;color:#1a2340">Is the shareholder an existing SPC user?</span><br>' +
+        '<label style="margin-right:16px;font-size:13px"><input type="radio" name="sh_'+i+'_spc_user" value="yes"/> Yes</label>' +
+        '<label style="font-size:13px"><input type="radio" name="sh_'+i+'_spc_user" value="no" checked/> No</label></div>' +
+        '<div style="margin-bottom:16px"><span style="font-size:13px;font-weight:600;color:#1a2340">Select shareholder type</span><br>' +
+        '<label style="margin-right:16px;font-size:13px"><input type="radio" name="sh_'+i+'_type" value="individual" checked/> Individual</label>' +
+        '<label style="font-size:13px"><input type="radio" name="sh_'+i+'_type" value="entity"/> Entity</label></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">' +
+        '<div><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">First name</label>' +
+        '<input type="text" name="sh_'+i+'_first_name" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+        '<div><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Last name</label>' +
+        '<input type="text" name="sh_'+i+'_last_name" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div></div>' +
+        '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Passport number</label>' +
+        '<input type="text" name="sh_'+i+'_passport_no" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+        '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Date of birth</label>' +
+        '<input type="date" name="sh_'+i+'_dob" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+        '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Nationality</label>' +
+        '<select name="sh_'+i+'_nationality" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none">' +
+        '<option value=""></option><option value="AE">United Arab Emirates</option><option value="IN">India</option>' +
+        '<option value="PK">Pakistan</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="other">Other</option></select></div>' +
+        '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">E-mail ID</label>' +
+        '<input type="email" name="sh_'+i+'_email_id" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+        '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Mobile number</label>' +
+        '<input type="tel" name="sh_'+i+'_mobile" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">' +
+        '<div><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Shares allocated (%)</label>' +
+        '<input type="number" name="sh_'+i+'_shares" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+        '<div><label style="font-size:11px;color:#888;display:block;margin-bottom:4px">Share value (AED)</label>' +
+        '<input type="number" name="sh_'+i+'_share_value" style="width:100%;padding:10px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div></div>' +
+        '<div style="text-align:right;margin-top:16px">' +
+        '<button type="button" onclick="saveShareholder('+i+')" style="background:#1a2340;color:white;border:none;border-radius:8px;padding:10px 28px;font-size:14px;font-weight:600;cursor:pointer">SAVE</button></div>' +
+        '</div>';
+    return div;
+}
+
 function updateShareholderList(count){
     count=Math.min(Math.max(parseInt(count)||1,1),20);
-    var list=document.getElementById('shareholderList');
+    var list=document.getElementById('acc_1') ? document.getElementById('acc_1').parentElement : null;
     var existing=list.querySelectorAll('.accordion').length;
     if(count>existing){
         for(var i=existing+1;i<=count;i++){
-            var div=document.createElement('div');
-            div.className='accordion';
-            div.id='acc_'+i;
-            div.innerHTML='<div class="accordion-header" onclick="toggleAccordion('+i+')"><span>Shareholder '+i+'</span><span class="accordion-arrow" id="arrow_'+i+'">&#9660;</span></div><div class="accordion-body" id="body_'+i+'"><div class="delete-btn" onclick="deleteShareholder('+i+')">&#128465; Delete Shareholder</div><p style="color:#aaa;font-size:13px;padding:8px 0">Shareholder '+i+' details</p><div class="save-row"><button type="button" class="save-btn" onclick="saveShareholder('+i+')">SAVE</button></div></div>';
+            var div = document.createElement('div');
+            div.className = 'accordion';
+            div.id = 'acc_' + i;
+            div.innerHTML = '<div class="accordion-header" onclick="toggleAccordion(' + i + ')"><span>Shareholder ' + i + '</span><span class="accordion-arrow" id="arrow_' + i + '">&#9660;</span></div>' +
+                '<div class="accordion-body" id="body_' + i + '">' +
+                '<div style="padding:16px">' +
+                '<div style="margin-bottom:16px"><span style="font-size:13px;font-weight:600;color:#1a2340">Is the shareholder an existing SPC user?</span><br>' +
+                '<label style="margin-right:16px;font-size:13px"><input type="radio" name="sh_' + i + '_spc_user" value="yes"/> Yes</label>' +
+                '<label style="font-size:13px"><input type="radio" name="sh_' + i + '_spc_user" value="no" checked/> No</label></div>' +
+                '<div style="margin-bottom:16px"><span style="font-size:13px;font-weight:600;color:#1a2340">Select shareholder type</span><br>' +
+                '<label style="margin-right:16px;font-size:13px"><input type="radio" name="sh_' + i + '_type" value="individual" checked/> Individual</label>' +
+                '<label style="font-size:13px"><input type="radio" name="sh_' + i + '_type" value="entity"/> Entity</label></div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">' +
+                '<div><label style="font-size:11px;color:#888;display:block">First name</label><input type="text" name="sh_' + i + '_first_name" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+                '<div><label style="font-size:11px;color:#888;display:block">Last name</label><input type="text" name="sh_' + i + '_last_name" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div></div>' +
+                '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block">Passport number</label><input type="text" name="sh_' + i + '_passport_no" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+                '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block">Date of birth</label><input type="date" name="sh_' + i + '_dob" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+                '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block">Nationality</label><select name="sh_' + i + '_nationality" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"><option value=""></option><option value="AE">UAE</option><option value="IN">India</option><option value="PK">Pakistan</option><option value="GB">UK</option><option value="US">USA</option><option value="other">Other</option></select></div>' +
+                '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block">E-mail ID</label><input type="email" name="sh_' + i + '_email_id" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+                '<div style="margin-bottom:12px"><label style="font-size:11px;color:#888;display:block">Mobile number</label><input type="tel" name="sh_' + i + '_mobile" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">' +
+                '<div><label style="font-size:11px;color:#888;display:block">Shares (%)</label><input type="number" name="sh_' + i + '_shares" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div>' +
+                '<div><label style="font-size:11px;color:#888;display:block">Share value (AED)</label><input type="number" name="sh_' + i + '_share_value" style="width:100%;padding:8px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;outline:none"/></div></div>' +
+                '<div style="text-align:right;margin-top:16px"><button type="button" onclick="saveShareholder(' + i + ')" class="save-btn">SAVE</button></div>' +
+                '</div></div>';
             list.appendChild(div);
         }
     } else if(count<existing){

@@ -38,6 +38,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
 .btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
 .btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;margin-right:auto}
 </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
@@ -150,6 +151,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
 .btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:14px;font-weight:700;cursor:pointer}
 </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
@@ -233,6 +235,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
 .btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:14px;font-weight:700;cursor:pointer}
 </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
@@ -311,6 +314,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
 .btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-submit{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:14px;font-weight:700;cursor:pointer}
 </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
@@ -393,6 +397,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
 .nav-bar{display:flex;justify-content:flex-end;margin-top:32px}
 .btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
 </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
@@ -497,6 +502,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
 .btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
 .btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:14px;font-weight:700;cursor:pointer}
 </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">

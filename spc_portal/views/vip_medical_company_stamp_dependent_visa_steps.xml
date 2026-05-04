@@ -1,0 +1,1698 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- SHARED CSS -->
+<template id="spc_new_modules_shared_css" name="Shared CSS">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}
+.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c}
+.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.hero-banner{border-radius:12px;overflow:hidden;min-height:280px;position:relative;display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}
+.hero-tag{position:absolute;top:20px;left:20px;background:#004d40;color:white;padding:6px 16px;border-radius:4px;font-size:13px;font-weight:700}
+.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}
+.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}
+.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px;width:100%}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1;width:100%}
+.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input,.field-select{width:100%;padding:14px 16px;border:none;border-bottom:2px solid #e5e7eb;background:#f9f9f9;font-size:14px;color:#111;outline:none;appearance:none;margin-bottom:12px}
+.field-input:focus,.field-select:focus{border-bottom-color:#1a3c6e;background:#fff}
+.field-input::placeholder{color:#9ca3af}
+.select-wrap{position:relative;margin-bottom:12px}
+.select-wrap::after{content:"▼";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#9ca3af;pointer-events:none;font-size:12px}
+.select-wrap select{width:100%;padding:14px 16px;border:none;border-bottom:2px solid #e5e7eb;background:#f9f9f9;font-size:14px;color:#111;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1a3c6e;background:#fff}
+.radio-group{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:12px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a3c6e;width:18px;height:18px}
+.upload-label{font-size:14px;color:#374151;font-weight:500;margin-bottom:8px}
+.upload-box{width:200px;border:2px dashed #1abc9c;border-radius:10px;padding:24px 16px;text-align:center;cursor:pointer;background:white;margin-bottom:16px}.upload-box-solid{width:180px;border:2px solid #1abc9c !important;border-radius:10px;padding:20px 12px;text-align:center;cursor:pointer;background:white;margin-bottom:16px}
+.upload-icon{font-size:24px;color:#1abc9c;margin-bottom:6px}
+.upload-text{font-size:12px;color:#1abc9c;font-weight:600}
+.upload-row{display:flex;gap:16px;flex-wrap:wrap}
+.decl-box{background:#f8f9fa;border-radius:10px;padding:24px;font-size:14px;color:#374151;line-height:1.8}
+.terms-link{color:#1abc9c;font-weight:600;text-decoration:none}
+.ack-row{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:14px;font-weight:600;color:#1a2340}
+.ack-row input{width:16px;height:16px;cursor:pointer;accent-color:#1a2340}
+.review-card{background:white;border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.review-sec-title{font-size:15px;font-weight:700;color:#1a2340}
+.edit-btn{color:#1a2340;font-size:13px;font-weight:600;text-decoration:none}
+.review-row{display:flex;gap:32px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.review-row:last-child{border-bottom:none}
+.review-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;font-weight:600;min-width:220px}
+.review-val{font-size:14px;color:#1a2340;font-weight:500}
+.pay-card{background:white;border-radius:12px;padding:32px;max-width:560px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pay-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.pay-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;font-size:14px}
+.pay-total{border-bottom:none;font-weight:700;font-size:16px}
+.pay-method-title{font-size:14px;font-weight:600;color:#1a2340;margin:20px 0 12px}
+.pay-option{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:10px;cursor:pointer}
+.pay-option:hover{border-color:#1abc9c}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:space-between;gap:12px;z-index:99}
+.spc-btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.spc-btn-submit{width:100%;background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px}
+.info-box{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px 16px;font-size:13px;color:#856404;margin-top:8px}
+.hidden{display:none}
+
+.progress-step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;opacity:.5}
+.progress-step-num.active{background:#1abc9c;border-color:#1abc9c;opacity:1}
+.progress-step-num.done{background:#fff;color:#1a2340;border-color:#fff;opacity:.8}
+.progress-step-label{font-size:13px;opacity:.5}
+.progress-step-label.active{opacity:1}
+.progress-total{margin-top:24px;font-size:12px;opacity:.7}
+.step-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:8px}
+.step-sub{font-size:13px;color:#888;margin-bottom:16px}
+.search-wrap{position:relative;margin-bottom:16px;max-width:500px}
+.search-bar{width:100%;padding:10px 40px 10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+.search-bar:focus{border-color:#1abc9c}
+.search-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:6px 14px;border:1px solid #ddd;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;color:#555}
+.tab.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.row-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.row-item-left{display:flex;align-items:flex-start;gap:8px;flex:1}
+.row-item input[type=checkbox]{width:15px;height:15px;margin-top:2px;accent-color:#1abc9c;flex-shrink:0}
+.child-rows{padding-left:24px}
+.selected-activities{min-height:48px;background:#f9f9f9;border-radius:8px;padding:12px;margin-top:8px}
+.selected-tag{display:inline-flex;align-items:center;gap:6px;background:#1abc9c;color:#fff;border-radius:20px;padding:4px 12px;font-size:12px;margin:3px}
+.selected-tag button{background:none;border:none;color:#fff;cursor:pointer;font-size:14px;line-height:1}
+.checkbox-wrap{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:8px}
+.checkbox-wrap input{width:16px;height:16px;accent-color:#1abc9c}
+.select-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#6b7280;color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px}
+.info-icon{font-size:14px;flex-shrink:0}
+.spc-btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.spc-btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:32px;gap:16px}
+</style>
+</template>
+
+<!-- SIDEBAR PARTIAL -->
+<template id="spc_sidebar_partial" name="SPC Sidebar">
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span><div><button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button></div></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+</template>
+
+<!-- ============================================================ -->
+<!-- VIP MEDICAL EID - DETAIL -->
+<!-- ============================================================ -->
+<template id="vip_medical_eid_detail" name="VIP Medical EID Detail">
+<html><head><meta charset="utf-8"/><title>VIP Medical and EID | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<t t-call="spc_portal.spc_sidebar_partial"/>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">VIP Medical and EID (Including Transportation) - New</div>
+        <a href="/spc/concierge/vip-medical-eid/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">VIP Medical<br/>&amp; EID</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p>The Medical and Emirates ID assistance service helps clients undergo a Medical Fitness Test and apply for Emirates ID.</p>
+            <p style="margin-top:12px;font-weight:700">Medical Fitness Test:</p>
+            <p>The Medical Fitness Test is a mandatory examination the UAE government requires for individuals applying for residency visas. The objective is to ensure all applicants are free from communicable and infectious diseases. A successful outcome will generate a certificate of good health, &#8220;Fit.&#8221; The examination includes an X-ray and blood test.</p>
+            <p style="margin-top:12px;font-weight:700">Emirates ID:</p>
+            <p>The Emirates Identity Card (EID) is a mandatory identification card issued to citizens and residents of the United Arab Emirates (UAE). It allows access to government services, banking, obtaining a mobile number, and many other related services.</p>
+            <p style="margin-top:12px;font-weight:700">Pricing: AED 3025.00</p>
+            <p style="margin-top:12px;font-weight:700">Input Details:</p>
+            <p>&#183; Passport copy</p>
+            <p>&#183; Entry visa with Change of Status / Entry stamp copy</p>
+            <p>&#183; Passport-sized photo</p>
+            <p style="margin-top:12px;font-weight:700">Output details:</p>
+            <p>1. Application submission:</p>
+            <p style="padding-left:16px">o Submitting a medical test and Emirates ID application to relevant authorities.</p>
+            <p style="margin-top:8px">2. Appointment Scheduling:</p>
+            <p style="padding-left:16px">o Scheduling a medical test and biometrics appointment wherever applicable.</p>
+            <p style="margin-top:8px">3. Escort service to medical test centers and biometrics (if applicable):</p>
+            <p style="padding-left:16px">o Pick and drop service along with in-center assistance.</p>
+            <p style="margin-top:16px;color:#1565c0">Please note transportation is provided for Dubai, Sharjah, and Ajman only.</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- VIP MEDICAL EID - STEP 1 -->
+<template id="vip_medical_eid_step1" name="VIP Medical EID Step 1">
+<html><head><meta charset="utf-8"/><title>VIP Medical and EID | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Applicant Details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Upload Documents</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/vip-medical-eid/step1/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="select-wrap">
+                    <select name="applicant_select" class="field-select" onchange="fillApplicant(this)">
+                        <option value="">Select applicant</option>
+                    </select>
+                </div>
+                <input type="text" name="applicant_name" class="field-input" placeholder="Or type applicant name manually" t-att-value="record.applicant_select if record else ''"/>
+                <input type="text" name="first_name" class="field-input" placeholder="First name" t-att-value="record.first_name if record else ''"/>
+                <input type="text" name="last_name" class="field-input" placeholder="Last name" t-att-value="record.last_name if record else ''"/>
+                <input type="tel" name="contact_number" class="field-input" placeholder="Contact number" t-att-value="record.contact_number if record else ''"/>
+                <input type="email" name="email" class="field-input" placeholder="Email address" t-att-value="record.email if record else ''"/>
+                <input type="date" name="preferred_date" class="field-input" placeholder="Preferred Date for medical appointment" t-att-value="str(record.preferred_date) if record and record.preferred_date else ''"/>
+                <input type="text" name="building_villa" class="field-input" placeholder="Building or Villa Name/Number" t-att-value="record.building_villa if record else ''"/>
+                <div class="select-wrap">
+                    <select name="city" class="field-select">
+                        <option value="">City</option>
+                        <option value="abu_dhabi">Abu Dhabi</option>
+                        <option value="dubai">Dubai</option>
+                        <option value="sharjah">Sharjah</option>
+                        <option value="ajman">Ajman</option>
+                        <option value="umm_al_quwain">Umm Al Quwain</option>
+                        <option value="ras_al_khaimah">Ras Al Khaimah</option>
+                        <option value="fujairah">Fujairah</option>
+                    </select>
+                </div>
+                <input type="text" name="nearest_landmark" class="field-input" placeholder="Nearest Landmark"/>
+            </div>
+        </div>
+        <div class="spc-nav-buttons" style="justify-content:flex-end">
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div></body></html>
+</template>
+
+<!-- VIP MEDICAL EID - STEP 2 -->
+<template id="vip_medical_eid_step2" name="VIP Medical EID Step 2">
+<html><head><meta charset="utf-8"/><title>VIP Medical and EID | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant Details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Upload Documents</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/vip-medical-eid/step2/submit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="upload-label">Passport-sized Photo</div>
+                <div class="upload-box" onclick="document.getElementById('passport_photo').click()">
+                    <input type="file" id="passport_photo" name="passport_photo" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lbl1')"/>
+                    <div class="upload-icon">&#11014;</div>
+                    <div class="upload-text" id="lbl1">Passport-sized Photo</div>
+                </div>
+                <div class="upload-label">Entry visa with change of status or entry stamp</div>
+                <div class="upload-box" onclick="document.getElementById('entry_visa').click()">
+                    <input type="file" id="entry_visa" name="entry_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lbl2')"/>
+                    <div class="upload-icon">&#11014;</div>
+                    <div class="upload-text" id="lbl2">Entry visa with change of status or entry stamp</div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/vip-medical-eid/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+</body></html>
+</template>
+
+<!-- VIP MEDICAL EID - REVIEW -->
+<template id="vip_medical_eid_review" name="VIP Medical EID Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant Details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Upload Documents</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Applicant Details</div><a href="/spc/concierge/vip-medical-eid/step1" class="edit-btn">&#9998; EDIT</a></div>
+        <div class="review-row"><div class="review-lbl">FIRST NAME</div><div class="review-val"><t t-esc="record.first_name or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">LAST NAME</div><div class="review-val"><t t-esc="record.last_name or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">CONTACT NUMBER</div><div class="review-val"><t t-esc="record.contact_number or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">EMAIL</div><div class="review-val"><t t-esc="record.email or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">PREFERRED DATE</div><div class="review-val"><t t-esc="str(record.preferred_date) if record.preferred_date else '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">BUILDING/VILLA</div><div class="review-val"><t t-esc="record.building_villa or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">CITY</div><div class="review-val"><t t-esc="dict(record._fields['city'].selection).get(record.city,'') if record.city else '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">NEAREST LANDMARK</div><div class="review-val"><t t-esc="record.nearest_landmark or '-'"/></div></div>
+    </div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Uploaded Documents</div><a t-attf-href="/spc/concierge/vip-medical-eid/step2/#{record.id}" class="edit-btn">&#9998; EDIT</a></div>
+        <div class="review-row"><div class="review-lbl">PASSPORT-SIZED PHOTO</div><div class="review-val"><t t-esc="record.doc_passport_photo_name or ('Uploaded' if record.doc_passport_photo else 'Not uploaded')"/></div></div>
+        <div class="review-row"><div class="review-lbl">ENTRY VISA / STAMP</div><div class="review-val"><t t-esc="record.doc_entry_visa_name or ('Uploaded' if record.doc_entry_visa else 'Not uploaded')"/></div></div>
+    </div>
+    <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/concierge/vip-medical-eid/step2/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+        <a t-attf-href="/spc/concierge/vip-medical-eid/payment/#{record.id}" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- VIP MEDICAL EID - PAYMENT -->
+<template id="vip_medical_eid_payment" name="VIP Medical EID Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant Details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Upload Documents</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <div class="pay-card">
+        <div class="pay-title">Payment Summary</div>
+        <div class="pay-row"><span style="color:#555">VIP Medical and EID Service Fee</span><span style="font-weight:600">AED 3,025.00</span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED 3,025.00</span></div>
+        <div class="pay-method-title">Select payment method</div>
+        <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
+        <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
+        <button class="spc-btn-submit">SUBMIT</button>
+    </div>
+    <div style="margin-top:20px">
+        <a t-attf-href="/spc/concierge/vip-medical-eid/review/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- ============================================================ -->
+<!-- COMPANY STAMP - DETAIL -->
+<!-- ============================================================ -->
+<template id="company_stamp_detail" name="Company Stamp Detail">
+<html><head><meta charset="utf-8"/><title>Company Stamp | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<t t-call="spc_portal.spc_sidebar_partial"/>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Company Stamp - New</div>
+        <a href="/spc/concierge/company-stamp/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a3c6e,#2d6a4f)">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">Company<br/>Stamp</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p>This service allows a company to obtain an official rubber stamp.</p>
+            <p style="margin-top:12px">This involves creating the stamp with your company&#8217;s details and registering it with the Free Zone authorities.</p>
+            <p style="margin-top:16px;font-weight:700">Timeline</p>
+            <p>1 Business day</p>
+            <p style="margin-top:16px;font-weight:700">Fees</p>
+            <p>AED 260.00</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- COMPANY STAMP - STEP 1 -->
+<template id="company_stamp_step1" name="Company Stamp Step 1">
+<html><head><meta charset="utf-8"/><title>Company Stamp | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Confirmation</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/company-stamp/step1/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Select formation</div>
+                <div class="select-wrap">
+                    <select name="license_number" class="field-select" onchange="if(this.value)document.getElementById('lic_manual').value=this.value">
+                        <option value="">Select license number</option>
+                    </select>
+                </div>
+                <input type="text" id="lic_manual" name="license_number_manual" class="field-input" placeholder="Or type license number manually" t-att-value="record.license_number if record else ''"/>
+                <input type="text" name="company_name" class="field-input" placeholder="Company name" t-att-value="record.company_name if record else ''"/>
+            </div>
+        </div>
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Remarks</div>
+<textarea name="remarks" class="field-input" style="min-height:80px;resize:none" placeholder="Comments"><t t-esc="record.remarks if record else ''"/></textarea>
+            </div>
+        </div>
+        <div class="spc-nav-buttons" style="justify-content:flex-end">
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div></body></html>
+</template>
+
+<!-- COMPANY STAMP - STEP 2 DECLARATION -->
+<template id="company_stamp_step2" name="Company Stamp Step 2">
+<html><head><meta charset="utf-8"/><title>Company Stamp | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Confirmation</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/company-stamp/step2/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="decl-box">
+                    <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px">Declaration:</div>
+                    <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+                    <br/>
+                    <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                    <br/>
+                    <p>Acknowledgement</p>
+                    <div class="ack-row">
+                        <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+                        <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/company-stamp/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div></body></html>
+</template>
+
+<!-- COMPANY STAMP - REVIEW -->
+<template id="company_stamp_review" name="Company Stamp Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Confirmation</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Confirmation</div><a href="/spc/concierge/company-stamp/step1" class="edit-btn">&#9998; EDIT</a></div>
+        <div class="review-row"><div class="review-lbl">LICENSE NUMBER</div><div class="review-val"><t t-esc="record.license_number or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">COMPANY NAME</div><div class="review-val"><t t-esc="record.company_name or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">REMARKS</div><div class="review-val"><t t-esc="record.remarks or '-'"/></div></div>
+    </div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Declaration</div><a t-attf-href="/spc/concierge/company-stamp/step2/#{record.id}" class="edit-btn">&#9998; EDIT</a></div>
+        <div class="review-row"><div class="review-lbl">TERMS AGREED</div><div class="review-val"><t t-esc="'Yes' if record.declaration_accepted else 'No'"/></div></div>
+    </div>
+    <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/concierge/company-stamp/step2/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+        <a t-attf-href="/spc/concierge/company-stamp/payment/#{record.id}" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- COMPANY STAMP - PAYMENT -->
+<template id="company_stamp_payment" name="Company Stamp Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Confirmation</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <div class="pay-card">
+        <div class="pay-title">Payment Summary</div>
+        <div class="pay-row"><span style="color:#555">Company Stamp Service Fee</span><span style="font-weight:600">AED 260.00</span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED 260.00</span></div>
+        <div class="pay-method-title">Select payment method</div>
+        <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
+        <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
+        <button class="spc-btn-submit">SUBMIT</button>
+    </div>
+    <div style="margin-top:20px">
+        <a t-attf-href="/spc/concierge/company-stamp/review/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- ============================================================ -->
+<!-- DEPENDENT VISA - DETAIL -->
+<!-- ============================================================ -->
+<template id="dependent_visa_detail" name="Dependent Visa Detail">
+<html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<t t-call="spc_portal.spc_sidebar_partial"/>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Dependent Visa - New</div>
+        <a href="/spc/concierge/dependent-visa/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#6b2fa0,#1a3c6e)">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">Dependent<br/>Visa</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p>This Visa permits sponsoring of parents, spouse, and children (below 18 years of age).</p>
+            <p style="margin-top:10px">This service allows to client to create the permit issued to non-citizens/expats allowing them to reside in the UAE for a period of time.</p>
+            <p style="margin-top:16px;font-weight:700">Requirement(s)</p>
+            <ol style="padding-left:24px;margin-top:8px">
+                <li>Physical Emirates ID of the Sponsor</li>
+                <li>Passport Copy of the Sponsor</li>
+                <li>Attested Tenancy Contract</li>
+                <li>Attested marriage certificate in Arabic or duly translated into Arabic (if applicable)</li>
+                <li>Attested Birth Certificate (If applicable)</li>
+                <li>Latest Utility Bills</li>
+            </ol>
+            <p style="margin-top:16px;font-weight:700">Important Notes:</p>
+            <ul style="padding-left:24px;margin-top:8px">
+                <li>The sponsor must have a minimum salary of AED 4,000, or AED 3,000 plus accommodation for sponsoring spouse and children. A minimum salary of AED 15,000 is required for sponsoring parents.</li>
+                <li style="margin-top:6px">Male and female family members above 18 years must undergo and pass a medical fitness test.</li>
+                <li style="margin-top:6px">A mother can sponsor her children in special cases approved by ICP, and in such cases, an NOC from the father issued by the UAE Court is mandatory.</li>
+                <li style="margin-top:6px">A resident can sponsor parents, but the residence visa will be granted on a yearly basis regardless of the sponsor&#8217;s visa validity.</li>
+            </ul>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- DEPENDENT VISA - STEP 1 -->
+<template id="dependent_visa_step1" name="Dependent Visa Step 1">
+<html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Sponsor details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Dependent details</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Application details</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Remark</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/dependent-visa/step1/submit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+        <!-- 01: SPC Visa -->
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Does the sponsor have visa with SPC?</div>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="sponsor_has_spc_visa" value="yes" onchange="toggleSpcVisa('yes')"/> Yes</label>
+                    <label class="radio-label"><input type="radio" name="sponsor_has_spc_visa" value="no" onchange="toggleSpcVisa('no')"/> No</label>
+                </div>
+                <div id="no_spc_msg" class="info-box hidden">Please ensure the sponsor&#8217;s physical Emirates ID is delivered to SPC Reception within 24 hours of submitting this request.</div>
+            </div>
+        </div>
+
+        <div id="visa_fields_wrap" class="hidden">
+        <!-- 02: Employee/Investor -->
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="sponsor_type" value="employee" onchange="toggleType('employee')"/> Employee</label>
+                    <label class="radio-label"><input type="radio" name="sponsor_type" value="investor" onchange="toggleType('investor')"/> Investor</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 03: Sponsor Details -->
+        <div class="spc-section">
+            <div class="sec-num">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Sponsor details</div>
+                <div id="emp_select" class="hidden">
+                    <div class="select-wrap">
+                        <select name="sponsor_select" class="field-select"><option value="">Select Sponsor</option></select>
+                    </div>
+                </div>
+                <div id="inv_select" class="hidden">
+                    <div class="select-wrap">
+                        <select name="sponsor_select_inv" class="field-select"><option value="">Select Sponsor</option></select>
+                    </div>
+                </div>
+                <div style="font-size:13px;color:#6b7280;margin-bottom:8px">Gender</div>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="sponsor_gender" value="male" onchange="toggleGender('male')"/> Male</label>
+                    <label class="radio-label"><input type="radio" name="sponsor_gender" value="female" onchange="toggleGender('female')"/> Female</label>
+                </div>
+                <input type="text" name="sponsor_first_name" class="field-input" placeholder="First Name"/>
+                <input type="text" name="sponsor_last_name" class="field-input" placeholder="Last Name"/>
+                <div id="salary_wrap" class="hidden">
+                    <input type="number" name="salary" class="field-input" placeholder="Salary"/>
+                </div>
+                <div id="desig_wrap" class="hidden">
+                    <div class="select-wrap">
+                        <select name="designation" class="field-select">
+                            <option value="">Designation</option>
+                            <option value="manager">Manager</option>
+                            <option value="director">Director</option>
+                            <option value="engineer">Engineer</option>
+                            <option value="accountant">Accountant</option>
+                            <option value="hr_officer">HR Officer</option>
+                            <option value="sales_executive">Sales Executive</option>
+                            <option value="it_specialist">IT Specialist</option>
+                            <option value="admin_officer">Administrative Officer</option>
+                            <option value="coordinator">Coordinator</option>
+                            <option value="analyst">Analyst</option>
+                            <option value="consultant">Consultant</option>
+                            <option value="supervisor">Supervisor</option>
+                            <option value="technician">Technician</option>
+                            <option value="developer">Developer</option>
+                            <option value="designer">Designer</option>
+                            <option value="officer">Officer</option>
+                            <option value="assistant">Assistant</option>
+                            <option value="executive">Executive</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="marital_wrap" class="hidden">
+                    <div style="font-size:13px;color:#6b7280;margin-bottom:8px">Marital Status</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="sponsor_marital_status" value="married"/> Married</label>
+                        <label class="radio-label"><input type="radio" name="sponsor_marital_status" value="widowed"/> Widowed</label>
+                        <label class="radio-label"><input type="radio" name="sponsor_marital_status" value="divorced"/> Divorced</label>
+                    </div>
+                </div>
+                <div style="font-size:14px;color:#374151;margin:8px 0">Is the tenancy contract under the sponsor&#8217;s name?</div>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="tenancy_under_sponsor" value="yes"/> Yes</label>
+                    <label class="radio-label"><input type="radio" name="tenancy_under_sponsor" value="no"/> No</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 04: Upload Documents -->
+        <div class="spc-section">
+            <div class="sec-num">04</div>
+            <div class="sec-body">
+                <div class="sec-title">Upload required documents</div>
+                <div class="upload-row">
+                    <div>
+                        <div class="upload-label">Passport copy</div>
+                        <div class="upload-box" onclick="document.getElementById('passport_copy').click()">
+                            <input type="file" id="passport_copy" name="passport_copy" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lp')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="lp">File Upload</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">Residence visa copy</div>
+                        <div class="upload-box" onclick="document.getElementById('residence_visa').click()">
+                            <input type="file" id="residence_visa" name="residence_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lrv')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="lrv">Residence visa copy</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">Emirates ID copy</div>
+                        <div class="upload-box" onclick="document.getElementById('emirates_id').click()">
+                            <input type="file" id="emirates_id" name="emirates_id" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'le')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="le">File Upload</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">Attested Tenancy contract</div>
+                        <div class="upload-box" onclick="document.getElementById('tenancy_contract').click()">
+                            <input type="file" id="tenancy_contract" name="tenancy_contract" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lt')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="lt">Attested Tenancy contract</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">Most recent utility bill copy</div>
+                        <div class="upload-box" onclick="document.getElementById('utility_bill').click()">
+                            <input type="file" id="utility_bill" name="utility_bill" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lu')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="lu">Most recent utility bill copy</div>
+                        </div>
+                    </div>
+                    <div id="trade_lic_wrap" class="hidden">
+                        <div class="upload-label">Trade License copy</div>
+                        <div class="upload-box" onclick="document.getElementById('trade_license').click()">
+                            <input type="file" id="trade_license" name="trade_license" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ltl')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="ltl">Trade License copy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div><!-- end visa_fields_wrap -->
+        <div class="spc-nav-buttons" style="justify-content:flex-end">
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script><![CDATA[
+function toggleSpcVisa(v){
+    document.getElementById('no_spc_msg').classList.toggle('hidden',v!=='no');
+    document.getElementById('visa_fields_wrap').classList.toggle('hidden',v!=='yes');
+}
+function toggleType(v){
+    document.getElementById('emp_select').classList.toggle('hidden',v!=='employee');
+    document.getElementById('inv_select').classList.toggle('hidden',v!=='investor');
+    document.getElementById('salary_wrap').classList.toggle('hidden',v!=='employee');
+    document.getElementById('desig_wrap').classList.toggle('hidden',v!=='employee');
+    document.getElementById('trade_lic_wrap').classList.toggle('hidden',v!=='investor');
+    if(v==='investor') document.getElementById('marital_wrap').classList.remove('hidden');
+    else document.getElementById('marital_wrap').classList.add('hidden');
+}
+function toggleGender(v){
+    document.getElementById('marital_wrap').classList.remove('hidden');
+}
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+]]></script>
+</body></html>
+</template>
+
+<!-- DEPENDENT VISA - REVIEW -->
+<template id="dependent_visa_review" name="Dependent Visa Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Sponsor details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Dependent details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Remark</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Sponsor Details</div><a href="/spc/concierge/dependent-visa/step1" class="edit-btn">&#9998; EDIT</a></div>
+        <div class="review-row"><div class="review-lbl">SPONSOR HAS SPC VISA?</div><div class="review-val"><t t-esc="'Yes' if record.sponsor_has_spc_visa=='yes' else 'No'"/></div></div>
+        <div class="review-row"><div class="review-lbl">SPONSOR TYPE</div><div class="review-val"><t t-esc="(record.sponsor_type or '').title()"/></div></div>
+        <div class="review-row"><div class="review-lbl">GENDER</div><div class="review-val"><t t-esc="(record.sponsor_gender or '').title()"/></div></div>
+        <div class="review-row"><div class="review-lbl">FIRST NAME</div><div class="review-val"><t t-esc="record.sponsor_first_name or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">LAST NAME</div><div class="review-val"><t t-esc="record.sponsor_last_name or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">DESIGNATION</div><div class="review-val"><t t-esc="(record.designation or '').replace('_',' ').title()"/></div></div>
+        <div class="review-row"><div class="review-lbl">TENANCY UNDER SPONSOR?</div><div class="review-val"><t t-esc="'Yes' if record.tenancy_under_sponsor=='yes' else 'No'"/></div></div>
+    </div>
+    <div class="spc-nav-buttons">
+        <a href="/spc/concierge/dependent-visa/step1" class="spc-btn-prev">PREVIOUS</a>
+        <a t-attf-href="/spc/concierge/dependent-visa/payment/#{record.id}" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- DEPENDENT VISA - PAYMENT -->
+<template id="dependent_visa_payment" name="Dependent Visa Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Sponsor details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Dependent details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Remark</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <div class="pay-card">
+        <div class="pay-title">Payment Summary</div>
+        <div class="pay-row"><span style="color:#555">Dependent Visa Fee</span><span style="font-weight:600">AED 5,000.00</span></div>
+        <div class="pay-row"><span style="color:#555">Processing Fee</span><span style="font-weight:600">AED 10.00</span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED 5,010.00</span></div>
+        <div class="pay-method-title">Select payment method</div>
+        <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
+        <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
+        <button class="spc-btn-submit">SUBMIT</button>
+    </div>
+    <div style="margin-top:20px">
+        <a t-attf-href="/spc/concierge/dependent-visa/review/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+
+<!-- DEPENDENT VISA - STEP 2: Dependent Details -->
+<template id="dependent_visa_step2" name="Dependent Visa Step 2">
+<html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.phone-wrap{display:flex;align-items:stretch;border-bottom:2px solid #e5e7eb;background:#f9f9f9;margin-bottom:12px}
+.phone-flag{padding:14px 12px;font-size:14px;color:#111;border-right:1px solid #e5e7eb;white-space:nowrap}
+.phone-wrap input{flex:1;padding:14px 12px;border:none;background:transparent;font-size:14px;outline:none}
+</style>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Sponsor details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Dependent details</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Application details</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Remark</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/dependent-visa/step2/submit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Dependent details</div>
+                <input type="text" name="dep_first_name" class="field-input" placeholder="First name"/>
+                <input type="text" name="dep_last_name" class="field-input" placeholder="Last name"/>
+                <input type="text" name="dep_father_name" class="field-input" placeholder="Father's name"/>
+                <input type="text" name="dep_mother_name" class="field-input" placeholder="Mother's name"/>
+                <div class="phone-wrap">
+                    <span class="phone-flag">&#127462;&#127466; +971</span>
+                    <input type="tel" name="dep_mobile" placeholder="UAE mobile number"/>
+                </div>
+                <div class="select-wrap">
+                    <select name="dep_nationality" class="field-select">
+                        <option value="">Nationality</option>
+                        <option>Afghan</option><option>Albanian</option><option>Algerian</option><option>American</option><option>Andorran</option><option>Angolan</option><option>Argentinian</option><option>Armenian</option><option>Australian</option><option>Austrian</option><option>Azerbaijani</option><option>Bahraini</option><option>Bangladeshi</option><option>Belarusian</option><option>Belgian</option><option>Bolivian</option><option>Bosnian</option><option>Brazilian</option><option>British</option><option>Bulgarian</option><option>Cameroonian</option><option>Canadian</option><option>Chilean</option><option>Chinese</option><option>Colombian</option><option>Congolese</option><option>Croatian</option><option>Cuban</option><option>Czech</option><option>Danish</option><option>Dutch</option><option>Ecuadorian</option><option>Egyptian</option><option>Emirati</option><option>Estonian</option><option>Ethiopian</option><option>Finnish</option><option>French</option><option>Georgian</option><option>German</option><option>Ghanaian</option><option>Greek</option><option>Guatemalan</option><option>Honduran</option><option>Hungarian</option><option>Indian</option><option>Indonesian</option><option>Iranian</option><option>Iraqi</option><option>Irish</option><option>Israeli</option><option>Italian</option><option>Ivorian</option><option>Japanese</option><option>Jordanian</option><option>Kazakhstani</option><option>Kenyan</option><option>Korean</option><option>Kuwaiti</option><option>Kyrgyz</option><option>Lebanese</option><option>Libyan</option><option>Lithuanian</option><option>Luxembourgish</option><option>Malaysian</option><option>Maldivian</option><option>Mexican</option><option>Moldovan</option><option>Moroccan</option><option>Mozambican</option><option>Namibian</option><option>Nepalese</option><option>New Zealander</option><option>Nicaraguan</option><option>Nigerian</option><option>Norwegian</option><option>Omani</option><option>Pakistani</option><option>Palestinian</option><option>Panamanian</option><option>Paraguayan</option><option>Peruvian</option><option>Philippine</option><option>Polish</option><option>Portuguese</option><option>Qatari</option><option>Romanian</option><option>Russian</option><option>Saudi</option><option>Senegalese</option><option>Serbian</option><option>Singaporean</option><option>Slovak</option><option>Somali</option><option>South African</option><option>Spanish</option><option>Sri Lankan</option><option>Sudanese</option><option>Swedish</option><option>Swiss</option><option>Syrian</option><option>Taiwanese</option><option>Tajik</option><option>Tanzanian</option><option>Thai</option><option>Tunisian</option><option>Turkish</option><option>Ugandan</option><option>Ukrainian</option><option>Uruguayan</option><option>Uzbek</option><option>Venezuelan</option><option>Vietnamese</option><option>Yemeni</option><option>Zambian</option><option>Zimbabwean</option>
+                    </select>
+                </div>
+                <div class="select-wrap">
+                    <select name="dep_prev_nationality" class="field-select">
+                        <option value="">Previous nationality</option>
+                        <option>Afghan</option><option>Albanian</option><option>Algerian</option><option>American</option><option>Andorran</option><option>Angolan</option><option>Argentinian</option><option>Armenian</option><option>Australian</option><option>Austrian</option><option>Azerbaijani</option><option>Bahraini</option><option>Bangladeshi</option><option>Belarusian</option><option>Belgian</option><option>Bolivian</option><option>Bosnian</option><option>Brazilian</option><option>British</option><option>Bulgarian</option><option>Cameroonian</option><option>Canadian</option><option>Chilean</option><option>Chinese</option><option>Colombian</option><option>Congolese</option><option>Croatian</option><option>Cuban</option><option>Czech</option><option>Danish</option><option>Dutch</option><option>Ecuadorian</option><option>Egyptian</option><option>Emirati</option><option>Estonian</option><option>Ethiopian</option><option>Finnish</option><option>French</option><option>Georgian</option><option>German</option><option>Ghanaian</option><option>Greek</option><option>Guatemalan</option><option>Honduran</option><option>Hungarian</option><option>Indian</option><option>Indonesian</option><option>Iranian</option><option>Iraqi</option><option>Irish</option><option>Israeli</option><option>Italian</option><option>Ivorian</option><option>Japanese</option><option>Jordanian</option><option>Kazakhstani</option><option>Kenyan</option><option>Korean</option><option>Kuwaiti</option><option>Kyrgyz</option><option>Lebanese</option><option>Libyan</option><option>Lithuanian</option><option>Luxembourgish</option><option>Malaysian</option><option>Maldivian</option><option>Mexican</option><option>Moldovan</option><option>Moroccan</option><option>Mozambican</option><option>Namibian</option><option>Nepalese</option><option>New Zealander</option><option>Nicaraguan</option><option>Nigerian</option><option>Norwegian</option><option>Omani</option><option>Pakistani</option><option>Palestinian</option><option>Panamanian</option><option>Paraguayan</option><option>Peruvian</option><option>Philippine</option><option>Polish</option><option>Portuguese</option><option>Qatari</option><option>Romanian</option><option>Russian</option><option>Saudi</option><option>Senegalese</option><option>Serbian</option><option>Singaporean</option><option>Slovak</option><option>Somali</option><option>South African</option><option>Spanish</option><option>Sri Lankan</option><option>Sudanese</option><option>Swedish</option><option>Swiss</option><option>Syrian</option><option>Taiwanese</option><option>Tajik</option><option>Tanzanian</option><option>Thai</option><option>Tunisian</option><option>Turkish</option><option>Ugandan</option><option>Ukrainian</option><option>Uruguayan</option><option>Uzbek</option><option>Venezuelan</option><option>Vietnamese</option><option>Yemeni</option><option>Zambian</option><option>Zimbabwean</option>
+                    </select>
+                </div>
+                <div class="select-wrap">
+                    <select name="dep_marital_status" class="field-select">
+                        <option value="">Marital status</option>
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                        <option value="divorced">Divorced</option>
+                        <option value="widowed">Widowed</option>
+                    </select>
+                </div>
+                <div class="select-wrap">
+                    <select name="dep_religion" class="field-select">
+                        <option value="">Religion</option>
+                        <option value="muslim">Muslim</option>
+                        <option value="hindu">Hindu</option>
+                        <option value="christian">Christian</option>
+                        <option value="buddhism">Buddhism</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- Section 02: Upload required documents -->
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Upload required documents</div>
+                <div class="upload-row">
+                    <div>
+                        <div class="upload-label">Passport copy</div>
+                        <div class="upload-box" onclick="document.getElementById('dep_passport').click()">
+                            <input type="file" id="dep_passport" name="dep_passport" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldp')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldp">File Upload</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">High resolution photo (as per guidelines)</div>
+                        <div class="upload-box" onclick="document.getElementById('dep_photo').click()">
+                            <input type="file" id="dep_photo" name="dep_photo" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldph')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldph">High resolution photo (as per guidelines)</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">Passport special page</div>
+                        <div class="upload-box" onclick="document.getElementById('dep_passport_special').click()">
+                            <input type="file" id="dep_passport_special" name="dep_passport_special" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldps')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldps">Upload new file</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">Attested NOC from father</div>
+                        <div class="upload-box" onclick="document.getElementById('dep_noc').click()">
+                            <input type="file" id="dep_noc" name="dep_noc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldnoc')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldnoc">Attested NOC from father</div>
+                        </div>
+                        <div style="font-size:11px;color:#6b7280;margin-top:4px;max-width:200px">MOFA Attested Affidavit (Dependency Certificate) from Sponsor's Consulate stating that you will take care of the sponsored parents and be responsible for their wellbeing.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/dependent-visa/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+</body></html>
+</template>
+
+<!-- DEPENDENT VISA - STEP 3: Application Details -->
+<template id="dependent_visa_step3" name="Dependent Visa Step 3">
+<html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Sponsor details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Dependent details</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Application details</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Remark</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/dependent-visa/step3/submit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <!-- 01: Current applicant location -->
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Current applicant location</div>
+                <div style="font-size:13px;color:#6b7280;margin-bottom:12px">Is the applicant staying inside or outside the UAE at the time of eVisa issuance?</div>
+                <div class="radio-group">
+                    <label class="radio-label"><input type="radio" name="applicant_location" value="inside" onchange="toggleLocation('inside')"/> Inside</label>
+                    <label class="radio-label"><input type="radio" name="applicant_location" value="outside" onchange="toggleLocation('outside')"/> Outside</label>
+                </div>
+                <!-- Fields shown only when Inside -->
+                <div id="inside_fields" class="hidden" style="margin-top:16px">
+                    <!-- 02: Applicant current status -->
+                    <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px;margin-top:8px">Applicant current status</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="current_status" value="cancelled_resident" onchange="toggleStatus('cancelled_resident')"/> Cancelled resident visa</label>
+                        <label class="radio-label" style="flex-direction:column;align-items:flex-start">
+                            <div style="display:flex;align-items:center;gap:8px"><input type="radio" name="current_status" value="valid_visa" onchange="toggleStatus('valid_visa')"/> Valid visa</div>
+                            <div style="font-size:12px;color:#6b7280;padding-left:26px">(such as tourist, on arrival, etc.)</div>
+                        </label>
+                    </div>
+                    <div id="cancelled_visa_doc" class="hidden" style="margin-top:12px">
+                        <div class="upload-label">Upload cancelled resident visa document</div>
+                        <div class="upload-box" onclick="document.getElementById('cancelled_visa_file').click()">
+                            <input type="file" id="cancelled_visa_file" name="cancelled_visa_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lcv')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="lcv">Upload cancelled resident visa document</div>
+                        </div>
+                    </div>
+                    <div id="valid_visa_doc" class="hidden" style="margin-top:12px">
+                        <div class="upload-label">Upload valid visa document</div>
+                        <div class="upload-box" onclick="document.getElementById('valid_visa_file').click()">
+                            <input type="file" id="valid_visa_file" name="valid_visa_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lvv')"/>
+                            <div class="upload-icon">&#11014;</div><div class="upload-text" id="lvv">Upload valid visa document</div>
+                        </div>
+                    </div>
+                    <!-- 03: Change of status -->
+                    <div style="font-size:15px;font-weight:700;color:#1a2340;margin-top:20px;margin-bottom:12px">Is change of status required?</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="change_of_status" value="yes"/> Yes</label>
+                        <label class="radio-label"><input type="radio" name="change_of_status" value="no"/> No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/dependent-visa/step2/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script><![CDATA[
+function toggleLocation(v){
+    document.getElementById('inside_fields').classList.toggle('hidden', v !== 'inside');
+}
+function toggleStatus(v){
+    document.getElementById('cancelled_visa_doc').classList.toggle('hidden', v !== 'cancelled_resident');
+    document.getElementById('valid_visa_doc').classList.toggle('hidden', v !== 'valid_visa');
+}
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+]]></script>
+</body></html>
+</template>
+
+<!-- DEPENDENT VISA - STEP 4: Remark -->
+<template id="dependent_visa_step4" name="Dependent Visa Step 4">
+<html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Sponsor details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Dependent details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Remark</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/dependent-visa/step4/submit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <textarea name="additional_info" class="field-input" style="min-height:80px;resize:none" placeholder="Additional information"></textarea>
+                <textarea name="crm_comments" class="field-input" style="min-height:80px;resize:none;margin-top:8px" placeholder="CRM email comments"></textarea>
+            </div>
+        </div>
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="upload-label">Upload document</div>
+                <div class="upload-box" onclick="document.getElementById('remark_doc').click()">
+                    <input type="file" id="remark_doc" name="remark_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lrd')"/>
+                    <div class="upload-icon">&#11014;</div><div class="upload-text" id="lrd">Upload document</div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/dependent-visa/step3/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+</body></html>
+</template>
+
+<!-- DEPENDENT VISA - STEP 5: Declaration -->
+<template id="dependent_visa_step5" name="Dependent Visa Step 5">
+<html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Sponsor details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Dependent details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Remark</div></div>
+    <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">New</div>
+    <form action="/spc/concierge/dependent-visa/step5/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="decl-box">
+                    <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px">Declaration:</div>
+                    <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+                    <br/>
+                    <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                    <br/>
+                    <p><strong>I hereby confirm that I will submit physical Emirates ID card at SPC&#8217;s offices to finalise this application.</strong></p>
+                    <br/>
+                    <p><strong>Furthermore, I understand that during the processing stage, the ICA may request additional documents in order to complete my application. If this is the case, I will submit the required documentation to SPC.</strong></p>
+                    <br/>
+                    <p>Acknowledgement</p>
+                    <div class="ack-row">
+                        <input type="checkbox" name="dep_terms_agreed" id="depTermsCheck" value="yes"/>
+                        <label for="depTermsCheck">I have read and agree to the SPC Terms and Conditions.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/dependent-visa/step4/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div></body></html>
+</template>
+
+
+<!-- ============================================================ -->
+<!-- DOCUMENT DELIVERY - DRIVER DETAIL -->
+<!-- ============================================================ -->
+<template id="doc_delivery_driver_detail" name="Document Delivery Driver Detail">
+<html><head><meta charset="utf-8"/><title>Document Delivery | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<t t-call="spc_portal.spc_sidebar_partial"/>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Document Delivery - Driver</div>
+        <a href="/spc/concierge/doc-delivery/driver/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a3c6e,#0e4d8a)">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">Document<br/>Delivery (Driver)</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p>The cost for delivery and courier services varies based on the distance between the pick-up and delivery points.</p>
+            <p style="margin-top:8px">NOTE: Total weight should not be more than 0.5 kgs.</p>
+            <p style="margin-top:16px;font-weight:700">Requirement(s)</p>
+            <ol style="padding-left:24px;margin-top:8px"><li>Service provided upon request of the client</li></ol>
+            <p style="margin-top:16px;font-weight:700">Timeline</p>
+            <ol style="padding-left:24px;margin-top:8px">
+                <li>Local delivery will be delivered the same day</li>
+                <li>International Delivery may vary based on the courier service provider.</li>
+            </ol>
+            <p style="margin-top:16px;font-weight:700">Fees</p>
+            <p style="padding-left:16px">AED 30 (Local)</p>
+            <p style="padding-left:16px">AED 500 (International)</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY - COURIER DETAIL -->
+<template id="doc_delivery_courier_detail" name="Document Delivery Courier Detail">
+<html><head><meta charset="utf-8"/><title>Document Delivery | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<t t-call="spc_portal.spc_sidebar_partial"/>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Document Delivery - Courier</div>
+        <a href="/spc/concierge/doc-delivery/courier/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#0e4d8a,#1a3c6e)">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">Document<br/>Delivery (Courier)</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p>The cost for delivery and courier services varies based on the distance between the pick-up and delivery points.</p>
+            <p style="margin-top:8px">NOTE: Total weight should not be more than 0.5 kgs.</p>
+            <p style="margin-top:16px;font-weight:700">Requirement(s)</p>
+            <ol style="padding-left:24px;margin-top:8px"><li>Service provided upon request of the client</li></ol>
+            <p style="margin-top:16px;font-weight:700">Timeline</p>
+            <ol style="padding-left:24px;margin-top:8px">
+                <li>Local delivery will be delivered the same day</li>
+                <li>International Delivery may vary based on the courier service provider.</li>
+            </ol>
+            <p style="margin-top:16px;font-weight:700">Fees</p>
+            <p style="padding-left:16px">AED 30 (Local)</p>
+            <p style="padding-left:16px">AED 500 (International)</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY - STEP 1 -->
+<template id="doc_delivery_step1" name="Document Delivery Step 1">
+<html><head><meta charset="utf-8"/><title>Document Delivery | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Document delivery details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title" style="text-transform:capitalize"><t t-esc="dtype.title()"/></div>
+    <form action="/spc/concierge/doc-delivery/step1/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="delivery_type" t-att-value="dtype"/>
+        <!-- 01: Collection details -->
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Collection details</div>
+                <input type="date" name="collection_date" class="field-input" placeholder="Preferred collection date" t-att-value="str(record.collection_date) if record and record.collection_date else ''"/>
+                <input type="text" name="collection_time_frame" class="field-input" placeholder="Preferred collection time frame" t-att-value="record.collection_time_frame if record else ''"/>
+                <textarea name="collection_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.collection_address if record else ''"/></textarea>
+            </div>
+        </div>
+        <!-- 02: Delivery details -->
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Delivery details</div>
+                <input type="date" name="delivery_date" class="field-input" placeholder="Preferred delivery date" t-att-value="str(record.delivery_date) if record and record.delivery_date else ''"/>
+                <input type="text" name="delivery_time_frame" class="field-input" placeholder="Preferred delivery time frame" t-att-value="record.delivery_time_frame if record else ''"/>
+                <textarea name="delivery_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.delivery_address if record else ''"/></textarea>
+            </div>
+        </div>
+        <!-- 03: Remarks -->
+        <div class="spc-section">
+            <div class="sec-num">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Remarks</div>
+                <textarea name="remarks" class="field-input" style="min-height:70px;resize:none" placeholder="Comments"><t t-esc="record.remarks if record else ''"/></textarea>
+            </div>
+        </div>
+        <div class="spc-nav-buttons" style="justify-content:flex-end">
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div></body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY - STEP 2 DECLARATION -->
+<template id="doc_delivery_step2" name="Document Delivery Declaration">
+<html><head><meta charset="utf-8"/><title>Document Delivery | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document delivery details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title" style="text-transform:capitalize"><t t-esc="(record.delivery_type or 'driver').title()"/></div>
+    <form action="/spc/concierge/doc-delivery/step2/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="decl-box">
+                    <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px">Declaration:</div>
+                    <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+                    <br/>
+                    <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                    <br/>
+                    <p>Acknowledgement</p>
+                    <div class="ack-row">
+                        <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+                        <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/doc-delivery/#{record.delivery_type}/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div></body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY - REVIEW -->
+<template id="doc_delivery_review" name="Document Delivery Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document delivery details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title" style="text-transform:capitalize"><t t-esc="(record.delivery_type or 'driver').title()"/></div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Collection Details</div><a t-attf-href="/spc/concierge/doc-delivery/#{record.delivery_type}/step1" class="edit-btn">&#9998; EDIT</a></div>
+        <div class="review-row"><div class="review-lbl">COLLECTION DATE</div><div class="review-val"><t t-esc="str(record.collection_date) if record.collection_date else '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">TIME FRAME</div><div class="review-val"><t t-esc="record.collection_time_frame or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">ADDRESS</div><div class="review-val"><t t-esc="record.collection_address or '-'"/></div></div>
+    </div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Delivery Details</div></div>
+        <div class="review-row"><div class="review-lbl">DELIVERY DATE</div><div class="review-val"><t t-esc="str(record.delivery_date) if record.delivery_date else '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">TIME FRAME</div><div class="review-val"><t t-esc="record.delivery_time_frame or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">ADDRESS</div><div class="review-val"><t t-esc="record.delivery_address or '-'"/></div></div>
+    </div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Remarks</div></div>
+        <div class="review-row"><div class="review-lbl">COMMENTS</div><div class="review-val"><t t-esc="record.remarks or '-'"/></div></div>
+    </div>
+    <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/concierge/doc-delivery/step2/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+        <a t-attf-href="/spc/concierge/doc-delivery/payment/#{record.id}" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY - PAYMENT -->
+<template id="doc_delivery_payment" name="Document Delivery Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document delivery details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title" style="text-transform:capitalize"><t t-esc="(record.delivery_type or 'driver').title()"/></div>
+    <div class="pay-card">
+        <div class="pay-title">Payment Summary</div>
+        <div class="pay-row"><span style="color:#555">Document Delivery Fee</span><span style="font-weight:600">AED 10.00</span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED 10.00</span></div>
+        <div class="pay-method-title">Select payment method</div>
+        <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
+        <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
+        <button class="spc-btn-submit">SUBMIT</button>
+    </div>
+    <div style="margin-top:20px">
+        <a t-attf-href="/spc/concierge/doc-delivery/review/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- ============================================================ -->
+<!-- DOCUMENT DELIVERY COURIER - STEP 1 -->
+<!-- ============================================================ -->
+<template id="doc_delivery_courier_step1" name="Document Delivery Courier Step 1">
+<html><head><meta charset="utf-8"/><title>Document Delivery Courier | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.delivery-option{border:2px solid #e5e7eb;border-radius:12px;padding:32px;text-align:center;cursor:pointer;flex:1;transition:all .2s}
+.delivery-option:hover{border-color:#1abc9c}
+.delivery-option input{width:20px;height:20px;accent-color:#1a3c6e;margin-bottom:8px;display:block;margin:0 auto 8px}
+.delivery-option label{font-size:15px;font-weight:600;color:#1a2340;cursor:pointer}
+.delivery-options-row{display:flex;gap:16px;margin-bottom:16px}
+</style>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Delivery details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Additional Remarks</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount" id="total_amt">10.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">Courier</div>
+    <form action="/spc/concierge/doc-delivery/courier/step1/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="delivery_type" value="courier"/>
+
+        <!-- 01: Delivery standard -->
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Delivery standard</div>
+                <div class="delivery-options-row">
+                    <div class="delivery-option" onclick="selectStd('local',this)">
+                        <input type="radio" name="delivery_standard" value="local" id="std_local" onchange="selectStd('local',this.closest('.delivery-option'))"/>
+                        <label for="std_local">Local</label>
+                    </div>
+                    <div class="delivery-option" onclick="selectStd('international',this)">
+                        <input type="radio" name="delivery_standard" value="international" id="std_intl" onchange="selectStd('international',this.closest('.delivery-option'))"/>
+                        <label for="std_intl">International</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 02: Collection details (shown for both) -->
+        <div class="spc-section hidden" id="collection_section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Collection details</div>
+                <input type="date" name="collection_date" class="field-input" placeholder="Preferred collection date" t-att-value="record.collection_date if record and record.collection_date else ''"/>
+                <input type="text" name="collection_time_frame" class="field-input" placeholder="Preferred collection time frame" t-att-value="record.collection_time_frame if record else ''"/>
+                <textarea name="collection_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.collection_address if record else ''"/></textarea>
+            </div>
+        </div>
+
+        <!-- 03: Delivery details (shown for both) -->
+        <div class="spc-section hidden" id="delivery_section">
+            <div class="sec-num">03</div>
+            <div class="sec-body">
+                <div class="sec-title">Delivery details</div>
+                <input type="date" name="delivery_date" class="field-input" placeholder="Preferred delivery date" t-att-value="record.delivery_date if record and record.delivery_date else ''"/>
+                <input type="text" name="delivery_time_frame" class="field-input" placeholder="Preferred delivery time frame" t-att-value="record.delivery_time_frame if record else ''"/>
+                <textarea name="delivery_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.delivery_address if record else ''"/></textarea>
+            </div>
+        </div>
+
+        <!-- 04: Remarks -->
+        <div class="spc-section hidden" id="remarks_section">
+            <div class="sec-num">04</div>
+            <div class="sec-body">
+                <div class="sec-title">Remarks</div>
+                <textarea name="remarks" class="field-input" style="min-height:70px;resize:none" placeholder="Comments"><t t-esc="record.remarks if record else ''"/></textarea>
+            </div>
+        </div>
+
+        <div class="spc-nav-buttons" style="justify-content:flex-end">
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script><![CDATA[
+function selectStd(v, el) {
+    document.querySelectorAll('.delivery-option').forEach(function(d){ d.style.borderColor='#e5e7eb'; d.style.background='white'; });
+    el.style.borderColor = '#1abc9c';
+    el.style.background = '#f0fdf4';
+    document.getElementById('std_'+v).checked = true;
+    var show = ['collection_section','delivery_section','remarks_section'];
+    show.forEach(function(id){ document.getElementById(id).classList.remove('hidden'); });
+    document.getElementById('total_amt').textContent = v === 'local' ? '40.00' : '510.00';
+}
+// Auto-restore if back navigation
+window.addEventListener('DOMContentLoaded', function(){
+    var checked = document.querySelector('input[name=delivery_standard]:checked');
+    if(checked) selectStd(checked.value, checked.closest('.delivery-option'));
+});
+]]></script>
+</body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY COURIER - STEP 2 DECLARATION -->
+<template id="doc_delivery_courier_step2" name="Document Delivery Courier Declaration">
+<html><head><meta charset="utf-8"/><title>Document Delivery Courier | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Delivery details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Additional Remarks</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">Courier</div>
+    <form action="/spc/concierge/doc-delivery/courier/step2/submit" method="post">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="decl-box">
+                    <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px">Declaration:</div>
+                    <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+                    <br/>
+                    <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                    <br/>
+                    <p>Acknowledgement</p>
+                    <div class="ack-row">
+                        <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+                        <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/doc-delivery/courier/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div></body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY COURIER - STEP 3 ADDITIONAL REMARKS -->
+<template id="doc_delivery_courier_step3" name="Document Delivery Courier Additional Remarks">
+<html><head><meta charset="utf-8"/><title>Document Delivery Courier | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Delivery details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Additional Remarks</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+    <div class="form-title">Courier</div>
+    <form action="/spc/concierge/doc-delivery/courier/step3/submit" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="record_id" t-att-value="record.id"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <textarea name="return_reason" class="field-input" style="min-height:80px;resize:none" placeholder="Reason for returning application"><t t-esc="record.return_reason if record else ''"/></textarea>
+                <div class="upload-label" style="margin-top:12px;font-weight:600">Supporting Documents</div>
+                <div class="upload-box" onclick="document.getElementById('supporting_doc').click()">
+                    <input type="file" id="supporting_doc" name="supporting_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lsd')"/>
+                    <div class="upload-icon">&#11014;</div>
+                    <div class="upload-text" id="lsd">Upload Supporting Documents</div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a t-attf-href="/spc/concierge/doc-delivery/courier/step2/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+</body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY COURIER - REVIEW -->
+<template id="doc_delivery_courier_review" name="Document Delivery Courier Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Delivery details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Additional Remarks</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Courier</div>
+    <div class="review-card">
+        <div class="review-header"><div class="review-sec-title">Delivery Details</div><a t-attf-href="/spc/concierge/doc-delivery/courier/step1?record_id=#{record.id}" class="edit-btn">&#9998; EDIT</a></div>
+        <div class="review-row"><div class="review-lbl">DELIVERY STANDARD</div><div class="review-val"><t t-esc="(record.delivery_standard or '').title()"/></div></div>
+        <div class="review-row"><div class="review-lbl">COLLECTION DATE</div><div class="review-val"><t t-esc="str(record.collection_date) if record.collection_date else '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">COLLECTION TIME FRAME</div><div class="review-val"><t t-esc="record.collection_time_frame or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">COLLECTION ADDRESS</div><div class="review-val"><t t-esc="record.collection_address or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">DELIVERY DATE</div><div class="review-val"><t t-esc="str(record.delivery_date) if record.delivery_date else '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">DELIVERY ADDRESS</div><div class="review-val"><t t-esc="record.delivery_address or '-'"/></div></div>
+        <div class="review-row"><div class="review-lbl">REMARKS</div><div class="review-val"><t t-esc="record.remarks or '-'"/></div></div>
+    </div>
+    <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/concierge/doc-delivery/courier/step3/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+        <a t-attf-href="/spc/concierge/doc-delivery/courier/payment/#{record.id}" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+
+<!-- DOCUMENT DELIVERY COURIER - PAYMENT -->
+<template id="doc_delivery_courier_payment" name="Document Delivery Courier Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Delivery details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Additional Remarks</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Courier</div>
+    <div class="pay-card">
+        <div class="pay-title">Payment Summary</div>
+        <div class="pay-row"><span style="color:#555">Document Delivery (Courier) Fee</span><span style="font-weight:600">AED 10.00</span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED 10.00</span></div>
+        <div class="pay-method-title">Select payment method</div>
+        <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
+        <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
+        <button class="spc-btn-submit">SUBMIT</button>
+    </div>
+    <div style="margin-top:20px">
+        <a t-attf-href="/spc/concierge/doc-delivery/courier/review/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
+    </div>
+</div>
+</div></body></html>
+</template>
+</data>
+</odoo>

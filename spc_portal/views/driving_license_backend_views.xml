@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<record id="view_spc_driving_license_list" model="ir.ui.view">
+    <field name="name">spc.driving.license.list</field>
+    <field name="model">spc.driving.license</field>
+    <field name="arch" type="xml">
+        <tree string="Driving License Applications">
+            <field name="name"/>
+            <field name="license_type"/>
+            <field name="first_name"/>
+            <field name="last_name"/>
+            <field name="email"/>
+            <field name="phone"/>
+            <field name="amount"/>
+            <field name="state"/>
+        </tree>
+    </field>
+</record>
+
+<record id="view_spc_driving_license_form" model="ir.ui.view">
+    <field name="name">spc.driving.license.form</field>
+    <field name="model">spc.driving.license</field>
+    <field name="arch" type="xml">
+        <form string="Driving License Application">
+            <header>
+                <button name="action_submit" string="Submit" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                <button name="action_in_review" string="In Review" type="object" invisible="state != 'submitted'"/>
+                <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state != 'in_review'"/>
+                <button name="action_reject" string="Reject" type="object" invisible="state not in ['submitted','in_review']"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <div class="oe_title">
+                    <h1><field name="name" readonly="1"/></h1>
+                </div>
+                <group>
+                    <group string="Application Details">
+                        <field name="license_type"/>
+                        <field name="partner_id"/>
+                        <field name="amount"/>
+                        <field name="payment_status"/>
+                    </group>
+                    <group string="Applicant Details">
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="email"/>
+                        <field name="phone_country_code"/>
+                        <field name="phone"/>
+                        <field name="date_of_birth"/>
+                    </group>
+                </group>
+                <group string="Transfer Details" invisible="license_type != 'transfer'">
+                    <field name="license_country"/>
+                    <field name="country_in_transfer_list"/>
+                </group>
+                <group string="Remarks">
+                    <field name="remarks" nolabel="1"/>
+                </group>
+                <notebook>
+                    <page string="Documents">
+                        <group>
+                            <field name="doc_passport" widget="binary" filename="doc_passport_name"/>
+                            <field name="doc_passport_name" invisible="1"/>
+                            <field name="doc_emirates_id" widget="binary" filename="doc_emirates_id_name"/>
+                            <field name="doc_emirates_id_name" invisible="1"/>
+                            <field name="doc_residence_visa" widget="binary" filename="doc_residence_visa_name"/>
+                            <field name="doc_residence_visa_name" invisible="1"/>
+                            <field name="doc_driving_license" widget="binary" filename="doc_driving_license_name"/>
+                            <field name="doc_driving_license_name" invisible="1"/>
+                            <field name="doc_license_translation" widget="binary" filename="doc_license_translation_name"/>
+                            <field name="doc_license_translation_name" invisible="1"/>
+                        </group>
+                        <group string="Acknowledgements">
+                            <field name="doc_submission_ack"/>
+                            <field name="declaration_accepted"/>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="action_spc_driving_license_new" model="ir.actions.act_window">
+    <field name="name">New</field>
+    <field name="res_model">spc.driving.license</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('license_type','=','new')]</field>
+</record>
+
+<record id="action_spc_driving_license_amendment" model="ir.actions.act_window">
+    <field name="name">Amendment</field>
+    <field name="res_model">spc.driving.license</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('license_type','=','amendment')]</field>
+</record>
+
+<record id="action_spc_driving_license_duplicate" model="ir.actions.act_window">
+    <field name="name">Duplicate</field>
+    <field name="res_model">spc.driving.license</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('license_type','=','duplicate')]</field>
+</record>
+
+<record id="action_spc_driving_license_renewal" model="ir.actions.act_window">
+    <field name="name">Renewal</field>
+    <field name="res_model">spc.driving.license</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('license_type','=','renewal')]</field>
+</record>
+
+<record id="action_spc_driving_license_transfer" model="ir.actions.act_window">
+    <field name="name">Transfer</field>
+    <field name="res_model">spc.driving.license</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('license_type','=','transfer')]</field>
+</record>
+
+<menuitem id="menu_driving_license_root"
+    name="Driving License"
+    parent="spc_portal.menu_spc_concierge_top"
+    sequence="25"/>
+<menuitem id="menu_driving_license_new"
+    name="New"
+    parent="menu_driving_license_root"
+    action="action_spc_driving_license_new"
+    sequence="1"/>
+<menuitem id="menu_driving_license_amendment"
+    name="Amendment"
+    parent="menu_driving_license_root"
+    action="action_spc_driving_license_amendment"
+    sequence="2"/>
+<menuitem id="menu_driving_license_duplicate"
+    name="Duplicate"
+    parent="menu_driving_license_root"
+    action="action_spc_driving_license_duplicate"
+    sequence="3"/>
+<menuitem id="menu_driving_license_renewal"
+    name="Renewal"
+    parent="menu_driving_license_root"
+    action="action_spc_driving_license_renewal"
+    sequence="4"/>
+<menuitem id="menu_driving_license_transfer"
+    name="Transfer"
+    parent="menu_driving_license_root"
+    action="action_spc_driving_license_transfer"
+    sequence="5"/>
+
+</data>
+</odoo>

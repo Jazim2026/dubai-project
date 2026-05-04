@@ -1,0 +1,1359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- BANKING DETAIL -->
+<template id="banking_detail" name="Banking Assistance Detail">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.page-title{font-size:22px;font-weight:700;color:#1abc9c}.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}.hero-banner{border-radius:12px;overflow:hidden;min-height:280px;position:relative;background:linear-gradient(135deg,#1565c0,#1a237e);display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}.hero-tag{position:absolute;top:20px;left:20px;background:#004d40;color:white;padding:6px 16px;border-radius:4px;font-size:13px;font-weight:700}.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span><div><button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button></div></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Banking Assistance - <t t-esc="banking_title"/></div>
+        <t t-if="banking_type == 'old'">
+            <a href="/spc/apply/banking/old/start" class="start-btn">START PROCESS</a>
+        </t>
+        <t t-else="">
+            <a t-attf-href="/spc/apply/banking/step1?type=#{banking_type}" class="start-btn">START PROCESS</a>
+        </t>
+    </div>
+    <div class="hero-banner">
+        <span class="hero-tag"><t t-esc="banking_tag"/></span>
+        <div class="hero-title">Bank Account Assistance</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p style="margin-bottom:16px;">This service includes an introduction to your banker, documentation assistance, follow-ups for the account opening process and other requests. Please note that giving authority via Power of Attorney (POA) will not be allowed for any of our agents.</p>
+            <p style="font-weight:700;margin-bottom:8px;">Requirement(s)</p>
+            <ol style="padding-left:24px;margin-bottom:16px;">
+                <li>Original/Electronic Trade License</li>
+                <li>Original/Electronic Formation Certificate</li>
+                <li>Original Incumbency Certificate/Registry Extract (if applicable)</li>
+                <li>Original Certificate of Good Standing (if applicable)</li>
+                <li>Original/Electronic Share Certificate</li>
+                <li>Original/Electronic Memorandum of Association</li>
+                <li>Original/Electronic Lease Agreement</li>
+                <li>Original Company Profile (detailing activities, suppliers, &amp; clients)</li>
+                <li>Original Passport with UAE Visa</li>
+                <li>Original Emirates ID</li>
+                <li>CV/Personal Profile</li>
+                <li>Original 6 Months' Bank Statement (UAE or Home Country) (if applicable)</li>
+            </ol>
+            <p style="font-weight:700;margin-bottom:8px;">Timeline</p>
+            <p style="margin-bottom:8px;"></p>
+            <p style="font-weight:700;margin-bottom:8px;">SPC Fees</p>
+            <p style="margin-bottom:4px;">AED 2,000 for Corporate accounts</p>
+            <p>AED 1,000 for Personal Accounts</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- BANKING STEP 1: Account Information -->
+<template id="banking_step1" name="Banking Step 1">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px;width:100%}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1;width:100%}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.radio-group-horiz{display:flex;gap:24px;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a3c6e;width:18px;height:18px}.select-row{display:flex;align-items:center;margin-bottom:16px;width:100%}.select-wrap{position:relative;flex:1}.select-wrap::after{content:"▼";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#9ca3af;pointer-events:none;font-size:12px}.select-wrap select{width:100%;padding:14px 16px;border:none;border-bottom:2px solid #e5e7eb;background:#f9f9f9;font-size:14px;color:#111;outline:none;appearance:none;cursor:pointer}.select-wrap select:focus{border-bottom-color:#1a3c6e;background:#fff}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Account Information</div></div>
+    <div id="dynamic-steps">
+      <div class="progress-step"><div class="step-num">2</div><div class="step-label">Shareholder Documents</div></div>
+      <div class="progress-step"><div class="step-num">3</div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    </div>
+    <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/banking/step1/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="banking_type" t-att-value="banking_type"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Account Information</div>
+          <div class="radio-group-horiz">
+            <label class="radio-label"><input type="radio" name="account_type" value="personal" onchange="checkAccountType('personal')" t-att-checked="'checked' if record and record.account_type == 'personal' else None"/> Personal</label>
+            <label class="radio-label"><input type="radio" name="account_type" value="corporate" onchange="checkAccountType('corporate')" t-att-checked="'checked' if record and record.account_type == 'corporate' else None"/> Corporate</label>
+          </div>
+          <div id="personal-bank-wrap" style="display:none;">
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="preferred_bank">
+                  <option value="">Preferred Bank</option>
+                  <option value="rak_bank" t-att-selected="'selected' if record and record.preferred_bank == 'rak_bank' else None">RAK bank</option>
+                  <option value="wio_bank" t-att-selected="'selected' if record and record.preferred_bank == 'wio_bank' else None">WIO bank</option>
+                  <option value="mashreq" t-att-selected="'selected' if record and record.preferred_bank == 'mashreq' else None">Mashreq</option>
+                  <option value="dubai_islamic" t-att-selected="'selected' if record and record.preferred_bank == 'dubai_islamic' else None">Dubai Islamic</option>
+                  <option value="adcb" t-att-selected="'selected' if record and record.preferred_bank == 'adcb' else None">ADCB</option>
+                  <option value="fab" t-att-selected="'selected' if record and record.preferred_bank == 'fab' else None">FAB</option>
+                  <option value="enbd" t-att-selected="'selected' if record and record.preferred_bank == 'enbd' else None">Emirates NBD</option>
+                  <option value="cbd" t-att-selected="'selected' if record and record.preferred_bank == 'cbd' else None">CBD</option>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function checkAccountType(v) {
+    document.getElementById('personal-bank-wrap').style.display = v === 'personal' ? 'block' : 'none';
+    updateSidebar(v, 1);
+}
+// Auto-trigger on page load if pre-filled
+window.addEventListener('DOMContentLoaded', function() {
+    var checked = document.querySelector('input[name=account_type]:checked');
+    if(checked) checkAccountType(checked.value);
+});
+
+function updateSidebar(accountType, shCount) {
+    var sb = document.getElementById('dynamic-steps');
+    sb.innerHTML = '';
+    if(accountType === 'corporate') {
+        var steps = ['Company Information','Corporate Documents'];
+        for(var i=1; i&lt;=shCount; i++) steps.push('Shareholder Documents '+i);
+        steps.push('Corporate Bank Account','Review application','Payment');
+        steps.forEach(function(s, idx) {
+            sb.innerHTML += '<div class="progress-step"><div class="step-num">'+(idx+2)+'</div><div class="step-label">'+s+'</div></div>';
+        });
+    } else {
+        sb.innerHTML = '<div class="progress-step"><div class="step-num">2</div><div class="step-label">Shareholder Documents</div></div>' +
+            '<div class="progress-step"><div class="step-num">3</div><div class="step-label">Corporate Bank Account</div></div>' +
+            '<div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>' +
+            '<div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>';
+    }
+}
+</script>
+</body></html>
+</template>
+
+<!-- BANKING STEP 2: Shareholder Documents (Personal) -->
+<template id="banking_step2" name="Banking Step 2">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px;width:100%}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1;width:100%}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.upload-label-text{font-size:14px;color:#374151;font-weight:500;margin-bottom:8px}.upload-box{border:1px solid #e5e7eb;border-radius:8px;padding:24px 20px;text-align:center;cursor:pointer;background:#f9fafb;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:240px;margin-bottom:20px}.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}.upload-text{color:#1a5fa8;font-size:13px;font-weight:600}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Account Information</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Shareholder Documents</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">1,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/banking/step2/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Shareholder Documents</div>
+          <div class="upload-label-text">EID Copy</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-eid">File Upload</div>
+            <input type="file" name="doc_eid" style="display:none;" multiple="multiple" onchange="document.getElementById('n-eid').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Passport Copy</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-pass">File Upload</div>
+            <input type="file" name="doc_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-pass').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Salary certificate</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-salary">File Upload</div>
+            <input type="file" name="doc_salary" style="display:none;" multiple="multiple" onchange="document.getElementById('n-salary').textContent=this.files.length+' file(s)'"/>
+          </label>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- BANKING STEP 3: Corporate Bank Account -->
+<template id="banking_step3" name="Banking Step 3">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px;width:100%}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1;width:100%}.radio-group-vert{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a3c6e;width:18px;height:18px}.select-row{display:flex;align-items:center;margin-bottom:16px;width:100%}.select-wrap{position:relative;flex:1}.select-wrap::after{content:"▼";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#9ca3af;pointer-events:none;font-size:12px}.select-wrap select{width:100%;padding:14px 16px;border:none;border-bottom:2px solid #e5e7eb;background:#f9f9f9;font-size:14px;color:#111;outline:none;appearance:none;cursor:pointer}.select-wrap select:focus{border-bottom-color:#1a3c6e;background:#fff}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Account Information</div></div>
+    <t t-if="record.account_type == 'corporate'">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company Information</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Documents</div></div>
+      <t t-set="sh_count" t-value="record.shareholder_count or 1"/>
+      <t t-foreach="range(sh_count)" t-as="i">
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder Documents <t t-esc="i+1"/></div></div>
+      </t>
+      <div class="progress-step active"><div class="step-num"><t t-esc="4 + (record.shareholder_count or 1)"/></div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step"><div class="step-num"><t t-esc="5 + (record.shareholder_count or 1)"/></div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num"><t t-esc="6 + (record.shareholder_count or 1)"/></div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder Documents</div></div>
+      <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">1,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/banking/step3/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div style="font-size:15px;font-weight:600;color:#374151;margin-bottom:16px;">Is there a requirement to open a bank account?</div>
+          <div class="radio-group-vert">
+            <label class="radio-label"><input type="radio" name="need_bank_account" value="yes" onchange="checkBankReq('yes')"/> Yes</label>
+            <label class="radio-label"><input type="radio" name="need_bank_account" value="no" onchange="checkBankReq('no')"/> No</label>
+          </div>
+          <div id="bank-provider-wrap" style="display:none;">
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="preferred_financial_provider">
+                  <option value="">Preferred financial services provider</option>
+                  <option value="wio_bank">WIO bank</option>
+                  <option value="mashreq_psc">Mashreq Bank P.S.C</option>
+                  <option value="rak_bank">RAK Bank</option>
+                  <option value="bank_misr">Bank Misr</option>
+                  <option value="adcb">ADCB</option>
+                  <option value="fab">FAB</option>
+                  <option value="enbd">Emirates NBD</option>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <t t-if="record.account_type == 'corporate'">
+          <a t-attf-href="/spc/apply/banking/corp/shareholder/#{record.shareholder_count or 1}/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        </t>
+        <t t-else="">
+          <a t-attf-href="/spc/apply/banking/step2/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        </t>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function checkBankReq(v) {
+    document.getElementById('bank-provider-wrap').style.display = v === 'yes' ? 'block' : 'none';
+}
+</script>
+</body></html>
+</template>
+
+<!-- BANKING REVIEW -->
+<template id="banking_review" name="Banking Review">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}.review-table{width:100%;font-size:13px;border-collapse:collapse}.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}.review-table td:first-child{color:#888;width:40%}.review-table td:last-child{font-weight:500}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Account Information</div></div>
+    <t t-if="record.account_type == 'corporate'">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company Information</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Documents</div></div>
+      <t t-set="sh_count" t-value="record.shareholder_count or 1"/>
+      <t t-foreach="range(sh_count)" t-as="i">
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder Documents <t t-esc="i+1"/></div></div>
+      </t>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step active"><div class="step-num"><t t-esc="5 + (record.shareholder_count or 1)"/></div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num"><t t-esc="6 + (record.shareholder_count or 1)"/></div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder Documents</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Account Type</td><td><t t-esc="dict(record._fields['account_type'].selection).get(record.account_type,'-') if record.account_type else '-'"/></td></tr>
+        <tr><td>Preferred Bank</td><td><t t-esc="dict(record._fields['preferred_bank'].selection).get(record.preferred_bank,'-') if record.preferred_bank else '-'"/></td></tr>
+        <tr><td>Need Bank Account</td><td><t t-esc="record.need_bank_account or '-'"/></td></tr>
+        <tr style="border-top:2px solid #e0e0e0;">
+          <td style="font-weight:700;font-size:15px;padding-top:12px;">Total Fee</td>
+          <td style="font-weight:800;font-size:16px;color:#1abc9c;padding-top:12px;">AED <t t-esc="'%.2f' % record.amount"/></td>
+        </tr>
+      </table>
+    </div>
+    <form method="POST" action="/spc/apply/banking/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/step3/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- BANKING PAYMENT -->
+<template id="banking_payment" name="Banking Payment">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.pay-card{background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;text-align:center}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Account Information</div></div>
+    <t t-if="record.account_type == 'corporate'">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company Information</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Documents</div></div>
+      <t t-set="sh_count" t-value="record.shareholder_count or 1"/>
+      <t t-foreach="range(sh_count)" t-as="i">
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder Documents <t t-esc="i+1"/></div></div>
+      </t>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+      <div class="progress-step active"><div class="step-num"><t t-esc="6 + (record.shareholder_count or 1)"/></div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder Documents</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+      <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:40px;font-weight:900;color:#1a2340;margin-bottom:8px;">AED <t t-esc="'%.2f' % record.amount"/></div>
+      <div style="color:#888;font-size:14px;margin-bottom:16px;">Banking Assistance Service Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/banking/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next" style="background:#1a2340;">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- BANKING SUCCESS -->
+<template id="banking_success" name="Banking Success">
+<html><head><meta charset="utf-8"/><title>Submitted | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <div style="background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%;">
+        <div style="font-size:64px;color:#1abc9c;margin-bottom:20px;">&#10003;</div>
+        <div style="font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px;">Application Submitted Successfully!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:8px;">Your Banking Assistance application has been submitted.</p>
+        <p style="font-size:15px;color:#555;margin-bottom:32px;">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" style="background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+
+<!-- BANKING STEP 1 CORP INFO -->
+<template id="banking_step1_corp" name="Banking Corp Step 1">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px;width:100%}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1;width:100%}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.field-input{width:100%;padding:14px 16px;border:none;border-bottom:2px solid #e5e7eb;background:#f9f9f9;font-size:14px;color:#111;outline:none;border-radius:0;box-sizing:border-box;margin-bottom:16px;display:block}.field-input:focus{border-bottom-color:#1a3c6e;background:#fff}.field-input::placeholder{color:#9ca3af}.radio-group-horiz{display:flex;gap:24px;margin-bottom:12px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a3c6e;width:18px;height:18px}.select-row{display:flex;align-items:center;margin-bottom:16px;width:100%}.select-wrap{position:relative;flex:1}.select-wrap::after{content:"▼";position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#9ca3af;pointer-events:none;font-size:12px}.select-wrap select{width:100%;padding:14px 16px;border:none;border-bottom:2px solid #e5e7eb;background:#f9f9f9;font-size:14px;color:#111;outline:none;appearance:none;cursor:pointer}.select-wrap select:focus{border-bottom-color:#1a3c6e;background:#fff}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Account Information</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Company Information</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Corporate Documents</div></div>
+    <t t-set="sh_count" t-value="record.shareholder_count or 1"/>
+    <t t-foreach="range(sh_count)" t-as="i">
+      <div class="progress-step"><div class="step-num"><t t-esc="4+i"/></div><div class="step-label">Shareholder Documents <t t-esc="i+1"/></div></div>
+    </t>
+    <div id="corp-dynamic-steps">
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Corporate Bank Account</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+    </div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/banking/corp/step1/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+
+      <!-- Section 01: Company Registration -->
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Company Information</div>
+          <div style="font-size:14px;color:#374151;margin-bottom:12px;font-weight:500;">Is the Company registered with SPC Free Zone?</div>
+          <div class="radio-group-horiz">
+            <label class="radio-label"><input type="radio" name="company_registered_spc" value="yes" onchange="checkSpcReg('yes')"/> Yes</label>
+            <label class="radio-label"><input type="radio" name="company_registered_spc" value="no" onchange="checkSpcReg('no')"/> No</label>
+          </div>
+          <div id="spc-yes-wrap" style="display:none;">
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="company_name_dropdown">
+                  <option value="">Choose company name</option>
+                  <t t-foreach="companies" t-as="comp">
+                    <option t-att-value="comp.get('name','')"><t t-esc="comp.get('name','')"/></option>
+                  </t>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+            </div>
+            <input class="field-input" type="text" name="company_name_manual" placeholder="Company Name"/>
+          </div>
+          <div id="spc-no-wrap" style="display:none;">
+            <input class="field-input" type="text" name="company_name_spc" id="company-name-input" placeholder="Type Company Name"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 02: Multi-shareholder -->
+      <div class="spc-section">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div style="font-size:14px;color:#374151;margin-bottom:12px;font-weight:500;">Is the Company a multi-shareholder entity?</div>
+          <div class="radio-group-horiz">
+            <label class="radio-label"><input type="radio" name="multi_shareholder" value="yes" onchange="checkMultiShareholder('yes')"/> Yes</label>
+            <label class="radio-label"><input type="radio" name="multi_shareholder" value="no" onchange="checkMultiShareholder('no')"/> No</label>
+          </div>
+
+          <!-- Yes: shareholder count dropdown -->
+          <div id="multi-yes-wrap" style="display:none;">
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="shareholder_count" id="sh-count-sel" onchange="renderShareholderInputs(this.value)">
+                  <option value="">How many Shareholders possess 25% or more shares?</option>
+                  <option value="1">01</option>
+                  <option value="2">02</option>
+                  <option value="3">03</option>
+                  <option value="4">04</option>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';renderShareholderInputs('')">x</button>
+            </div>
+            <div id="sh-name-inputs"></div>
+          </div>
+
+          <!-- No: single shareholder input -->
+          <div id="multi-no-wrap" style="display:none;">
+            <input type="hidden" name="shareholder_count" value="1"/>
+            <input class="field-input" type="text" name="shareholder_1_name" placeholder="Shareholder 1"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function checkSpcReg(v) {
+    document.getElementById('spc-yes-wrap').style.display = v === 'yes' ? 'block' : 'none';
+    document.getElementById('spc-no-wrap').style.display = v === 'no' ? 'block' : 'none';
+}
+
+function renderShareholderInputs(count) {
+    var container = document.getElementById('sh-name-inputs');
+    container.innerHTML = '';
+    var n = parseInt(count) || 0;
+    for(var i=1; i&lt;=n; i++) {
+        var inp = document.createElement('input');
+        inp.className = 'field-input';
+        inp.type = 'text';
+        inp.name = 'shareholder_'+i+'_name';
+        inp.placeholder = 'Shareholder '+i;
+        container.appendChild(inp);
+    }
+    updateCorpSidebar(n);
+}
+
+function updateCorpSidebar(shCount) {
+    var sb = document.getElementById('corp-dynamic-steps');
+    if(!sb) return;
+    var n = parseInt(shCount) || 1;
+    var html = '';
+    var stepNum = 4;
+    for(var i=1; i&lt;=n; i++) {
+        html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+stepNum+'&lt;/div&gt;&lt;div class="step-label"&gt;Shareholder Documents '+i+'&lt;/div&gt;&lt;/div&gt;';
+        stepNum++;
+    }
+    html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+stepNum+'&lt;/div&gt;&lt;div class="step-label"&gt;Corporate Bank Account&lt;/div&gt;&lt;/div&gt;';
+    html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+(stepNum+1)+'&lt;/div&gt;&lt;div class="step-label"&gt;Review application&lt;/div&gt;&lt;/div&gt;';
+    html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+(stepNum+2)+'&lt;/div&gt;&lt;div class="step-label"&gt;Payment&lt;/div&gt;&lt;/div&gt;';
+    sb.innerHTML = html;
+}
+
+function checkMultiShareholder(v) {
+    document.getElementById('multi-yes-wrap').style.display = v === 'yes' ? 'block' : 'none';
+    document.getElementById('multi-no-wrap').style.display = v === 'no' ? 'block' : 'none';
+    if(v === 'no') updateCorpSidebar(1);
+}
+</script>
+</body></html>
+</template>
+
+<!-- BANKING CORP DOCUMENTS -->
+<template id="banking_corp_docs" name="Banking Corp Documents">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px;width:100%}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1;width:100%}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.upload-label-text{font-size:14px;color:#374151;font-weight:500;margin-bottom:8px}.upload-box{border:1px solid #e5e7eb;border-radius:8px;padding:24px 20px;text-align:center;cursor:pointer;background:#f9fafb;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:240px;margin-bottom:20px}.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}.upload-text{color:#1a5fa8;font-size:13px;font-weight:600}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Account Information</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company Information</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Corporate Documents</div></div>
+    <t t-set="sh_count" t-value="record.shareholder_count or 1"/>
+    <t t-foreach="range(sh_count)" t-as="i">
+      <div class="progress-step"><div class="step-num"><t t-esc="4+i"/></div><div class="step-label">Shareholder Documents <t t-esc="i+1"/></div></div>
+    </t>
+    <div class="progress-step"><div class="step-num"><t t-esc="4 + sh_count"/></div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step"><div class="step-num"><t t-esc="5 + sh_count"/></div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num"><t t-esc="6 + sh_count"/></div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/banking/corp/docs/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Corporate Documents</div>
+          <div class="upload-label-text">Business Plan</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-bp">File Upload</div>
+            <input type="file" name="doc_business_plan" style="display:none;" multiple="multiple" onchange="document.getElementById('n-bp').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Business License</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-bl">File Upload</div>
+            <input type="file" name="doc_business_license" style="display:none;" multiple="multiple" onchange="document.getElementById('n-bl').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Formation Certificate</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-fc">File Upload</div>
+            <input type="file" name="doc_formation_cert" style="display:none;" multiple="multiple" onchange="document.getElementById('n-fc').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Share Certificate</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-sc">File Upload</div>
+            <input type="file" name="doc_share_cert" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sc').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Tenancy Contract (Ejari)</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-ten">File Upload</div>
+            <input type="file" name="doc_tenancy" style="display:none;" multiple="multiple" onchange="document.getElementById('n-ten').textContent=this.files.length+' file(s)'"/>
+          </label>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/corp/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- BANKING SHAREHOLDER DOCS -->
+<template id="banking_shareholder_docs" name="Banking Shareholder Documents">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px;width:100%}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1;width:100%}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.upload-label-text{font-size:14px;color:#374151;font-weight:500;margin-bottom:8px}.upload-box{border:1px solid #e5e7eb;border-radius:8px;padding:24px 20px;text-align:center;cursor:pointer;background:#f9fafb;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:240px;margin-bottom:20px}.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}.upload-text{color:#1a5fa8;font-size:13px;font-weight:600}.info-box{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 16px;font-size:13px;color:#374151;margin-top:8px;display:flex;align-items:flex-start;gap:10px}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Account Information</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company Information</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Documents</div></div>
+    <t t-set="sh_count" t-value="record.shareholder_count or 1"/>
+    <t t-foreach="range(sh_count)" t-as="i">
+      <div t-att-class="'progress-step' + (' done' if i+1 &lt; sh_num else ' active' if i+1 == sh_num else '')">
+        <div class="step-num"><t t-if="i+1 &lt; sh_num">&#10003;</t><t t-else=""><t t-esc="4+i"/></t></div>
+        <div class="step-label">Shareholder Documents <t t-esc="i+1"/></div>
+      </div>
+    </t>
+    <div class="progress-step"><div class="step-num"><t t-esc="4 + sh_count"/></div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step"><div class="step-num"><t t-esc="5 + sh_count"/></div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num"><t t-esc="6 + sh_count"/></div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form t-attf-method="POST" t-attf-action="/spc/apply/banking/corp/shareholder/#{sh_num}/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <input type="hidden" name="sh_num" t-att-value="sh_num"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Shareholder Documents <t t-esc="sh_num"/></div>
+          <div class="upload-label-text">EID copy Shareholder <t t-esc="sh_num"/></div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-sh-eid">File Upload</div>
+            <input type="file" name="doc_sh_eid" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-eid').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Passport copy Shareholder <t t-esc="sh_num"/></div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-sh-pass">File Upload</div>
+            <input type="file" name="doc_sh_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-pass').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">Last 6 months bank statements of personal accounts (outside or inside UAE) Shareholder <t t-esc="sh_num"/></div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-sh-bank">File Upload</div>
+            <input type="file" name="doc_sh_bank" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-bank').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label-text">CV copy Shareholder <t t-esc="sh_num"/></div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-sh-cv">File Upload</div>
+            <input type="file" name="doc_sh_cv" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-cv').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="info-box">
+            <span style="color:#f59e0b;font-size:18px;">&#9432;</span>
+            <span>Last 6 Months bank statement and CV copy document is not required if the selected preferred bank is WIO</span>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <t t-if="sh_num == 1">
+          <a t-attf-href="/spc/apply/banking/corp/docs/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        </t>
+        <t t-else="">
+          <a t-attf-href="/spc/apply/banking/corp/shareholder/#{sh_num - 1}/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        </t>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+
+
+
+<!-- ═══════════════════════════════════════════════════
+     BANKING OLD — STEP 1: Application Details
+═══════════════════════════════════════════════════ -->
+<template id="banking_old_step1" name="Banking Old Step 1">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:14px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:30px;height:30px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:32px}
+.sec-row{display:flex;margin-top:32px;padding-bottom:32px;border-bottom:1px solid #f0f0f0}
+.sec-row:first-of-type{margin-top:0}
+.sec-num-col{min-width:52px;font-size:20px;font-weight:300;color:#bbb;padding-right:16px;padding-top:4px}
+.sec-body-col{flex:1}
+.sec-title{font-weight:700;font-size:17px;margin-bottom:18px;color:#1a2340}
+.upload-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.upload-box-new{width:220px;height:88px;border:1.5px solid #1976d2;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;position:relative;overflow:hidden;cursor:pointer}
+.upload-box-new input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.up-arrow{font-size:26px;color:#1976d2}
+.up-label{font-size:12px;color:#1976d2;font-weight:600;text-align:center;padding:0 8px;margin-top:4px}
+.help-q{font-size:18px;color:#ccc;cursor:default;margin-top:10px;flex-shrink:0}
+.info-box-pink{background:#fce4ec;border-radius:4px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;max-width:650px;margin-top:0}
+.info-icon-pink{color:#e91e63;font-size:16px;flex-shrink:0;margin-top:1px}
+.info-text{font-size:13px;color:#333;line-height:1.5}
+.field-label{font-size:13px;color:#555;font-weight:500;margin-bottom:8px;display:block}
+.inst-list{list-style:none;padding:0;margin:0 0 14px}
+.inst-list li{font-size:13px;color:#1976d2;margin-bottom:5px}
+textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px solid #ccc;padding:8px 0;font-size:14px;resize:none;outline:none;background:transparent;font-family:'Segoe UI',sans-serif}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;z-index:99}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Application details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New (old)</div>
+    <form method="POST" action="/spc/apply/banking/old/docs/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+
+      <!-- 01: Trade License -->
+      <div class="sec-row" style="margin-top:0;">
+        <div class="sec-num-col">01</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Upload trade license</div>
+          <span class="field-label">Trade license</span>
+          <div class="upload-row">
+            <div class="upload-box-new">
+              <input type="file" name="doc_old_trade_license" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Trade license';"/>
+              <span class="up-arrow">&#8679;</span>
+              <span class="up-label">Trade license</span>
+            </div>
+            <span class="help-q" title="Trade License document">&#63;</span>
+          </div>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">Your Trade License will list the trade activities that the company is permitted to undertake.</span></div>
+        </div>
+      </div>
+
+      <!-- 02: Formation Certificate -->
+      <div class="sec-row">
+        <div class="sec-num-col">02</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Upload formation certificate</div>
+          <span class="field-label">Formation certificate</span>
+          <div class="upload-row">
+            <div class="upload-box-new">
+              <input type="file" name="doc_old_formation_cert" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Formation certificate';"/>
+              <span class="up-arrow">&#8679;</span>
+              <span class="up-label">Formation certificate</span>
+            </div>
+            <span class="help-q" title="Formation Certificate">&#63;</span>
+          </div>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">A company's Formation documents serve as the proof of existence of your company. It verifies the company's type (LLC or Branch) as well as its date of incorporation.</span></div>
+        </div>
+      </div>
+
+      <!-- 03: Share Certificate -->
+      <div class="sec-row">
+        <div class="sec-num-col">03</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Upload share certificate</div>
+          <span class="field-label">Share certificate</span>
+          <div class="upload-row">
+            <div class="upload-box-new">
+              <input type="file" name="doc_old_share_cert" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Share certificate';"/>
+              <span class="up-arrow">&#8679;</span>
+              <span class="up-label">Share certificate</span>
+            </div>
+            <span class="help-q" title="Share Certificate">&#63;</span>
+          </div>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">A share register lists all of the people who own shares in your company and the number of shares allocated to individual shareholders.</span></div>
+        </div>
+      </div>
+
+      <!-- 04: Lease Agreement -->
+      <div class="sec-row">
+        <div class="sec-num-col">04</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Upload lease agreement</div>
+          <span class="field-label">Lease agreement</span>
+          <div class="upload-row">
+            <div class="upload-box-new">
+              <input type="file" name="doc_old_lease_agreement" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Lease agreement';"/>
+              <span class="up-arrow">&#8679;</span>
+              <span class="up-label">Lease agreement</span>
+            </div>
+            <span class="help-q" title="Lease Agreement">&#63;</span>
+          </div>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">A Lease Agreement serves as proof of address for the company.</span></div>
+        </div>
+      </div>
+
+      <!-- 05: Memorandum of Association -->
+      <div class="sec-row">
+        <div class="sec-num-col">05</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Upload memorandum of association</div>
+          <span class="field-label">Memorandum of association</span>
+          <div class="upload-row">
+            <div class="upload-box-new">
+              <input type="file" name="doc_old_memorandum" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Memorandum of association';"/>
+              <span class="up-arrow">&#8679;</span>
+              <span class="up-label">Memorandum of association</span>
+            </div>
+            <span class="help-q" title="Memorandum of Association">&#63;</span>
+          </div>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">A Memorandum of Association (MOA) is a legal document prepared during the formation and registration of a limited liability company - they define the company's relationship with shareholders. The MOA is accessible to the public and describes the company's name, the physical address of the registered office, names of shareholders and the distribution of shares. The MOA and the Articles of Association serve as the constitution of the company.</span></div>
+        </div>
+      </div>
+
+      <!-- 06: Certificate of Good Standing -->
+      <div class="sec-row">
+        <div class="sec-num-col">06</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Upload certificate of good standing (if applicable)</div>
+          <span class="field-label">Certificate of good standing (if applicable)</span>
+          <div class="upload-row">
+            <div class="upload-box-new">
+              <input type="file" name="doc_old_good_standing" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Certificate of good standing';"/>
+              <span class="up-arrow">&#8679;</span>
+              <span class="up-label" style="font-size:11px;">Certificate of good standing (if applicable)</span>
+            </div>
+            <span class="help-q" title="Certificate of Good Standing">&#63;</span>
+          </div>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">A certificate of good standing is a document proving that a business is legally registered with and able to operate within a given jurisdiction.</span></div>
+        </div>
+      </div>
+
+      <!-- 07: Incumbency Certificate -->
+      <div class="sec-row">
+        <div class="sec-num-col">07</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Upload incumbency certificate / Registry extract (if applicable)</div>
+          <span class="field-label">Incumbency certificate / Registry extract (if applicable)</span>
+          <div class="upload-row">
+            <div class="upload-box-new">
+              <input type="file" name="doc_old_incumbency" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Incumbency certificate';"/>
+              <span class="up-arrow">&#8679;</span>
+              <span class="up-label" style="font-size:11px;">Incumbency certificate / Registry extract (if applicable)</span>
+            </div>
+            <span class="help-q" title="Incumbency Certificate">&#63;</span>
+          </div>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">An incumbency certificate (or certificate of incumbency) is an official document issued by a corporation or limited liability company (LLC) that lists the names of its current directors, officers, and, occasionally, key shareholders.</span></div>
+        </div>
+      </div>
+
+      <!-- 08: Document Submission Instructions -->
+      <div class="sec-row">
+        <div class="sec-num-col">08</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Document submission instructions:</div>
+          <ul class="inst-list">
+            <li>&#8226; Copies of all documents submitted electronically</li>
+            <li>&#8226; Original passport of all shareholders</li>
+            <li>&#8226; Original emirates ID of all shareholders</li>
+            <li>&#8226; Original 6 months bank statement</li>
+          </ul>
+          <div class="info-box-pink"><span class="info-icon-pink">&#9432;</span><span class="info-text">Shareholders are required to carry all original documents during any scheduled appointments with a bank representative.</span></div>
+        </div>
+      </div>
+
+      <!-- 09: Remarks -->
+      <div class="sec-row" style="border-bottom:none;">
+        <div class="sec-num-col">09</div>
+        <div class="sec-body-col">
+          <div class="sec-title">Remarks</div>
+          <textarea name="old_remarks" rows="4" placeholder="Comments" class="remarks-field"><t t-esc="record.old_remarks or ''"/></textarea>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- ═══════════════════════════════════════════════════
+     BANKING OLD — STEP 2: Corporate Bank Account
+═══════════════════════════════════════════════════ -->
+<template id="banking_old_step2" name="Banking Old Step 2">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:14px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:30px;height:30px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:32px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.radio-group-vert{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a3c6e;width:18px;height:18px}
+.select-row{display:flex;align-items:center;max-width:480px}
+.select-wrap{position:relative;flex:1}
+.select-wrap::after{content:"\25BC";position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#999;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:14px 16px;border:1px solid #ccc;border-radius:4px;background:#fff;font-size:14px;color:#555;outline:none;appearance:none;cursor:pointer}
+.clear-btn{width:28px;height:28px;border-radius:50%;background:#1976d2;color:#fff;border:none;font-size:16px;cursor:pointer;margin-left:8px;flex-shrink:0}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:space-between;align-items:center;z-index:99}
+.spc-btn-previous{border:none;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;color:#fff;background:#00897b;text-decoration:none;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New (old)</div>
+    <form method="POST" action="/spc/apply/banking/old/corp/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div style="font-size:15px;font-weight:500;color:#333;margin-bottom:20px;">Is there a requirement to open a bank account?</div>
+          <div class="radio-group-vert">
+            <label class="radio-label">
+              <input type="radio" name="need_bank_account_old" value="yes"
+                t-att-checked="record.need_bank_account_old == 'yes' and 'checked' or None"
+                onchange="toggleBank(this.value)"/> Yes
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="need_bank_account_old" value="no"
+                t-att-checked="(not record.need_bank_account_old or record.need_bank_account_old == 'no') and 'checked' or None"
+                onchange="toggleBank(this.value)"/> No
+            </label>
+          </div>
+          <div id="bank-wrap" t-att-style="'display:' + ('flex' if record.need_bank_account_old == 'yes' else 'none') + ';align-items:center;max-width:480px;'">
+            <div class="select-wrap">
+              <select name="preferred_financial_provider_old">
+                <option value="">Preferred financial services provider</option>
+                <option value="wio" t-att-selected="record.preferred_financial_provider_old == 'wio' and 'selected' or None">WIO bank</option>
+                <option value="mashreq" t-att-selected="record.preferred_financial_provider_old == 'mashreq' and 'selected' or None">Mashreq Bank P.S.C</option>
+                <option value="rak" t-att-selected="record.preferred_financial_provider_old == 'rak' and 'selected' or None">RAK Bank</option>
+                <option value="bank_misr" t-att-selected="record.preferred_financial_provider_old == 'bank_misr' and 'selected' or None">Bank Misr</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="document.querySelector('[name=preferred_financial_provider_old]').value=''">&#215;</button>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/old/docs/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function toggleBank(v) {
+    document.getElementById('bank-wrap').style.display = v === 'yes' ? 'flex' : 'none';
+}
+</script>
+</body></html>
+</template>
+
+<!-- ═══════════════════════════════════════════════════
+     BANKING OLD — DECLARATION
+═══════════════════════════════════════════════════ -->
+<template id="banking_old_declaration" name="Banking Old Declaration">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:14px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:30px;height:30px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px;width:calc(100% - 260px)}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:32px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.decl-text{font-size:13px;color:#374151;line-height:1.8;margin-bottom:20px}
+.decl-link{color:#1976d2}
+.ack-label{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#333;cursor:pointer}
+.ack-label input[type=checkbox]{width:16px;height:16px;margin-top:2px;flex-shrink:0}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:space-between;align-items:center;z-index:99}
+.spc-btn-previous{border:none;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;color:#fff;background:#00897b;text-decoration:none;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New (old)</div>
+    <form method="POST" action="/spc/apply/banking/old/declaration/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <h4 style="font-weight:700;font-size:15px;margin-bottom:16px;">Declaration:</h4>
+          <p class="decl-text">By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="decl-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+          <p class="decl-text">Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+          <p style="font-size:13px;font-weight:600;color:#333;margin-bottom:12px;">Acknowledgement</p>
+          <label class="ack-label">
+            <input type="checkbox" name="declaration_agreed" value="1" required="required"/>
+            I have read and agree to the SPC Terms and Conditions.
+          </label>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/old/corp/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- ═══════════════════════════════════════════════════
+     BANKING OLD — REVIEW
+═══════════════════════════════════════════════════ -->
+<template id="banking_old_review" name="Banking Old Review">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:14px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:30px;height:30px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:32px}
+.review-card{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:8px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:45%}
+.review-table td:last-child{font-weight:500}
+.doc-check{color:#1abc9c;margin-right:4px}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:space-between;align-items:center;z-index:99}
+.spc-btn-previous{border:none;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;color:#fff;background:#00897b;text-decoration:none;display:inline-block}
+.spc-btn-next{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <h4 style="font-weight:700;margin-bottom:16px;color:#1a2340;">Application Summary</h4>
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Banking Type</td><td>New (old)</td></tr>
+        <tr><td>Require Bank Account</td><td><t t-esc="(record.need_bank_account_old or 'No').capitalize()"/></td></tr>
+        <t t-if="record.preferred_financial_provider_old">
+          <tr><td>Preferred Bank</td><td><t t-esc="dict(record._fields['preferred_financial_provider_old'].selection).get(record.preferred_financial_provider_old, '-')"/></td></tr>
+        </t>
+      </table>
+    </div>
+    <div class="review-card">
+      <h4 style="font-weight:700;margin-bottom:16px;color:#1a2340;">Documents Uploaded</h4>
+      <table class="review-table">
+        <tr><td>Trade License</td><td><t t-if="record.doc_old_trade_license_ids"><span class="doc-check">&#10003;</span><t t-esc="len(record.doc_old_trade_license_ids)"/> file(s)</t><t t-else="">—</t></td></tr>
+        <tr><td>Formation Certificate</td><td><t t-if="record.doc_old_formation_cert_ids"><span class="doc-check">&#10003;</span><t t-esc="len(record.doc_old_formation_cert_ids)"/> file(s)</t><t t-else="">—</t></td></tr>
+        <tr><td>Share Certificate</td><td><t t-if="record.doc_old_share_cert_ids"><span class="doc-check">&#10003;</span><t t-esc="len(record.doc_old_share_cert_ids)"/> file(s)</t><t t-else="">—</t></td></tr>
+        <tr><td>Lease Agreement</td><td><t t-if="record.doc_old_lease_agreement_ids"><span class="doc-check">&#10003;</span><t t-esc="len(record.doc_old_lease_agreement_ids)"/> file(s)</t><t t-else="">—</t></td></tr>
+        <tr><td>Memorandum of Association</td><td><t t-if="record.doc_old_memorandum_ids"><span class="doc-check">&#10003;</span><t t-esc="len(record.doc_old_memorandum_ids)"/> file(s)</t><t t-else="">—</t></td></tr>
+        <tr><td>Certificate of Good Standing</td><td><t t-if="record.doc_old_good_standing_ids"><span class="doc-check">&#10003;</span><t t-esc="len(record.doc_old_good_standing_ids)"/> file(s)</t><t t-else="">—</t></td></tr>
+        <tr><td>Incumbency Certificate</td><td><t t-if="record.doc_old_incumbency_ids"><span class="doc-check">&#10003;</span><t t-esc="len(record.doc_old_incumbency_ids)"/> file(s)</t><t t-else="">—</t></td></tr>
+        <t t-if="record.old_remarks">
+          <tr><td>Remarks</td><td><t t-esc="record.old_remarks"/></td></tr>
+        </t>
+      </table>
+    </div>
+    <div class="review-card" style="text-align:center;">
+      <p style="font-size:13px;color:#888;margin-bottom:4px;">Total Service Fee</p>
+      <p style="font-size:32px;font-weight:900;color:#1a2340;">AED 2,010.00</p>
+    </div>
+    <form method="POST" action="/spc/apply/banking/old/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/old/declaration/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- ═══════════════════════════════════════════════════
+     BANKING OLD — PAYMENT
+═══════════════════════════════════════════════════ -->
+<template id="banking_old_payment" name="Banking Old Payment">
+<html><head><meta charset="utf-8"/><title>Banking Assistance | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:14px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:30px;height:30px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:32px}
+.pay-card{background:#fff;border-radius:12px;padding:48px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center;margin-bottom:24px}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:space-between;align-items:center;z-index:99}
+.spc-btn-previous{border:none;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;color:#fff;background:#00897b;text-decoration:none;display:inline-block}
+.spc-btn-next{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Corporate Bank Account</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:44px;font-weight:900;color:#1a2340;margin-bottom:10px;">AED 2,010.00</div>
+      <div style="color:#888;font-size:14px;margin-bottom:10px;">Banking Assistance (New old) — Service Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/banking/old/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/banking/old/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- ═══════════════════════════════════════════════════
+     BANKING OLD — SUCCESS
+═══════════════════════════════════════════════════ -->
+<template id="banking_old_success" name="Banking Old Success">
+<html><head><meta charset="utf-8"/><title>Submitted | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e}
+.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+</aside>
+<main class="cd-main">
+    <div style="background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%;">
+        <div style="font-size:64px;color:#1abc9c;margin-bottom:20px;">&#10003;</div>
+        <div style="font-size:24px;font-weight:700;color:#1a2340;margin-bottom:12px;">Application Submitted!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:8px;">Your Banking Assistance (New old) application has been submitted successfully.</p>
+        <p style="font-size:15px;color:#555;margin-bottom:32px;">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" style="background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+</odoo>

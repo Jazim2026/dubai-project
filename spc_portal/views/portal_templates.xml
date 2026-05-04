@@ -202,10 +202,11 @@ function combineOTP(){var otp='';document.querySelectorAll('.spc-otp-box').forEa
                 <form action="/spc/dashboard/goto" method="POST" style="margin-bottom:10px;">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <input type="hidden" name="customer_id" t-att-value="selected_customer.id"/>
+                    <input type="hidden" name="redirect_to" id="concierge_redirect" value=""/>
                     <button type="submit" class="spc-btn" style="margin-bottom:0;">GO TO DASHBOARD!!</button>
                 </form>
                 <a href="/spc/setup-new-company" class="spc-btn" style="background:#6b7280;display:block;text-align:center;text-decoration:none;margin-bottom:10px;color:white;">Setup new company</a>
-                <a href="#" class="spc-btn" style="background:#6b7280;">Concierge services</a>
+                <button type="button" class="spc-btn" style="background:#6b7280;margin-bottom:0;" onclick="document.getElementById('concierge_redirect').value='/spc/concierge-services';document.getElementById('dashboard_form').submit();">Concierge services</button>
             </t>
             <t t-if="not selected_customer">
                 <div class="spc-dash-btn-disabled">GO TO DASHBOARD!!</div>
@@ -383,57 +384,37 @@ function validateForm(){
     <title>SPC Free Zone | Dashboard</title>
     <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f6fa;min-height:100vh;display:flex;flex-direction:column}
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f6fa;min-height:100vh}
 .db-wrap{display:flex;min-height:100vh}
-/* SIDEBAR */
-.db-sidebar{width:220px;background:#1a3c6e;color:white;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
-.db-logo-box{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.db-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.db-logo-box{padding:20px 18px 16px;border-bottom:1px solid #f3f4f6}
 .db-logo-box svg{width:36px;height:36px}
-.db-logo-text{font-size:20px;font-weight:700;color:white;line-height:1}
+.db-logo-text{font-size:20px;font-weight:700;color:#1a3c6e;line-height:1}
 .db-logo-sub{font-size:11px;color:#3cb89a;letter-spacing:1px}
 .db-nav{flex:1;padding:10px 0;overflow-y:auto}
-.db-nav a{display:flex;align-items:center;gap:10px;padding:11px 18px;color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;transition:background .15s}
-.db-nav a:hover,.db-nav a.active{background:rgba(255,255,255,.12);color:white}
-.db-nav a.active{border-left:3px solid #3cb89a}
-.db-nav-icon{width:18px;height:18px;opacity:.8}
-.db-nav-sep{height:1px;background:rgba(255,255,255,.08);margin:6px 16px}
-.db-nav-bottom{padding:12px 0;border-top:1px solid rgba(255,255,255,.1)}
-/* TOPBAR */
+.db-nav a{display:flex;align-items:center;gap:10px;padding:11px 18px;color:#374151;text-decoration:none;font-size:13px;transition:background .15s}
+.db-nav a:hover,.db-nav a.active{background:#f0f4ff;color:#1a3c6e}
+.db-nav a.active{border-left:3px solid #1a3c6e;font-weight:600}
+.db-nav-icon{width:18px;height:18px;color:#6b7280}
+.db-nav-sep{height:1px;background:#f3f4f6;margin:6px 16px}
+.db-nav-bottom{padding:12px 0;border-top:1px solid #f3f4f6}
 .db-topbar{position:fixed;top:0;left:220px;right:0;height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:flex-end;padding:0 24px;gap:16px;z-index:99;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .db-top-company{display:flex;align-items:center;gap:8px;background:#f3f4f6;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:#374151;cursor:pointer}
-.db-top-icon{width:20px;height:20px;color:#6b7280;cursor:pointer}
-.db-top-bell{position:relative}
-.db-top-bell-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#ef4444;border-radius:50%}
-/* MAIN */
 .db-main{margin-left:220px;margin-top:56px;flex:1;padding:24px}
-/* BANNER */
-.db-banner{background:linear-gradient(135deg,#1a3c6e 0%,#2a6db5 60%,#3cb89a 100%);border-radius:14px;padding:28px 32px;color:white;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;overflow:hidden;position:relative;min-height:160px}
-.db-banner-left h2{font-size:22px;font-weight:700;margin-bottom:2px}
-.db-banner-left p{font-size:14px;opacity:.8;margin-bottom:20px}
-.db-stats{display:flex;gap:32px;flex-wrap:wrap}
-.db-stat label{font-size:24px;font-weight:800;display:block}
-.db-stat span{font-size:12px;opacity:.8}
-.db-banner-right{position:absolute;right:20px;top:0;bottom:0;display:flex;align-items:center;gap:16px}
-.db-banner-info{text-align:right}
-.db-banner-num{font-size:22px;font-weight:800}
-.db-banner-label{font-size:11px;opacity:.75}
-.db-badge{display:inline-block;background:#22c55e;color:white;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:4px}
-.db-badge.inactive{background:#ef4444}
-.db-banner-dec{position:absolute;right:-40px;top:-40px;width:200px;height:200px;border:40px solid rgba(255,255,255,.06);border-radius:20px;transform:rotate(30deg)}
-.db-banner-dec2{position:absolute;right:80px;bottom:-60px;width:160px;height:160px;border:30px solid rgba(255,255,255,.04);border-radius:16px;transform:rotate(15deg)}
-/* CARDS */
-.db-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.page-title{font-size:24px;font-weight:700;color:#1abc9c;margin-bottom:24px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#1abc9c;border-radius:10px;padding:20px;color:white;cursor:pointer;text-decoration:none;display:block}
+.stat-card:hover{opacity:.92;transform:translateY(-1px)}
+.stat-card-num{font-size:28px;font-weight:800}
+.stat-card-label{font-size:13px;opacity:.9;margin-top:4px}
+.stat-card-icon{font-size:20px;margin-bottom:8px}
+.cards-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
 .db-card{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,.06)}
 .db-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .db-card-title{font-size:15px;font-weight:700;color:#1a3c6e}
-.db-view-all{color:#2a6db5;font-size:12px;text-decoration:none;display:flex;align-items:center;gap:4px}
+.db-view-all{color:#2a6db5;font-size:12px;text-decoration:none}
 .db-empty{text-align:center;padding:32px 0;color:#9ca3af}
-.db-empty svg{margin-bottom:10px;opacity:.4}
-.db-empty p{font-size:14px}
-.db-activity-item{padding:12px 0;border-bottom:1px solid #f3f4f6}
-.db-activity-item:last-child{border-bottom:none}
-.db-activity-text{font-size:13px;color:#374151;margin-bottom:3px}
-.db-activity-date{font-size:11px;color:#9ca3af}
+.db-empty-icon{font-size:40px;margin-bottom:10px;opacity:.4}
 .db-wa{position:fixed;bottom:24px;right:24px;width:48px;height:48px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(37,211,102,.4);z-index:999;text-decoration:none}
     </style>
 </head>
@@ -448,7 +429,7 @@ body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f6fa;min-height:100vh
             </div>
         </div>
         <nav class="db-nav">
-            <a href="#" class="active">
+            <a href="/spc/customer-dashboard" class="active">
                 <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                 Dashboard
             </a>
@@ -456,33 +437,33 @@ body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f6fa;min-height:100vh
                 <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 Request Tracking
             </a>
-            <a href="/spc/request-tracking">
+            <a href="/spc/company-management">
                 <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2M5 21H3"/></svg>
                 Company Management
             </a>
             <a href="/spc/employee-management">
-                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                 Employee Management
             </a>
             <a href="/spc/facility-management">
-                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
                 Facility Management
             </a>
             <a href="/spc/concierge-services">
-                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
-                Concierge services
+                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                Concierge Services
             </a>
-            <a href="#">
+            <a href="/spc/facility-bookings">
                 <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 Facility Bookings
             </a>
-            <a href="#">
-                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                KYC Report
-            </a>
             <div class="db-nav-sep"/>
             <a href="#">
-                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+                KYC Report
+            </a>
+            <a href="#">
+                <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
                 Zone Bank Details
             </a>
             <a href="#">
@@ -491,7 +472,7 @@ body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f6fa;min-height:100vh
             </a>
         </nav>
         <div class="db-nav-bottom">
-            <a href="/spc/logout" style="display:flex;align-items:center;gap:10px;padding:11px 18px;color:rgba(255,255,255,.7);text-decoration:none;font-size:13px;">
+            <a href="/spc/logout" style="display:flex;align-items:center;gap:10px;padding:11px 18px;color:#ef4444;text-decoration:none;font-size:13px;">
                 <svg class="db-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
                 Log out
             </a>
@@ -500,87 +481,77 @@ body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f6fa;min-height:100vh
 
     <!-- TOPBAR -->
     <div class="db-topbar">
-        <div class="db-top-bell db-top-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-            <div class="db-top-bell-dot"/>
-        </div>
-        <div class="db-top-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
         <div class="db-top-company">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-            <span t-if="customer" t-esc="customer.name"/>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"/></svg>
+            <t t-esc="company_name if company_name else 'My Company'"/>
         </div>
+        <span style="font-size:13px;color:#374151;font-weight:500;"><t t-esc="customer.name if customer else ''"/></span>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- MAIN -->
     <div class="db-main">
-        <!-- BANNER -->
-        <div class="db-banner">
-            <div class="db-banner-dec"/>
-            <div class="db-banner-dec2"/>
-            <div class="db-banner-left">
-                <h2>Hello,</h2>
-                <p>Welcome!</p>
-                <div class="db-stats">
-                    <div class="db-stat"><label>0</label><span>Open tasks</span></div>
-                    <div class="db-stat"><label>0</label><span>Document</span></div>
-                    <div class="db-stat"><label>0</label><span>Employees</span></div>
-                    <div class="db-stat"><label>0</label><span>Facility Bookings</span></div>
-                    <div class="db-stat"><label>0</label><span>Invoices</span></div>
-                </div>
-            </div>
-            <div class="db-banner-right">
-                <div class="db-banner-info">
-                    <div class="db-badge">Active</div>
-                    <div class="db-banner-num">—</div>
-                    <div class="db-banner-label">Formation Number</div>
-                </div>
-                <div class="db-banner-info">
-                    <div class="db-badge">Active</div>
-                    <div class="db-banner-num">—</div>
-                    <div class="db-banner-label">License Number</div>
-                </div>
-            </div>
+        <div class="page-title">Dashboard</div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <a href="#" class="stat-card">
+                <div class="stat-card-icon">📋</div>
+                <div class="stat-card-num">0</div>
+                <div class="stat-card-label">Open tasks</div>
+            </a>
+            <a href="#" class="stat-card">
+                <div class="stat-card-icon">📄</div>
+                <div class="stat-card-num">0</div>
+                <div class="stat-card-label">Document</div>
+            </a>
+            <a href="#" class="stat-card">
+                <div class="stat-card-icon">👥</div>
+                <div class="stat-card-num">0</div>
+                <div class="stat-card-label">Employees</div>
+            </a>
+            <a href="#" class="stat-card">
+                <div class="stat-card-icon">📅</div>
+                <div class="stat-card-num">0</div>
+                <div class="stat-card-label">Facility Bookings</div>
+            </a>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+            <a href="#" class="stat-card">
+                <div class="stat-card-icon">🧾</div>
+                <div class="stat-card-num">0</div>
+                <div class="stat-card-label">Invoices</div>
+            </a>
         </div>
 
-        <!-- BOTTOM CARDS -->
-        <div class="db-row">
+        <!-- Cards -->
+        <div class="cards-row">
             <div class="db-card">
                 <div class="db-card-head">
                     <span class="db-card-title">Open tasks (0)</span>
-                    <a href="#" class="db-view-all">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                        VIEW ALL
-                    </a>
+                    <a href="#" class="db-view-all">&#9776; VIEW ALL</a>
                 </div>
                 <div class="db-empty">
-                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#3cb89a" stroke-width="1.5"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>
-                    <p style="font-weight:600;color:#374151;margin-bottom:4px;">Woohoo!</p>
-                    <p>there are no tasks pending for you.</p>
+                    <div class="db-empty-icon">&#128200;</div>
+                    <p style="font-size:14px;font-weight:600;margin-bottom:4px;">Woohoo!</p>
+                    <p style="font-size:13px;">there are no tasks pending for you.</p>
                 </div>
             </div>
             <div class="db-card">
                 <div class="db-card-head">
                     <span class="db-card-title">Account activity</span>
-                    <a href="#" class="db-view-all">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                        VIEW ALL
-                    </a>
+                    <a href="#" class="db-view-all">&#9776; VIEW ALL</a>
                 </div>
-                <div class="db-empty" style="padding:20px 0;">
-                    <p style="color:#9ca3af;font-size:13px;">No recent activity.</p>
+                <div class="db-empty">
+                    <p style="font-size:13px;color:#9ca3af;">No recent activity.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<a href="https://wa.me/971000000000" class="db-wa" target="_blank">
-    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+<a href="https://wa.me/" class="db-wa" target="_blank">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </a>
-</body>
-</html>
+</body></html>
 </template>
 
 
@@ -646,10 +617,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh
     <a href="/spc/customer-dashboard" class="cd-sidebar-item">📊 Dashboard</a>
     <a href="/spc/request-tracking" class="cd-sidebar-item">📋 Request Tracking</a>
     <a href="/spc/company-management" class="cd-sidebar-item active">🏢 Company Management</a>
-    <a href="#" class="cd-sidebar-item">👥 Employee Management</a>
-    <a href="#" class="cd-sidebar-item">🏗️ Facility Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">👥 Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">🏗️ Facility Management</a>
     <a href="/spc/concierge-services" class="cd-sidebar-item">🛎️ Concierge Services</a>
-    <a href="#" class="cd-sidebar-item">📅 Facility Bookings</a>
+    <a href="/spc/facility-bookings" class="cd-sidebar-item">📅 Facility Bookings</a>
     <div class="cd-sidebar-divider"/>
     <a href="#" class="cd-sidebar-item">📄 KYC Report</a>
     <a href="#" class="cd-sidebar-item">🏦 Zone Bank Details</a>
@@ -719,6 +690,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh
             <a href="#pre-approval" class="service-tab" style="display:block;padding:12px 16px;color:#6b7280;font-size:13px;text-decoration:none">Pre-Approval</a>
             <a href="#nma-media" class="service-tab" style="display:block;padding:12px 16px;color:#6b7280;font-size:13px;text-decoration:none">NMA Media License</a>
             <a href="#nma-permit" class="service-tab" style="display:block;padding:12px 16px;color:#6b7280;font-size:13px;text-decoration:none">NMA Permit</a>
+            <a href="#employee-list" class="service-tab" style="display:block;padding:12px 16px;color:#6b7280;font-size:13px;text-decoration:none">Employee List</a>
         </div>
         <div style="flex:1;padding-left:24px">
             <!-- Company Formation Cards -->
@@ -842,13 +814,267 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh
                     </a>
                 </div>
             </div>
+        <!-- Business License Cards -->
+            <div id="business-license" style="display:none">
+                <div class="section-title">Business License</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/business-license/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Additional Business License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Additional Business License</div>
+                            <div class="service-card-fee">Starting from AED 6,500</div>
+                        </div>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="service-card-img red">
+                            <span class="service-card-tag">Cancel</span>
+                            <span>License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Cancellation</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <!-- Name Reservation Cards -->
+            <div id="name-reservation" style="display:none">
+                <div class="section-title">Name Reservation</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/name-reservation/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Name Reservation</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Name Reservation - New</div>
+                            <div class="service-card-fee">AED 510.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <!-- Pre-Approval Cards -->
+            <div id="pre-approval" style="display:none">
+                <div class="section-title">Pre-Approval</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/pre-approval/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Pre-approval</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Pre-Approval - New</div>
+                            <div class="service-card-fee">AED 640.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <!-- Corporate Letters Cards -->
+            <div id="corporate-letters" style="display:none">
+                <div class="section-title">Corporate Letters</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/corporate-letters/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Corporate Letters</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Corporate Letters</div>
+                            <div class="service-card-fee">Starting from AED 360</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+
+        <!-- Employee List Cards -->
+            <div id="employee-list" style="display:none">
+                <div class="section-title">Employee List</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/employee-list/new/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Employee List</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 385.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        <!-- Employee List Cards -->
+            
+        <!-- NMA Permit Cards -->
+            <div id="nma-permit" style="display:none">
+                <div class="section-title">NMA Permit</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/nma-permit/new/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>MRO Permit</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 200</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <!-- NMA Media License Cards -->
+            <div id="nma-media" style="display:none">
+                <div class="section-title">NMA Media License</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/nma-media-license/new/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">Starting from AED 535.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/company-management/nma-media-license/renewal/additional" class="service-card">
+                        <div class="service-card-img teal">
+                            <span class="service-card-tag">Renew</span>
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Renewal</div>
+                            <div class="service-card-fee">Starting from AED 535.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/company-management/nma-media-license/amend/additional" class="service-card">
+                        <div class="service-card-img grey">
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Amend</div>
+                            <div class="service-card-fee">Starting from AED 535.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/company-management/nma-media-license/cancellation/additional" class="service-card">
+                        <div class="service-card-img red">
+                            <span class="service-card-tag">Cancel</span>
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Cancellation</div>
+                            <div class="service-card-fee">Starting from AED 525.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+
+        <!-- Employee List Cards -->
+            <div id="employee-list" style="display:none">
+                <div class="section-title">Employee List</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/employee-list/new/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Employee List</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 385.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        <!-- Employee List Cards -->
+            <div id="employee-list" style="display:none">
+                <div class="section-title">Employee List</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/employee-list/new/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Employee List</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 385.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <!-- NMA Permit Cards -->
+            <div id="nma-permit" style="display:none">
+                <div class="section-title">NMA Permit</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/nma-permit/new/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>MRO Permit</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 200</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <!-- NMA Media License Cards -->
+            <div id="nma-media" style="display:none">
+                <div class="section-title">NMA Media License</div>
+                <div class="services-grid">
+                    <a href="/spc/company-management/nma-media-license/new/additional" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">Starting from AED 535.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/company-management/nma-media-license/renewal/additional" class="service-card">
+                        <div class="service-card-img teal">
+                            <span class="service-card-tag">Renew</span>
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Renewal</div>
+                            <div class="service-card-fee">Starting from AED 535.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/company-management/nma-media-license/amend/additional" class="service-card">
+                        <div class="service-card-img grey">
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Amend</div>
+                            <div class="service-card-fee">Starting from AED 535.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/company-management/nma-media-license/cancellation/additional" class="service-card">
+                        <div class="service-card-img red">
+                            <span class="service-card-tag">Cancel</span>
+                            <span>Media License</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Cancellation</div>
+                            <div class="service-card-fee">Starting from AED 525.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
 <script>
 (function(){
     var tabs = document.querySelectorAll('.service-tab');
-    var sections = ['company-formation','establishment'];
+    var sections = ['company-formation','establishment','business-license','corporate-letters','name-reservation','pre-approval','nma-media','nma-permit','employee-list'];
     tabs.forEach(function(tab){
         tab.addEventListener('click', function(e){
             e.preventDefault();
@@ -923,10 +1149,10 @@ tr:hover td{background:#f9fafb}
     <a href="/spc/customer-dashboard" class="cd-sidebar-item">📊 Dashboard</a>
     <a href="/spc/request-tracking" class="cd-sidebar-item active">📋 Request Tracking</a>
     <a href="/spc/company-management" class="cd-sidebar-item">🏢 Company Management</a>
-    <a href="#" class="cd-sidebar-item">👥 Employee Management</a>
-    <a href="#" class="cd-sidebar-item">🏗️ Facility Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">👥 Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">🏗️ Facility Management</a>
     <a href="/spc/concierge-services" class="cd-sidebar-item">🛎️ Concierge Services</a>
-    <a href="#" class="cd-sidebar-item">📅 Facility Bookings</a>
+    <a href="/spc/facility-bookings" class="cd-sidebar-item">📅 Facility Bookings</a>
     <div class="cd-sidebar-divider"/>
     <a href="#" class="cd-sidebar-item">📄 KYC Report</a>
     <a href="#" class="cd-sidebar-item">🏦 Zone Bank Details</a>
@@ -1033,8 +1259,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa}
     <a href="/spc/customer-dashboard" class="cd-sidebar-item">📊 Dashboard</a>
     <a href="/spc/request-tracking" class="cd-sidebar-item">📋 Request Tracking</a>
     <a href="/spc/company-management" class="cd-sidebar-item active">🏢 Company Management</a>
-    <a href="#" class="cd-sidebar-item">👥 Employee Management</a>
-    <a href="#" class="cd-sidebar-item">🏗️ Facility Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">👥 Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">🏗️ Facility Management</a>
     <div class="cd-sidebar-divider"/>
     <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">🚪 Log out</a>
 </aside>
@@ -1259,9 +1485,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh
     <a href="/spc/request-tracking" class="cd-sidebar-item">📋 Request Tracking</a>
     <a href="/spc/company-management" class="cd-sidebar-item">🏢 Company Management</a>
     <a href="/spc/employee-management" class="cd-sidebar-item active">👥 Employee Management</a>
-    <a href="#" class="cd-sidebar-item">🏗️ Facility Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">🏗️ Facility Management</a>
     <a href="/spc/concierge-services" class="cd-sidebar-item">🛎️ Concierge Services</a>
-    <a href="#" class="cd-sidebar-item">📅 Facility Bookings</a>
+    <a href="/spc/facility-bookings" class="cd-sidebar-item">📅 Facility Bookings</a>
     <div class="cd-sidebar-divider"/>
     <a href="#" class="cd-sidebar-item">📄 KYC Report</a>
     <a href="#" class="cd-sidebar-item">🏦 Zone Bank Details</a>
@@ -1326,6 +1552,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh
             <a href="#" onclick="showEmpTab('employment-contract',this)" class="service-tab-link">Employment Contract</a>
             <a href="#" onclick="showEmpTab('absconding',this)" class="service-tab-link">Absconding</a>
             <a href="#" onclick="showEmpTab('labour-dispute',this)" class="service-tab-link">Labour Dispute</a>
+            <a href="#" onclick="showEmpTab('movement-report',this)" class="service-tab-link">Movement Report</a>
+            <a href="#" onclick="showEmpTab('eid-appointment',this)" class="service-tab-link">EID Appointment</a>
         </div>
         <!-- Right content -->
         <div style="flex:1;padding-left:24px">
@@ -1386,7 +1614,39 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh
                     </a>
                 </div>
             </div>
+                        <div id="entry-visa" class="emp-tab-section" style="display:none;margin-top:32px">
+                <div class="section-title">Entry Visa</div>
+                <div class="services-grid">
+                    <a href="/spc/employee-management/service/entry_visa" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Entry Visa</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Entry Visa</div>
+                            <div class="service-card-fee">Starting from AED 500</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
             <!-- Employee Letters -->
+
+            <div id="change-status" class="emp-tab-section" style="display:none;margin-top:32px">
+                <div style="font-size:18px;font-weight:700;color:#111827;margin-bottom:16px">Change of Status</div>
+                <div style="font-size:14px;color:#6b7280;margin-bottom:20px">Change of Status Services</div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+                    <a href="/spc/employee-management/service/change_status_new" class="service-card">
+                        <div class="service-card-img blue">
+                            <span class="service-card-tag">New</span>
+                            <span>Change of Status</span>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 710.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
             <div id="employee-letters" class="emp-tab-section" style="display:none;margin-top:32px">
                 <div class="section-title">Employee Letters</div>
                 <div class="services-grid">
@@ -1470,6 +1730,36 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh
                     </a>
                 </div>
             </div>
+            <div id="movement-report" class="emp-tab-section" style="display:none;margin-top:32px">
+                <div class="section-title">Movement Report</div>
+                <div class="services-grid">
+                    <a href="/spc/employee-management/movement-report/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#4a90d9)">
+                            <span class="service-card-tag">New</span>
+                            Movement Report
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 765</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="eid-appointment" class="emp-tab-section" style="display:none;margin-top:32px">
+                <div class="section-title">EID Appointment</div>
+                <div class="services-grid">
+                    <a href="/spc/employee-management/eid-appointment/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#4a90d9)">
+                            <span class="service-card-tag">Reschedule</span>
+                            EID Appointment
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Reschedule</div>
+                            <div class="service-card-fee">AED 360</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 <script>
@@ -1545,7 +1835,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa}
     <a href="/spc/employee-management" class="cd-sidebar-item">👥 Employee Management</a>
     <a href="/spc/facility-management" class="cd-sidebar-item active">🏗️ Facility Management</a>
     <a href="/spc/concierge-services" class="cd-sidebar-item">🛎️ Concierge Services</a>
-    <a href="#" class="cd-sidebar-item">📅 Facility Bookings</a>
+    <a href="/spc/facility-bookings" class="cd-sidebar-item">📅 Facility Bookings</a>
     <div class="cd-sidebar-divider"/>
     <a href="#" class="cd-sidebar-item">📄 KYC Report</a>
     <a href="#" class="cd-sidebar-item">🏦 Zone Bank Details</a>
@@ -1803,89 +2093,110 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
 <html>
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Concierge Services | SPC Free Zone</title>
     <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa}
 .cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
-.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
-.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none;transition:all .15s}
+.cd-nav-right{display:flex;align-items:center;gap:16px}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;z-index:90;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;cursor:pointer;text-decoration:none;transition:all .15s}
 .cd-sidebar-item:hover{background:#f0f4ff;color:#1a3c6e}
 .cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
 .cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
 .cd-main{margin-left:220px;margin-top:56px;padding:24px}
-.page-title{font-size:24px;font-weight:700;color:#1abc9c;margin-bottom:8px}
-.search-icon{color:#6b7280;cursor:pointer;font-size:20px}
-.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
-.content-wrap{display:flex;gap:0;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;background:white}
-.tab-left{width:260px;border-right:1px solid #e5e7eb;padding:8px 0;flex-shrink:0}
-.tab-link{display:block;padding:14px 20px;color:#6b7280;font-size:13px;text-decoration:none;border-left:3px solid transparent}
-.tab-link:hover{color:#1a3c6e;background:#f0f4ff}
-.tab-link.active{border-left-color:#1a3c6e;color:#1a3c6e;font-weight:600;background:#f8faff}
-.tab-content{flex:1;padding:24px}
-.section-title{font-size:16px;font-weight:700;color:#111827;margin-bottom:16px}
+.page-title{font-size:24px;font-weight:700;color:#1abc9c;margin-bottom:24px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:#1abc9c;border-radius:10px;padding:20px;color:white}
+.stat-card-num{font-size:28px;font-weight:800}
+.stat-card-label{font-size:13px;opacity:.9;margin-top:4px}
+.stat-card-icon{font-size:20px;margin-bottom:8px}
+.section-title{font-size:18px;font-weight:700;color:#111827;margin-bottom:16px}
+.services-layout{display:flex;gap:0;background:white;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden}
+.service-tab-left{width:200px;border-right:1px solid #e5e7eb;padding:8px 0;flex-shrink:0}
+.service-tab-link{display:block;padding:12px 16px;color:#6b7280;font-size:13px;text-decoration:none;transition:all .15s}
+.service-tab-link:hover{color:#1a3c6e;background:#f0f4ff}
+.service-tab-link.active{border-left:3px solid #1a3c6e;color:#1a3c6e;font-weight:600}
+.service-tab-content{flex:1;padding:24px}
+.tab-section{display:none}
+.tab-section.active{display:block}
+.tab-section-title{font-size:16px;font-weight:700;color:#111827;margin-bottom:16px}
 .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.service-card{background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);text-decoration:none;transition:transform .15s;display:block;border:1px solid #f3f4f6}
-.service-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.12)}
-.service-card-img{height:120px;position:relative;display:flex;align-items:flex-end;padding:12px;background:linear-gradient(135deg,#1a3c6e,#2a6db5);overflow:hidden}
-.service-card-tag{position:absolute;top:8px;left:8px;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;background:#1a3c6e;color:white;z-index:2}
-.service-card-title{font-size:16px;font-weight:800;color:white;z-index:2;position:relative;line-height:1.2}
-.service-card-body{padding:14px}
-.service-card-name{font-size:13px;font-weight:600;color:#1a3c6e;margin-bottom:4px}
-.service-card-fee{font-size:13px;color:#374151;font-weight:600}
+.service-card{background:white;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);text-decoration:none;transition:transform .15s;border:1px solid #f3f4f6}
+.service-card:hover{transform:translateY(-2px)}
+.service-card-img{height:120px;position:relative;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:white;background:linear-gradient(135deg,#1a3c6e,#2a6db5)}
+.service-card-tag{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;background:rgba(0,0,0,.3);color:white}
+.service-card-body{padding:16px}
+.service-card-name{font-size:14px;font-weight:600;color:#1a3c6e;margin-bottom:4px}
+.service-card-fee{font-size:13px;color:#374151}
+.search-bar{display:flex;align-items:center;gap:8px;background:white;border:1px solid #e5e7eb;border-radius:8px;padding:8px 16px;width:280px;position:absolute;right:24px;top:80px}
+.search-bar input{border:none;outline:none;font-size:13px;width:100%;background:transparent}
     </style>
 </head>
 <body>
 <nav class="cd-nav">
-    <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
-    <div style="display:flex;align-items:center;gap:16px">
+    <div style="display:flex;align-items:center;gap:10px">
+        <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
+    </div>
+    <div class="cd-nav-right">
         <button style="background:#1a3c6e;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button>
         <span style="font-size:13px;color:#374151"><t t-esc="customer.name if customer else ''"/></span>
     </div>
 </nav>
 <aside class="cd-sidebar">
-    <a href="/spc/customer-dashboard" class="cd-sidebar-item">📊 Dashboard</a>
-    <a href="/spc/request-tracking" class="cd-sidebar-item">📋 Request Tracking</a>
-    <a href="/spc/company-management" class="cd-sidebar-item">🏢 Company Management</a>
-    <a href="/spc/employee-management" class="cd-sidebar-item">👥 Employee Management</a>
-    <a href="/spc/facility-management" class="cd-sidebar-item">🏗️ Facility Management</a>
-    <a href="/spc/concierge-services" class="cd-sidebar-item active">🛎️ Concierge Services</a>
-    <a href="#" class="cd-sidebar-item">📅 Facility Bookings</a>
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#128722; Concierge Services</a>
+    <a href="/spc/facility-bookings" class="cd-sidebar-item">&#128197; Facility Bookings</a>
     <div class="cd-sidebar-divider"/>
-    <a href="#" class="cd-sidebar-item">📄 KYC Report</a>
-    <a href="#" class="cd-sidebar-item">🏦 Zone Bank Details</a>
+    <a href="#" class="cd-sidebar-item">&#128196; KYC Report</a>
+    <a href="#" class="cd-sidebar-item">&#127968; Zone Bank Details</a>
     <div class="cd-sidebar-divider"/>
-    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">🚪 Log out</a>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
 </aside>
-<main class="cd-main">
-    <div class="page-header">
-        <div class="page-title">Concierge services</div>
-        <span class="search-icon">🔍</span>
-    </div>
-    <div class="content-wrap">
+<main class="cd-main" style="position:relative">
+    <div class="page-title">Concierge services</div>
+
+    <div class="services-layout">
         <!-- Left tabs -->
-        <div class="tab-left">
-            <a href="#" onclick="showTab('vip',this)" class="tab-link active">VIP Medical and EID (Including Transportation)</a>
-            <a href="#" onclick="showTab('account',this)" class="tab-link">Dedicated Account Manager</a>
-            <a href="#" onclick="showTab('vat',this)" class="tab-link">VAT Registration/Deregistration</a>
-            <a href="#" onclick="showTab('tax',this)" class="tab-link">Corporate Tax Registration - Starter Package</a>
-            <a href="#" onclick="showTab('bookkeeping',this)" class="tab-link">Bookkeeping</a>
-            <a href="#" onclick="showTab('eid',this)" class="tab-link">EID Replacement</a>
-            <a href="#" onclick="showTab('reentry',this)" class="tab-link">Re-Entry Permit</a>
-            <a href="#" onclick="showTab('lease',this)" class="tab-link">Lease Documents</a>
+        <div class="service-tab-left">
+            <a href="#" onclick="showConcTab('vip',this)" class="service-tab-link active">VIP Medical and EID (Including Transportation)</a>
+            <a href="#" onclick="showConcTab('account',this)" class="service-tab-link">Dedicated Account Manager</a>
+            <a href="#" onclick="showConcTab('vat',this)" class="service-tab-link">VAT Registration/Deregistration</a>
+            <a href="#" onclick="showConcTab('tax',this)" class="service-tab-link">Corporate Tax Registration - Starter Package</a>
+            <a href="#" onclick="showConcTab('bookkeeping',this)" class="service-tab-link">Bookkeeping</a>
+            <a href="#" onclick="showConcTab('eid',this)" class="service-tab-link">EID Replacement</a>
+            <a href="#" onclick="showConcTab('reentry',this)" class="service-tab-link">Re-Entry Permit</a>
+            <a href="#" onclick="showConcTab('lease',this)" class="service-tab-link">Lease Documents</a>
+            <a href="#" onclick="showConcTab('medical',this)" class="service-tab-link">Medical</a>
+            <a href="#" onclick="showConcTab('meeting',this)" class="service-tab-link">Meeting Room Booking</a>
+            <a href="#" onclick="showConcTab('mofa',this)" class="service-tab-link">MOFA Attestation</a>
+            <a href="#" onclick="showConcTab('banking',this)" class="service-tab-link">Banking Assistance</a>
+            <a href="#" onclick="showConcTab('phone_answering',this)" class="service-tab-link">Phone Answering</a>
+            <a href="#" onclick="showConcTab('po_box',this)" class="service-tab-link">PO Box</a>
+            <a href="#" onclick="showConcTab('company_stamp',this)" class="service-tab-link">Company Stamp</a>
+            <a href="#" onclick="showConcTab('car_reg',this)" class="service-tab-link">Car Registration</a>
+            <a href="#" onclick="showConcTab('dep_entry',this)" class="service-tab-link">Dependent Entry Permit</a>
+            <a href="#" onclick="showConcTab('dependent_visa',this)" class="service-tab-link">Dependent Visa</a>
+            <a href="#" onclick="showConcTab('doc_delivery',this)" class="service-tab-link">Document Delivery</a>
+            <a href="#" onclick="showConcTab('phone_answering',this)" class="service-tab-link">Phone Answering</a>
+            <a href="#" onclick="showConcTab('po_box',this)" class="service-tab-link">PO Box</a>
+            <a href="#" onclick="showConcTab('driving_license',this)" class="service-tab-link">Driving License</a>
         </div>
+
         <!-- Right content -->
-        <div class="tab-content">
-            <!-- VIP Medical -->
-            <div id="vip" class="tab-section">
-                <div class="section-title">VIP Medical and EID (Including Transportation)</div>
+        <div class="service-tab-content">
+            <div id="conc_vip" class="tab-section active">
+                <div class="tab-section-title">VIP Medical and EID (Including Transportation)</div>
                 <div class="services-grid">
                     <a href="/spc/concierge-services/service/vip_medical_eid" class="service-card">
                         <div class="service-card-img">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">VIP Medical &amp; EID</span>
+                            VIP Medical &amp; EID
                         </div>
                         <div class="service-card-body">
                             <div class="service-card-name">New</div>
@@ -1894,107 +2205,385 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa}
                     </a>
                 </div>
             </div>
-            <!-- Dedicated Account Manager -->
-            <div id="account" class="tab-section" style="display:none">
-                <div class="section-title">Dedicated Account Manager</div>
+            <div id="conc_company_stamp" class="tab-section">
+                <div class="tab-section-title">Company Stamp</div>
                 <div class="services-grid">
-                    <a href="/spc/concierge-services/service/dedicated_account_manager" class="service-card">
+                    <a href="/spc/concierge-services/service/company_stamp" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#2d6a4f)">
+                            <span class="service-card-tag">New</span>
+                            Company Stamp
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 260.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_car_reg" class="tab-section">
+                <div class="tab-section-title">Car Registration</div>
+                <div class="services-grid"></div>
+            </div>
+            <div id="conc_dep_entry" class="tab-section">
+                <div class="tab-section-title">Dependent Entry Permit</div>
+                <div class="services-grid"></div>
+            </div>
+            <div id="conc_driving_license" class="tab-section">
+                <div class="tab-section-title">Driving License</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge/driving-license/new/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+                            <span class="service-card-tag" style="background:#1a6b55">New</span>
+                            <div class="service-card-title">Driving License</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 1,890.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge/driving-license/amendment/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#4a5568,#2d3748)">
+                            <span class="service-card-tag" style="background:#4a5568">Amend</span>
+                            <div class="service-card-title">Driving License</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Amendment</div>
+                            <div class="service-card-fee">AED 378.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge/driving-license/duplicate/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#6b2fa0,#4a1080)">
+                            <span class="service-card-tag" style="background:#6b2fa0">Duplicate</span>
+                            <div class="service-card-title">Driving License</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Duplicate</div>
+                            <div class="service-card-fee">AED 1,285.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge/driving-license/renewal/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a6b3c,#145a32)">
+                            <span class="service-card-tag" style="background:#1a6b3c">Renew</span>
+                            <div class="service-card-title">Driving License</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Renewal</div>
+                            <div class="service-card-fee">AED 1,285.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge/driving-license/transfer/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#c0392b,#922b21)">
+                            <span class="service-card-tag" style="background:#6b2fa0">Transfer</span>
+                            <div class="service-card-title">Driving License</div>
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Transfer</div>
+                            <div class="service-card-fee">AED 1,010.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_dependent_visa" class="tab-section">
+                <div class="tab-section-title">Dependent Visa</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge-services/service/dependent_visa" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#6b2fa0,#1a3c6e)">
+                            <span class="service-card-tag">New</span>
+                            Dependent Visa
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 5,010.00</div>
+                        </div>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1abc9c,#0e9e82)">
+                            <span class="service-card-tag">Renew</span>
+                            Dependent Visa
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Renewal</div>
+                            <div class="service-card-fee">AED 5,010.00</div>
+                        </div>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#6b7280,#374151)">
+                            <span class="service-card-tag">Amend</span>
+                            Dependent Visa
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Amendment</div>
+                            <div class="service-card-fee">AED 10.00</div>
+                        </div>
+                    </a>
+                    <a href="#" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#ef4444,#991b1b)">
+                            <span class="service-card-tag">Cancel</span>
+                            Dependent Visa
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Cancellation</div>
+                            <div class="service-card-fee">AED 660.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_doc_delivery" class="tab-section">
+                <div class="tab-section-title">Document Delivery</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge-services/service/doc_delivery_driver" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#0e4d8a);background-image:url('/web/image/spc_portal.doc_delivery_img');background-size:cover;background-blend-mode:multiply">
+                            <span class="service-card-tag">New</span>
+                            Document Delivery (Driver)
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Driver</div>
+                            <div class="service-card-fee">AED 10.00</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge-services/service/doc_delivery_courier" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#0e4d8a)">
+                            <span class="service-card-tag">New</span>
+                            Document Delivery (Courier)
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Courier</div>
+                            <div class="service-card-fee">AED 10.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_account" class="tab-section">
+                <div class="tab-section-title">Dedicated Account Manager</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge-services/service/account_manager" class="service-card">
                         <div class="service-card-img" style="background:linear-gradient(135deg,#1abc9c,#0e9e82)">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">Account Manager</span>
+                            Account Manager
                         </div>
                         <div class="service-card-body">
                             <div class="service-card-name">New</div>
+                            <div class="service-card-fee">Contact us</div>
                         </div>
                     </a>
                 </div>
             </div>
-            <!-- VAT Registration -->
-            <div id="vat" class="tab-section" style="display:none">
-                <div class="section-title">VAT Registration/Deregistration</div>
+            <div id="conc_vat" class="tab-section">
+                <div class="tab-section-title">VAT Registration/Deregistration</div>
                 <div class="services-grid">
-                    <a href="/spc/concierge-services/service/vat_registration" class="service-card">
-                        <div class="service-card-img" style="background:linear-gradient(135deg,#6b7280,#4b5563)">
+                    <a href="/spc/concierge-services/service/vat_reg" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#6366f1,#4f46e5)">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">VAT Registration</span>
+                            VAT Registration
                         </div>
                         <div class="service-card-body">
-                            <div class="service-card-name">New</div>
+                            <div class="service-card-name">Registration</div>
+                            <div class="service-card-fee">Contact us</div>
                         </div>
                     </a>
-                </div>
-            </div>
-            <!-- Corporate Tax -->
-            <div id="tax" class="tab-section" style="display:none">
-                <div class="section-title">Corporate Tax Registration - Starter Package</div>
-                <div class="services-grid">
-                    <a href="/spc/concierge-services/service/corporate_tax" class="service-card">
+                    <a href="/spc/concierge-services/service/vat_dereg" class="service-card">
                         <div class="service-card-img" style="background:linear-gradient(135deg,#f97316,#ea580c)">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">Corporate Tax</span>
+                            VAT Deregistration
                         </div>
                         <div class="service-card-body">
-                            <div class="service-card-name">New</div>
+                            <div class="service-card-name">Deregistration</div>
+                            <div class="service-card-fee">Contact us</div>
                         </div>
                     </a>
                 </div>
             </div>
-            <!-- Bookkeeping -->
-            <div id="bookkeeping" class="tab-section" style="display:none">
-                <div class="section-title">Bookkeeping</div>
+            <div id="conc_tax" class="tab-section">
+                <div class="tab-section-title">Corporate Tax Registration - Starter Package</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge-services/service/corp_tax" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">
+                            <span class="service-card-tag">New</span>
+                            Corporate Tax
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Starter Package</div>
+                            <div class="service-card-fee">Contact us</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_bookkeeping" class="tab-section">
+                <div class="tab-section-title">Bookkeeping</div>
                 <div class="services-grid">
                     <a href="/spc/concierge-services/service/bookkeeping" class="service-card">
                         <div class="service-card-img" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">Bookkeeping</span>
+                            Bookkeeping
                         </div>
                         <div class="service-card-body">
                             <div class="service-card-name">New</div>
+                            <div class="service-card-fee">Contact us</div>
                         </div>
                     </a>
                 </div>
             </div>
-            <!-- EID Replacement -->
-            <div id="eid" class="tab-section" style="display:none">
-                <div class="section-title">EID Replacement</div>
+            <div id="conc_eid" class="tab-section">
+                <div class="tab-section-title">EID Replacement</div>
                 <div class="services-grid">
-                    <a href="/spc/concierge-services/service/eid_replacement" class="service-card">
-                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#2a6db5)">
+                    <a href="/spc/concierge/eid-replacement" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">EID Replacement</span>
+                            EID Replacement
                         </div>
                         <div class="service-card-body">
                             <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 560.00</div>
                         </div>
                     </a>
                 </div>
             </div>
-            <!-- Re-Entry Permit -->
-            <div id="reentry" class="tab-section" style="display:none">
-                <div class="section-title">Re-Entry Permit</div>
+            <div id="conc_reentry" class="tab-section">
+                <div class="tab-section-title">Re-Entry Permit</div>
                 <div class="services-grid">
-                    <a href="/spc/concierge-services/service/reentry_permit" class="service-card">
-                        <div class="service-card-img" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">
+                    <a href="/spc/concierge/reentry-permit" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#14b8a6,#0f766e)">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">Re-Entry Permit</span>
+                            Re-Entry Permit
                         </div>
                         <div class="service-card-body">
                             <div class="service-card-name">New</div>
+                            <div class="service-card-fee">Contact us</div>
                         </div>
                     </a>
                 </div>
             </div>
-            <!-- Lease Documents -->
-            <div id="lease" class="tab-section" style="display:none">
-                <div class="section-title">Lease Documents</div>
+            <div id="conc_lease" class="tab-section">
+                <div class="tab-section-title">Lease Documents</div>
                 <div class="services-grid">
-                    <a href="/spc/concierge-services/service/lease_documents" class="service-card">
-                        <div class="service-card-img" style="background:linear-gradient(135deg,#10b981,#059669)">
+                    <a href="/spc/concierge-services/service/lease_docs" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#f59e0b,#d97706)">
                             <span class="service-card-tag">New</span>
-                            <span class="service-card-title">Lease Documents</span>
+                            Lease Documents
                         </div>
                         <div class="service-card-body">
                             <div class="service-card-name">New</div>
+                            <div class="service-card-fee">Contact us</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_medical" class="tab-section">
+                <div class="tab-section-title">Medical</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge/medical?type=new_residency" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+                            <span class="service-card-tag">New</span>
+                            Medical
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Medical for New Residency</div>
+                            <div class="service-card-fee">Starting from AED 700</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge/medical?type=renewal" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#0e7c6e,#1abc9c)">
+                            <span class="service-card-tag">Renew</span>
+                            Medical
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Medical for Residency Renewal</div>
+                            <div class="service-card-fee">Starting from AED 700</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_meeting" class="tab-section">
+                <div class="tab-section-title">Meeting Room Booking</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge/meeting-room" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+                            <span class="service-card-tag">New</span>
+                            Meeting Room Booking
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 10.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_mofa" class="tab-section">
+                <div class="tab-section-title">MOFA Attestation</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge/mofa-attestation" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+                            <span class="service-card-tag">New</span>
+                            MOFA Attestation
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">MOFA Attestation</div>
+                            <div class="service-card-fee">AED 10.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_banking" class="tab-section">
+                <div class="tab-section-title">Banking Assistance</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge/banking?type=new" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+                            <span class="service-card-tag">New</span>
+                            Bank Account Assistance
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">Starting from AED 1,000</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge/banking?type=old" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+                            <span class="service-card-tag">New</span>
+                            Bank Account Assistance
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New (old)</div>
+                            <div class="service-card-fee">AED 2,010.00</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_po_box" class="tab-section">
+                <div class="tab-section-title">PO Box</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge/po-box/new/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#4a90d9)">
+                            <span class="service-card-tag">New</span>
+                            PO Box
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 3,000</div>
+                        </div>
+                    </a>
+                    <a href="/spc/concierge/po-box/renewal/detail" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a5c45,#1abc9c)">
+                            <span class="service-card-tag">Renew</span>
+                            PO Box
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">Renewal</div>
+                            <div class="service-card-fee">AED 3,000</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div id="conc_phone_answering" class="tab-section">
+                <div class="tab-section-title">Phone Answering</div>
+                <div class="services-grid">
+                    <a href="/spc/concierge-services/service/phone_answering" class="service-card">
+                        <div class="service-card-img" style="background:linear-gradient(135deg,#1a3c6e,#0e4d8a)">
+                            <span class="service-card-tag">New</span>
+                            Phone Answering
+                        </div>
+                        <div class="service-card-body">
+                            <div class="service-card-name">New</div>
+                            <div class="service-card-fee">AED 315.00</div>
                         </div>
                     </a>
                 </div>
@@ -2003,21 +2592,14 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa}
     </div>
 </main>
 <script>
-function showTab(id, el) {
-    // Hide all sections
-    var sections = document.querySelectorAll(".tab-section");
-    sections.forEach(function(s) { s.style.display = "none"; });
-    // Remove active from all tabs
-    var tabs = document.querySelectorAll(".tab-link");
-    tabs.forEach(function(t) { t.classList.remove("active"); });
-    // Show selected section
-    document.getElementById(id).style.display = "block";
-    // Add active to clicked tab
-    el.classList.add("active");
+function showConcTab(id, el){
+    document.querySelectorAll('.tab-section').forEach(function(s){s.classList.remove('active');});
+    document.querySelectorAll('.service-tab-link').forEach(function(t){t.classList.remove('active');});
+    document.getElementById('conc_'+id).classList.add('active');
+    el.classList.add('active');
 }
 </script>
-</body>
-</html>
+</body></html>
 </template>
 
 <!-- ==================== CONCIERGE SERVICE DETAIL ==================== -->
@@ -2259,12 +2841,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa}
 </nav>
 <aside class="cd-sidebar">
     <a href="/spc/customer-dashboard" class="cd-sidebar-item">📊 Dashboard</a>
-    <a href="/spc/request-tracking" class="cd-sidebar-item">📋 Request Tracking</a>
-    <a href="/spc/company-management" class="cd-sidebar-item">🏢 Company Management</a>
-    <a href="/spc/employee-management" class="cd-sidebar-item">👥 Employee Management</a>
-    <a href="/spc/facility-management" class="cd-sidebar-item">🏗️ Facility Management</a>
-    <a href="/spc/concierge-services" class="cd-sidebar-item">🛎️ Concierge Services</a>
-    <a href="#" class="cd-sidebar-item">📅 Facility Bookings</a>
+    <a href="#" onclick="return false;" style="opacity:.4;cursor:not-allowed;" data-disabled="1" data-href="/spc/request-tracking" class="cd-sidebar-item">📋 Request Tracking</a>
+    <a href="#" onclick="return false;" style="opacity:.4;cursor:not-allowed;" data-disabled="1" data-href="/spc/company-management" class="cd-sidebar-item">🏢 Company Management</a>
+    <a href="#" onclick="return false;" style="opacity:.4;cursor:not-allowed;" data-disabled="1" data-href="/spc/employee-management" class="cd-sidebar-item">👥 Employee Management</a>
+    <a href="#" onclick="return false;" style="opacity:.4;cursor:not-allowed;" data-disabled="1" data-href="/spc/facility-management" class="cd-sidebar-item">🏗️ Facility Management</a>
+    <a href="#" onclick="return false;" style="opacity:.4;cursor:not-allowed;" data-disabled="1" data-href="/spc/concierge-services" class="cd-sidebar-item">🛎️ Concierge Services</a>
+    <a href="#" onclick="return false;" style="opacity:.4;cursor:not-allowed;" data-disabled="1" data-href="/spc/facility-bookings" class="cd-sidebar-item">📅 Facility Bookings</a>
     <div class="cd-sidebar-divider"/>
     <a href="#" class="cd-sidebar-item">📄 KYC Report</a>
     <a href="#" class="cd-sidebar-item">🏦 Zone Bank Details</a>

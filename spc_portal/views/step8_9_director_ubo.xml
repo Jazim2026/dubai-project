@@ -12,19 +12,28 @@
 <![CDATA[
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
 .step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:28px}
 .spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
 .spc-section-row{display:flex;gap:24px}
 .spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
@@ -92,37 +101,47 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </style>
 </head>
 <body>
-<div class="layout">
-    <div class="sidebar">
+<div style="display:flex;min-height:100vh">
+    <div class="progress-sidebar">
         <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
                 <t t-if="steps">
             <t t-foreach="steps" t-as="s">
                 <t t-set="idx" t-value="s_index + 1"/>
-                <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
-                    <div class="step-num"><t t-if="idx &lt; current_step">&#10003;</t><t t-else=""><t t-esc="idx"/></t></div>
-                    <div class="step-label"><t t-esc="s"/></div>
+                <div class="progress-step">
+                    <t t-if="idx == current_step">
+                        <div class="ps-num active"><t t-esc="idx"/></div>
+                        <div class="ps-label active"><t t-esc="s"/></div>
+                    </t>
+                    <t t-elif="idx &lt; current_step">
+                        <div class="ps-num done">&#10003;</div>
+                        <div class="ps-label"><t t-esc="s"/></div>
+                    </t>
+                    <t t-else="">
+                        <div class="ps-num"><t t-esc="idx"/></div>
+                        <div class="ps-label"><t t-esc="s"/></div>
+                    </t>
                 </div>
             </t>
         </t>
         <t t-else="">
-<div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Facility</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Visa allocation</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder(s) information and Capital Structure</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Manager(s) information</div></div>
-        <div class="progress-step active"><div class="step-num">8</div><div class="step-label">Director(s) information</div></div>
-        <div class="progress-step"><div class="step-num">9</div><div class="step-label">UBO information</div></div>
-        <div class="progress-step"><div class="step-num">10</div><div class="step-label">Nature of business</div></div>
-        <div class="progress-step"><div class="step-num">11</div><div class="step-label">Corporate bank account</div></div>
-        <div class="progress-step"><div class="step-num">12</div><div class="step-label">Supporting document</div></div>
-        <div class="progress-step"><div class="step-num">13</div><div class="step-label">Review application</div></div>
-        <div class="progress-step"><div class="step-num">14</div><div class="step-label">Payment</div></div>
+<div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Legal type</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Business activities</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Company</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Facility</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Visa allocation</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Shareholder(s) information and Capital Structure</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Manager(s) information</div></div>
+        <div class="progress-step active"><div class="ps-num">8</div><div class="ps-label">Director(s) information</div></div>
+        <div class="progress-step"><div class="ps-num">9</div><div class="ps-label">UBO information</div></div>
+        <div class="progress-step"><div class="ps-num">10</div><div class="ps-label">Nature of business</div></div>
+        <div class="progress-step"><div class="ps-num">11</div><div class="ps-label">Corporate bank account</div></div>
+        <div class="progress-step"><div class="ps-num">12</div><div class="ps-label">Supporting document</div></div>
+        <div class="progress-step"><div class="ps-num">13</div><div class="ps-label">Review application</div></div>
+        <div class="progress-step"><div class="ps-num">14</div><div class="ps-label">Payment</div></div>
         </t>
     </div>
-    <div class="main">
+    <div class="form-main">
         <div class="form-title">Company New</div>
         <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step8/submit'" method="post" enctype="multipart/form-data" id="step8Form">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
@@ -422,19 +441,28 @@ function updateDirList(count){
 <![CDATA[
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
 .step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.form-main{margin-left:280px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:28px}
 .spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
 .spc-section-row{display:flex;gap:24px}
 .spc-section-number{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
@@ -503,26 +531,26 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </style>
 </head>
 <body>
-<div class="layout">
-    <div class="sidebar">
+<div style="display:flex;min-height:100vh">
+    <div class="progress-sidebar">
         <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Business activities</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Facility</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Visa allocation</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder(s) information and Capital Structure</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Manager(s) information</div></div>
-        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Director(s) information</div></div>
-        <div class="progress-step active"><div class="step-num">9</div><div class="step-label">UBO information</div></div>
-        <div class="progress-step"><div class="step-num">10</div><div class="step-label">Nature of business</div></div>
-        <div class="progress-step"><div class="step-num">11</div><div class="step-label">Corporate bank account</div></div>
-        <div class="progress-step"><div class="step-num">12</div><div class="step-label">Supporting document</div></div>
-        <div class="progress-step"><div class="step-num">13</div><div class="step-label">Review application</div></div>
-        <div class="progress-step"><div class="step-num">14</div><div class="step-label">Payment</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Legal type</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Business activities</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Company</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Facility</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Visa allocation</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Shareholder(s) information and Capital Structure</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Manager(s) information</div></div>
+        <div class="progress-step done"><div class="ps-num">&#10003;</div><div class="ps-label">Director(s) information</div></div>
+        <div class="progress-step active"><div class="ps-num">9</div><div class="ps-label">UBO information</div></div>
+        <div class="progress-step"><div class="ps-num">10</div><div class="ps-label">Nature of business</div></div>
+        <div class="progress-step"><div class="ps-num">11</div><div class="ps-label">Corporate bank account</div></div>
+        <div class="progress-step"><div class="ps-num">12</div><div class="ps-label">Supporting document</div></div>
+        <div class="progress-step"><div class="ps-num">13</div><div class="ps-label">Review application</div></div>
+        <div class="progress-step"><div class="ps-num">14</div><div class="ps-label">Payment</div></div>
     </div>
-    <div class="main">
+    <div class="form-main">
         <div class="form-title">Company New</div>
         <form t-att-action="form_submit_url if form_submit_url else '/spc/setup-new-company/apply/step9/submit'" method="post" enctype="multipart/form-data" id="step9Form">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>

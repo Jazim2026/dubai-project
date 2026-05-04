@@ -118,4 +118,14 @@
               parent="menu_spc_applications"
               action="action_spc_pre_approval"
               sequence="30"/>
+
+    <menuitem id="menu_spc_pa_cm_parent"
+              name="Pre-Approval"
+              parent="menu_spc_company_management"
+              sequence="60"/>
+    <menuitem id="menu_spc_pa_cm_child"
+              name="Pre-Approval"
+              parent="menu_spc_pa_cm_parent"
+              action="action_spc_pre_approval"
+              sequence="10"/>
 </odoo>

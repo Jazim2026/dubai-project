@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="spc_eid_replacement_tree_view" model="ir.ui.view">
+        <field name="name">spc.eid.replacement.tree</field>
+        <field name="model">spc.eid.replacement</field>
+        <field name="arch" type="xml">
+            <tree string="EID Replacement">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="visa_type"/>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="eid_number"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="payment_status"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="spc_eid_replacement_form_view" model="ir.ui.view">
+        <field name="name">spc.eid.replacement.form</field>
+        <field name="model">spc.eid.replacement</field>
+        <field name="arch" type="xml">
+            <form string="EID Replacement">
+                <header>
+                    <button name="action_submit" string="Submit" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="Set In Review" type="object"
+                            invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            class="btn-danger"
+                            invisible="state not in ['submitted','in_review']"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Application Info">
+                            <field name="partner_id"/>
+                            <field name="visa_type"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Personal Info">
+                            <field name="gender"/>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="applicant_email"/>
+                            <field name="phone_code"/>
+                            <field name="phone"/>
+                        </group>
+                    </group>
+                    <notebook>
+
+                        <!-- TAB 1: Applicant Details -->
+                        <page string="Applicant Details">
+                            <group>
+                                <group string="Personal">
+                                    <field name="father_name"/>
+                                    <field name="mother_name"/>
+                                    <field name="dob"/>
+                                    <field name="nationality_id"/>
+                                    <field name="prev_nationality_id"/>
+                                    <field name="birth_country_id"/>
+                                    <field name="country_id"/>
+                                    <field name="city"/>
+                                    <field name="address"/>
+                                </group>
+                                <group string="Background">
+                                    <field name="marital_status"/>
+                                    <field name="religion"/>
+                                    <field name="designation"/>
+                                    <field name="designation_unavailable"/>
+                                    <field name="highest_qualification"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- TAB 2: Dependents -->
+                        <page string="Dependents">
+                            <group>
+                                <field name="has_dependents"/>
+                                <field name="dependent_spouse"
+                                       invisible="has_dependents != 'yes'"/>
+                                <field name="dependent_children"
+                                       invisible="has_dependents != 'yes'"/>
+                                <field name="dependent_domestic"
+                                       invisible="has_dependents != 'yes'"/>
+                                <field name="num_dependents"
+                                       invisible="has_dependents != 'yes'"/>
+                            </group>
+                        </page>
+
+                        <!-- TAB 3: Emirates ID Details -->
+                        <page string="Emirates ID Details">
+                            <group>
+                                <group string="Residence Visa">
+                                    <field name="prev_residence_visa"/>
+                                    <field name="eid_number"/>
+                                    <field name="eid_expiry"/>
+                                    <field name="biometric_mobile"/>
+                                    <field name="biometric_center"/>
+                                </group>
+                                <group string="PO Box">
+                                    <field name="has_uae_pobox"/>
+                                    <field name="pobox_location"
+                                           invisible="has_uae_pobox != 'yes'"/>
+                                    <field name="pobox_number"
+                                           invisible="has_uae_pobox != 'yes'"/>
+                                </group>
+                            </group>
+                            <group string="Physical EID Delivery">
+                                <field name="deliver_physical_eid"/>
+                                <field name="delivery_city"
+                                       invisible="deliver_physical_eid != 'yes'"/>
+                                <field name="delivery_landmark"
+                                       invisible="deliver_physical_eid != 'yes'"/>
+                                <field name="delivery_address"
+                                       invisible="deliver_physical_eid != 'yes'"/>
+                                <field name="delivery_country"
+                                       invisible="deliver_physical_eid != 'yes'"/>
+                                <field name="delivery_phone"
+                                       invisible="deliver_physical_eid != 'yes'"/>
+                            </group>
+                        </page>
+
+                        <!-- TAB 4: Employment Contract -->
+                        <page string="Employment Contract"
+                              invisible="visa_type != 'employee'">
+                            <group>
+                                <group string="Contract">
+                                    <field name="contract_type"/>
+                                    <field name="probation_period"/>
+                                    <field name="notice_period"/>
+                                    <field name="contract_execution"/>
+                                    <field name="contract_start"/>
+                                    <field name="contract_end"/>
+                                    <field name="contract_position"/>
+                                </group>
+                                <group string="Salary">
+                                    <field name="salary_basic"/>
+                                    <field name="salary_accommodation"/>
+                                    <field name="salary_transport"/>
+                                    <field name="salary_other"/>
+                                    <field name="salary_total"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- TAB 5: Documents -->
+                        <page string="Documents">
+                            <group string="Applicant Documents">
+                                <field name="doc_photo_ids" widget="many2many_binary" string="Photos"/>
+                                <field name="doc_evisa_ids" widget="many2many_binary" string="E-visa Copy"/>
+                                <field name="doc_change_status_ids" widget="many2many_binary" string="Change Status Copy"/>
+                                <field name="doc_medical_ids" widget="many2many_binary" string="Medical Result"/>
+                                <field name="doc_emp_contract_copy_ids" widget="many2many_binary" string="Employment Contract Copy"/>
+                                <field name="doc_eid_copy_ids" widget="many2many_binary" string="Emirates ID Copy"/>
+                                <field name="doc_attested_degree_ids" widget="many2many_binary" string="Attested Degree"/>
+                            </group>
+                            <group string="Emirates ID Documents">
+                                <field name="doc_eid_front_ids" widget="many2many_binary" string="EID Front"/>
+                                <field name="doc_eid_back_ids" widget="many2many_binary" string="EID Back"/>
+                            </group>
+                            <group string="Employment Contract Document"
+                                   invisible="visa_type != 'employee'">
+                                <field name="doc_contract_ids" widget="many2many_binary" string="Employment Contract"/>
+                            </group>
+                        </page>
+
+                        <!-- TAB 6: Declaration -->
+                        <page string="Declaration">
+                            <group>
+                                <field name="declaration_accepted"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_eid_replacement_action" model="ir.actions.act_window">
+        <field name="name">EID Replacement</field>
+        <field name="res_model">spc.eid.replacement</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_eid_replacement"
+              name="EID Replacement"
+              action="spc_eid_replacement_action"
+              parent="menu_spc_concierge_top"
+              sequence="15"/>
+
+</odoo>

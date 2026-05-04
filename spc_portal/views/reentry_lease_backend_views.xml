@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- RE-ENTRY PERMIT TREE -->
+    <record id="spc_reentry_permit_tree" model="ir.ui.view">
+        <field name="name">spc.reentry.permit.tree</field>
+        <field name="model">spc.reentry.permit</field>
+        <field name="arch" type="xml">
+            <tree string="Re-Entry Permit">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="applicant_name"/>
+                <field name="designation"/>
+                <field name="visa_type"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="payment_status"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- RE-ENTRY PERMIT FORM -->
+    <record id="spc_reentry_permit_form" model="ir.ui.view">
+        <field name="name">spc.reentry.permit.form</field>
+        <field name="model">spc.reentry.permit</field>
+        <field name="arch" type="xml">
+            <form string="Re-Entry Permit">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="In Review" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['submitted','in_review']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group string="Application">
+                            <field name="partner_id"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Applicant">
+                            <field name="applicant_name"/>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="mobile"/>
+                            <field name="email"/>
+                            <field name="passport_number"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <field name="designation"/>
+                                <field name="visa_type"/>
+                                <field name="reason_outside_uae"/>
+                                <field name="months_outside_uae"/>
+                                <field name="visa_issue_date"/>
+                                <field name="visa_expiry_date"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <group>
+                                <field name="doc_passport_ids" widget="many2many_binary" string="Passport Copy"/>
+                                <field name="doc_visa_ids" widget="many2many_binary" string="Residence Visa Copy"/>
+                                <field name="doc_proof_ids" widget="many2many_binary" string="Proof of Reason"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group><field name="declaration_accepted"/></group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_reentry_permit_action" model="ir.actions.act_window">
+        <field name="name">Re-Entry Permit</field>
+        <field name="res_model">spc.reentry.permit</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_reentry_permit" name="Re-Entry Permit"
+              action="spc_reentry_permit_action"
+              parent="menu_spc_concierge_top" sequence="20"/>
+
+    <!-- LEASE DOCUMENT TREE -->
+    <record id="spc_lease_document_tree" model="ir.ui.view">
+        <field name="name">spc.lease.document.tree</field>
+        <field name="model">spc.lease.document</field>
+        <field name="arch" type="xml">
+            <tree string="Lease Document">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="lease_type"/>
+                <field name="company_name"/>
+                <field name="facility_type"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- LEASE DOCUMENT FORM -->
+    <record id="spc_lease_document_form" model="ir.ui.view">
+        <field name="name">spc.lease.document.form</field>
+        <field name="model">spc.lease.document</field>
+        <field name="arch" type="xml">
+            <form string="Lease Document">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="In Review" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['submitted','in_review']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group string="Application">
+                            <field name="partner_id"/>
+                            <field name="lease_type"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Manager">
+                            <field name="company_name"/>
+                            <field name="manager_first_name"/>
+                            <field name="manager_last_name"/>
+                            <field name="full_name_arabic"/>
+                            <field name="nationality_id"/>
+                            <field name="passport_number"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lease Details">
+                            <group>
+                                <field name="description_en"/>
+                                <field name="address_en"/>
+                                <field name="lease_validity"/>
+                                <field name="annual_rent"/>
+                                <field name="commencement_date"/>
+                                <field name="lease_expiry_date"/>
+                                <field name="facility_type"/>
+                            </group>
+                        </page>
+                        <page string="Additional Lease">
+                            <group>
+                                <field name="additional_lease"/>
+                                <field name="additional_desc_en" invisible="additional_lease != 'yes'"/>
+                                <field name="additional_address_en" invisible="additional_lease != 'yes'"/>
+                                <field name="additional_annual_rent" invisible="additional_lease != 'yes'"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group><field name="declaration_accepted"/></group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_lease_document_action" model="ir.actions.act_window">
+        <field name="name">Lease Documents</field>
+        <field name="res_model">spc.lease.document</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_lease_document" name="Lease Documents"
+              action="spc_lease_document_action"
+              parent="menu_spc_concierge_top" sequence="25"/>
+
+</odoo>

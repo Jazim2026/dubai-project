@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+    <record id="seq_phone_answering" model="ir.sequence">
+        <field name="name">Phone Answering</field>
+        <field name="code">spc.phone.answering</field>
+        <field name="prefix">PA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</data>
+</odoo>

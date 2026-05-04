@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+    <record id="seq_movement_report" model="ir.sequence">
+        <field name="name">Movement Report</field>
+        <field name="code">spc.movement.report</field>
+        <field name="prefix">MR/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</data>
+</odoo>

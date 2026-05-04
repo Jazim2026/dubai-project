@@ -1,0 +1,1119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- DETAIL PAGE -->
+<template id="eid_replacement_detail" name="EID Replacement Detail">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item:hover{background:#f0f4ff;color:#1a3c6e}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}
+.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600;letter-spacing:.5px}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c}
+.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;letter-spacing:.5px}
+.hero-banner{border-radius:12px;overflow:hidden;min-height:220px;position:relative;background:linear-gradient(135deg,#1565c0,#1a237e);display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}
+.hero-tag{position:absolute;top:20px;left:20px;background:#004d40;color:white;padding:6px 16px;border-radius:4px;font-size:13px;font-weight:700}
+.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}
+.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.detail-section-title{font-size:17px;font-weight:700;color:#222;margin-bottom:8px}
+.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}
+.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav">
+    <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
+    <div style="display:flex;align-items:center;gap:16px;">
+        <button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button>
+    </div>
+</nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">EID Replacement - New</div>
+        <a href="/spc/apply/eid_replacement/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">EID<br/>Replacement</div>
+    </div>
+    <div class="detail-card">
+        <div class="detail-section-title">Description</div>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p style="margin-bottom:12px">The Emirates ID is an identification card issued by the Federal Authority for identity and citizenship, Customs &amp; Port security. Residents are required to carry it with them at all times hence if you have lost your Emirates ID card, or suspect it has been stolen, or it has been damaged, you must soon request a replacement of your Emirates ID card.</p>
+            <p style="font-weight:700;margin-bottom:8px">Requirements</p>
+            <p>1. High-Resolution Photo (Studio Quality)</p>
+            <p>2. Emirates ID Copy (Front &amp; Back)</p>
+            <p>3. Passport Copy</p>
+            <p style="color:#e65100;margin-top:8px">Note: Applicant should be inside the country.</p>
+            <p style="font-weight:700;margin-top:16px;margin-bottom:8px">Timeline</p>
+            <p>Normal: 5 to 7 business days</p>
+            <p style="font-weight:700;margin-top:16px;margin-bottom:8px">Fees</p>
+            <p>AED 560</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- STEP 1 -->
+<template id="eid_replacement_step1" name="EID Replacement Step 1">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}
+.select-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.info-box{background:#fff0f5;border-radius:6px;padding:10px 14px;font-size:13px;color:#555;display:flex;align-items:flex-start;gap:8px;margin-bottom:16px;max-width:680px}
+.warn-box{background:#fff3e0;border-radius:6px;padding:10px 14px;font-size:13px;color:#bf360c;margin-bottom:12px;max-width:680px;display:none}
+.upload-label{font-size:14px;color:#333;font-weight:600;margin-bottom:8px}
+.upload-box{border:2px solid #b0c4de;border-radius:0px;padding:20px;text-align:center;cursor:pointer;background:#f8faff;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:200px;margin-bottom:20px}
+.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}
+.upload-text{color:#1a5fa8;font-size:13px;font-weight:600}
+.note{font-size:12px;color:#777;margin-top:-12px;margin-bottom:16px}
+.yesno-wrap{display:flex;gap:16px;margin-bottom:20px}
+.yesno-box{border:1.5px solid #e0e0e0;border-radius:8px;padding:16px 32px;text-align:center;cursor:pointer;min-width:120px}
+.yesno-box.selected{border-color:#1abc9c;background:#e8f8f5}
+.yesno-symbol{font-size:20px;margin-bottom:8px}
+.yesno-lbl{font-size:14px;font-weight:600;color:#333}
+.dep-check-label{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#333;cursor:pointer;margin-bottom:12px}
+.dep-check-label input[type=checkbox]{width:18px;height:18px;accent-color:#1abc9c}
+.phone-wrap{display:flex;align-items:flex-end;gap:8px;margin-bottom:16px}
+.phone-code{display:flex;align-items:center;gap:4px;font-size:14px;border-bottom:1px solid #ccc;padding-bottom:10px;min-width:80px}
+.phone-code select{border:none;background:transparent;font-size:14px;outline:none;cursor:pointer}
+.phone-input{flex:1;border:none;border-bottom:1px solid #ccc;padding:10px 4px;font-size:14px;outline:none;background:transparent}
+.phone-input:focus{border-bottom-color:#1abc9c}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Application details</div></div>
+        <div class="progress-step"><div class="step-num">2</div><div class="step-label">Applicant details</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Emirates ID details</div></div>
+        <div class="progress-step" id="sb-emp" style="display:none;"><div class="step-num">4</div><div class="step-label">Employment contract details</div></div>
+        <div class="progress-step"><div class="step-num" id="decl-n">4</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num" id="rev-n">5</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num" id="pay-n">6</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <form method="POST" action="/spc/apply/eid_replacement/step1/submit">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select visa application type</div>
+                    <div style="font-size:14px;color:#555;margin-bottom:12px;">Visa application type</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="visa_type" value="employee" id="v_emp"/> Employee visa</label>
+                        <label class="radio-label"><input type="radio" name="visa_type" value="partner_investor" id="v_par"/> Partner / investor visa</label>
+                        <label class="radio-label"><input type="radio" name="visa_type" value="student" id="v_stu"/> Student visa</label>
+                    </div>
+                    <div class="info-box"><span style="color:#e91e8c;font-size:16px;">&#9432;</span> For who is the visa that you are applying for?</div>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+document.querySelectorAll('input[name="visa_type"]').forEach(function(r){
+    r.addEventListener('change',function(){
+        var isEmp=this.value==='employee';
+        document.getElementById('sb-emp').style.display=isEmp?'flex':'none';
+        document.getElementById('decl-n').textContent=isEmp?'5':'4';
+        document.getElementById('rev-n').textContent=isEmp?'6':'5';
+        document.getElementById('pay-n').textContent=isEmp?'7':'6';
+    });
+});
+</script>
+</body></html>
+</template>
+
+
+<!-- STEP 2 -->
+<template id="eid_replacement_step2" name="EID Replacement Step 2">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}
+.select-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.warn-box{background:#fff3e0;border-radius:6px;padding:10px 14px;font-size:13px;color:#bf360c;margin-bottom:12px;max-width:680px;display:none}
+.upload-label{font-size:14px;color:#333;font-weight:600;margin-bottom:8px}
+.upload-box{border:2px solid #b0c4de;border-radius:0px;padding:20px;text-align:center;cursor:pointer;background:#f8faff;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:200px;margin-bottom:20px}
+.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}
+.upload-text{color:#1a5fa8;font-size:13px;font-weight:600}
+.note{font-size:12px;color:#777;margin-top:-12px;margin-bottom:16px}
+.yesno-wrap{display:flex;gap:16px;margin-bottom:20px}
+.yesno-box{border:1.5px solid #e0e0e0;border-radius:8px;padding:16px 32px;text-align:center;cursor:pointer;min-width:120px}
+.yesno-box.selected{border-color:#1abc9c;background:#e8f8f5}
+.yesno-symbol{font-size:20px;margin-bottom:8px}
+.yesno-lbl{font-size:14px;font-weight:600;color:#333}
+.dep-check-label{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#333;cursor:pointer;margin-bottom:12px}
+.dep-check-label input[type=checkbox]{width:18px;height:18px;accent-color:#1abc9c}
+.phone-wrap{display:flex;align-items:flex-end;gap:8px;margin-bottom:16px;max-width:680px}
+.phone-code{display:flex;align-items:center;gap:4px;font-size:14px;border-bottom:1px solid #ccc;padding-bottom:10px;min-width:80px}
+.phone-code select{border:none;background:transparent;font-size:14px;outline:none;cursor:pointer}
+.phone-input{flex:1;border:none;border-bottom:1px solid #ccc;padding:10px 4px;font-size:14px;outline:none;background:transparent}
+.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Emirates ID details</div></div>
+    <t t-if="record.visa_type == 'employee'">
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Employment contract details</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/eid_replacement/step2/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Applicant details</div>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="gender" value="male" t-att-checked="'checked' if record.gender=='male' else None"/> Male</label>
+            <label class="radio-label"><input type="radio" name="gender" value="female" t-att-checked="'checked' if record.gender=='female' else None"/> Female</label>
+          </div>
+          <input class="field-input" type="text" name="first_name" placeholder="First name" t-att-value="record.first_name or ''"/>
+          <input class="field-input" type="text" name="last_name" placeholder="Last name" t-att-value="record.last_name or ''"/>
+          <input class="field-input" type="text" name="father_name" placeholder="Father's full name" t-att-value="record.father_name or ''"/>
+          <input class="field-input" type="text" name="mother_name" placeholder="Mother's full name" t-att-value="record.mother_name or ''"/>
+          <div class="phone-wrap">
+            <div class="phone-code">
+              <select name="phone_code">
+                <option value="+971">&#127462;&#127466; +971 UAE</option>
+                <option value="+1">+1 USA/Canada</option>
+                <option value="+44">+44 UK</option>
+                <option value="+91">+91 India</option>
+                <option value="+92">+92 Pakistan</option>
+                <option value="+880">+880 Bangladesh</option>
+                <option value="+63">+63 Philippines</option>
+                <option value="+966">+966 Saudi Arabia</option>
+                <option value="+968">+968 Oman</option>
+                <option value="+974">+974 Qatar</option>
+                <option value="+973">+973 Bahrain</option>
+                <option value="+965">+965 Kuwait</option>
+                <option value="+20">+20 Egypt</option>
+                <option value="+962">+962 Jordan</option>
+                <option value="+961">+961 Lebanon</option>
+                <option value="+963">+963 Syria</option>
+                <option value="+964">+964 Iraq</option>
+                <option value="+967">+967 Yemen</option>
+                <option value="+212">+212 Morocco</option>
+                <option value="+213">+213 Algeria</option>
+                <option value="+216">+216 Tunisia</option>
+                <option value="+218">+218 Libya</option>
+                <option value="+249">+249 Sudan</option>
+                <option value="+251">+251 Ethiopia</option>
+                <option value="+254">+254 Kenya</option>
+                <option value="+255">+255 Tanzania</option>
+                <option value="+256">+256 Uganda</option>
+                <option value="+234">+234 Nigeria</option>
+                <option value="+233">+233 Ghana</option>
+                <option value="+27">+27 South Africa</option>
+                <option value="+94">+94 Sri Lanka</option>
+                <option value="+977">+977 Nepal</option>
+                <option value="+95">+95 Myanmar</option>
+                <option value="+66">+66 Thailand</option>
+                <option value="+60">+60 Malaysia</option>
+                <option value="+65">+65 Singapore</option>
+                <option value="+62">+62 Indonesia</option>
+                <option value="+84">+84 Vietnam</option>
+                <option value="+855">+855 Cambodia</option>
+                <option value="+856">+856 Laos</option>
+                <option value="+86">+86 China</option>
+                <option value="+81">+81 Japan</option>
+                <option value="+82">+82 South Korea</option>
+                <option value="+852">+852 Hong Kong</option>
+                <option value="+853">+853 Macau</option>
+                <option value="+886">+886 Taiwan</option>
+                <option value="+7">+7 Russia/Kazakhstan</option>
+                <option value="+380">+380 Ukraine</option>
+                <option value="+48">+48 Poland</option>
+                <option value="+49">+49 Germany</option>
+                <option value="+33">+33 France</option>
+                <option value="+34">+34 Spain</option>
+                <option value="+39">+39 Italy</option>
+                <option value="+31">+31 Netherlands</option>
+                <option value="+32">+32 Belgium</option>
+                <option value="+41">+41 Switzerland</option>
+                <option value="+43">+43 Austria</option>
+                <option value="+46">+46 Sweden</option>
+                <option value="+47">+47 Norway</option>
+                <option value="+45">+45 Denmark</option>
+                <option value="+358">+358 Finland</option>
+                <option value="+351">+351 Portugal</option>
+                <option value="+30">+30 Greece</option>
+                <option value="+90">+90 Turkey</option>
+                <option value="+98">+98 Iran</option>
+                <option value="+93">+93 Afghanistan</option>
+                <option value="+994">+994 Azerbaijan</option>
+                <option value="+374">+374 Armenia</option>
+                <option value="+995">+995 Georgia</option>
+                <option value="+998">+998 Uzbekistan</option>
+                <option value="+992">+992 Tajikistan</option>
+                <option value="+996">+996 Kyrgyzstan</option>
+                <option value="+993">+993 Turkmenistan</option>
+                <option value="+972">+972 Israel</option>
+                <option value="+353">+353 Ireland</option>
+                <option value="+61">+61 Australia</option>
+                <option value="+64">+64 New Zealand</option>
+                <option value="+55">+55 Brazil</option>
+                <option value="+54">+54 Argentina</option>
+                <option value="+57">+57 Colombia</option>
+                <option value="+56">+56 Chile</option>
+                <option value="+51">+51 Peru</option>
+                <option value="+58">+58 Venezuela</option>
+                <option value="+52">+52 Mexico</option>
+              </select>
+            </div>
+            <input class="phone-input" type="text" name="phone" placeholder="Home country contact number" t-att-value="record.phone or ''"/>
+          </div>
+          <input class="field-input" type="email" name="applicant_email" placeholder="Email address" t-att-value="record.applicant_email or ''"/>
+          <div class="note">Note: Please make sure to enter the employee's email address.</div>
+          <input class="field-input" type="text" name="address" placeholder="Address in English" t-att-value="record.address or ''"/>
+          <input class="field-input" type="text" name="city" placeholder="City" t-att-value="record.city or ''"/>
+          <div class="select-row">
+            <div class="select-wrap"><select name="country_id"><option value="">Country</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.country_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <input class="field-input" type="date" name="dob" t-att-value="str(record.dob) if record.dob else ''"/>
+          <div class="select-row">
+            <div class="select-wrap"><select name="birth_country_id"><option value="">Country of birth</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.birth_country_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap"><select name="nationality_id"><option value="">Nationality</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.nationality_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap"><select name="prev_nationality_id"><option value="">Previous nationality</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.prev_nationality_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap"><select name="marital_status"><option value="">Marital status</option><option value="single" t-att-selected="'selected' if record.marital_status=='single' else None">Single</option><option value="married" t-att-selected="'selected' if record.marital_status=='married' else None">Married</option><option value="divorced" t-att-selected="'selected' if record.marital_status=='divorced' else None">Divorced</option><option value="student" t-att-selected="'selected' if record.marital_status=='student' else None">Student</option></select></div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap"><select name="religion"><option value="">Religion</option><option value="hindu" t-att-selected="'selected' if record.religion=='hindu' else None">Hindu</option><option value="muslim" t-att-selected="'selected' if record.religion=='muslim' else None">Muslim</option><option value="christian" t-att-selected="'selected' if record.religion=='christian' else None">Christian</option><option value="buddhism" t-att-selected="'selected' if record.religion=='buddhism' else None">Buddhism</option><option value="other" t-att-selected="'selected' if record.religion=='other' else None">Other</option></select></div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+        </div>
+      </div>
+      <div class="spc-section">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">Applicant designation</div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="designation" id="desig_sel" onchange="checkDesig(this.value)">
+                <option value="">Designation</option>
+                <option value="accountant" t-att-selected="'selected' if record.designation=='accountant' else None">Accountant</option>
+                <option value="accountant_manager" t-att-selected="'selected' if record.designation=='accountant_manager' else None">Accountant Manager</option>
+                <option value="ac_technician" t-att-selected="'selected' if record.designation=='ac_technician' else None">AC Technician</option>
+                <option value="administrator" t-att-selected="'selected' if record.designation=='administrator' else None">Administrator</option>
+                <option value="architect" t-att-selected="'selected' if record.designation=='architect' else None">Architect</option>
+                <option value="business_development_manager" t-att-selected="'selected' if record.designation=='business_development_manager' else None">Business Development Manager</option>
+                <option value="cashier" t-att-selected="'selected' if record.designation=='cashier' else None">Cashier</option>
+                <option value="civil_engineer" t-att-selected="'selected' if record.designation=='civil_engineer' else None">Civil Engineer</option>
+                <option value="cleaner" t-att-selected="'selected' if record.designation=='cleaner' else None">Cleaner</option>
+                <option value="clerk" t-att-selected="'selected' if record.designation=='clerk' else None">Clerk</option>
+                <option value="cook" t-att-selected="'selected' if record.designation=='cook' else None">Cook</option>
+                <option value="customer_service" t-att-selected="'selected' if record.designation=='customer_service' else None">Customer Service Representative</option>
+                <option value="data_entry_operator" t-att-selected="'selected' if record.designation=='data_entry_operator' else None">Data Entry Operator</option>
+                <option value="designer" t-att-selected="'selected' if record.designation=='designer' else None">Designer</option>
+                <option value="director" t-att-selected="'selected' if record.designation=='director' else None">Director</option>
+                <option value="doctor" t-att-selected="'selected' if record.designation=='doctor' else None">Doctor</option>
+                <option value="driver" t-att-selected="'selected' if record.designation=='driver' else None">Driver</option>
+                <option value="electrical_engineer" t-att-selected="'selected' if record.designation=='electrical_engineer' else None">Electrical Engineer</option>
+                <option value="finance_manager" t-att-selected="'selected' if record.designation=='finance_manager' else None">Finance Manager</option>
+                <option value="general_manager" t-att-selected="'selected' if record.designation=='general_manager' else None">General Manager</option>
+                <option value="hr_manager" t-att-selected="'selected' if record.designation=='hr_manager' else None">HR Manager</option>
+                <option value="it_manager" t-att-selected="'selected' if record.designation=='it_manager' else None">IT Manager</option>
+                <option value="legal_advisor" t-att-selected="'selected' if record.designation=='legal_advisor' else None">Legal Advisor</option>
+                <option value="manager" t-att-selected="'selected' if record.designation=='manager' else None">Manager</option>
+                <option value="marketing_manager" t-att-selected="'selected' if record.designation=='marketing_manager' else None">Marketing Manager</option>
+                <option value="mechanical_engineer" t-att-selected="'selected' if record.designation=='mechanical_engineer' else None">Mechanical Engineer</option>
+                <option value="nurse" t-att-selected="'selected' if record.designation=='nurse' else None">Nurse</option>
+                <option value="office_boy" t-att-selected="'selected' if record.designation=='office_boy' else None">Office Boy</option>
+                <option value="operations_manager" t-att-selected="'selected' if record.designation=='operations_manager' else None">Operations Manager</option>
+                <option value="pharmacist" t-att-selected="'selected' if record.designation=='pharmacist' else None">Pharmacist</option>
+                <option value="programmer" t-att-selected="'selected' if record.designation=='programmer' else None">Programmer</option>
+                <option value="project_manager" t-att-selected="'selected' if record.designation=='project_manager' else None">Project Manager</option>
+                <option value="receptionist" t-att-selected="'selected' if record.designation=='receptionist' else None">Receptionist</option>
+                <option value="sales_executive" t-att-selected="'selected' if record.designation=='sales_executive' else None">Sales Executive</option>
+                <option value="sales_manager" t-att-selected="'selected' if record.designation=='sales_manager' else None">Sales Manager</option>
+                <option value="secretary" t-att-selected="'selected' if record.designation=='secretary' else None">Secretary</option>
+                <option value="security_guard" t-att-selected="'selected' if record.designation=='security_guard' else None">Security Guard</option>
+                <option value="software_engineer" t-att-selected="'selected' if record.designation=='software_engineer' else None">Software Engineer</option>
+                <option value="storekeeper" t-att-selected="'selected' if record.designation=='storekeeper' else None">Storekeeper</option>
+                <option value="supervisor" t-att-selected="'selected' if record.designation=='supervisor' else None">Supervisor</option>
+                <option value="teacher" t-att-selected="'selected' if record.designation=='teacher' else None">Teacher</option>
+                <option value="technician" t-att-selected="'selected' if record.designation=='technician' else None">Technician</option>
+                <option value="other" t-att-selected="'selected' if record.designation=='other' else None">Other</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';document.getElementById('desig-warn').style.display='none'">x</button>
+          </div>
+          <div id="desig-warn" class="warn-box">Note: The selected designation is not available in Immigration as of 21-Jan-2022. Kindly choose a different option.</div>
+          <input type="hidden" name="designation_unavailable" id="desig_flag" value="0"/>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="highest_qualification" id="qual_sel" onchange="checkQual(this.value)">
+                <option value="">Highest educational qualification</option>
+                <option value="none" t-att-selected="'selected' if record.highest_qualification=='none' else None">None</option>
+                <option value="primary" t-att-selected="'selected' if record.highest_qualification=='primary' else None">Primary Education</option>
+                <option value="lower_secondary" t-att-selected="'selected' if record.highest_qualification=='lower_secondary' else None">Lower Secondary</option>
+                <option value="upper_secondary" t-att-selected="'selected' if record.highest_qualification=='upper_secondary' else None">Upper Secondary</option>
+                <option value="vocational" t-att-selected="'selected' if record.highest_qualification=='vocational' else None">Vocational/Technical</option>
+                <option value="diploma" t-att-selected="'selected' if record.highest_qualification=='diploma' else None">Diploma</option>
+                <option value="bachelors" t-att-selected="'selected' if record.highest_qualification=='bachelors' else None">Bachelor's Degree</option>
+                <option value="masters" t-att-selected="'selected' if record.highest_qualification=='masters' else None">Master's Degree</option>
+                <option value="doctorate" t-att-selected="'selected' if record.highest_qualification=='doctorate' else None">Doctorate/PhD</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';document.getElementById('degree-upload').style.display='none'">x</button>
+          </div>
+          <div id="degree-upload" style="display:none;">
+            <div class="upload-label">Copy of attested degree</div>
+            <label class="upload-box" style="cursor:pointer;">
+              <div class="upload-icon">&#8679;</div>
+              <div class="upload-text" id="deg-name">Copy of attested degree</div>
+              <input type="file" name="doc_attested_degree" style="display:none;" onchange="document.getElementById('deg-name').textContent=this.files[0].name"/>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="spc-section">
+        <div class="sec-num">03</div>
+        <div class="sec-body">
+          <div class="sec-title">Dependent sponsorship</div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Are you planning to sponsor dependents?</div>
+          <div class="yesno-wrap">
+            <label class="yesno-box" id="dep-yes" onclick="toggleDep('yes')">
+              <input type="radio" name="has_dependents" value="yes" style="display:none;" t-att-checked="'checked' if record.has_dependents=='yes' else None"/>
+              <div class="yesno-symbol">&#10003;</div><div class="yesno-lbl">Yes</div>
+            </label>
+            <label class="yesno-box" id="dep-no" onclick="toggleDep('no')">
+              <input type="radio" name="has_dependents" value="no" style="display:none;" t-att-checked="'checked' if record.has_dependents=='no' else None"/>
+              <div class="yesno-symbol">&#10005;</div><div class="yesno-lbl">No</div>
+            </label>
+          </div>
+          <div id="dep-details" style="display:none;">
+            <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px;">Select the type of dependents</div>
+            <div style="font-size:14px;color:#555;margin-bottom:12px;">Type of dependents</div>
+            <label class="dep-check-label"><input type="checkbox" name="dependent_spouse" value="1" t-att-checked="'checked' if record.dependent_spouse else None"/> Spouse</label>
+            <label class="dep-check-label"><input type="checkbox" name="dependent_children" value="1" t-att-checked="'checked' if record.dependent_children else None"/> Children</label>
+            <label class="dep-check-label"><input type="checkbox" name="dependent_domestic" value="1" t-att-checked="'checked' if record.dependent_domestic else None"/> Domestic Helper</label>
+            <input class="field-input" type="number" name="num_dependents" placeholder="Number of dependents" min="1" t-att-value="record.num_dependents or ''"/>
+          </div>
+        </div>
+      </div>
+      <div class="spc-section">
+        <div class="sec-num">04</div>
+        <div class="sec-body">
+          <div class="sec-title">Upload required documents</div>
+          <t t-set="doc_fields" t-value="[
+            ('Photos (as per guidelines)', 'doc_photo', record.doc_photo_ids),
+            ('E-visa copy', 'doc_evisa', record.doc_evisa_ids),
+            ('Change status copy', 'doc_change_status', record.doc_change_status_ids),
+            ('Medical result', 'doc_medical', record.doc_medical_ids),
+            ('Employment contract copy', 'doc_emp_contract_copy', record.doc_emp_contract_copy_ids),
+            ('Emirates ID copy (Front and Back)', 'doc_eid_copy', record.doc_eid_copy_ids),
+          ]"/>
+          <t t-foreach="doc_fields" t-as="df">
+            <div class="upload-label"><t t-esc="df[0]"/></div>
+            <t t-if="df[2]">
+              <div style="margin-bottom:8px;">
+                <t t-foreach="df[2]" t-as="att">
+                  <span style="display:inline-block;background:#e8f8f5;border:1px solid #1abc9c;border-radius:4px;padding:4px 10px;font-size:12px;margin-right:6px;margin-bottom:4px;">
+                    &#128206; <t t-esc="att.name"/>
+                  </span>
+                </t>
+              </div>
+            </t>
+            <label style="border:2px solid #b0c4de;border-radius:0;padding:16px;text-align:center;cursor:pointer;background:#f8faff;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:240px;margin-bottom:20px;">
+              <div style="color:#1a5fa8;font-size:22px;margin-bottom:4px;">&#8679;</div>
+              <div style="color:#1a5fa8;font-size:13px;font-weight:600;">Click to upload (up to 5 files)</div>
+              <input type="file" t-att-name="df[1]" style="display:none;" multiple="multiple"/>
+            </label>
+          </t>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a href="/spc/apply/eid_replacement/step1" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+var unavail=['accountant_manager','business_development_manager','finance_manager'];
+function checkDesig(v){document.getElementById('desig_flag').value=unavail.indexOf(v)!==-1?'1':'0';document.getElementById('desig-warn').style.display=unavail.indexOf(v)!==-1?'block':'none';}
+function checkQual(v){var d=['diploma','bachelors','masters','doctorate'];document.getElementById('degree-upload').style.display=d.indexOf(v)!==-1?'block':'none';}
+function toggleDep(v){document.getElementById('dep-yes').classList.toggle('selected',v==='yes');document.getElementById('dep-no').classList.toggle('selected',v==='no');document.getElementById('dep-details').style.display=v==='yes'?'block':'none';}
+var dv=document.getElementById('desig_sel').value; if(dv) checkDesig(dv);
+var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
+</script>
+</body></html>
+</template>
+
+
+<!-- STEP 3 - EMIRATES ID DETAILS -->
+<template id="eid_replacement_step3" name="EID Replacement Step 3">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.sec-sub{font-size:13px;color:#6b7280;margin-bottom:16px}.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.select-wrap{position:relative;max-width:680px;margin-bottom:16px}.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}.select-row .select-wrap{flex:1;margin-bottom:0}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a2340}.yesno-wrap{display:flex;gap:16px;margin-bottom:20px;max-width:680px}.yesno-box{border:1.5px solid #e0e0e0;border-radius:8px;padding:16px 32px;text-align:center;cursor:pointer;flex:1}.yesno-box.selected{border-color:#1abc9c;background:#e8f8f5}.yesno-symbol{font-size:20px;margin-bottom:8px}.yesno-lbl{font-size:14px;font-weight:600;color:#333}.phone-wrap{display:flex;align-items:flex-end;gap:8px;margin-bottom:16px;max-width:680px}.phone-code{display:flex;align-items:center;gap:4px;font-size:14px;border-bottom:1px solid #ccc;padding-bottom:10px;min-width:80px}.phone-code select{border:none;background:transparent;font-size:14px;outline:none;cursor:pointer}.phone-input{flex:1;border:none;border-bottom:1px solid #ccc;padding:10px 4px;font-size:14px;outline:none;background:transparent}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Emirates ID details</div></div>
+    <t t-if="record.visa_type == 'employee'">
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Employment contract details</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/eid_replacement/step3/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+
+      <!-- SEC 01: Previously held residence visa -->
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Have you previously held a residence visa?</div>
+          <div class="yesno-wrap">
+            <label class="yesno-box" id="prev-yes" onclick="togglePrevVisa('yes')">
+              <input type="radio" name="prev_residence_visa" value="yes" style="display:none;" t-att-checked="'checked' if record.prev_residence_visa=='yes' else None"/>
+              <div class="yesno-symbol">&#10003;</div><div class="yesno-lbl">Yes</div>
+            </label>
+            <label class="yesno-box" id="prev-no" onclick="togglePrevVisa('no')">
+              <input type="radio" name="prev_residence_visa" value="no" style="display:none;" t-att-checked="'checked' if record.prev_residence_visa=='no' else None"/>
+              <div class="yesno-symbol">&#10005;</div><div class="yesno-lbl">No</div>
+            </label>
+          </div>
+          <!-- YES fields -->
+          <div id="prev-visa-yes-fields" style="display:none;">
+            <input class="field-input" type="text" name="eid_number" placeholder="Emirates ID Number (784-XXXX-XXXXXXX-X)" t-att-value="record.eid_number or ''"/>
+            <input class="field-input" type="date" name="eid_expiry" t-att-value="str(record.eid_expiry) if record.eid_expiry else ''"/>
+            <div class="sec-title" style="margin-top:8px;">Biometrics Registration</div>
+            <div class="phone-wrap">
+              <div class="phone-code"><select name="biometric_phone_code"><option value="+971">&#127462;&#127466; +971</option></select></div>
+              <input class="phone-input" type="text" name="biometric_mobile" placeholder="Mobile number" t-att-value="record.biometric_mobile or ''"/>
+            </div>
+          </div>
+          <!-- NO fields -->
+          <div id="prev-visa-no-fields" style="display:none;">
+            <div class="sec-title" style="margin-top:8px;">Biometrics Registration</div>
+            <div class="sec-sub">First-time visa applicants are required to do biometric registration in the Federal Authority for Identity and citizenship center.</div>
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="biometric_center">
+                  <option value="">Preferred center location (select at least 3)</option>
+                  <option value="abu_dhabi">Abu Dhabi</option>
+                  <option value="dubai">Dubai</option>
+                  <option value="sharjah">Sharjah</option>
+                  <option value="ajman">Ajman</option>
+                  <option value="rak">Ras Al Khaimah</option>
+                  <option value="fujairah">Fujairah</option>
+                  <option value="uaq">Umm Al Quwain</option>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+            </div>
+            <div class="phone-wrap">
+              <div class="phone-code"><select name="biometric_phone_code2"><option value="+971">&#127462;&#127466; +971</option></select></div>
+              <input class="phone-input" type="text" name="biometric_mobile" placeholder="Mobile number" t-att-value="record.biometric_mobile or ''"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEC 02: PO Box -->
+      <div class="spc-section" id="sec-pobox" style="display:none;">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">PO Box details</div>
+          <div class="sec-sub">Your Emirates ID will be sent to this Po Box.</div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Do you have a UAE PO Box?</div>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="has_uae_pobox" value="yes" onclick="togglePoBox('yes')" t-att-checked="'checked' if record.has_uae_pobox=='yes' else None"/> Yes</label>
+            <label class="radio-label"><input type="radio" name="has_uae_pobox" value="no" onclick="togglePoBox('no')" t-att-checked="'checked' if record.has_uae_pobox=='no' else None"/> No</label>
+          </div>
+          <div id="pobox-fields" style="display:none;">
+            <div class="sec-title" style="margin-top:4px;">UAE PO Box location</div>
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="pobox_location">
+                  <option value="">Select PO Box location</option>
+                  <option value="abu_dhabi">Abu Dhabi</option>
+                  <option value="dubai">Dubai</option>
+                  <option value="sharjah">Sharjah</option>
+                  <option value="ajman">Ajman</option>
+                  <option value="rak">Ras Al Khaimah</option>
+                  <option value="fujairah">Fujairah</option>
+                  <option value="uaq">Umm Al Quwain</option>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+            </div>
+            <input class="field-input" type="text" name="pobox_number" placeholder="PO Box number" t-att-value="record.pobox_number or ''"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEC 03: Deliver physical EID -->
+      <div class="spc-section" id="sec-deliver">
+        <div class="sec-num" id="deliver-num">03</div>
+        <div class="sec-body">
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Do you want to deliver the physical EID?</div>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="deliver_physical_eid" value="yes" onclick="toggleDeliverAddr('yes')" t-att-checked="'checked' if record.deliver_physical_eid=='yes' else None"/> Yes</label>
+            <label class="radio-label"><input type="radio" name="deliver_physical_eid" value="no" onclick="toggleDeliverAddr('no')" t-att-checked="'checked' if record.deliver_physical_eid=='no' else None"/> No</label>
+          </div>
+          <div id="delivery-addr-fields" style="display:none;">
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="delivery_city">
+                  <option value="">City</option>
+                  <option value="abu_dhabi">Abu Dhabi</option>
+                  <option value="dubai">Dubai</option>
+                  <option value="sharjah">Sharjah</option>
+                  <option value="ajman">Ajman</option>
+                  <option value="rak">Ras Al Khaimah</option>
+                  <option value="fujairah">Fujairah</option>
+                  <option value="uaq">Umm Al Quwain</option>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+            </div>
+            <input class="field-input" type="text" name="delivery_landmark" placeholder="Nearest landmark" t-att-value="record.delivery_landmark or ''"/>
+            <input class="field-input" type="text" name="delivery_address" placeholder="Address" t-att-value="record.delivery_address or ''"/>
+            <div class="select-row">
+              <div class="select-wrap">
+                <select name="delivery_country">
+                  <option value="United Arab Emirates">United Arab Emirates</option>
+                </select>
+              </div>
+              <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+            </div>
+            <div class="phone-wrap">
+              <div class="phone-code"><select name="delivery_phone_code"><option value="+971">&#127462;&#127466; +971</option></select></div>
+              <input class="phone-input" type="text" name="delivery_phone" placeholder="Phone number" t-att-value="record.delivery_phone or ''"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/eid_replacement/step2/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function togglePrevVisa(v){
+    document.getElementById('prev-yes').classList.toggle('selected',v==='yes');
+    document.getElementById('prev-no').classList.toggle('selected',v==='no');
+    document.getElementById('prev-visa-yes-fields').style.display=v==='yes'?'block':'none';
+    document.getElementById('prev-visa-no-fields').style.display=v==='no'?'block':'none';
+    document.getElementById('sec-pobox').style.display=v==='yes'?'flex':'none';
+    // deliver section always visible - no change here
+}
+function togglePoBox(v){
+    document.getElementById('pobox-fields').style.display=v==='yes'?'block':'none';
+}
+function toggleDeliverAddr(v){
+    document.getElementById('delivery-addr-fields').style.display=v==='yes'?'block':'none';
+}
+var pv=document.querySelector('input[name="prev_residence_visa"]:checked');
+if(pv) togglePrevVisa(pv.value);
+var pb=document.querySelector('input[name="has_uae_pobox"]:checked');
+if(pb) togglePoBox(pb.value);
+var dv=document.querySelector('input[name="deliver_physical_eid"]:checked');
+if(dv) toggleDeliverAddr(dv.value);
+</script>
+</body></html>
+</template>
+<template id="eid_replacement_step4" name="EID Replacement Step 4">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin-bottom:16px}.field-grid .field-input{max-width:100%}.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a2340}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Emirates ID details</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Employment contract details</div></div>
+    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/eid_replacement/step4/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+
+      <!-- SECTION 01: Contract Type -->
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Employment Contract Type</div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Contract type</div>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="contract_type" value="2yr_limited"
+                     t-att-checked="'checked' if record.contract_type=='2yr_limited' else None"/>
+              2 years (LIMITED)
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="contract_type" value="unlimited"
+                     t-att-checked="'checked' if record.contract_type=='unlimited' else None"/>
+              Unlimited
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 02: Probation and Notice -->
+      <div class="spc-section" id="sec-probation" style="display:none;">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">Probation and notice</div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Probation period (in days)</div>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="probation_period" value="90"
+                     t-att-checked="'checked' if record.probation_period=='90' else None"/>
+              90 Days
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="probation_period" value="180"
+                     t-att-checked="'checked' if record.probation_period=='180' else None"/>
+              180 Days
+            </label>
+          </div>
+          <input class="field-input" type="text" name="notice_period"
+                 placeholder="Notice period (in days)"
+                 t-att-value="record.notice_period or ''"/>
+        </div>
+      </div>
+
+      <!-- SECTION 03: Salary Breakdown -->
+      <div class="spc-section" id="sec-salary" style="display:none;">
+        <div class="sec-num">03</div>
+        <div class="sec-body">
+          <div class="sec-title">Salary breakdown</div>
+          <div class="field-grid">
+            <input class="field-input" type="number" name="salary_basic"
+                   placeholder="Basic salary"
+                   t-att-value="record.salary_basic or ''"/>
+            <input class="field-input" type="number" name="salary_accommodation"
+                   placeholder="Accommodation allowance"
+                   t-att-value="record.salary_accommodation or ''"/>
+            <input class="field-input" type="number" name="salary_transport"
+                   placeholder="Transport allowance"
+                   t-att-value="record.salary_transport or ''"/>
+            <input class="field-input" type="number" name="salary_other"
+                   placeholder="Other allowance"
+                   t-att-value="record.salary_other or ''"/>
+          </div>
+          <input class="field-input" style="max-width:440px;" type="number"
+                 name="salary_total" placeholder="Total remuneration"
+                 t-att-value="record.salary_total or ''"/>
+        </div>
+      </div>
+
+      <!-- SECTION 04: Contract Dates -->
+      <div class="spc-section" id="sec-dates" style="display:none;">
+        <div class="sec-num">04</div>
+        <div class="sec-body">
+          <div class="sec-title">Contract start and end dates</div>
+          <input class="field-input" type="date" name="contract_execution"
+                 placeholder="Execution date"
+                 t-att-value="str(record.contract_execution) if record.contract_execution else ''"/>
+          <input class="field-input" type="date" name="contract_start"
+                 placeholder="Contract start date"
+                 t-att-value="str(record.contract_start) if record.contract_start else ''"/>
+          <input class="field-input" type="date" name="contract_end"
+                 placeholder="Contract end date"
+                 t-att-value="str(record.contract_end) if record.contract_end else ''"/>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/eid_replacement/step3/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function toggleContractSections(val) {
+    var show = val === '2yr_limited';
+    document.getElementById('sec-probation').style.display = show ? 'flex' : 'none';
+    document.getElementById('sec-salary').style.display = show ? 'flex' : 'none';
+    document.getElementById('sec-dates').style.display = show ? 'flex' : 'none';
+}
+// attach listeners
+document.querySelectorAll('input[name="contract_type"]').forEach(function(r){
+    r.addEventListener('change', function(){ toggleContractSections(this.value); });
+});
+// init on load
+var checked = document.querySelector('input[name="contract_type"]:checked');
+if(checked) toggleContractSections(checked.value);
+</script>
+</body></html>
+</template>
+
+<!-- DECLARATION -->
+<template id="eid_replacement_declaration" name="EID Replacement Declaration">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Emirates ID details</div></div>
+    <t t-if="record.visa_type == 'employee'">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Employment contract details</div></div>
+      <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/eid_replacement/declaration/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Declaration</div>
+          <div class="decl-box">
+            <p>I hereby declare that all the information provided in this application is true, accurate and complete. I understand that providing false information may result in rejection of the application and legal consequences. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
+              <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;" t-att-checked="'checked' if record.declaration_accepted else None"/>
+              <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <t t-if="record.visa_type == 'employee'">
+          <a t-attf-href="/spc/apply/eid_replacement/step4/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        </t>
+        <t t-else="">
+          <a t-attf-href="/spc/apply/eid_replacement/step3/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        </t>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- REVIEW -->
+<template id="eid_replacement_review" name="EID Replacement Review">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}.review-table{width:100%;font-size:13px;border-collapse:collapse}.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}.review-table td:first-child{color:#888;width:40%}.review-table td:last-child{font-weight:500}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Emirates ID details</div></div>
+    <t t-if="record.visa_type == 'employee'">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Employment contract details</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step active"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <div class="review-card-title">Application Summary</div>
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Visa Type</td><td><t t-esc="dict(record._fields['visa_type'].selection).get(record.visa_type,'-')"/></td></tr>
+        <tr><td>Applicant Name</td><td><t t-esc="(record.first_name or '') + ' ' + (record.last_name or '')"/></td></tr>
+        <tr><td>Email</td><td><t t-esc="record.applicant_email or '-'"/></td></tr>
+        <tr><td>Nationality</td><td><t t-esc="record.nationality_id.name if record.nationality_id else '-'"/></td></tr>
+        <tr><td>Designation</td><td><t t-esc="dict(record._fields['designation'].selection).get(record.designation,'-') if record.designation else '-'"/></td></tr>
+        <tr><td>Emirates ID No.</td><td><t t-esc="record.eid_number or '-'"/></td></tr>
+        <tr><td style="font-weight:700;font-size:15px;padding-top:12px;">Total Fee</td><td style="font-weight:800;font-size:16px;color:#1abc9c;padding-top:12px;">AED <t t-esc="'%.2f' % record.amount"/></td></tr>
+      </table>
+    </div>
+    <form method="POST" action="/spc/apply/eid_replacement/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/eid_replacement/declaration/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- PAYMENT -->
+<template id="eid_replacement_payment" name="EID Replacement Payment">
+<html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.pay-card{background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;text-align:center}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Emirates ID details</div></div>
+    <t t-if="record.visa_type == 'employee'">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Employment contract details</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+      <div class="progress-step active"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+      <div class="progress-step active"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:40px;font-weight:900;color:#1a2340;margin-bottom:8px;">AED 560.00</div>
+      <div style="color:#888;font-size:14px;margin-bottom:16px;">EID Replacement Service Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/eid_replacement/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/eid_replacement/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next" style="background:#1a2340;">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- SUCCESS -->
+<template id="eid_replacement_success" name="EID Replacement Success">
+<html><head><meta charset="utf-8"/><title>Application Submitted | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item:hover{background:#f0f4ff;color:#1a3c6e}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}
+.success-card{background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%}
+.success-icon{font-size:64px;color:#1abc9c;margin-bottom:20px}
+.success-title{font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px}
+.success-sub{font-size:14px;color:#666;margin-bottom:8px}
+.success-ref{font-size:15px;color:#555;margin-bottom:32px}
+.success-ref strong{color:#1a2340;font-weight:700}
+.success-btn{background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;letter-spacing:.5px}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav">
+    <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
+</nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <div class="success-card">
+        <div class="success-icon">&#10003;</div>
+        <div class="success-title">Application Submitted Successfully!</div>
+        <p class="success-sub">Your EID Replacement application has been submitted.</p>
+        <p class="success-ref">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" class="success-btn">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+</odoo>

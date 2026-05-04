@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+    <record id="seq_po_box" model="ir.sequence">
+        <field name="name">PO Box</field>
+        <field name="code">spc.po.box</field>
+        <field name="prefix">PB/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+    <record id="seq_spc_vip_medical_eid" model="ir.sequence">
+        <field name="name">SPC VIP Medical EID Sequence</field>
+        <field name="code">spc.vip.medical.eid</field>
+        <field name="prefix">VIPMED/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_company_stamp" model="ir.sequence">
+        <field name="name">SPC Company Stamp Sequence</field>
+        <field name="code">spc.company.stamp</field>
+        <field name="prefix">CSTAMP/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_dependent_visa" model="ir.sequence">
+        <field name="name">SPC Dependent Visa Sequence</field>
+        <field name="code">spc.dependent.visa</field>
+        <field name="prefix">DEPVISA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_document_delivery" model="ir.sequence">
+        <field name="name">SPC Document Delivery Sequence</field>
+        <field name="code">spc.document.delivery</field>
+        <field name="prefix">DOCDEL/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</data>
+</odoo>

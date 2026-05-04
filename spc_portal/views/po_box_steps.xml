@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- PO BOX NEW DETAIL -->
+<template id="po_box_new_detail" name="PO Box New Detail">
+<html><head><meta charset="utf-8"/><title>PO Box | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}
+.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c}
+.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.hero-banner{border-radius:12px;min-height:320px;background:linear-gradient(135deg,#1a3c6e 40%,#4a90d9 100%);position:relative;display:flex;align-items:flex-end;padding:32px;margin-bottom:32px;overflow:hidden}
+.hero-tag{position:absolute;top:20px;left:20px;background:#1a5c45;color:white;padding:8px 20px;font-size:14px;font-weight:700}
+.hero-title{font-size:56px;font-weight:900;color:white;line-height:1.1}
+.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.detail-section-title{font-size:17px;font-weight:700;color:#222;margin-bottom:8px}
+.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}
+.detail-desc{font-size:14px;color:#374151;line-height:1.9}
+.detail-desc p{margin-bottom:10px}
+.detail-desc ol,.detail-desc ul{padding-left:22px;margin-bottom:10px}
+.detail-desc li{margin-bottom:6px}
+.detail-desc .section-head{font-weight:700;margin-top:16px;margin-bottom:6px;color:#1a2340}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav">
+  <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
+  <button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button>
+</nav>
+<aside class="cd-sidebar">
+  <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+  <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+  <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+  <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+  <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+  <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+  <div class="cd-sidebar-divider"></div>
+  <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+  <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+  <div class="page-header">
+    <div class="page-title">PO Box - New</div>
+    <a href="/spc/concierge/po-box/step1?type=new" class="start-btn">START PROCESS</a>
+  </div>
+  <div class="hero-banner">
+    <span class="hero-tag">New</span>
+    <div class="hero-title">PO Box</div>
+  </div>
+  <div class="detail-card">
+    <div class="detail-section-title">Description</div>
+    <hr class="detail-divider"/>
+    <div class="detail-desc">
+      <p>This service includes a new annual P.O. Box rental. Please note that once registered, you cannot discontinue the service without cancelling the license.</p>
+      <div class="section-head">Requirement(s)</div>
+      <ol>
+        <li>Duly fill up the Corporate PO Box application form, signed and stamped. Please see the link for the registration form.</li>
+        <li>Valid copy of the Trade license</li>
+        <li>Passport copy and valid National ID Card of the authorized person</li>
+      </ol>
+      <div class="section-head">Timeline</div>
+      <p>1 Business day</p>
+      <div class="section-head">SPC Fees</div>
+      <p>PO Box Light AED 1,500</p>
+      <p>PO Box Bronze AED 3,000</p>
+    </div>
+  </div>
+</main>
+</body></html>
+</template>
+
+<!-- PO BOX RENEWAL DETAIL -->
+<template id="po_box_renewal_detail" name="PO Box Renewal Detail">
+<html><head><meta charset="utf-8"/><title>PO Box Renewal | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}
+.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c}
+.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.hero-banner{border-radius:12px;min-height:320px;background:linear-gradient(135deg,#1a5c45 40%,#1abc9c 100%);position:relative;display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}
+.hero-tag{position:absolute;top:20px;left:20px;background:#0e4d8a;color:white;padding:8px 20px;font-size:14px;font-weight:700}
+.hero-title{font-size:56px;font-weight:900;color:white;line-height:1.1}
+.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.detail-section-title{font-size:17px;font-weight:700;color:#222;margin-bottom:8px}
+.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}
+.detail-desc{font-size:14px;color:#374151;line-height:1.9}
+.detail-desc p{margin-bottom:10px}
+.detail-desc ol{padding-left:22px;margin-bottom:10px}
+.detail-desc li{margin-bottom:6px}
+.detail-desc .section-head{font-weight:700;margin-top:16px;margin-bottom:6px;color:#1a2340}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav">
+  <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
+  <button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button>
+</nav>
+<aside class="cd-sidebar">
+  <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+  <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+  <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+  <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+  <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+  <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+  <div class="cd-sidebar-divider"></div>
+  <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+  <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+  <div class="page-header">
+    <div class="page-title">PO Box - Renewal</div>
+    <a href="/spc/concierge/po-box/step1?type=renewal" class="start-btn">START PROCESS</a>
+  </div>
+  <div class="hero-banner">
+    <span class="hero-tag">Renew</span>
+    <div class="hero-title">PO Box</div>
+  </div>
+  <div class="detail-card">
+    <div class="detail-section-title">Description</div>
+    <hr class="detail-divider"/>
+    <div class="detail-desc">
+      <p>This service includes an annual renewal of your existing P.O. Box. Ensure timely renewal to avoid interruption of your postal services.</p>
+      <div class="section-head">Requirement(s)</div>
+      <ol>
+        <li>Valid copy of the Trade license</li>
+        <li>Existing PO Box number</li>
+        <li>Passport copy of the authorized person</li>
+      </ol>
+      <div class="section-head">Timeline</div>
+      <p>1 Business day</p>
+      <div class="section-head">SPC Fees</div>
+      <p>PO Box Light AED 1,500</p>
+      <p>PO Box Bronze AED 3,000</p>
+    </div>
+  </div>
+</main>
+</body></html>
+</template>
+
+<!-- PO BOX STEP 1 -->
+<template id="po_box_step1" name="PO Box Step 1">
+<html><head><meta charset="utf-8"/><title>PO Box | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.section-block{display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid #f0f0f0}
+.sec-num{font-size:13px;color:#bbb;font-weight:600;min-width:32px;padding-top:2px}
+.sec-body{flex:1;max-width:720px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:18px}
+.sec-sub{font-size:13px;color:#6b7280;margin-bottom:14px}
+.radio-group{display:flex;flex-direction:column;gap:14px;margin-bottom:14px}
+.radio-opt{display:flex;align-items:center;gap:12px;font-size:14px;color:#1a2340;cursor:pointer}
+.radio-opt input[type=radio]{width:18px;height:18px;accent-color:#1a2340}
+.field-input{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;margin-bottom:14px;display:block}
+.field-input:focus{border-bottom-color:#1abc9c}
+.field-input::placeholder{color:#aaa}
+.field-select{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;margin-bottom:14px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23999' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px center}
+.field-textarea{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;resize:none;min-height:72px;font-family:inherit;margin-bottom:14px}
+.field-textarea::placeholder{color:#aaa}
+.phone-wrap{display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:14px;align-items:center}
+.phone-flag{display:flex;align-items:center;gap:6px;padding:14px 8px 14px 0;font-size:14px;cursor:pointer}
+.phone-flag select{border:none;background:transparent;font-size:14px;outline:none;cursor:pointer}
+.phone-num{flex:1;padding:14px 0;border:none;background:transparent;font-size:14px;outline:none}
+.phone-num::placeholder{color:#aaa}
+.extra-fields{display:none}
+.extra-fields.show{display:block}
+.nav-btns{display:flex;justify-content:flex-end;margin-top:32px}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step">
+    <div class="ps-num active">1</div>
+    <div class="ps-label active">Package type</div>
+  </div>
+  <div class="progress-step">
+    <div class="ps-num">2</div>
+    <div class="ps-label">Declaration</div>
+  </div>
+  <div class="progress-step">
+    <div class="ps-num">3</div>
+    <div class="ps-label">Payment</div>
+  </div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val" id="feeDisplay">10.00 &#9432;</div>
+  </div>
+  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+</div>
+<div class="form-main">
+  <div class="form-title">New</div>
+  <form action="/spc/concierge/po-box/step1/submit" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="service_type" t-att-value="stype or 'new'"/>
+
+    <!-- 01 PO Box Bundle -->
+    <div class="section-block">
+      <div class="sec-num">01</div>
+      <div class="sec-body">
+        <div class="sec-title">PO Box Bundle</div>
+        <div class="sec-sub">PO box package</div>
+        <div class="radio-group">
+          <label class="radio-opt">
+            <input type="radio" name="package_type" value="light" id="pkgLight" onchange="onPkgChange(this.value)"/>
+            PO Box Light
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="package_type" value="bronze" id="pkgBronze" onchange="onPkgChange(this.value)"/>
+            PO Box Bronze
+          </label>
+        </div>
+
+        <!-- Extra fields shown only for PO Box Light -->
+        <div class="extra-fields" id="extraFields">
+          <div style="margin-top:8px;margin-bottom:12px;font-size:14px;font-weight:700;color:#1a2340">Alternative/previous PO box (if applicable)</div>
+          <input type="text" name="prev_pobox_number" class="field-input" placeholder="PO Box Number"/>
+          <select name="prev_pobox_emirate" class="field-select">
+            <option value="">Emirates</option>
+            <option value="Abu Dhabi">Abu Dhabi</option>
+            <option value="Dubai">Dubai</option>
+            <option value="Sharjah">Sharjah</option>
+            <option value="Ajman">Ajman</option>
+            <option value="Umm Al Quwain">Umm Al Quwain</option>
+            <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+            <option value="Fujairah">Fujairah</option>
+          </select>
+
+          <div style="margin-top:8px;margin-bottom:12px;font-size:14px;font-weight:700;color:#1a2340">Manager details</div>
+          <input type="text" name="manager_fullname" class="field-input" placeholder="Full name"/>
+          <div class="phone-wrap">
+            <div class="phone-flag">
+              <select name="manager_phone_code" id="phoneCodeSel"></select>
+            </div>
+            <input type="tel" name="manager_phone" class="phone-num" placeholder="Mobile number"/>
+          </div>
+          <input type="text" name="manager_sponsor" class="field-input" placeholder="Sponsor name"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Remarks -->
+    <div class="section-block" style="border-bottom:none">
+      <div class="sec-num">02</div>
+      <div class="sec-body">
+        <div class="sec-title">Remarks</div>
+        <textarea name="remarks" class="field-textarea" placeholder="Comments"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button type="submit" class="btn-next">NEXT</button>
+    </div>
+  </form>
+</div>
+<script>
+<![CDATA[
+var FEE={'light':'1,500.00','bronze':'3,000.00'};
+function onPkgChange(val){
+  document.getElementById('feeDisplay').textContent=(FEE[val]||'10.00')+' ⓘ';
+  var ex=document.getElementById('extraFields');
+  if(val==='light'){ex.classList.add('show');}else{ex.classList.remove('show');}
+}
+var PHONE_CODES=[
+  {c:'+971',n:'🇦🇪 +971'},{c:'+91',n:'🇮🇳 +91'},{c:'+1',n:'🇺🇸 +1'},
+  {c:'+44',n:'🇬🇧 +44'},{c:'+92',n:'🇵🇰 +92'},{c:'+880',n:'🇧🇩 +880'},
+  {c:'+63',n:'🇵🇭 +63'},{c:'+966',n:'🇸🇦 +966'},{c:'+974',n:'🇶🇦 +974'},
+  {c:'+965',n:'🇰🇼 +965'},{c:'+973',n:'🇧🇭 +973'},{c:'+968',n:'🇴🇲 +968'},
+  {c:'+962',n:'🇯🇴 +962'},{c:'+961',n:'🇱🇧 +961'},{c:'+20',n:'🇪🇬 +20'},
+  {c:'+90',n:'🇹🇷 +90'},{c:'+98',n:'🇮🇷 +98'},{c:'+86',n:'🇨🇳 +86'},
+  {c:'+81',n:'🇯🇵 +81'},{c:'+60',n:'🇲🇾 +60'},{c:'+65',n:'🇸🇬 +65'},
+  {c:'+94',n:'🇱🇰 +94'},{c:'+977',n:'🇳🇵 +977'},{c:'+61',n:'🇦🇺 +61'}
+];
+(function(){
+  var sel=document.getElementById('phoneCodeSel');
+  if(!sel) return;
+  PHONE_CODES.forEach(function(cc){
+    var o=document.createElement('option');
+    o.value=cc.c; o.textContent=cc.n;
+    if(cc.c==='+971') o.selected=true;
+    sel.appendChild(o);
+  });
+})();
+]]>
+</script>
+</body></html>
+</template>
+
+<!-- PO BOX DECLARATION -->
+<template id="po_box_declaration" name="PO Box Declaration">
+<html><head><meta charset="utf-8"/><title>Declaration | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.decl-box{background:white;border-radius:10px;padding:32px;max-width:760px;font-size:14px;color:#374151;line-height:1.9;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.decl-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.terms-link{color:#1abc9c;font-weight:600;text-decoration:none}
+.ack-row{display:flex;align-items:center;gap:12px;margin-top:20px;font-size:14px;font-weight:600;color:#1a2340}
+.ack-row input{width:17px;height:17px;accent-color:#1a2340;flex-shrink:0}
+.nav-btns{display:flex;justify-content:space-between;margin-top:32px;max-width:760px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Package type</div></div>
+  <div class="progress-step"><div class="ps-num active">2</div><div class="ps-label active">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num">3</div><div class="ps-label">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 10.0)"/> &#9432;</div>
+  </div>
+  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+</div>
+<div class="form-main">
+  <div class="form-title">New</div>
+  <form action="/spc/concierge/po-box/declaration/submit" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="record_id" t-att-value="record.id"/>
+    <div class="decl-box">
+      <div class="decl-title">Declaration:</div>
+      <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+      <br/>
+      <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+      <br/>
+      <div class="ack-row">
+        <input type="checkbox" name="terms_agreed" id="termsChk" value="yes"/>
+        <label for="termsChk">I have read and agree to the SPC Terms and Conditions.</label>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <a href="/spc/concierge/po-box/step1" class="btn-prev">PREVIOUS</a>
+      <button type="submit" class="btn-next">NEXT</button>
+    </div>
+  </form>
+</div>
+</body></html>
+</template>
+
+<!-- PO BOX PAYMENT -->
+<template id="po_box_payment" name="PO Box Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.pay-card{background:white;border-radius:12px;padding:32px;max-width:560px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pay-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.pay-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;font-size:14px}
+.pay-row:last-of-type{border-bottom:none;font-weight:700;font-size:16px}
+.pay-method-title{font-size:14px;font-weight:600;color:#1a2340;margin:20px 0 12px}
+.pay-option{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:10px;cursor:pointer}
+.pay-option:hover{border-color:#1abc9c}
+.submit-btn{width:100%;background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;margin-top:16px}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Package type</div></div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num active">3</div><div class="ps-label active">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 10.0)"/> &#9432;</div>
+  </div>
+</div>
+<div class="form-main">
+  <div class="form-title">New</div>
+  <div class="pay-card">
+    <div class="pay-title">Payment Summary</div>
+    <div class="pay-row">
+      <span style="color:#555">PO Box Service Fee</span>
+      <span style="color:#1a2340;font-weight:600">AED <t t-esc="'%.2f' % (record.amount or 10.0)"/></span>
+    </div>
+    <div class="pay-row">
+      <span>Total</span>
+      <span>AED <t t-esc="'%.2f' % (record.amount or 10.0)"/></span>
+    </div>
+    <div class="pay-method-title">Select payment method</div>
+    <label class="pay-option"><input type="radio" name="payment_method" value="card"/> <span style="font-size:14px">Credit / Debit Card</span></label>
+    <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> <span style="font-size:14px">Online Bank Transfer</span></label>
+    <button class="submit-btn">SUBMIT</button>
+  </div>
+  <a t-attf-href="/spc/concierge/po-box/declaration/#{record.id}" class="btn-prev">PREVIOUS</a>
+</div>
+</body></html>
+</template>
+
+</data>
+</odoo>

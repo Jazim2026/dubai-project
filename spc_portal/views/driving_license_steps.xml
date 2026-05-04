@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- DRIVING LICENSE LIST -->
+<template id="driving_license_list" name="Driving License List">
+<html><head><meta charset="utf-8"/><title>Driving License | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.dl-card{border-radius:12px;overflow:hidden;cursor:pointer;text-decoration:none;display:block;box-shadow:0 2px 8px rgba(0,0,0,.1);transition:transform .2s}
+.dl-card:hover{transform:translateY(-3px)}
+.dl-card-img{height:160px;position:relative;display:flex;align-items:flex-end;padding:16px}
+.dl-card-tag{position:absolute;top:12px;left:12px;padding:4px 14px;border-radius:4px;font-size:12px;font-weight:700;color:white}
+.dl-card-title{font-size:26px;font-weight:900;color:white;line-height:1.1}
+.dl-card-body{background:white;padding:14px 16px}
+.dl-card-name{font-size:14px;font-weight:700;color:#1abc9c;margin-bottom:4px}
+.dl-card-fee{font-size:13px;color:#374151}
+.section-title{font-size:18px;font-weight:700;color:#1a2340;margin:24px 0 16px}
+</style>
+</head><body>
+<t t-call="spc_portal.spc_sidebar_partial"/>
+<main class="cd-main">
+  <div class="page-title" style="margin-bottom:8px">Concierge Services</div>
+  <div class="section-title">Driving License</div>
+  <div class="cards-grid">
+    <a href="/spc/concierge/driving-license/new/detail" class="dl-card">
+      <div class="dl-card-img" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+        <span class="dl-card-tag" style="background:#1a6b55">New</span>
+        <div class="dl-card-title">Driving<br/>License</div>
+      </div>
+      <div class="dl-card-body"><div class="dl-card-name">New</div><div class="dl-card-fee">AED 1,890.00</div></div>
+    </a>
+    <a href="/spc/concierge/driving-license/amendment/detail" class="dl-card">
+      <div class="dl-card-img" style="background:linear-gradient(135deg,#4a5568,#2d3748)">
+        <span class="dl-card-tag" style="background:#4a5568">Amend</span>
+        <div class="dl-card-title">Driving<br/>License</div>
+      </div>
+      <div class="dl-card-body"><div class="dl-card-name">Amendment</div><div class="dl-card-fee">AED 378.00</div></div>
+    </a>
+    <a href="/spc/concierge/driving-license/duplicate/detail" class="dl-card">
+      <div class="dl-card-img" style="background:linear-gradient(135deg,#6b2fa0,#4a1080)">
+        <span class="dl-card-tag" style="background:#6b2fa0">Duplicate</span>
+        <div class="dl-card-title">Driving<br/>License</div>
+      </div>
+      <div class="dl-card-body"><div class="dl-card-name">Duplicate</div><div class="dl-card-fee">AED 1,285.00</div></div>
+    </a>
+    <a href="/spc/concierge/driving-license/renewal/detail" class="dl-card">
+      <div class="dl-card-img" style="background:linear-gradient(135deg,#1a6b3c,#145a32)">
+        <span class="dl-card-tag" style="background:#1a6b3c">Renew</span>
+        <div class="dl-card-title">Driving<br/>License</div>
+      </div>
+      <div class="dl-card-body"><div class="dl-card-name">Renewal</div><div class="dl-card-fee">AED 1,285.00</div></div>
+    </a>
+    <a href="/spc/concierge/driving-license/transfer/detail" class="dl-card">
+      <div class="dl-card-img" style="background:linear-gradient(135deg,#c0392b,#922b21)">
+        <span class="dl-card-tag" style="background:#922b21">Transfer</span>
+        <div class="dl-card-title">Driving<br/>License</div>
+      </div>
+      <div class="dl-card-body"><div class="dl-card-name">Transfer</div><div class="dl-card-fee">AED 1,010.00</div></div>
+    </a>
+  </div>
+</main>
+</body></html>
+</template>
+
+<!-- DRIVING LICENSE DETAIL -->
+<template id="driving_license_detail" name="Driving License Detail">
+<html><head><meta charset="utf-8"/><title>Driving License | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<t t-call="spc_portal.spc_sidebar_partial"/>
+<main class="cd-main">
+  <a href="/spc/concierge/driving-license" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+  <div class="page-header">
+    <div class="page-title" id="detailTitle">Driving License</div>
+    <a id="startBtn" href="#" class="start-btn">START PROCESS</a>
+  </div>
+  <div class="hero-banner" id="heroBanner" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+    <span class="hero-tag" id="heroTag">New</span>
+    <div class="hero-title">Driving<br/>License</div>
+  </div>
+  <div class="detail-card">
+    <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+    <hr class="detail-divider"/>
+    <div class="detail-desc" id="detailDesc"></div>
+  </div>
+</main>
+<script>
+var DL_META = {
+  'new':{tag:'New',bg:'linear-gradient(135deg,#1565c0,#1a237e)',tagbg:'#1a6b55',title:'Driving License - New',
+    desc:'<p>A new driving license application service for first-time applicants in the UAE.</p><p style="margin-top:12px;font-weight:700">Requirement(s)</p><ul style="padding-left:20px"><li>Original NOC from the freezone to open driving license file</li><li>Original passport with valid visa for at least 6 months</li><li>Original Emirates ID</li><li>Passport style photo (x4)</li></ul><p style="margin-top:12px;font-weight:700">Timeline</p><p>30-60 business days</p><p style="margin-top:12px;font-weight:700">Fees</p><p>AED 1,890</p>'},
+  'amendment':{tag:'Amend',bg:'linear-gradient(135deg,#4a5568,#2d3748)',tagbg:'#4a5568',title:'Driving License - Amendment',
+    desc:'<p>Amendment service for updating details on an existing UAE driving license.</p><p style="margin-top:12px;font-weight:700">Fees</p><p>AED 378</p>'},
+  'duplicate':{tag:'Duplicate',bg:'linear-gradient(135deg,#6b2fa0,#4a1080)',tagbg:'#6b2fa0',title:'Driving License - Duplicate',
+    desc:'<p>Obtain a duplicate of your existing UAE driving license.</p><p style="margin-top:12px;font-weight:700">Fees</p><p>AED 1,285</p>'},
+  'renewal':{tag:'Renew',bg:'linear-gradient(135deg,#1a6b3c,#145a32)',tagbg:'#1a6b3c',title:'Driving License - Renewal',
+    desc:'<p>Renew your UAE driving license before expiry.</p><p style="margin-top:12px;font-weight:700">Fees</p><p>AED 1,285</p>'},
+  'transfer':{tag:'Transfer',bg:'linear-gradient(135deg,#c0392b,#922b21)',tagbg:'#922b21',title:'Driving License - Transfer',
+    desc:'<p>Driving license transfer is the process of obtaining a license from a different country without having to undertake classes, trainings and tests. This is applicable to the 51 countries allowed visa-on-arrival.</p><p style="margin-top:12px;font-weight:700">Requirement(s)</p><ol style="padding-left:20px"><li>Original NOC from the Free Zone</li><li>Original passport and visa valid for at least 6 months</li><li>Original Emirates ID</li><li>Original driving license</li><li>Copy of original driving license</li><li>Arabic legal translation of driving license</li><li>Four(4) Passport size photos</li><li>Eye Test done in any RTA affiliated center</li></ol><p style="margin-top:12px;font-weight:700">Timeline</p><p>1-2 business days</p><p style="margin-top:12px;font-weight:700">Fees</p><p>AED 1,010</p>'},
+};
+var parts = window.location.pathname.split('/');
+var dlType = parts[parts.length-2];
+var meta = DL_META[dlType] || DL_META['new'];
+document.getElementById('detailTitle').textContent = meta.title;
+document.getElementById('heroBanner').style.background = meta.bg;
+document.getElementById('heroTag').textContent = meta.tag;
+document.getElementById('heroTag').style.background = meta.tagbg;
+document.getElementById('detailDesc').innerHTML = meta.desc;
+document.getElementById('startBtn').href = '/spc/concierge/driving-license/'+dlType+'/step1';
+</script>
+</body></html>
+</template>
+
+<!-- DRIVING LICENSE STEP 1 -->
+<template id="driving_license_step1" name="Driving License Step 1">
+<html><head><meta charset="utf-8"/><title>Driving License | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.upload-box-solid{width:180px;border:2px solid #1abc9c;border-radius:10px;padding:20px 12px;text-align:center;cursor:pointer;background:white;margin-bottom:16px}
+.upload-icon-solid{font-size:22px;color:#1abc9c;margin-bottom:6px}
+.upload-text-solid{font-size:12px;color:#1abc9c;font-weight:600;word-break:break-all}
+.phone-row{display:flex;border-bottom:2px solid #e5e7eb;background:#f9f9f9;margin-bottom:12px}
+.phone-code{padding:14px 12px;font-size:14px;border:none;background:transparent;outline:none;min-width:120px;cursor:pointer}
+.phone-input{flex:1;padding:14px 16px;border:none;background:transparent;font-size:14px;outline:none}
+.instr-box{background:#f8f9fa;border-radius:10px;padding:20px;font-size:14px;color:#374151;line-height:1.8}
+</style>
+</head><body><div class="layout">
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+  <div class="progress-title">Your progress</div>
+  <div id="stepsList"></div>
+  <div class="total-box">Total AED<div class="amount" id="feeVal">-</div></div>
+  <div class="sidebar-links">
+    <a href="#">SAVE &amp; CONTINUE LATER</a>
+    <a href="#" style="color:#f87171">CANCEL APPLICATION</a>
+  </div>
+</div>
+<div class="main">
+  <div class="form-title" id="formTitle">New</div>
+  <form id="mainForm" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <!-- NON-TRANSFER SECTIONS -->
+    <div id="sec_applicant">
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Applicant details</div>
+          <input type="text" name="first_name" class="field-input" placeholder="First name" t-att-value="saved.get('first_name','') if saved else ''"/>
+          <input type="text" name="last_name" class="field-input" placeholder="Last name" t-att-value="saved.get('last_name','') if saved else ''"/>
+          <input type="email" name="email" class="field-input" placeholder="Email address" t-att-value="saved.get('email','') if saved else ''"/>
+          <div class="phone-row">
+            <select name="phone_country_code" class="phone-code" id="countryCodeSel" t-att-data-selected="saved.get('phone_country_code','+971') if saved else '+971'"></select>
+            <input type="tel" name="phone" class="phone-input" placeholder="Phone number" t-att-value="saved.get('phone','') if saved else ''"/>
+          </div>
+          <input type="date" name="date_of_birth" class="field-input" t-att-value="saved.get('date_of_birth','') if saved else ''"/>
+        </div>
+      </div>
+      <div class="spc-section">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">Upload required documents</div>
+          <div class="upload-row">
+            <div>
+              <div class="upload-label">Passport copy</div>
+              <div class="upload-box-solid" onclick="document.getElementById('f_passport').click()">
+                <input type="file" id="f_passport" name="passport" style="display:none" onchange="setLbl(this,'lbl_p')"/>
+                <div class="upload-icon-solid">&#11014;</div>
+                <div class="upload-text-solid" id="lbl_p">Upload file</div>
+              </div>
+            </div>
+            <div>
+              <div class="upload-label">Emirates ID copy</div>
+              <div class="upload-box-solid" onclick="document.getElementById('f_eid').click()">
+                <input type="file" id="f_eid" name="emirates_id" style="display:none" onchange="setLbl(this,'lbl_eid')"/>
+                <div class="upload-icon-solid">&#11014;</div>
+                <div class="upload-text-solid" id="lbl_eid">Upload file</div>
+              </div>
+            </div>
+            <div>
+              <div class="upload-label">Residence visa copy</div>
+              <div class="upload-box-solid" onclick="document.getElementById('f_visa').click()">
+                <input type="file" id="f_visa" name="residence_visa" style="display:none" onchange="setLbl(this,'lbl_v')"/>
+                <div class="upload-icon-solid">&#11014;</div>
+                <div class="upload-text-solid" id="lbl_v">Upload file</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spc-section">
+        <div class="sec-num">03</div>
+        <div class="sec-body">
+          <div class="instr-box">
+            <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:8px">Document submission instructions</div>
+            <p style="font-size:13px;color:#555;margin-bottom:8px">Please submit below documents to SPC:</p>
+            <p>&#8226; Original NOC from the freezone to open driving license file<br/>
+            &#8226; Original passport with valid visa for at least 6 months<br/>
+            &#8226; Original Emirates ID<br/>
+            &#8226; Passport style photo (x4)</p>
+            <div class="ack-row" style="margin-top:12px">
+              <input type="checkbox" name="doc_ack" id="docAck" value="yes"/>
+              <label for="docAck">I understand that the processing of my application will only start upon the submission of these original documents to the SPC office.</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spc-section">
+        <div class="sec-num">04</div>
+        <div class="sec-body">
+          <div class="sec-title">Remarks</div>
+          <textarea name="remarks" class="field-input" style="min-height:80px;resize:none" placeholder="Comments"><t t-esc="saved.get('remarks','') if saved else ''"/></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSFER SECTIONS -->
+    <div id="sec_transfer" style="display:none">
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Application Details</div>
+          <div class="select-wrap">
+            <select name="license_country" id="licenseCountrySel" t-att-data-selected="saved.get('license_country','') if saved else ''"></select>
+          </div>
+          <div style="font-size:14px;color:#1abc9c;margin-bottom:10px;margin-top:4px">Did your country fall under Transfer list?</div>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="country_in_transfer_list" value="yes" onchange="toggleTransferYesNo('yes')"
+                t-att-checked="'checked' if saved and saved.get('country_in_transfer_list')=='yes' else None"/> Yes
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="country_in_transfer_list" value="no" onchange="toggleTransferYesNo('no')"
+                t-att-checked="'checked' if saved and saved.get('country_in_transfer_list')=='no' else None"/> No
+            </label>
+          </div>
+          <div id="transfer_not_possible" class="info-box hidden">Unfortunately, Transfer of driving license is not possible for the selected nationality.</div>
+        </div>
+      </div>
+
+      <!-- Transfer YES applicant -->
+      <div id="sec_transfer_applicant" class="hidden">
+        <div class="spc-section">
+          <div class="sec-num">02</div>
+          <div class="sec-body">
+            <div class="sec-title">Applicant details</div>
+            <input type="text" name="t_first_name" class="field-input" placeholder="First name" t-att-value="saved.get('first_name','') if saved else ''"/>
+            <input type="text" name="t_last_name" class="field-input" placeholder="Last name" t-att-value="saved.get('last_name','') if saved else ''"/>
+            <input type="email" name="t_email" class="field-input" placeholder="Email address" t-att-value="saved.get('email','') if saved else ''"/>
+            <div class="phone-row">
+              <select name="t_phone_country_code" class="phone-code" id="countryCodeSel2" t-att-data-selected="saved.get('phone_country_code','+971') if saved else '+971'"></select>
+              <input type="tel" name="t_phone" class="phone-input" placeholder="Phone number" t-att-value="saved.get('phone','') if saved else ''"/>
+            </div>
+            <input type="date" name="t_date_of_birth" class="field-input" t-att-value="saved.get('date_of_birth','') if saved else ''"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transfer NO applicant -->
+      <div id="sec_transfer_no_applicant" class="hidden">
+        <div class="spc-section">
+          <div class="sec-num">02</div>
+          <div class="sec-body">
+            <div class="sec-title">Applicant details</div>
+            <input type="text" name="t_first_name" class="field-input" placeholder="First name" t-att-value="saved.get('first_name','') if saved else ''"/>
+            <input type="text" name="t_last_name" class="field-input" placeholder="Last name" t-att-value="saved.get('last_name','') if saved else ''"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spc-nav-buttons" style="justify-content:flex-end">
+      <button type="submit" class="spc-btn-next">NEXT</button>
+    </div>
+  </form>
+</div>
+</div>
+<script>
+var FEE_MAP = {new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var STEP_LABELS = {
+  new:['Application details','Declaration','Review application','Payment'],
+  amendment:['Application details','Declaration','Review application','Payment'],
+  duplicate:['Application details','Declaration','Review application','Payment'],
+  renewal:['Application details','Declaration','Review application','Payment'],
+  transfer:['Application details','Document submission','Declaration','Review application','Payment']
+};
+var COUNTRY_CODES = [
+  {code:'+971',name:'UAE +971'},{code:'+91',name:'India +91'},{code:'+1',name:'USA +1'},
+  {code:'+44',name:'UK +44'},{code:'+92',name:'Pakistan +92'},{code:'+880',name:'Bangladesh +880'},
+  {code:'+63',name:'Philippines +63'},{code:'+20',name:'Egypt +20'},{code:'+966',name:'Saudi Arabia +966'},
+  {code:'+962',name:'Jordan +962'},{code:'+961',name:'Lebanon +961'},{code:'+90',name:'Turkey +90'},
+  {code:'+98',name:'Iran +98'},{code:'+964',name:'Iraq +964'},{code:'+7',name:'Russia +7'},
+  {code:'+86',name:'China +86'},{code:'+81',name:'Japan +81'},{code:'+82',name:'Korea +82'},
+  {code:'+49',name:'Germany +49'},{code:'+33',name:'France +33'},{code:'+39',name:'Italy +39'},
+  {code:'+34',name:'Spain +34'},{code:'+31',name:'Netherlands +31'},{code:'+61',name:'Australia +61'},
+  {code:'+64',name:'New Zealand +64'},{code:'+27',name:'South Africa +27'},{code:'+234',name:'Nigeria +234'},
+  {code:'+254',name:'Kenya +254'},{code:'+55',name:'Brazil +55'},{code:'+52',name:'Mexico +52'},
+  {code:'+60',name:'Malaysia +60'},{code:'+65',name:'Singapore +65'},{code:'+66',name:'Thailand +66'},
+  {code:'+84',name:'Vietnam +84'},{code:'+62',name:'Indonesia +62'},{code:'+94',name:'Sri Lanka +94'},
+  {code:'+977',name:'Nepal +977'},{code:'+974',name:'Qatar +974'},{code:'+965',name:'Kuwait +965'},
+  {code:'+973',name:'Bahrain +973'},{code:'+968',name:'Oman +968'},{code:'+967',name:'Yemen +967'},
+  {code:'+213',name:'Algeria +213'},{code:'+212',name:'Morocco +212'},{code:'+216',name:'Tunisia +216'},
+  {code:'+249',name:'Sudan +249'},{code:'+251',name:'Ethiopia +251'},{code:'+233',name:'Ghana +233'},
+  {code:'+255',name:'Tanzania +255'},{code:'+256',name:'Uganda +256'},{code:'+263',name:'Zimbabwe +263'}
+];
+var COUNTRIES = ['Afghanistan','Albania','Algeria','Andorra','Angola','Argentina','Armenia','Australia',
+  'Austria','Azerbaijan','Bahrain','Bangladesh','Belarus','Belgium','Bhutan','Bolivia','Bosnia','Brazil',
+  'Bulgaria','Cambodia','Canada','Chile','China','Colombia','Croatia','Cuba','Cyprus','Czech Republic',
+  'Denmark','Egypt','Estonia','Ethiopia','Finland','France','Germany','Ghana','Greece','Hungary',
+  'India','Indonesia','Iran','Iraq','Ireland','Israel','Italy','Japan','Jordan','Kazakhstan','Kenya',
+  'Kuwait','Kyrgyzstan','Latvia','Lebanon','Libya','Lithuania','Luxembourg','Malaysia','Maldives',
+  'Malta','Mexico','Moldova','Mongolia','Morocco','Mozambique','Myanmar','Nepal','Netherlands',
+  'New Zealand','Nigeria','North Korea','Norway','Oman','Pakistan','Palestine','Panama','Peru',
+  'Philippines','Poland','Portugal','Qatar','Romania','Russia','Saudi Arabia','Serbia','Singapore',
+  'Slovakia','Slovenia','South Africa','South Korea','Spain','Sri Lanka','Sudan','Sweden',
+  'Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Tunisia','Turkey','Turkmenistan',
+  'Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan',
+  'Venezuela','Vietnam','Yemen','Zimbabwe'];
+
+function populateCountryCodes(selId) {
+  var sel = document.getElementById(selId); if(!sel) return;
+  COUNTRY_CODES.forEach(function(c){
+    var opt=document.createElement('option'); opt.value=c.code; opt.textContent=c.name;
+    sel.appendChild(opt);
+  });
+  var saved = sel.getAttribute('data-selected');
+  if(saved) sel.value = saved; else sel.value = '+971';
+}
+function populateCountries() {
+  var sel = document.getElementById('licenseCountrySel'); if(!sel) return;
+  var ph=document.createElement('option'); ph.value=''; ph.textContent='Driving license country of issue'; sel.appendChild(ph);
+  COUNTRIES.forEach(function(c){ var opt=document.createElement('option'); opt.value=c; opt.textContent=c; sel.appendChild(opt); });
+  var saved = sel.getAttribute('data-selected');
+  if(saved) sel.value = saved;
+}
+function toggleTransferYesNo(val) {
+  document.getElementById('transfer_not_possible').classList.toggle('hidden', val!=='no');
+  document.getElementById('sec_transfer_applicant').classList.toggle('hidden', val!=='yes');
+  document.getElementById('sec_transfer_no_applicant').classList.toggle('hidden', val!=='no');
+}
+function setLbl(input, labelId) {
+  if(input.files&amp;&amp;input.files[0]) document.getElementById(labelId).textContent=input.files[0].name;
+}
+
+var parts = window.location.pathname.split('/');
+var dlType = parts[parts.length-2];
+var steps = STEP_LABELS[dlType]||STEP_LABELS['new'];
+var fee = FEE_MAP[dlType]||'-';
+document.getElementById('feeVal').textContent = fee;
+var titleMap = {new:'New',amendment:'Amendment',duplicate:'Duplicate',renewal:'Renewal',transfer:'Transfer'};
+document.getElementById('formTitle').textContent = titleMap[dlType]||'New';
+document.getElementById('mainForm').action = '/spc/concierge/driving-license/'+dlType+'/step1/submit';
+
+var html='';
+steps.forEach(function(s,i){
+  var cls = i===0?' active':'';
+  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(i+1)+'</div><div class="step-label">'+s+'</div></div>';
+});
+document.getElementById('stepsList').innerHTML = html;
+
+if(dlType==='transfer'){
+  document.getElementById('sec_applicant').style.display='none';
+  document.getElementById('sec_transfer').style.display='block';
+  populateCountries();
+  populateCountryCodes('countryCodeSel2');
+  var savedRadio = document.querySelector('input[name="country_in_transfer_list"][checked]');
+  if(savedRadio){ savedRadio.checked=true; toggleTransferYesNo(savedRadio.value); }
+} else {
+  populateCountryCodes('countryCodeSel');
+}
+</script>
+</body></html>
+</template>
+
+<!-- DRIVING LICENSE TRANSFER STEP 2 -->
+<template id="driving_license_transfer_step2" name="DL Transfer Step 2">
+<html><head><meta charset="utf-8"/><title>Driving License Transfer | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.upload-box-solid{width:180px;border:2px solid #1abc9c;border-radius:10px;padding:20px 12px;text-align:center;cursor:pointer;background:white;margin-bottom:16px}
+.upload-icon-solid{font-size:22px;color:#1abc9c;margin-bottom:6px}
+.upload-text-solid{font-size:12px;color:#1abc9c;font-weight:600;word-break:break-all}
+</style>
+</head><body><div class="layout">
+<div class="sidebar">
+  <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+  <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Document submission</div></div>
+  <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+  <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+  <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+  <div class="total-box">Total AED<div class="amount">1,010.00</div></div>
+  <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+  <div class="form-title">Transfer</div>
+  <form action="/spc/concierge/driving-license/transfer/step2/submit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="record_id" t-att-value="record.id"/>
+    <div class="spc-section">
+      <div class="sec-num">01</div>
+      <div class="sec-body">
+        <div class="sec-title">Upload required documents</div>
+        <div class="upload-row">
+          <div>
+            <div class="upload-label">Passport copy</div>
+            <div class="upload-box-solid" onclick="document.getElementById('f_p').click()">
+              <input type="file" id="f_p" name="passport" style="display:none" onchange="setLbl(this,'l_p')"/>
+              <div class="upload-icon-solid">&#11014;</div><div class="upload-text-solid" id="l_p">Upload file</div>
+            </div>
+          </div>
+          <div>
+            <div class="upload-label">Emirates ID copy</div>
+            <div class="upload-box-solid" onclick="document.getElementById('f_e').click()">
+              <input type="file" id="f_e" name="emirates_id" style="display:none" onchange="setLbl(this,'l_e')"/>
+              <div class="upload-icon-solid">&#11014;</div><div class="upload-text-solid" id="l_e">Upload file</div>
+            </div>
+          </div>
+          <div>
+            <div class="upload-label">Residence visa copy</div>
+            <div class="upload-box-solid" onclick="document.getElementById('f_v').click()">
+              <input type="file" id="f_v" name="residence_visa" style="display:none" onchange="setLbl(this,'l_v')"/>
+              <div class="upload-icon-solid">&#11014;</div><div class="upload-text-solid" id="l_v">Upload file</div>
+            </div>
+          </div>
+          <div>
+            <div class="upload-label">Driving license copy</div>
+            <div class="upload-box-solid" onclick="document.getElementById('f_dl').click()">
+              <input type="file" id="f_dl" name="driving_license" style="display:none" onchange="setLbl(this,'l_dl')"/>
+              <div class="upload-icon-solid">&#11014;</div><div class="upload-text-solid" id="l_dl">Upload file</div>
+            </div>
+          </div>
+          <div>
+            <div class="upload-label">License translation (if applicable)</div>
+            <div class="upload-box-solid" onclick="document.getElementById('f_tr').click()">
+              <input type="file" id="f_tr" name="license_translation" style="display:none" onchange="setLbl(this,'l_tr')"/>
+              <div class="upload-icon-solid">&#11014;</div><div class="upload-text-solid" id="l_tr">Upload file</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spc-section">
+      <div class="sec-num">02</div>
+      <div class="sec-body">
+        <div class="sec-title">Acknowledgement</div>
+        <div class="ack-row">
+          <input type="checkbox" name="doc_ack" id="docAck2" value="yes"/>
+          <label for="docAck2">I understand that the processing of my application will only start upon the submission of these original documents to the SPC office.</label>
+        </div>
+      </div>
+    </div>
+    <div class="spc-section">
+      <div class="sec-num">03</div>
+      <div class="sec-body">
+        <div class="sec-title">Comments</div>
+        <textarea name="comments" class="field-input" style="min-height:80px;resize:none" placeholder="Comments"></textarea>
+      </div>
+    </div>
+    <div class="spc-nav-buttons">
+      <a t-attf-href="/spc/concierge/driving-license/transfer/step1" class="spc-btn-prev">PREVIOUS</a>
+      <button type="submit" class="spc-btn-next">NEXT</button>
+    </div>
+  </form>
+</div>
+</div>
+<script>function setLbl(input,id){if(input.files&amp;&amp;input.files[0])document.getElementById(id).textContent=input.files[0].name;}</script>
+</body></html>
+</template>
+
+<!-- DRIVING LICENSE DECLARATION -->
+<template id="driving_license_declaration" name="DL Declaration">
+<html><head><meta charset="utf-8"/><title>Declaration | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar" id="declSidebar">
+  <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+  <div class="progress-title">Your progress</div>
+  <div id="declSteps"></div>
+  <div class="total-box">Total AED<div class="amount" id="declFee">-</div></div>
+  <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+</div>
+<div class="main">
+  <div class="form-title" id="declTitle">New</div>
+  <form id="declForm" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="record_id" t-att-value="record.id"/>
+    <div class="spc-section">
+      <div class="sec-num">01</div>
+      <div class="sec-body">
+        <div class="decl-box">
+          <div style="font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px">Declaration:</div>
+          <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+          <br/>
+          <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+          <br/>
+          <p>Acknowledgement</p>
+          <div class="ack-row">
+            <input type="checkbox" name="terms_agreed" id="termsChk" value="yes"/>
+            <label for="termsChk">I have read and agree to the SPC Terms and Conditions.</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spc-nav-buttons">
+      <a id="prevBtn" href="#" class="spc-btn-prev">PREVIOUS</a>
+      <button type="submit" class="spc-btn-next">NEXT</button>
+    </div>
+  </form>
+</div>
+</div>
+<script>
+var FEE_MAP2={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var STEPS2={
+  new:['Application details','Declaration','Review application','Payment'],
+  amendment:['Application details','Declaration','Review application','Payment'],
+  duplicate:['Application details','Declaration','Review application','Payment'],
+  renewal:['Application details','Declaration','Review application','Payment'],
+  transfer:['Application details','Document submission','Declaration','Review application','Payment']
+};
+var parts=window.location.pathname.split('/');
+var dlType=parts[parts.length-3];
+var steps=STEPS2[dlType]||STEPS2['new'];
+var activeIdx=dlType==='transfer'?2:1;
+document.getElementById('declFee').textContent=FEE_MAP2[dlType]||'-';
+var titleMap2={new:'New',amendment:'Amendment',duplicate:'Duplicate',renewal:'Renewal',transfer:'Transfer'};
+document.getElementById('declTitle').textContent=titleMap2[dlType]||'New';
+var html='';
+steps.forEach(function(s,i){
+  var done=i&lt;activeIdx; var active=i===activeIdx;
+  var cls=done?' done':active?' active':'';
+  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
+});
+document.getElementById('declSteps').innerHTML=html;
+document.getElementById('declForm').action='/spc/concierge/driving-license/'+dlType+'/declaration/submit';
+var recId='<t t-out="record.id"/>';
+document.getElementById('prevBtn').href=dlType==='transfer'
+  ?'/spc/concierge/driving-license/transfer/step2/'+recId
+  :'/spc/concierge/driving-license/'+dlType+'/step1';
+</script>
+</body></html>
+</template>
+
+<!-- DRIVING LICENSE REVIEW -->
+<template id="driving_license_review" name="DL Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar" id="rvSidebar">
+  <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+  <div class="progress-title">Your progress</div>
+  <div id="rvSteps"></div>
+  <div class="total-box">Total AED<div class="amount" id="rvFee">-</div></div>
+</div>
+<div class="main">
+  <div class="form-title" id="rvTitle">New</div>
+  <div class="review-card">
+    <div class="review-header">
+      <div class="review-sec-title">Application Details</div>
+      <a id="editBtn" href="#" class="edit-btn">&#9998; EDIT</a>
+    </div>
+    <div class="review-row"><div class="review-lbl">LICENSE TYPE</div><div class="review-val"><t t-esc="(record.license_type or '').title()"/></div></div>
+    <div class="review-row"><div class="review-lbl">FIRST NAME</div><div class="review-val"><t t-esc="record.first_name or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">LAST NAME</div><div class="review-val"><t t-esc="record.last_name or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">EMAIL</div><div class="review-val"><t t-esc="record.email or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">PHONE</div><div class="review-val"><t t-esc="(record.phone_country_code or '') + ' ' + (record.phone or '-')"/></div></div>
+    <div class="review-row"><div class="review-lbl">DATE OF BIRTH</div><div class="review-val"><t t-esc="str(record.date_of_birth) if record.date_of_birth else '-'"/></div></div>
+    <t t-if="record.license_country">
+    <div class="review-row"><div class="review-lbl">LICENSE COUNTRY</div><div class="review-val"><t t-esc="record.license_country or '-'"/></div></div>
+    </t>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-sec-title">Declaration</div></div>
+    <div class="review-row"><div class="review-lbl">TERMS AGREED</div><div class="review-val"><t t-esc="'Yes' if record.declaration_accepted else 'No'"/></div></div>
+  </div>
+  <div class="spc-nav-buttons">
+    <a id="prevBtn2" href="#" class="spc-btn-prev">PREVIOUS</a>
+    <a id="nextBtn2" href="#" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+  </div>
+</div>
+</div>
+<script>
+var FEE_MAP3={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var STEPS3={new:['Application details','Declaration','Review application','Payment'],
+  amendment:['Application details','Declaration','Review application','Payment'],
+  duplicate:['Application details','Declaration','Review application','Payment'],
+  renewal:['Application details','Declaration','Review application','Payment'],
+  transfer:['Application details','Document submission','Declaration','Review application','Payment']};
+var parts=window.location.pathname.split('/');
+var dlType=parts[parts.length-3];
+var recordId=parts[parts.length-1];
+var steps=STEPS3[dlType]||STEPS3['new'];
+var activeIdx=steps.length-2;
+document.getElementById('rvFee').textContent=FEE_MAP3[dlType]||'-';
+var titleMap3={new:'New',amendment:'Amendment',duplicate:'Duplicate',renewal:'Renewal',transfer:'Transfer'};
+document.getElementById('rvTitle').textContent=titleMap3[dlType]||'New';
+var html='';
+steps.forEach(function(s,i){
+  var done=i&lt;activeIdx; var active=i===activeIdx;
+  var cls=done?' done':active?' active':'';
+  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
+});
+document.getElementById('rvSteps').innerHTML=html;
+document.getElementById('editBtn').href='/spc/concierge/driving-license/'+dlType+'/step1';
+document.getElementById('prevBtn2').href='/spc/concierge/driving-license/'+dlType+'/declaration/'+recordId;
+document.getElementById('nextBtn2').href='/spc/concierge/driving-license/'+dlType+'/payment/'+recordId;
+</script>
+</body></html>
+</template>
+
+<!-- DRIVING LICENSE PAYMENT -->
+<template id="driving_license_payment" name="DL Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body><div class="layout">
+<div class="sidebar" id="payBar">
+  <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+  <div class="progress-title">Your progress</div>
+  <div id="paySteps"></div>
+  <div class="total-box">Total AED<div class="amount" id="payFee">-</div></div>
+</div>
+<div class="main">
+  <div class="form-title" id="payTitle">New</div>
+  <div class="pay-card">
+    <div class="pay-title">Payment Summary</div>
+    <div class="pay-row"><span style="color:#555" id="payDesc">Service Fee</span><span style="font-weight:600" id="payAmt">-</span></div>
+    <div class="pay-row pay-total"><span>Total</span><span id="payTotal">-</span></div>
+    <div class="pay-method-title">Select payment method</div>
+    <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
+    <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
+    <button class="spc-btn-submit">SUBMIT</button>
+  </div>
+  <div style="margin-top:20px">
+    <a id="payPrev" href="#" class="spc-btn-prev">PREVIOUS</a>
+  </div>
+</div>
+</div>
+<script>
+var FEE_MAP4={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var STEPS4={new:['Application details','Declaration','Review application','Payment'],
+  amendment:['Application details','Declaration','Review application','Payment'],
+  duplicate:['Application details','Declaration','Review application','Payment'],
+  renewal:['Application details','Declaration','Review application','Payment'],
+  transfer:['Application details','Document submission','Declaration','Review application','Payment']};
+var parts=window.location.pathname.split('/');
+var dlType=parts[parts.length-3]; var recordId=parts[parts.length-1];
+var steps=STEPS4[dlType]||STEPS4['new'];
+var fee=FEE_MAP4[dlType]||'-';
+document.getElementById('payFee').textContent=fee;
+document.getElementById('payAmt').textContent='AED '+fee;
+document.getElementById('payTotal').textContent='AED '+fee;
+var titleMap4={new:'New',amendment:'Amendment',duplicate:'Duplicate',renewal:'Renewal',transfer:'Transfer'};
+document.getElementById('payTitle').textContent=titleMap4[dlType]||'New';
+document.getElementById('payDesc').textContent='Driving License '+titleMap4[dlType]+' Fee';
+var html='';
+steps.forEach(function(s,i){
+  var done=i&lt;steps.length-1; var active=i===steps.length-1;
+  var cls=done?' done':active?' active':'';
+  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
+});
+document.getElementById('paySteps').innerHTML=html;
+document.getElementById('payPrev').href='/spc/concierge/driving-license/'+dlType+'/review/'+recordId;
+</script>
+</body></html>
+</template>
+
+</data>
+</odoo>

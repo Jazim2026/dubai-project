@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- MEDICAL DETAIL PAGE -->
+<template id="medical_detail" name="Medical Detail">
+<html><head><meta charset="utf-8"/><title>Medical | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.page-title{font-size:22px;font-weight:700;color:#1abc9c}.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}.hero-banner{border-radius:12px;overflow:hidden;min-height:280px;position:relative;display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}.hero-tag{position:absolute;top:20px;left:20px;color:white;padding:6px 16px;border-radius:4px;font-size:13px;font-weight:700}.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span><div><button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button></div></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Medical - <t t-esc="medical_title"/></div>
+        <a t-attf-href="/spc/apply/medical/step1?type=#{medical_type}" class="start-btn">START PROCESS</a>
+    </div>
+    <t t-if="medical_type == 'new_residency'">
+        <div class="hero-banner" style="background:linear-gradient(135deg,#1565c0,#1a237e)">
+            <span class="hero-tag" style="background:#004d40;">New</span>
+            <div class="hero-title">Medical</div>
+        </div>
+        <div class="detail-card">
+            <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+            <hr class="detail-divider"/>
+            <div class="detail-desc">
+                <p style="margin-bottom:16px;">The medical fitness test is legally required in the UAE to obtain a Residence visa. This service enables foreign nationals to obtain a fitness examination to prove that they are free from communicable and infectious diseases such as HIV and TB, thereby allowing them to obtain a residence permit within the UAE or to renew their current residence.</p>
+                <p style="font-weight:700;margin-bottom:8px;">Requirements</p>
+                <ol style="padding-left:24px;margin-bottom:16px;">
+                    <li>Passport copy</li>
+                    <li>Entry visa with change of status or entry stamp (not applicable for visa renewal)</li>
+                    <li>High-resolution photo (studio quality)</li>
+                </ol>
+                <p style="font-weight:700;margin-bottom:8px;">Timeline</p>
+                <p style="margin-bottom:16px;">1-2 business days</p>
+                <p style="font-weight:700;margin-bottom:8px;">Fees</p>
+                <p style="margin-bottom:4px;">VIP Medical AED 2000</p>
+                <p>Normal Medical AED 365</p>
+            </div>
+        </div>
+    </t>
+    <t t-else="">
+        <div class="hero-banner" style="background:linear-gradient(135deg,#0e7c6e,#1abc9c)">
+            <span class="hero-tag" style="background:#004d40;">Renew</span>
+            <div class="hero-title">Medical</div>
+        </div>
+        <div class="detail-card">
+            <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+            <hr class="detail-divider"/>
+            <div class="detail-desc">
+                <p style="margin-bottom:16px;">In order to be able to renew a work/residence permit, foreign nationals need to be free of all forms of communicable diseases such as HIV and TB.</p>
+                <p style="font-weight:700;margin-bottom:8px;">Requirements</p>
+                <ol style="padding-left:24px;margin-bottom:16px;">
+                    <li>Passport copy</li>
+                    <li>Entry visa with change of status or entry stamp (not applicable for visa renewal)</li>
+                    <li>Original or copy of expired Emirates ID (not applicable for first time Emirates ID applicants)</li>
+                    <li>High-resolution photo (studio quality)</li>
+                </ol>
+                <p style="font-weight:700;margin-bottom:8px;">Timeline</p>
+                <p style="margin-bottom:16px;">1-2 business days</p>
+                <p style="font-weight:700;margin-bottom:8px;">Fees</p>
+                <p>AED 365</p>
+            </div>
+        </div>
+    </t>
+</main>
+</body></html>
+</template>
+
+<!-- MEDICAL STEP 1 -->
+<template id="medical_step1" name="Medical Step 1">
+<html><head><meta charset="utf-8"/><title>Medical | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.select-wrap{position:relative;max-width:680px;margin-bottom:16px}.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}.select-row .select-wrap{flex:1;margin-bottom:0}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.radio-group{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a2340;width:18px;height:18px}.upload-label{font-size:14px;color:#333;font-weight:600;margin-bottom:8px}.upload-box{border:2px solid #b0c4de;border-radius:0;padding:20px;text-align:center;cursor:pointer;background:#f8faff;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:200px;margin-bottom:20px}.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}.upload-text{color:#1a5fa8;font-size:13px;font-weight:600}.note-text{font-size:12px;color:#666;margin-bottom:16px;font-style:italic}.vip-note{background:#e8f4fd;border-left:4px solid #1565c0;padding:10px 14px;font-size:13px;color:#1565c0;margin-top:8px;margin-bottom:12px;max-width:680px;display:none}.phone-wrap{display:flex;align-items:flex-end;gap:8px;margin-bottom:16px;max-width:680px}.phone-code{display:flex;align-items:center;gap:4px;font-size:14px;border-bottom:1px solid #ccc;padding-bottom:10px;min-width:90px}.phone-code select{border:none;background:transparent;font-size:13px;outline:none;cursor:pointer}.phone-input{flex:1;border:none;border-bottom:1px solid #ccc;padding:10px 4px;font-size:14px;outline:none;background:transparent}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Application details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title"><t t-esc="medical_title"/></div>
+    <form method="POST" action="/spc/apply/medical/step1/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="medical_type" t-att-value="medical_type"/>
+
+      <!-- 01 Entry visa details -->
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Entry visa details</div>
+          <div class="select-wrap">
+            <select name="applicant_name" id="med_applicant_sel" onchange="medFillApplicant(this.value)">
+              <option value="">Applicant name</option>
+              <option value="__manual__">-- Enter manually --</option>
+              <t t-foreach="employees" t-as="emp">
+                <option t-att-value="emp.get('name','')"><t t-esc="emp.get('name','')"/></option>
+              </t>
+            </select>
+          </div>
+          <div id="med-manual-wrap" style="display:none;">
+            <input class="field-input" type="text" id="med_manual_name" placeholder="Type applicant full name"/>
+          </div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Visa application type</div>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="visa_type" value="employee" onchange="checkVisa(this.value)"/> Employee visa</label>
+            <label class="radio-label"><input type="radio" name="visa_type" value="partner" onchange="checkVisa(this.value)"/> Partner / investor visa</label>
+            <label class="radio-label"><input type="radio" name="visa_type" value="student" onchange="checkVisa(this.value)"/> Student visa</label>
+            <label class="radio-label"><input type="radio" name="visa_type" value="green" onchange="checkVisa(this.value)"/> Green visa</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Application details -->
+      <div class="spc-section">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">Application details</div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Please select service</div>
+          <div class="radio-group" id="service-options-full">
+            <label class="radio-label"><input type="radio" name="service_type" value="normal" onchange="checkService(this.value)"/> Normal</label>
+            <label class="radio-label"><input type="radio" name="service_type" value="vip" onchange="checkService(this.value)"/> VIP Medical + Transport (Dubai, Sharjah, Ajman)</label>
+          </div>
+          <div id="service-options-green" style="display:none;">
+            <label class="radio-label"><input type="radio" name="service_type" value="vip" onchange="checkService(this.value)"/> VIP</label>
+          </div>
+          <div id="vip-note" class="vip-note">Please note transportation is provided for Dubai, Sharjah, and Ajman only.</div>
+        </div>
+      </div>
+
+      <!-- 03 Applicant Information -->
+      <div class="spc-section">
+        <div class="sec-num">03</div>
+        <div class="sec-body">
+          <div class="sec-title">Applicant Information</div>
+          <input class="field-input" type="text" name="first_name" placeholder="First name"/>
+          <input class="field-input" type="text" name="last_name" placeholder="Last name"/>
+          <input class="field-input" type="text" name="mother_name" placeholder="Mother's name"/>
+          <input class="field-input" type="email" name="email" placeholder="Email"/>
+          <div class="phone-wrap">
+            <div class="phone-code">
+              <span id="med-flag">&#127462;&#127466;</span>
+              <select name="phone_code" onchange="updateMedFlag(this)">
+                <option value="+971" data-flag="&#127462;&#127466;">+971</option>
+                <option value="+91" data-flag="&#127470;&#127475;">+91</option>
+                <option value="+44" data-flag="&#127468;&#127463;">+44</option>
+                <option value="+1" data-flag="&#127482;&#127480;">+1</option>
+                <option value="+92" data-flag="&#127477;&#127472;">+92</option>
+                <option value="+880" data-flag="&#127463;&#127465;">+880</option>
+                <option value="+63" data-flag="&#127477;&#127469;">+63</option>
+                <option value="+966" data-flag="&#127480;&#127462;">+966</option>
+                <option value="+968" data-flag="&#127476;&#127474;">+968</option>
+                <option value="+20" data-flag="&#127466;&#127468;">+20</option>
+              </select>
+            </div>
+            <input class="phone-input" type="text" name="mobile" placeholder="Mobile"/>
+          </div>
+          <input class="field-input" type="date" name="dob" placeholder="Date of birth"/>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="marital_status">
+                <option value="">Marital status</option>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="religion">
+                <option value="">Religion</option>
+                <option value="muslim">Muslim</option>
+                <option value="christian">Christian</option>
+                <option value="hindu">Hindu</option>
+                <option value="buddhism">Buddhism</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 Upload Documents -->
+      <div class="spc-section">
+        <div class="sec-num">03</div>
+        <div class="sec-body">
+          <div class="sec-title">Please upload the following documents</div>
+          <div class="upload-label">Passport copy</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-med-pass">Passport copy</div>
+            <input type="file" name="doc_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-med-pass').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label">Special comments page of passport</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-special">Special comments page of passport</div>
+            <input type="file" name="doc_special" style="display:none;" multiple="multiple" onchange="document.getElementById('n-special').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label">Entry visa with change of status or entry stamp copy</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-entry">Entry visa with change of status or entry stamp copy</div>
+            <input type="file" name="doc_entry_visa" style="display:none;" multiple="multiple" onchange="document.getElementById('n-entry').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label">Passport-sized photo</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-photo">Passport-sized photo</div>
+            <input type="file" name="doc_photo" style="display:none;" multiple="multiple" onchange="document.getElementById('n-photo').textContent=this.files.length+' file(s)'"/>
+          </label>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function medFillApplicant(val) {
+    var wrap = document.getElementById('med-manual-wrap');
+    wrap.style.display = val === '__manual__' ? 'block' : 'none';
+}
+function checkVisa(v) {
+    var full = document.getElementById('service-options-full');
+    var green = document.getElementById('service-options-green');
+    if(v === 'green') {
+        full.style.display = 'none';
+        green.style.display = 'block';
+    } else {
+        full.style.display = 'block';
+        green.style.display = 'none';
+    }
+    document.getElementById('vip-note').style.display = 'none';
+}
+function checkService(v) {
+    document.getElementById('vip-note').style.display = v === 'vip' ? 'block' : 'none';
+}
+function updateMedFlag(sel) {
+    var opt = sel.options[sel.selectedIndex];
+    document.getElementById('med-flag').innerHTML = opt.getAttribute('data-flag') || '&#127462;&#127466;';
+}
+</script>
+</body></html>
+</template>
+
+<!-- MEDICAL DECLARATION -->
+<template id="medical_declaration" name="Medical Declaration">
+<html><head><meta charset="utf-8"/><title>Medical | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Medical</div>
+    <form method="POST" action="/spc/apply/medical/declaration/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Declaration</div>
+          <div class="decl-box">
+            <p>I hereby declare that all the information provided in this application is true, accurate and complete. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
+              <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;"/>
+              <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/medical/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MEDICAL REVIEW -->
+<template id="medical_review" name="Medical Review">
+<html><head><meta charset="utf-8"/><title>Medical | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}.review-table{width:100%;font-size:13px;border-collapse:collapse}.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}.review-table td:first-child{color:#888;width:40%}.review-table td:last-child{font-weight:500}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Type</td><td><t t-esc="dict(record._fields['medical_type'].selection).get(record.medical_type,'-')"/></td></tr>
+        <tr><td>Applicant</td><td><t t-esc="(record.first_name or '') + ' ' + (record.last_name or '')"/></td></tr>
+        <tr><td>Visa Type</td><td><t t-esc="dict(record._fields['visa_type'].selection).get(record.visa_type,'-') if record.visa_type else '-'"/></td></tr>
+        <tr><td>Service</td><td><t t-esc="dict(record._fields['service_type'].selection).get(record.service_type,'-') if record.service_type else '-'"/></td></tr>
+        <tr style="border-top:2px solid #e0e0e0;">
+          <td style="font-weight:700;font-size:15px;padding-top:12px;">Total Fee</td>
+          <td style="font-weight:800;font-size:16px;color:#1abc9c;padding-top:12px;">AED <t t-esc="'%.2f' % record.amount"/></td>
+        </tr>
+      </table>
+    </div>
+    <form method="POST" action="/spc/apply/medical/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/medical/declaration/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MEDICAL PAYMENT -->
+<template id="medical_payment" name="Medical Payment">
+<html><head><meta charset="utf-8"/><title>Medical | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.pay-card{background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;text-align:center}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:40px;font-weight:900;color:#1a2340;margin-bottom:8px;">AED <t t-esc="'%.2f' % record.amount"/></div>
+      <div style="color:#888;font-size:14px;margin-bottom:16px;">Medical Service Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/medical/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/medical/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next" style="background:#1a2340;">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MEDICAL SUCCESS -->
+<template id="medical_success" name="Medical Success">
+<html><head><meta charset="utf-8"/><title>Submitted | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <div style="background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%;">
+        <div style="font-size:64px;color:#1abc9c;margin-bottom:20px;">&#10003;</div>
+        <div style="font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px;">Application Submitted Successfully!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:8px;">Your Medical application has been submitted.</p>
+        <p style="font-size:15px;color:#555;margin-bottom:32px;">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" style="background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- MEETING ROOM DETAIL -->
+<template id="meeting_room_detail" name="Meeting Room Detail">
+<html><head><meta charset="utf-8"/><title>Meeting Room Booking | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.page-title{font-size:22px;font-weight:700;color:#1abc9c}.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}.hero-banner{border-radius:12px;overflow:hidden;min-height:280px;position:relative;background:linear-gradient(135deg,#1565c0,#1a237e);display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}.hero-tag{position:absolute;top:20px;left:20px;background:#004d40;color:white;padding:6px 16px;border-radius:4px;font-size:13px;font-weight:700}.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span><div><button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button></div></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Meeting Room Booking - New</div>
+        <a href="/spc/apply/meeting_room/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">Meeting Room Booking</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p>This service allows clients to book a meeting room within the free zone, with assignments based on current availability.</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- MEETING ROOM STEP 1 -->
+<template id="meeting_room_step1_v2" name="Meeting Room Step 1">
+<html><head><meta charset="utf-8"/><title>Meeting Room Booking | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.field-input{width:100%;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.field-input::placeholder{color:#aaa}.field-textarea{width:100%;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px;resize:none;min-height:60px}.field-textarea::placeholder{color:#aaa}.select-row{display:flex;align-items:center;margin-bottom:16px}.select-wrap{position:relative;margin-bottom:16px;flex:1}.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Select meeting room booking</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/meeting_room/step1/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Meeting room booking</div>
+          <input class="field-input" type="date" name="booking_date" placeholder="Booking Date"/>
+          <input class="field-input" type="time" name="booking_start_time" placeholder="Booking Start Time"/>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="meeting_duration">
+                <option value="">Meeting Duration</option>
+                <option value="30min">30 Minutes</option>
+                <option value="1hr">1 Hour</option>
+                <option value="1hr30min">1.5 Hours</option>
+                <option value="2hr">2 Hours</option>
+                <option value="2hr30min">2.5 Hours</option>
+                <option value="3hr">3 Hours</option>
+                <option value="4hr">4 Hours</option>
+                <option value="5hr">5 Hours</option>
+                <option value="6hr">6 Hours</option>
+                <option value="full_day">Full Day (8 Hours)</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <textarea class="field-textarea" name="comments" placeholder="Comments"></textarea>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MEETING ROOM REVIEW -->
+<template id="meeting_room_review" name="Meeting Room Review">
+<html><head><meta charset="utf-8"/><title>Meeting Room Booking | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}.review-table{width:100%;font-size:13px;border-collapse:collapse}.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}.review-table td:first-child{color:#888;width:40%}.review-table td:last-child{font-weight:500}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Select meeting room booking</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Booking Date</td><td><t t-esc="str(record.booking_date) if record.booking_date else '-'"/></td></tr>
+        <tr><td>Start Time</td><td><t t-esc="record.booking_start_time or '-'"/></td></tr>
+        <tr><td>Duration</td><td><t t-esc="dict(record._fields['meeting_duration'].selection).get(record.meeting_duration,'-') if record.meeting_duration else '-'"/></td></tr>
+        <tr style="border-top:2px solid #e0e0e0;">
+          <td style="font-weight:700;font-size:15px;padding-top:12px;">Total Fee</td>
+          <td style="font-weight:800;font-size:16px;color:#1abc9c;padding-top:12px;">AED <t t-esc="'%.2f' % record.amount"/></td>
+        </tr>
+      </table>
+    </div>
+    <form method="POST" action="/spc/apply/meeting_room/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/meeting_room/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MEETING ROOM PAYMENT -->
+<template id="meeting_room_payment" name="Meeting Room Payment">
+<html><head><meta charset="utf-8"/><title>Meeting Room Booking | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.pay-card{background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;text-align:center}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Select meeting room booking</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:40px;font-weight:900;color:#1a2340;margin-bottom:8px;">AED <t t-esc="'%.2f' % record.amount"/></div>
+      <div style="color:#888;font-size:14px;margin-bottom:16px;">Meeting Room Booking Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/meeting_room/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/meeting_room/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next" style="background:#1a2340;">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MEETING ROOM SUCCESS -->
+<template id="meeting_room_success" name="Meeting Room Success">
+<html><head><meta charset="utf-8"/><title>Submitted | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <div style="background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%;">
+        <div style="font-size:64px;color:#1abc9c;margin-bottom:20px;">&#10003;</div>
+        <div style="font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px;">Booking Submitted Successfully!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:8px;">Your Meeting Room Booking has been submitted.</p>
+        <p style="font-size:15px;color:#555;margin-bottom:32px;">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" style="background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- MOFA DETAIL -->
+<template id="mofa_detail" name="MOFA Attestation Detail">
+<html><head><meta charset="utf-8"/><title>MOFA Attestation | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.page-title{font-size:22px;font-weight:700;color:#1abc9c}.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}.hero-banner{border-radius:12px;overflow:hidden;min-height:280px;position:relative;background:linear-gradient(135deg,#1565c0,#1a237e);display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}.hero-tag{position:absolute;top:20px;left:20px;background:#004d40;color:white;padding:6px 16px;border-radius:4px;font-size:13px;font-weight:700}.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span><div><button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button></div></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">MOFA Attestation - MOFA Attestation</div>
+        <a href="/spc/apply/mofa/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">MOFA Attestation</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p style="margin-bottom:16px;">Attestation is a process that verifies the authenticity of seals and signatures on documents issued within or outside the UAE. This service is offered by the Ministry of Foreign Affairs (MoFA) in the UAE through its digital platforms and by its embassies and consulates worldwide.</p>
+            <p style="font-weight:700;margin-bottom:8px;">Requirements:</p>
+            <ol style="padding-left:24px;margin-bottom:16px;">
+                <li>Original document in English or Arabic (or an official translation of it)</li>
+                <li>Document must be attested by the appropriate governing bodies prior to submission</li>
+                <li>Document must not be laminated</li>
+            </ol>
+            <p style="font-weight:700;margin-bottom:8px;">Output documents</p>
+            <p style="margin-bottom:16px;">MOFA Attested Documents</p>
+            <p style="font-weight:700;margin-bottom:8px;">Timeline</p>
+            <p style="margin-bottom:16px;">2 to 3 business days</p>
+            <p style="font-weight:700;margin-bottom:8px;">Fees</p>
+            <p style="margin-bottom:4px;">2,525 AED Page Per - Documents Corporate of Attestation MOFA</p>
+            <p>650 AED Page Per - Documents Individual of Attestation - MOFA</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- MOFA STEP 1 -->
+<template id="mofa_step1" name="MOFA Step 1">
+<html><head><meta charset="utf-8"/><title>MOFA Attestation | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.select-wrap{position:relative;max-width:680px;margin-bottom:0;flex:1}.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}.select-row .select-wrap{flex:1}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.check-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f3f4f6;cursor:pointer;max-width:680px}.check-item:last-child{border-bottom:none}.check-box{width:20px;height:20px;border:2px solid #d1d5db;border-radius:4px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;background:white}.check-box.checked{background:#1a3c6e;border-color:#1a3c6e;color:white}.check-title{font-size:14px;font-weight:600;color:#1a3c6e;margin-bottom:4px}.check-desc{font-size:12px;color:#9ca3af}.upload-label{font-size:14px;color:#333;font-weight:600;margin-bottom:8px}.upload-box{border:2px solid #b0c4de;border-radius:0;padding:20px;text-align:center;cursor:pointer;background:#f8faff;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:200px;margin-bottom:16px}.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}.upload-text{color:#1a5fa8;font-size:12px;font-weight:600}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Document details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">MOFA Attestation</div>
+    <form method="POST" action="/spc/apply/mofa/step1/submit" enctype="multipart/form-data" id="mofa-form">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+      <!-- 01 Document Type -->
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Select document details</div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Document type</div>
+          <div class="check-item" onclick="toggleCheck('ind')" id="ind-item">
+            <div class="check-box" id="ind-box">&#10003;</div>
+            <div>
+              <div class="check-title">Individual Affairs Documents or Certificate of Origin</div>
+              <div class="check-desc">Includes but not limited to: educational documents (certificate &amp; transcripts are treated as two different documents) - birth certificates - death certificates etc.</div>
+            </div>
+          </div>
+          <input type="hidden" name="doc_type_individual" id="ind-val" value="0"/>
+          <div class="check-item" onclick="toggleCheck('com')" id="com-item">
+            <div class="check-box" id="com-box">&#10003;</div>
+            <div>
+              <div class="check-title">Commercial Documents</div>
+              <div class="check-desc">Includes but not limited to: contract or agreement - commercial registration - appointment of a manager or a director - minutes of meeting of board of directors or partners etc.</div>
+            </div>
+          </div>
+          <input type="hidden" name="doc_type_commercial" id="com-val" value="0"/>
+          <div class="check-item" onclick="toggleCheck('inv')" id="inv-item">
+            <div class="check-box" id="inv-box">&#10003;</div>
+            <div>
+              <div class="check-title">Invoice</div>
+              <div class="check-desc">Attestation of Commercial Invoices</div>
+            </div>
+          </div>
+          <input type="hidden" name="doc_type_invoice" id="inv-val" value="0"/>
+        </div>
+      </div>
+
+      <!-- 02 Individual Affairs Documents -->
+      <div id="sec-ind" class="spc-section" style="display:none;">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">Select Individual Affairs Documents</div>
+          <div style="font-size:13px;color:#9ca3af;margin-bottom:12px;">Total number of documents to be attested for Individual Affairs Documents</div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="individual_doc_count" id="ind-count" onchange="renderUploads('ind', this.value)">
+                <option value="0">Total number of documents to be attested for Individual Affairs Documents</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='0';renderUploads('ind','0')">x</button>
+          </div>
+          <div id="ind-uploads"></div>
+        </div>
+      </div>
+
+      <!-- 03 Commercial Documents -->
+      <div id="sec-com" class="spc-section" style="display:none;">
+        <div class="sec-num" id="com-sec-num">03</div>
+        <div class="sec-body">
+          <div class="sec-title">Select Commercial Documents</div>
+          <div style="font-size:13px;color:#9ca3af;margin-bottom:12px;">Total number of documents to be attested for Commercial Documents</div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="commercial_doc_count" id="com-count" onchange="renderUploads('com', this.value)">
+                <option value="0">Total number of documents to be attested for Commercial Documents</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='0';renderUploads('com','0')">x</button>
+          </div>
+          <div id="com-uploads"></div>
+        </div>
+      </div>
+
+      <!-- 04 Invoice Documents -->
+      <div id="sec-inv" class="spc-section" style="display:none;">
+        <div class="sec-num" id="inv-sec-num">04</div>
+        <div class="sec-body">
+          <div class="sec-title">Select Invoices</div>
+          <div style="font-size:13px;color:#9ca3af;margin-bottom:12px;">Total Number Of Documents to be Attested for Invoice</div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="invoice_doc_count" id="inv-count" onchange="renderUploads('inv', this.value)">
+                <option value="0">Total number of documents to be attested for Invoice</option>
+                <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='0';renderUploads('inv','0')">x</button>
+          </div>
+          <div id="inv-uploads"></div>
+        </div>
+      </div>
+
+      <!-- Document Origin Country -->
+      <div class="spc-section" id="sec-country">
+        <div class="sec-num" id="country-sec-num">02</div>
+        <div class="sec-body">
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="origin_country_id">
+                <option value="">Document Origin Country</option>
+                <t t-foreach="countries" t-as="c">
+                  <option t-att-value="c.id"><t t-esc="c.name"/></option>
+                </t>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+var checked = {ind: false, com: false, inv: false};
+function toggleCheck(key) {
+    checked[key] = !checked[key];
+    var box = document.getElementById(key+'-box');
+    var val = document.getElementById(key+'-val');
+    var sec = document.getElementById('sec-'+key);
+    if(checked[key]) {
+        box.style.background='#1a3c6e'; box.style.borderColor='#1a3c6e'; box.style.color='white';
+        val.value = '1';
+        if(sec) sec.style.display = 'flex';
+    } else {
+        box.style.background='white'; box.style.borderColor='#d1d5db'; box.style.color='transparent';
+        val.value = '0';
+        if(sec) sec.style.display = 'none';
+    }
+    updateSecNums();
+}
+function updateSecNums() {
+    var n = 2;
+    if(checked.ind) { document.querySelector('#sec-ind .sec-num').textContent = n++; }
+    if(checked.com) { document.querySelector('#sec-com .sec-num').textContent = n++; }
+    if(checked.inv) { document.querySelector('#sec-inv .sec-num').textContent = n++; }
+    document.getElementById('country-sec-num').textContent = n;
+}
+function renderUploads(key, count) {
+    var container = document.getElementById(key+'-uploads');
+    container.innerHTML = '';
+    var n = parseInt(count) || 0;
+    for(var i=1; i&lt;=n; i++) {
+        var div = document.createElement('div');
+        div.innerHTML = '&lt;div class="upload-label"&gt;Upload document '+i+'&lt;/div&gt;'+
+            '&lt;label class="upload-box" style="cursor:pointer;"&gt;'+
+            '&lt;div class="upload-icon"&gt;&#8679;&lt;/div&gt;'+
+            '&lt;div class="upload-text" id="'+key+'-fn-'+i+'"&gt;Upload document '+i+'&lt;/div&gt;'+
+            '&lt;input type="file" name="doc_'+key+'_'+i+'" style="display:none;" onchange="document.getElementById(\''+key+'-fn-'+i+'\').textContent=this.files[0].name"/&gt;'+
+            '&lt;/label&gt;';
+        container.appendChild(div);
+    }
+}
+</script>
+</body></html>
+</template>
+
+<!-- MOFA DECLARATION -->
+<template id="mofa_declaration" name="MOFA Declaration">
+<html><head><meta charset="utf-8"/><title>MOFA Attestation | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">MOFA Attestation</div>
+    <form method="POST" action="/spc/apply/mofa/declaration/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Declaration</div>
+          <div class="decl-box">
+            <p>I hereby declare that all the information provided in this application is true, accurate and complete. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
+              <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;"/>
+              <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/mofa/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MOFA REVIEW -->
+<template id="mofa_review" name="MOFA Review">
+<html><head><meta charset="utf-8"/><title>MOFA Attestation | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}.review-table{width:100%;font-size:13px;border-collapse:collapse}.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}.review-table td:first-child{color:#888;width:40%}.review-table td:last-child{font-weight:500}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Individual Docs</td><td><t t-esc="'Yes' if record.doc_type_individual else 'No'"/></td></tr>
+        <tr><td>Commercial Docs</td><td><t t-esc="'Yes' if record.doc_type_commercial else 'No'"/></td></tr>
+        <tr><td>Invoice Docs</td><td><t t-esc="'Yes' if record.doc_type_invoice else 'No'"/></td></tr>
+        <tr><td>Origin Country</td><td><t t-esc="record.origin_country_id.name if record.origin_country_id else '-'"/></td></tr>
+        <tr style="border-top:2px solid #e0e0e0;">
+          <td style="font-weight:700;font-size:15px;padding-top:12px;">Total Fee</td>
+          <td style="font-weight:800;font-size:16px;color:#1abc9c;padding-top:12px;">AED <t t-esc="'%.2f' % record.amount"/></td>
+        </tr>
+      </table>
+    </div>
+    <form method="POST" action="/spc/apply/mofa/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/mofa/declaration/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MOFA PAYMENT -->
+<template id="mofa_payment" name="MOFA Payment">
+<html><head><meta charset="utf-8"/><title>MOFA Attestation | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.pay-card{background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;text-align:center}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % record.amount"/></div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:40px;font-weight:900;color:#1a2340;margin-bottom:8px;">AED <t t-esc="'%.2f' % record.amount"/></div>
+      <div style="color:#888;font-size:14px;margin-bottom:16px;">MOFA Attestation Service Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/mofa/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/mofa/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next" style="background:#1a2340;">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- MOFA SUCCESS -->
+<template id="mofa_success" name="MOFA Success">
+<html><head><meta charset="utf-8"/><title>Submitted | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <div style="background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%;">
+        <div style="font-size:64px;color:#1abc9c;margin-bottom:20px;">&#10003;</div>
+        <div style="font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px;">Application Submitted Successfully!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:8px;">Your MOFA Attestation application has been submitted.</p>
+        <p style="font-size:15px;color:#555;margin-bottom:32px;">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" style="background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+</odoo>

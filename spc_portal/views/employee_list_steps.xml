@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<template id="template_el_main" name="Employee List Main">
+<html><head><meta charset="utf-8"/><title>Employee List</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;padding:32px}
+h2{font-size:22px;font-weight:700;color:#1a2340;margin-bottom:4px}
+.sub{color:#888;font-size:14px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);text-decoration:none;color:inherit;display:block}
+.card-img{height:160px;position:relative;display:flex;align-items:center;padding:0 24px;background:linear-gradient(135deg,#1a3a6b,#2a6cbf)}
+.card-tag{position:absolute;top:12px;left:12px;color:#fff;padding:4px 12px;border-radius:3px;font-size:11px;font-weight:600;background:#0d5c8c}
+.card-text{color:#fff;font-size:22px;font-weight:800;line-height:1.2;margin-top:16px}
+.card-body{padding:16px}
+.card-name{font-weight:600;font-size:15px;margin-bottom:6px;color:#0d5c8c}
+.card-fee{color:#555;font-size:13px;font-weight:600}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+    <h2>Employee List</h2>
+    <div class="sub">Employee List</div>
+    <div class="grid">
+        <a href="/spc/company-management/employee-list/new/additional" class="card">
+            <div class="card-img">
+                <span class="card-tag">New</span>
+                <span class="card-text">Employee<br/>List</span>
+            </div>
+            <div class="card-body">
+                <div class="card-name">New</div>
+                <div class="card-fee">AED 385.00</div>
+            </div>
+        </a>
+    </div>
+</body></html>
+</template>
+
+<template id="template_el_service_detail" name="Employee List Service Detail">
+<html><head><meta charset="utf-8"/><title>Employee List - New</title>
+<style>
+body{font-family:"Inter",sans-serif;margin:0;padding:0;background:#fff}
+.header{padding:16px 32px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px}
+.back-link{font-size:12px;color:#6b7280;text-decoration:none}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c;margin:0}
+.start-btn{margin-left:auto;padding:10px 24px;background:#1a2340;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none}
+.hero{width:100%;min-height:200px;background:linear-gradient(135deg,#1a3a6b,#2a6cbf);display:flex;align-items:center;padding:40px 60px;position:relative;color:#fff}
+.hero-badge{display:inline-block;padding:4px 12px;border-radius:4px;font-size:13px;font-weight:700;margin-bottom:12px;background:rgba(0,0,0,.2)}
+.hero-title{font-size:48px;font-weight:800;line-height:1.1}
+.content{max-width:900px;margin:32px auto;padding:0 32px}
+.section-title{font-size:18px;font-weight:700;color:#1a2340;margin:24px 0 4px}
+.divider{border:none;border-top:2px dotted #e5e7eb;margin:4px 0 12px}
+.desc-text{font-size:13px;color:#374151;line-height:1.6}
+.req-list{list-style:decimal;padding-left:20px;font-size:13px;color:#374151;line-height:2.2}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="header">
+    <a href="/spc/company-management/employee-list" class="back-link">&#8592; BACK TO COMPANY MANAGEMENT</a>
+    <h1 class="page-title">Employee List - New</h1>
+    <a href="/spc/apply/employee_list/step1" class="start-btn">START PROCESS</a>
+</div>
+<div class="hero">
+    <div>
+        <div class="hero-badge">New</div>
+        <div class="hero-title">Employee<br/>List</div>
+    </div>
+</div>
+<div class="content">
+    <div class="section-title">Description</div>
+    <hr class="divider"/>
+    <p class="desc-text">Provides a document listing the company's employees.</p>
+    <p class="desc-text"><strong>Requirement:</strong></p>
+    <ol class="req-list">
+        <li>Copy of Formation Documents</li>
+        <li>E-channel should be valid to apply for this service.</li>
+    </ol>
+    <div class="section-title">Output docs</div>
+    <hr class="divider"/>
+    <p class="desc-text">Certificate of employee list.</p>
+    <div class="section-title">Fees</div>
+    <hr class="divider"/>
+    <p class="desc-text">AED 375</p>
+</div>
+</body></html>
+</template>
+
+<template id="template_el_step1" name="Employee List Step 1">
+<html><head><meta charset="utf-8"/><title>Declaration | Employee List</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">2</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">385.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/employee-list">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/apply/employee_list/step1" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Declaration</div>
+                    <div class="decl-box">
+                        <p style="margin-bottom:14px;">By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of SPC Terms and Conditions and the laws of the United Arab Emirates.</p>
+                        <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                    </div>
+                    <p style="font-size:14px;font-weight:600;margin-bottom:12px;">Acknowledgement</p>
+                    <label class="radio-label">
+                        <input type="checkbox" name="declaration_accepted"
+                               style="accent-color:#1a2340;width:16px;height:16px;"/>
+                        I have read and agree to the SPC Terms and Conditions.
+                    </label>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <span></span>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+</template>
+
+<template id="template_el_step2" name="Employee List Step 2">
+<html><head><meta charset="utf-8"/><title>Review | Employee List</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">385.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/employee-list">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <p style="color:#888;font-size:13px;margin-bottom:24px;margin-top:-16px;">Please review your application before proceeding to payment.</p>
+        <div class="review-card">
+            <div class="review-card-title">1. Declaration</div>
+            <table class="review-table">
+                <tr>
+                    <td>Declaration Accepted</td>
+                    <td><t t-if="step1.get('declaration_accepted')">&#10003; Yes</t><t t-else="">No</t></td>
+                </tr>
+            </table>
+        </div>
+        <div class="review-card">
+            <div class="review-card-title">2. Service</div>
+            <table class="review-table">
+                <tr><td>Service</td><td>Employee List - New</td></tr>
+                <tr><td>Fee</td><td>AED 385.00</td></tr>
+            </table>
+        </div>
+        <div class="spc-nav-buttons">
+            <a href="/spc/apply/employee_list/step1" class="spc-btn-previous">PREVIOUS</a>
+            <a href="/spc/apply/employee_list/step3" class="spc-btn-next" style="border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;text-decoration:none;">NEXT</a>
+        </div>
+    </div>
+</div>
+</body></html>
+</template>
+
+<template id="template_el_step3" name="Employee List Step 3">
+<html><head><meta charset="utf-8"/><title>Payment | Employee List</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">385.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/employee-list">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Order Summary</div>
+                <table class="review-table" style="max-width:500px;">
+                    <tr><td>Employee List - New</td><td style="font-weight:600;">AED 385.00</td></tr>
+                    <tr><td style="font-weight:700;color:#1a2340;font-size:14px;">Total</td><td style="font-weight:700;color:#1a2340;font-size:15px;">AED 385.00</td></tr>
+                </table>
+            </div>
+        </div>
+        <form action="/spc/apply/employee_list/final-submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-nav-buttons">
+                <a href="/spc/apply/employee_list/step2" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+</template>
+
+<template id="template_el_success" name="Employee List Success">
+<html><head><meta charset="utf-8"/><title>Submitted | Employee List</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="success-wrap">
+    <div class="success-card">
+        <div class="success-icon">&#10003;</div>
+        <h2 style="color:#1a2340;font-size:22px;font-weight:700;margin-bottom:10px;">Application Submitted!</h2>
+        <p style="color:#666;font-size:14px;line-height:1.7;margin-bottom:16px;">Your Employee List application has been successfully submitted.</p>
+        <t t-if="record">
+            <div style="background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee;">
+                <p style="font-size:12px;color:#888;margin-bottom:4px;">Reference Number</p>
+                <p style="font-size:18px;font-weight:700;color:#1a2340;margin:0;" t-esc="record.name"/>
+            </div>
+        </t>
+        <p style="color:#888;font-size:13px;margin-bottom:28px;">Our team will process your request shortly.</p>
+        <a href="/spc/company-management/employee-list" style="display:inline-block;background:#1a2340;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;">BACK TO EMPLOYEE LIST</a>
+    </div>
+</div>
+</body></html>
+</template>
+
+</data>
+</odoo>

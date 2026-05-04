@@ -3,99 +3,67 @@
 <data>
 
 <template id="template_certify_step1" name="Certify Step1 Document">
-<html>
-<head><meta charset="utf-8"/><title>Certify</title>
+<html><head><meta charset="utf-8"/><title>Certify</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
-.logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.logo-name{font-size:16px;font-weight:700}
-.logo-sub{font-size:11px;opacity:.6}
-.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
-.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.75}
-.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
-.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
-.step-text{font-size:13px;line-height:1.3}
-.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
-.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
-.main{margin-left:280px;padding:40px 48px;min-height:100vh}
-.page-title{font-size:28px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:8px}
-.sec-title{font-size:17px;font-weight:700;color:#1a2340;margin-bottom:16px}
 .doc-select-wrap{position:relative;max-width:700px}
-.doc-input{width:100%;padding:14px 44px 14px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;background:#f8f9fa;outline:none;cursor:pointer;color:#888}
-.doc-input:focus{border-bottom-color:#1abc9c;background:#fff}
-.doc-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:#333;color:#fff;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.doc-input{width:100%;padding:10px 0;border:none;border-bottom:1.5px solid #d1d5db;font-size:14px;background:transparent;outline:none;cursor:pointer;color:#888}
+.doc-input:focus{border-bottom-color:#1abc9c}
+.doc-clear{position:absolute;right:4px;top:50%;transform:translateY(-50%);background:#6b7280;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
 .doc-dropdown{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e0e0e0;border-radius:0 0 8px 8px;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.1)}
 .doc-dropdown.open{display:block}
 .doc-option{padding:14px 16px;font-size:14px;cursor:pointer;color:#333;border-bottom:1px solid #f0f0f0}
 .doc-option:last-child{border-bottom:none}
 .doc-option:hover{background:#f0fdf4;color:#1abc9c}
-.doc-option.selected{color:#1abc9c;font-weight:600}
 .selected-docs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;max-width:700px}
 .doc-tag{background:#1abc9c;color:#fff;border-radius:20px;padding:6px 14px;font-size:13px;display:flex;align-items:center;gap:8px}
 .doc-tag-remove{background:none;border:none;color:#fff;cursor:pointer;font-size:16px;line-height:1;padding:0}
-.remarks-textarea{width:100%;max-width:700px;padding:14px 16px;border:none;border-bottom:2px solid #ddd;font-size:14px;outline:none;background:#f8f9fa;resize:none;min-height:60px;display:block;margin-top:8px}
-.remarks-textarea:focus{border-bottom-color:#1abc9c;background:#fff}
-.nav-bar{display:flex;justify-content:flex-end;margin-top:40px}
-.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
 </style>
-</head>
-<body>
+</head><body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-top">
-        <div class="logo-box">K</div>
-        <div><div class="logo-name">SPC</div><div class="logo-sub">Free Zone</div></div>
-    </div>
-    <div class="progress-label">Your progress</div>
-    <div class="progress-step active"><div class="step-circle">1</div><div class="step-text">Document</div></div>
-    <div class="progress-step"><div class="step-circle">2</div><div class="step-text">Declaration</div></div>
-    <div class="progress-step"><div class="step-circle">3</div><div class="step-text">Review application</div></div>
-    <div class="progress-step"><div class="step-circle">4</div><div class="step-text">Payment</div></div>
-    <div class="total-section">
-        <div style="font-size:11px;opacity:.5">Total</div>
-        <div style="font-size:11px;opacity:.5">AED</div>
-        <div class="total-amount">10.00</div>
-    </div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Document</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
 </div>
 <div class="main">
-    <div class="page-title">Certify</div>
+    <div class="form-title">Certify</div>
     <form method="post" action="/spc/company-management/apply/certify-step1/submit" id="certify_form">
         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
         <input type="hidden" name="service_type" t-att-value="service_type"/>
         <input type="hidden" name="document_names" id="doc_names_input"/>
-        <div style="background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:24px">
+        <div class="spc-section">
             <div class="sec-num">01</div>
-            <div class="sec-title">Select the name of the document(s) to certify</div>
-            <div class="doc-select-wrap">
-                <input type="text" class="doc-input" placeholder="Document" readonly="readonly"
-                    onclick="toggleDropdown()" id="doc_display"/>
-                <button type="button" class="doc-clear" onclick="clearDocs()">&#215;</button>
-                <div class="doc-dropdown" id="doc_dropdown">
-                    <div class="doc-option" onclick="selectDoc('Certificate of Formation')">Certificate of Formation</div>
-                    <div class="doc-option" onclick="selectDoc('Trade License')">Trade License</div>
-                    <div class="doc-option" onclick="selectDoc('Share Register')">Share Register</div>
-                    <div class="doc-option" onclick="selectDoc('Lease Agreement')">Lease Agreement</div>
-                    <div class="doc-option" onclick="selectDoc('Memorandum of Association')">Memorandum of Association</div>
-                    <div class="doc-option" onclick="selectDoc('Articles of Association')">Articles of Association</div>
+            <div class="sec-body">
+                <div class="sec-title">Select the name of the document(s) to certify</div>
+                <div class="doc-select-wrap">
+                    <input type="text" class="doc-input" placeholder="Document" readonly="readonly" onclick="toggleDropdown()" id="doc_display"/>
+                    <button type="button" class="doc-clear" onclick="clearDocs()">&#215;</button>
+                    <div class="doc-dropdown" id="doc_dropdown">
+                        <div class="doc-option" onclick="selectDoc('Certificate of Formation')">Certificate of Formation</div>
+                        <div class="doc-option" onclick="selectDoc('Trade License')">Trade License</div>
+                        <div class="doc-option" onclick="selectDoc('Share Register')">Share Register</div>
+                        <div class="doc-option" onclick="selectDoc('Lease Agreement')">Lease Agreement</div>
+                        <div class="doc-option" onclick="selectDoc('Memorandum of Association')">Memorandum of Association</div>
+                        <div class="doc-option" onclick="selectDoc('Articles of Association')">Articles of Association</div>
+                    </div>
                 </div>
+                <div class="selected-docs" id="selected_docs"></div>
             </div>
-            <div class="selected-docs" id="selected_docs"></div>
         </div>
-        <div style="background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:24px">
+        <div class="spc-section">
             <div class="sec-num">02</div>
-            <div class="sec-title">Remarks</div>
-            <textarea class="remarks-textarea" name="remarks" placeholder="Comments" rows="3"></textarea>
+            <div class="sec-body">
+                <div class="sec-title">Remarks</div>
+                <textarea class="field-input" name="remarks" placeholder="Comments" rows="3" style="resize:none;min-height:70px"></textarea>
+            </div>
         </div>
-        <div class="nav-bar">
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons" style="justify-content:flex-end">
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -107,20 +75,14 @@ function toggleDropdown(){
     dd.classList.toggle('open');
 }
 function selectDoc(name){
-    if(!selectedDocs.includes(name)){
-        selectedDocs.push(name);
-        renderTags();
-    }
+    if(!selectedDocs.includes(name)){ selectedDocs.push(name); renderTags(); }
     document.getElementById('doc_dropdown').classList.remove('open');
 }
 function removeDoc(name){
     selectedDocs = selectedDocs.filter(function(d){return d !== name});
     renderTags();
 }
-function clearDocs(){
-    selectedDocs = [];
-    renderTags();
-}
+function clearDocs(){ selectedDocs = []; renderTags(); }
 function renderTags(){
     var container = document.getElementById('selected_docs');
     var input = document.getElementById('doc_names_input');
@@ -137,235 +99,124 @@ document.addEventListener('click', function(e){
     }
 });
 </script>
-</body>
-</html>
+</body></html>
 </template>
 
 <template id="template_certify_step2" name="Certify Step2 Declaration">
-<html>
-<head><meta charset="utf-8"/><title>Certify - Declaration</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
-.logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.logo-name{font-size:16px;font-weight:700}.logo-sub{font-size:11px;opacity:.6}
-.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
-.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.75}
-.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
-.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
-.step-text{font-size:13px;line-height:1.3}
-.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
-.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
-.main{margin-left:280px;padding:40px 48px;min-height:100vh}
-.page-title{font-size:28px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:12px;color:#1abc9c;font-weight:700;margin-bottom:8px}
-.sec-title{font-size:17px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.desc-text{font-size:13px;color:#555;line-height:1.8;margin-bottom:12px}
-.ack-label{font-size:13px;font-weight:600;color:#333;margin-bottom:12px;display:block}
-.ack-wrap{display:flex;align-items:flex-start;gap:12px;font-size:14px}
-.ack-wrap input{width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;flex-shrink:0}
-.nav-bar{display:flex;justify-content:space-between;margin-top:40px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:14px;font-weight:700;cursor:pointer}
-</style>
-</head>
-<body>
+<html><head><meta charset="utf-8"/><title>Certify - Declaration</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-top">
-        <div class="logo-box">K</div>
-        <div><div class="logo-name">SPC</div><div class="logo-sub">Free Zone</div></div>
-    </div>
-    <div class="progress-label">Your progress</div>
-    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Document</div></div>
-    <div class="progress-step active"><div class="step-circle">2</div><div class="step-text">Declaration</div></div>
-    <div class="progress-step"><div class="step-circle">3</div><div class="step-text">Review application</div></div>
-    <div class="progress-step"><div class="step-circle">4</div><div class="step-text">Payment</div></div>
-    <div class="total-section">
-        <div style="font-size:11px;opacity:.5">Total AED</div>
-        <div class="total-amount">10.00</div>
-    </div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
 </div>
 <div class="main">
-    <div class="page-title">Certify</div>
+    <div class="form-title">Certify</div>
     <form method="post" action="/spc/company-management/apply/certify-step2/submit">
         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
         <input type="hidden" name="service_type" t-att-value="service_type"/>
-        <div class="form-card">
+        <div class="spc-section">
             <div class="sec-num">01</div>
-            <div class="sec-title">Declaration:</div>
-            <p class="desc-text">By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" style="color:#1abc9c">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
-            <p class="desc-text">Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
-            <span class="ack-label">Acknowledgement</span>
-            <div class="ack-wrap">
-                <input type="checkbox" name="declaration" id="decl_check" required="required"/>
-                <label for="decl_check" style="font-weight:600">I have read and agree to the SPC Terms and Conditions.</label>
+            <div class="sec-body">
+                <div class="sec-title">Declaration:</div>
+                <div class="decl-box">
+                    <p style="margin-bottom:14px">By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" style="color:#1abc9c">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+                    <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                </div>
+                <p style="font-size:14px;font-weight:600;margin-bottom:12px;margin-top:16px">Acknowledgement</p>
+                <label class="ack-row">
+                    <input type="checkbox" name="declaration" id="decl_check" required="required" style="width:16px;height:16px"/>
+                    I have read and agree to the SPC Terms and Conditions.
+                </label>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
 </div>
-</body>
-</html>
+</body></html>
 </template>
 
 <template id="template_certify_review" name="Certify Review">
-<html>
-<head><meta charset="utf-8"/><title>Certify - Review</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
-.logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.logo-name{font-size:16px;font-weight:700}.logo-sub{font-size:11px;opacity:.6}
-.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
-.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.75}
-.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
-.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
-.step-text{font-size:13px;line-height:1.3}
-.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
-.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
-.main{margin-left:280px;padding:40px 48px;min-height:100vh}
-.page-title{font-size:28px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.review-card{background:#fff;border-radius:14px;padding:24px 28px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:16px}
-.review-section-title{font-size:13px;font-weight:700;color:#1abc9c;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
-.review-row{display:flex;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:14px}
-.review-row:last-child{border-bottom:none}
-.review-key{color:#888;width:200px;flex-shrink:0}
-.review-val{color:#1a2340;font-weight:500}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:14px;font-weight:700;cursor:pointer}
-</style>
-</head>
-<body>
+<html><head><meta charset="utf-8"/><title>Certify - Review</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-top">
-        <div class="logo-box">K</div>
-        <div><div class="logo-name">SPC</div><div class="logo-sub">Free Zone</div></div>
-    </div>
-    <div class="progress-label">Your progress</div>
-    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Document</div></div>
-    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Declaration</div></div>
-    <div class="progress-step active"><div class="step-circle">3</div><div class="step-text">Review application</div></div>
-    <div class="progress-step"><div class="step-circle">4</div><div class="step-text">Payment</div></div>
-    <div class="total-section">
-        <div style="font-size:11px;opacity:.5">Total AED</div>
-        <div class="total-amount">10.00</div>
-    </div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
 </div>
 <div class="main">
-    <div class="page-title">Review Application</div>
+    <div class="form-title">Review Application</div>
     <div class="review-card">
-        <div class="review-section-title">Documents</div>
-        <div class="review-row">
-            <span class="review-key">Documents to Certify</span>
-            <span class="review-val"><t t-esc="step1.get('document_names', '-')"/></span>
-        </div>
-        <div class="review-row">
-            <span class="review-key">Remarks</span>
-            <span class="review-val"><t t-esc="step1.get('remarks', '-')"/></span>
-        </div>
+        <div class="review-header"><div class="review-sec-title">Documents</div></div>
+        <div class="review-row"><div class="review-lbl">DOCUMENTS TO CERTIFY</div><div class="review-val"><t t-esc="step1.get('document_names', '-')"/></div></div>
+        <div class="review-row"><div class="review-lbl">REMARKS</div><div class="review-val"><t t-esc="step1.get('remarks', '-')"/></div></div>
     </div>
     <form method="post" action="/spc/company-management/apply/certify-payment/submit">
         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
         <input type="hidden" name="service_type" t-att-value="service_type"/>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">PROCEED TO PAYMENT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
         </div>
     </form>
 </div>
 </div>
-</body>
-</html>
+</body></html>
 </template>
 
 <template id="template_certify_payment" name="Certify Payment">
-<html>
-<head><meta charset="utf-8"/><title>Certify - Payment</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:280px;background:#0d1b3e;color:#fff;padding:28px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
-.sidebar-top{display:flex;align-items:center;gap:10px;margin-bottom:32px}
-.logo-box{background:#1abc9c;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.logo-name{font-size:16px;font-weight:700}.logo-sub{font-size:11px;opacity:.6}
-.progress-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.4;margin-bottom:12px}
-.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:10px;opacity:.45;padding:6px 0}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.75}
-.step-circle{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
-.progress-step.active .step-circle{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-circle{background:#fff;color:#0d1b3e;border-color:#fff}
-.step-text{font-size:13px;line-height:1.3}
-.total-section{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
-.total-amount{font-size:22px;font-weight:700;color:#1abc9c}
-.main{margin-left:280px;padding:40px 48px;min-height:100vh}
-.page-title{font-size:28px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.form-card{background:#fff;border-radius:14px;padding:28px 32px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-title{font-size:17px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.pay-option{display:flex;align-items:center;gap:12px;padding:14px 0;font-size:14px;border-bottom:1px solid #f0f0f0;cursor:pointer}
-.pay-option:last-child{border-bottom:none}
-.pay-option input[type=radio]{width:18px;height:18px;accent-color:#1abc9c}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-submit{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:14px;font-weight:700;cursor:pointer}
-</style>
-</head>
-<body>
+<html><head><meta charset="utf-8"/><title>Certify - Payment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-top">
-        <div class="logo-box">K</div>
-        <div><div class="logo-name">SPC</div><div class="logo-sub">Free Zone</div></div>
-    </div>
-    <div class="progress-label">Your progress</div>
-    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Document</div></div>
-    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Declaration</div></div>
-    <div class="progress-step done"><div class="step-circle">&#10003;</div><div class="step-text">Review application</div></div>
-    <div class="progress-step active"><div class="step-circle">4</div><div class="step-text">Payment</div></div>
-    <div class="total-section">
-        <div style="font-size:11px;opacity:.5">Total AED</div>
-        <div class="total-amount">10.00</div>
-    </div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
 </div>
 <div class="main">
-    <div class="page-title">Payment</div>
+    <div class="form-title">Payment</div>
     <form method="post" action="/spc/company-management/apply/certify-final-submit">
         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
         <input type="hidden" name="service_type" t-att-value="service_type"/>
-        <div class="form-card">
-            <div class="sec-title">Select Payment Method</div>
-            <label class="pay-option"><input type="radio" name="payment_method" value="cash" checked="checked"/> Cash</label>
-            <label class="pay-option"><input type="radio" name="payment_method" value="bank_transfer"/> Bank Transfer</label>
-            <label class="pay-option"><input type="radio" name="payment_method" value="credit_card"/> Credit / Debit Card</label>
-            <label class="pay-option"><input type="radio" name="payment_method" value="online"/> Online Payment</label>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Select Payment Method</div>
+                <label class="ack-row" style="margin-bottom:12px"><input type="radio" name="payment_method" value="cash" checked="checked" style="width:16px;height:16px"/> Cash</label>
+                <label class="ack-row" style="margin-bottom:12px"><input type="radio" name="payment_method" value="bank_transfer" style="width:16px;height:16px"/> Bank Transfer</label>
+                <label class="ack-row" style="margin-bottom:12px"><input type="radio" name="payment_method" value="credit_card" style="width:16px;height:16px"/> Credit / Debit Card</label>
+                <label class="ack-row" style="margin-bottom:12px"><input type="radio" name="payment_method" value="online" style="width:16px;height:16px"/> Online Payment</label>
+            </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-submit">SUBMIT APPLICATION</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
         </div>
     </form>
 </div>
 </div>
-</body>
-</html>
+</body></html>
 </template>
 
 </data>

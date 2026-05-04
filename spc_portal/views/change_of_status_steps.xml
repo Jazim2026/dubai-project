@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<template id="template_cos_main" name="Change of Status Main">
+<html><head><meta charset="utf-8"/><title>Change of Status</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;padding:32px}
+h2{font-size:22px;font-weight:700;color:#1a2340;margin-bottom:4px}
+.sub{color:#888;font-size:14px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);text-decoration:none;color:inherit;display:block}
+.card-img{height:160px;position:relative;display:flex;align-items:center;padding:0 24px;background:linear-gradient(135deg,#1a3a6b,#2a6cbf)}
+.card-tag{position:absolute;top:12px;left:12px;color:#fff;padding:4px 12px;border-radius:3px;font-size:11px;font-weight:600;background:#0d5c8c}
+.card-text{color:#fff;font-size:22px;font-weight:800;line-height:1.2;margin-top:16px}
+.card-body{padding:16px}
+.card-name{font-weight:600;font-size:15px;margin-bottom:6px;color:#0d5c8c}
+.card-fee{color:#555;font-size:13px;font-weight:600}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+    <h2>Change of Status</h2>
+    <div class="sub">Change of Status Services</div>
+    <div class="grid">
+        <a href="/spc/employee-management/service/change_status_new" class="card">
+            <div class="card-img">
+                <span class="card-tag">New</span>
+                <span class="card-text">Change<br/>of Status</span>
+            </div>
+            <div class="card-body">
+                <div class="card-name">New</div>
+                <div class="card-fee">AED 710.00</div>
+            </div>
+        </a>
+    </div>
+</body></html>
+</template>
+
+<template id="template_cos_step1" name="COS Step 1">
+<html><head><meta charset="utf-8"/><title>Application Details | Change of Status</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+textarea.field-input{resize:vertical;padding-top:8px}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:8px}
+.upload-box-label{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:220px;height:100px;border:1px dashed #1a2340;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa}
+.upload-box-label:hover{border-color:#1abc9c}
+.upload-icon{font-size:22px;color:#1a2340}
+.upload-label-text{font-size:12px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.uploaded-file{display:none;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bde0f5;border-radius:6px;padding:8px 12px;margin-top:6px;max-width:320px}
+.note-box{background:#fff0f5;border:1px solid #fcc;border-radius:6px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;max-width:680px;font-size:13px;color:#555}
+.note-icon{color:#e91e96;font-size:16px;flex-shrink:0}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Application details</div></div>
+        <div class="progress-step"><div class="step-num">2</div><div class="step-label">Applicant information</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">710.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/employee-management">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/apply/change_of_status/step1" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+            <!-- 01 Select Applicant -->
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select applicant</div>
+                    <input type="text" class="field-input" name="applicant_name"
+                           placeholder="Applicant" list="cos_applicant_list"
+                           t-att-value="step1.get('applicant_name','')"/>
+                    <datalist id="cos_applicant_list">
+                        <t t-foreach="applicants" t-as="ap">
+                            <option t-att-value="ap.name"/>
+                        </t>
+                    </datalist>
+                </div>
+            </div>
+
+            <!-- 02 Visa Status -->
+            <div class="spc-section">
+                <div class="sec-num">02</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select applicant's current visa status</div>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="visa_status" value="cancelled"
+                                   onchange="cosVisaChange(this.value)"
+                                   t-att-checked="step1.get('visa_status','')=='cancelled' and 'checked' or False"/>
+                            Cancelled resident visa
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="visa_status" value="valid"
+                                   onchange="cosVisaChange(this.value)"
+                                   t-att-checked="step1.get('visa_status','')=='valid' and 'checked' or False"/>
+                            Valid visa
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 Cancelled visa docs -->
+            <div id="cos_cancelled_docs" t-att-style="step1.get('visa_status','')=='cancelled' and 'display:block' or 'display:none'">
+                <div class="spc-section">
+                    <div class="sec-num">03</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Cancelled resident visa</div>
+                        <div class="upload-title">Upload cancelled resident visa document</div>
+                        <label for="doc_cancelled_visa" class="upload-box-label" id="box_cancelled">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label-text">Upload cancelled resident visa document</span>
+                            <input type="file" id="doc_cancelled_visa" name="doc_cancelled_visa"
+                                   style="display:none;" accept=".pdf,.jpg,.jpeg,.png"
+                                   onchange="cosFileSelected(this,'cancelled')"/>
+                        </label>
+                        <div id="uploaded_cancelled" class="uploaded-file">
+                            <span style="font-size:18px;color:#1a2340;">&#128196;</span>
+                            <div style="flex:1">
+                                <div id="name_cancelled" style="font-size:12px;color:#1a2340;font-weight:500;"></div>
+                                <div style="font-size:11px;color:#1abc9c;font-weight:600;">Complete</div>
+                            </div>
+                            <button type="button" onclick="cosRemoveFile('cancelled')" style="color:#e74c3c;background:none;border:none;cursor:pointer;font-size:16px;">&#128465;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03 Valid visa docs -->
+            <div id="cos_valid_docs" t-att-style="step1.get('visa_status','')=='valid' and 'display:block' or 'display:none'">
+                <div class="spc-section">
+                    <div class="sec-num">03</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Valid visa</div>
+                        <div class="upload-title">Upload valid visa document</div>
+                        <label for="doc_valid_visa" class="upload-box-label" id="box_valid">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label-text">Upload valid visa document</span>
+                            <input type="file" id="doc_valid_visa" name="doc_valid_visa"
+                                   style="display:none;" accept=".pdf,.jpg,.jpeg,.png"
+                                   onchange="cosFileSelected(this,'valid')"/>
+                        </label>
+                        <div id="uploaded_valid" class="uploaded-file">
+                            <span style="font-size:18px;color:#1a2340;">&#128196;</span>
+                            <div style="flex:1">
+                                <div id="name_valid" style="font-size:12px;color:#1a2340;font-weight:500;"></div>
+                                <div style="font-size:11px;color:#1abc9c;font-weight:600;">Complete</div>
+                            </div>
+                            <button type="button" onclick="cosRemoveFile('valid')" style="color:#e74c3c;background:none;border:none;cursor:pointer;font-size:16px;">&#128465;</button>
+                        </div>
+                        <div class="note-box">
+                            <span class="note-icon">&#9432;</span>
+                            <span>Change of Status can only be applied for after the E-Visa has been approved.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 04 Remarks -->
+            <div class="spc-section">
+                <div class="sec-num">04</div>
+                <div class="sec-body">
+                    <div class="sec-title">Remarks</div>
+                    <textarea class="field-input" name="remarks" rows="3" placeholder="Comments"><t t-esc="step1.get('remarks','')"/></textarea>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <span></span>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function cosVisaChange(v){
+    document.getElementById('cos_cancelled_docs').style.display = v==='cancelled' ? 'block' : 'none';
+    document.getElementById('cos_valid_docs').style.display = v==='valid' ? 'block' : 'none';
+}
+function cosFileSelected(input, key){
+    if(input.files &amp;&amp; input.files[0]){
+        var el = document.getElementById('uploaded_'+key);
+        el.style.display = 'flex';
+        document.getElementById('name_'+key).textContent = input.files[0].name;
+        document.getElementById('box_'+key).style.borderColor = '#1abc9c';
+    }
+}
+function cosRemoveFile(key){
+    document.getElementById('uploaded_'+key).style.display = 'none';
+    document.getElementById('box_'+key).style.borderColor = '#1a2340';
+    var inputs = document.getElementById('box_'+key).querySelectorAll('input[type=file]');
+    inputs.forEach(function(i){i.value='';});
+}
+(function(){
+    var vs = document.querySelector('input[name=visa_status]:checked');
+    if(vs) cosVisaChange(vs.value);
+})();
+</script>
+</body></html>
+</template>
+
+<template id="template_cos_step2" name="COS Step 2">
+<html><head><meta charset="utf-8"/><title>Applicant Information | Change of Status</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+textarea.field-input{resize:vertical;padding-top:8px}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:8px}
+.upload-box-label{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:220px;height:100px;border:1px dashed #1a2340;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa}
+.upload-box-label:hover{border-color:#1abc9c}
+.upload-icon{font-size:22px;color:#1a2340}
+.upload-label-text{font-size:12px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.uploaded-file{display:none;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bde0f5;border-radius:6px;padding:8px 12px;margin-top:6px;max-width:320px}
+.note-box{background:#fff0f5;border:1px solid #fcc;border-radius:6px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;max-width:680px;font-size:13px;color:#555}
+.note-icon{color:#e91e96;font-size:16px;flex-shrink:0}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Applicant information</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">710.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/employee-management">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/apply/change_of_status/step2" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Applicant details</div>
+                    <input type="text" class="field-input" name="first_name"
+                           placeholder="First name"
+                           t-att-value="step2.get('first_name', applicant_first or '')"/>
+                    <input type="text" class="field-input" name="last_name"
+                           placeholder="Last name"
+                           t-att-value="step2.get('last_name', applicant_last or '')"/>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a href="/spc/apply/change_of_status/step1" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cos_step3" name="COS Step 3">
+<html><head><meta charset="utf-8"/><title>Declaration | Change of Status</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+textarea.field-input{resize:vertical;padding-top:8px}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:8px}
+.upload-box-label{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:220px;height:100px;border:1px dashed #1a2340;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa}
+.upload-box-label:hover{border-color:#1abc9c}
+.upload-icon{font-size:22px;color:#1a2340}
+.upload-label-text{font-size:12px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.uploaded-file{display:none;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bde0f5;border-radius:6px;padding:8px 12px;margin-top:6px;max-width:320px}
+.note-box{background:#fff0f5;border:1px solid #fcc;border-radius:6px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;max-width:680px;font-size:13px;color:#555}
+.note-icon{color:#e91e96;font-size:16px;flex-shrink:0}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant information</div></div>
+        <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">710.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/employee-management">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/apply/change_of_status/step3" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Declaration:</div>
+                    <div class="decl-box">
+                        <p style="margin-bottom:14px;">By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of SPC Terms and Conditions and the laws of the United Arab Emirates.</p>
+                        <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                    </div>
+                    <p style="font-size:14px;font-weight:600;margin-bottom:12px;">Acknowledgement</p>
+                    <label class="radio-label">
+                        <input type="checkbox" name="declaration_accepted"
+                               style="accent-color:#1a2340;width:16px;height:16px;"/>
+                        I have read and agree to the SPC Terms and Conditions.
+                    </label>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a href="/spc/apply/change_of_status/step2" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cos_step4" name="COS Step 4">
+<html><head><meta charset="utf-8"/><title>Review | Change of Status</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+textarea.field-input{resize:vertical;padding-top:8px}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:8px}
+.upload-box-label{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:220px;height:100px;border:1px dashed #1a2340;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa}
+.upload-box-label:hover{border-color:#1abc9c}
+.upload-icon{font-size:22px;color:#1a2340}
+.upload-label-text{font-size:12px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.uploaded-file{display:none;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bde0f5;border-radius:6px;padding:8px 12px;margin-top:6px;max-width:320px}
+.note-box{background:#fff0f5;border:1px solid #fcc;border-radius:6px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;max-width:680px;font-size:13px;color:#555}
+.note-icon{color:#e91e96;font-size:16px;flex-shrink:0}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">710.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/employee-management">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <p style="color:#888;font-size:13px;margin-bottom:24px;margin-top:-16px;">Please review your application before proceeding to payment.</p>
+        <div class="review-card">
+            <div class="review-card-title">1. Application Details</div>
+            <table class="review-table">
+                <tr><td>Applicant</td><td t-esc="step1.get('applicant_name','—')"/></tr>
+                <tr><td>Visa Status</td><td t-esc="step1.get('visa_status','—')"/></tr>
+                <tr><td>Remarks</td><td t-esc="step1.get('remarks','—')"/></tr>
+            </table>
+        </div>
+        <div class="review-card">
+            <div class="review-card-title">2. Applicant Information</div>
+            <table class="review-table">
+                <tr><td>First Name</td><td t-esc="step2.get('first_name','—')"/></tr>
+                <tr><td>Last Name</td><td t-esc="step2.get('last_name','—')"/></tr>
+            </table>
+        </div>
+        <div class="review-card">
+            <div class="review-card-title">3. Declaration</div>
+            <table class="review-table">
+                <tr><td>Declaration Accepted</td><td><t t-if="step3.get('declaration_accepted')">&#10003; Yes</t><t t-else="">No</t></td></tr>
+            </table>
+        </div>
+        <div class="spc-nav-buttons">
+            <a href="/spc/apply/change_of_status/step3" class="spc-btn-previous">PREVIOUS</a>
+            <a href="/spc/apply/change_of_status/step5" class="spc-btn-next" style="border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;text-decoration:none;">NEXT</a>
+        </div>
+    </div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cos_step5" name="COS Step 5">
+<html><head><meta charset="utf-8"/><title>Payment | Change of Status</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+textarea.field-input{resize:vertical;padding-top:8px}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:8px}
+.upload-box-label{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:220px;height:100px;border:1px dashed #1a2340;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa}
+.upload-box-label:hover{border-color:#1abc9c}
+.upload-icon{font-size:22px;color:#1a2340}
+.upload-label-text{font-size:12px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.uploaded-file{display:none;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bde0f5;border-radius:6px;padding:8px 12px;margin-top:6px;max-width:320px}
+.note-box{background:#fff0f5;border:1px solid #fcc;border-radius:6px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;max-width:680px;font-size:13px;color:#555}
+.note-icon{color:#e91e96;font-size:16px;flex-shrink:0}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant information</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">710.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/employee-management">CANCEL APPLICATION</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="form-title">New</div>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Order Summary</div>
+                <table class="review-table" style="max-width:500px;">
+                    <tr><td>Change of Status - New</td><td style="font-weight:600;">AED 710.00</td></tr>
+                    <tr><td style="font-weight:700;color:#1a2340;font-size:14px;">Total</td><td style="font-weight:700;color:#1a2340;font-size:15px;">AED 710.00</td></tr>
+                </table>
+            </div>
+        </div>
+        <form action="/spc/apply/change_of_status/final-submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-nav-buttons">
+                <a href="/spc/apply/change_of_status/step4" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+</template>
+
+<template id="template_cos_success" name="COS Success">
+<html><head><meta charset="utf-8"/><title>Submitted | Change of Status</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+textarea.field-input{resize:vertical;padding-top:8px}
+.select-wrap{position:relative;max-width:680px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:8px}
+.upload-box-label{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:220px;height:100px;border:1px dashed #1a2340;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa}
+.upload-box-label:hover{border-color:#1abc9c}
+.upload-icon{font-size:22px;color:#1a2340}
+.upload-label-text{font-size:12px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.uploaded-file{display:none;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bde0f5;border-radius:6px;padding:8px 12px;margin-top:6px;max-width:320px}
+.note-box{background:#fff0f5;border:1px solid #fcc;border-radius:6px;padding:10px 14px;margin-top:10px;display:flex;align-items:flex-start;gap:8px;max-width:680px;font-size:13px;color:#555}
+.note-icon{color:#e91e96;font-size:16px;flex-shrink:0}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:900px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="success-wrap">
+    <div class="success-card">
+        <div class="success-icon">&#10003;</div>
+        <h2 style="color:#1a2340;font-size:22px;font-weight:700;margin-bottom:10px;">Application Submitted!</h2>
+        <p style="color:#666;font-size:14px;line-height:1.7;margin-bottom:16px;">Your Change of Status application has been successfully submitted.</p>
+        <t t-if="record">
+            <div style="background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee;">
+                <p style="font-size:12px;color:#888;margin-bottom:4px;">Reference Number</p>
+                <p style="font-size:18px;font-weight:700;color:#1a2340;margin:0;" t-esc="record.name"/>
+            </div>
+        </t>
+        <p style="color:#888;font-size:13px;margin-bottom:28px;">Our team will process your request within 1 business day.</p>
+        <a href="/spc/employee-management" style="display:inline-block;background:#1a2340;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;">BACK TO EMPLOYEE MANAGEMENT</a>
+    </div>
+</div>
+</body></html>
+</template>
+
+
+<template id="template_cos_service_detail" name="COS Service Detail">
+<html><head><meta charset="utf-8"/><title>Change of Status - New</title>
+<style>
+body{font-family:"Inter",sans-serif;margin:0;padding:0;background:#fff}
+.header{padding:16px 32px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px}
+.back-link{font-size:12px;color:#6b7280;text-decoration:none}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c;margin:0}
+.start-btn{margin-left:auto;padding:10px 24px;background:#1a2340;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none}
+.hero{width:100%;min-height:200px;background:linear-gradient(135deg,#1a3a6b,#2a6cbf);display:flex;align-items:center;padding:40px 60px;position:relative;color:#fff}
+.hero-badge{display:inline-block;padding:4px 12px;border-radius:4px;font-size:13px;font-weight:700;margin-bottom:12px;background:rgba(0,0,0,.2)}
+.hero-title{font-size:48px;font-weight:800;line-height:1.1}
+.content{max-width:900px;margin:32px auto;padding:0 32px}
+.section-title{font-size:18px;font-weight:700;color:#1a2340;margin:24px 0 4px}
+.divider{border:none;border-top:2px dotted #e5e7eb;margin:4px 0 12px}
+.desc-text{font-size:13px;color:#374151;line-height:1.6}
+.req-list{list-style:decimal;padding-left:20px;font-size:13px;color:#374151;line-height:2.2}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="header">
+    <a href="/spc/employee-management" class="back-link">&#8592; BACK TO EMPLOYEE MANAGEMENT</a>
+    <h1 class="page-title">Change of Status - New</h1>
+    <a href="/spc/apply/change_of_status/step1" class="start-btn">START PROCESS</a>
+</div>
+<div class="hero">
+    <div>
+        <div class="hero-badge">New</div>
+        <div class="hero-title">Change<br/>of Status</div>
+    </div>
+</div>
+<div class="content">
+    <div class="section-title">Description</div>
+    <hr class="divider"/>
+    <p class="desc-text">Individuals granted an employment or investor visa while present in the UAE are required to exit and re-enter or perform a change of status process. This process can be initiated after an individual has obtained their employment/investor visa. Change of status can be completed while the individual is in the UAE.</p>
+    <div class="section-title">Requirements</div>
+    <hr class="divider"/>
+    <ol class="req-list">
+        <li>E-Visa Copy</li>
+        <li>Coloured passport copy (expiry date must be more than 7 months away)</li>
+        <li>Special comment page of the passport as per checklist</li>
+        <li>High-resolution photo (as per the photo guidelines)</li>
+        <li>Tourist or Visit Visa applicants: Tourist/Visit Visa copy and Entry Stamp page copy</li>
+        <li>Residence Visa applicants: Canceled Visa page/Immigration Cancellation paper</li>
+        <li>Fine payment receipt (if applicable)</li>
+        <li>Valid E-Channel Registration</li>
+        <li>License (valid for over one month)</li>
+        <li>Valid Immigration Card copy</li>
+        <li>Payment</li>
+    </ol>
+    <div class="section-title">Output Document</div>
+    <hr class="divider"/>
+    <p class="desc-text">Change of Status Approval</p>
+    <div class="section-title">Timeline</div>
+    <hr class="divider"/>
+    <p class="desc-text">1 business day</p>
+    <div class="section-title">Fees</div>
+    <hr class="divider"/>
+    <p class="desc-text">AED 700</p>
+</div>
+</body></html>
+</template>
+</data>
+</odoo>

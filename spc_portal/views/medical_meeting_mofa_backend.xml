@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- MEDICAL TREE -->
+    <record id="spc_medical_tree" model="ir.ui.view">
+        <field name="name">spc.medical.tree</field>
+        <field name="model">spc.medical</field>
+        <field name="arch" type="xml">
+            <tree string="Medical">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="medical_type"/>
+                <field name="visa_type"/>
+                <field name="service_type"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- MEDICAL FORM -->
+    <record id="spc_medical_form" model="ir.ui.view">
+        <field name="name">spc.medical.form</field>
+        <field name="model">spc.medical</field>
+        <field name="arch" type="xml">
+            <form string="Medical">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="In Review" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['submitted','in_review']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group string="Application">
+                            <field name="partner_id"/>
+                            <field name="medical_type"/>
+                            <field name="visa_type"/>
+                            <field name="service_type"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Applicant">
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="mother_name"/>
+                            <field name="email"/>
+                            <field name="mobile"/>
+                            <field name="dob"/>
+                            <field name="marital_status"/>
+                            <field name="religion"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documents">
+                            <group>
+                                <field name="doc_passport_ids" widget="many2many_binary"/>
+                                <field name="doc_special_ids" widget="many2many_binary"/>
+                                <field name="doc_entry_visa_ids" widget="many2many_binary"/>
+                                <field name="doc_photo_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group><field name="declaration_accepted"/></group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_medical_action" model="ir.actions.act_window">
+        <field name="name">Medical</field>
+        <field name="res_model">spc.medical</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_spc_medical_top" name="Medical" parent="menu_spc_concierge_top" sequence="30"/>
+    <record id="spc_medical_new_action" model="ir.actions.act_window">
+        <field name="name">Medical - New Residency</field>
+        <field name="res_model">spc.medical</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('medical_type','=','new_residency')]</field>
+        <field name="context">{'default_medical_type': 'new_residency'}</field>
+    </record>
+    <record id="spc_medical_renewal_action" model="ir.actions.act_window">
+        <field name="name">Medical - Renewal</field>
+        <field name="res_model">spc.medical</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('medical_type','=','renewal')]</field>
+        <field name="context">{'default_medical_type': 'renewal'}</field>
+    </record>
+    <menuitem id="menu_spc_medical_new" name="New Residency" action="spc_medical_new_action" parent="menu_spc_medical_top" sequence="1"/>
+    <menuitem id="menu_spc_medical_renewal" name="Renewal" action="spc_medical_renewal_action" parent="menu_spc_medical_top" sequence="2"/>
+
+    <!-- MEETING ROOM TREE -->
+    <record id="spc_meeting_room_tree" model="ir.ui.view">
+        <field name="name">spc.meeting.room.tree</field>
+        <field name="model">spc.meeting.room</field>
+        <field name="arch" type="xml">
+            <tree string="Meeting Room Booking">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="booking_date"/>
+                <field name="meeting_duration"/>
+                <field name="amount"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- MEETING ROOM FORM -->
+    <record id="spc_meeting_room_form" model="ir.ui.view">
+        <field name="name">spc.meeting.room.form</field>
+        <field name="model">spc.meeting.room</field>
+        <field name="arch" type="xml">
+            <form string="Meeting Room Booking">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-success" invisible="state != 'submitted'"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-danger" invisible="state not in ['draft','submitted']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,confirmed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="booking_date"/>
+                            <field name="booking_start_time"/>
+                            <field name="meeting_duration"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group>
+                            <field name="comments"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_meeting_room_action" model="ir.actions.act_window">
+        <field name="name">Meeting Room Booking</field>
+        <field name="res_model">spc.meeting.room</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_spc_meeting_room" name="Meeting Room Booking" action="spc_meeting_room_action" parent="menu_spc_concierge_top" sequence="35"/>
+
+    <!-- MOFA TREE -->
+    <record id="spc_mofa_tree" model="ir.ui.view">
+        <field name="name">spc.mofa.tree</field>
+        <field name="model">spc.mofa</field>
+        <field name="arch" type="xml">
+            <tree string="MOFA Attestation">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="origin_country_id"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- MOFA FORM -->
+    <record id="spc_mofa_form" model="ir.ui.view">
+        <field name="name">spc.mofa.form</field>
+        <field name="model">spc.mofa</field>
+        <field name="arch" type="xml">
+            <form string="MOFA Attestation">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="In Review" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['submitted','in_review']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group string="Document Types">
+                            <field name="doc_type_individual"/>
+                            <field name="doc_type_commercial"/>
+                            <field name="doc_type_invoice"/>
+                            <field name="origin_country_id"/>
+                        </group>
+                        <group string="Counts">
+                            <field name="individual_doc_count"/>
+                            <field name="commercial_doc_count"/>
+                            <field name="invoice_doc_count"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Documents">
+                            <group>
+                                <field name="doc_individual_ids" widget="many2many_binary"/>
+                                <field name="doc_commercial_ids" widget="many2many_binary"/>
+                                <field name="doc_invoice_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group><field name="declaration_accepted"/></group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_mofa_action" model="ir.actions.act_window">
+        <field name="name">MOFA Attestation</field>
+        <field name="res_model">spc.mofa</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_spc_mofa" name="MOFA Attestation" action="spc_mofa_action" parent="menu_spc_concierge_top" sequence="40"/>
+
+
+    <!-- BANKING ASSISTANCE TREE -->
+    <record id="spc_banking_tree" model="ir.ui.view">
+        <field name="name">spc.banking.assistance.tree</field>
+        <field name="model">spc.banking.assistance</field>
+        <field name="arch" type="xml">
+            <tree string="Banking Assistance">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="banking_type"/>
+                <field name="account_type"/>
+                <field name="preferred_bank"/>
+                <field name="shareholder_count"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="spc_banking_form" model="ir.ui.view">
+        <field name="name">spc.banking.assistance.form</field>
+        <field name="model">spc.banking.assistance</field>
+        <field name="arch" type="xml">
+            <form string="Banking Assistance">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="In Review" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['submitted','in_review']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group string="Account Info">
+                            <field name="partner_id"/>
+                            <field name="banking_type"/>
+                            <field name="account_type"/>
+                            <field name="preferred_bank"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Company Info">
+                            <field name="company_registered_spc"/>
+                            <field name="company_name_spc"/>
+                            <field name="multi_shareholder"/>
+                            <field name="shareholder_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Shareholders">
+                            <group>
+                                <field name="shareholder_1_name"/>
+                                <field name="shareholder_2_name"/>
+                                <field name="shareholder_3_name"/>
+                                <field name="shareholder_4_name"/>
+                                <field name="need_bank_account"/>
+                                <field name="preferred_financial_provider"/>
+                            </group>
+                        </page>
+                        <page string="Personal Docs">
+                            <group>
+                                <field name="doc_eid_ids" widget="many2many_binary"/>
+                                <field name="doc_passport_ids" widget="many2many_binary"/>
+                                <field name="doc_salary_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Corporate Docs">
+                            <group>
+                                <field name="doc_business_plan_ids" widget="many2many_binary"/>
+                                <field name="doc_business_license_ids" widget="many2many_binary"/>
+                                <field name="doc_formation_cert_ids" widget="many2many_binary"/>
+                                <field name="doc_share_cert2_ids" widget="many2many_binary"/>
+                                <field name="doc_tenancy_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Shareholder Docs">
+                            <group string="Shareholder 1">
+                                <field name="doc_sh1_eid_ids" widget="many2many_binary"/>
+                                <field name="doc_sh1_passport_ids" widget="many2many_binary"/>
+                                <field name="doc_sh1_bank_ids" widget="many2many_binary"/>
+                                <field name="doc_sh1_cv_ids" widget="many2many_binary"/>
+                            </group>
+                            <group string="Shareholder 2">
+                                <field name="doc_sh2_eid_ids" widget="many2many_binary"/>
+                                <field name="doc_sh2_passport_ids" widget="many2many_binary"/>
+                                <field name="doc_sh2_bank_ids" widget="many2many_binary"/>
+                                <field name="doc_sh2_cv_ids" widget="many2many_binary"/>
+                            </group>
+                            <group string="Shareholder 3">
+                                <field name="doc_sh3_eid_ids" widget="many2many_binary"/>
+                                <field name="doc_sh3_passport_ids" widget="many2many_binary"/>
+                                <field name="doc_sh3_bank_ids" widget="many2many_binary"/>
+                                <field name="doc_sh3_cv_ids" widget="many2many_binary"/>
+                            </group>
+                            <group string="Shareholder 4">
+                                <field name="doc_sh4_eid_ids" widget="many2many_binary"/>
+                                <field name="doc_sh4_passport_ids" widget="many2many_binary"/>
+                                <field name="doc_sh4_bank_ids" widget="many2many_binary"/>
+                                <field name="doc_sh4_cv_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group><field name="declaration_accepted"/></group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_banking_action" model="ir.actions.act_window">
+        <field name="name">Banking Assistance</field>
+        <field name="res_model">spc.banking.assistance</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Banking Assistance parent menu (no action, just parent) -->
+    <menuitem id="menu_spc_banking_top" name="Banking Assistance" parent="menu_spc_concierge_top" sequence="50"/>
+
+    <!-- New banking action (filter by banking_type=new) -->
+    <record id="spc_banking_new_action" model="ir.actions.act_window">
+        <field name="name">Banking Assistance - New</field>
+        <field name="res_model">spc.banking.assistance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('banking_type','=','new')]</field>
+        <field name="context">{'default_banking_type': 'new'}</field>
+    </record>
+    <menuitem id="menu_spc_banking_new" name="New" action="spc_banking_new_action" parent="menu_spc_banking_top" sequence="1"/>
+
+    <!-- Old banking action + form view -->
+    <!-- OLD FLOW TREE VIEW -->
+    <record id="spc_banking_old_tree" model="ir.ui.view">
+        <field name="name">spc.banking.assistance.old.tree</field>
+        <field name="model">spc.banking.assistance</field>
+        <field name="arch" type="xml">
+            <tree string="Banking Assistance - Old">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="banking_type"/>
+                <field name="need_bank_account_old" string="Bank Account Required"/>
+                <field name="preferred_financial_provider_old" string="Preferred Bank"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="spc_banking_old_form" model="ir.ui.view">
+        <field name="name">spc.banking.assistance.old.form</field>
+        <field name="model">spc.banking.assistance</field>
+        <field name="arch" type="xml">
+            <form string="Banking Assistance - Old">
+                <header>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="In Review" type="object" invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['submitted','in_review']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><h1><field name="name" readonly="1"/></h1></div>
+                    <group>
+                        <group string="Application Info">
+                            <field name="partner_id"/>
+                            <field name="banking_type"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                        </group>
+                        <group string="Bank Account">
+                            <field name="need_bank_account_old"/>
+                            <field name="preferred_financial_provider_old"/>
+                            <field name="old_declaration_accepted"/>
+                        </group>
+                    </group>
+                    <group string="Remarks">
+                        <field name="old_remarks"/>
+                    </group>
+                    <notebook>
+                        <page string="Company Documents">
+                            <group>
+                                <field name="doc_old_trade_license_ids" widget="many2many_binary"/>
+                                <field name="doc_old_formation_cert_ids" widget="many2many_binary"/>
+                                <field name="doc_old_share_cert_ids" widget="many2many_binary"/>
+                                <field name="doc_old_lease_agreement_ids" widget="many2many_binary"/>
+                                <field name="doc_old_memorandum_ids" widget="many2many_binary"/>
+                                <field name="doc_old_good_standing_ids" widget="many2many_binary"/>
+                                <field name="doc_old_incumbency_ids" widget="many2many_binary"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="spc_banking_old_action" model="ir.actions.act_window">
+        <field name="name">Banking Assistance - Old</field>
+        <field name="res_model">spc.banking.assistance</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('banking_type','=','old')]</field>
+        <field name="context">{'default_banking_type': 'old'}</field>
+    </record>
+    <menuitem id="menu_spc_banking_old" name="Old" action="spc_banking_old_action" parent="menu_spc_banking_top" sequence="2"/>
+
+</odoo>

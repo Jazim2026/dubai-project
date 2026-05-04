@@ -6,64 +6,129 @@
 <template id="template_company_mgmt_service_detail" name="Company Mgmt Service Detail">
 <html>
 <head><meta charset="utf-8"/><title>Service Detail</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#fff;color:#333}
-.top-bar{background:#1a2340;padding:12px 32px;display:flex;align-items:center;justify-content:space-between}
-.top-logo{color:#fff;font-size:20px;font-weight:700}
-.top-btn{background:#1a2340;color:#fff;border:1px solid #fff;border-radius:4px;padding:8px 20px;font-size:13px;cursor:pointer}
-.breadcrumb{padding:16px 32px;font-size:13px;color:#666}
-.breadcrumb a{color:#1a2340;text-decoration:none}
-.page-header{display:flex;justify-content:space-between;align-items:center;padding:0 32px 16px}
-.page-title{font-size:22px;font-weight:700;color:#1abc9c}
-.start-btn{background:#1a2340;color:#fff;border:none;border-radius:6px;padding:12px 28px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer}
-.banner{width:100%;height:360px;object-fit:cover;display:block}
-.banner-placeholder{width:100%;height:360px;background:linear-gradient(135deg,#1a2340,#2d6a4f);display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:700}
-.desc-section{padding:32px}
-.desc-title{font-size:18px;font-weight:700;margin-bottom:12px}
-.desc-text{font-size:14px;line-height:1.8;color:#555}
+
+.package-options{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.pkg-label{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px}
+.pkg-label:hover{border-color:#1abc9c;background:#f0fdf4}
+.pkg-label input{accent-color:#1abc9c;width:16px;height:16px}
+.spc-btn-previous{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+.method-option{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;padding:8px 0}
+.method-option input{accent-color:#1abc9c;width:16px;height:16px}
+.submit-btn{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px}
+.review-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:12px}
+.review-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;font-weight:600;min-width:220px}
+
+.row-expand-btn{background:none;border:1px solid #ddd;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:14px;color:#1a3c6e;margin-left:8px}
+.sub-items{display:none;padding:8px 0 8px 24px}
+.sub-items.open{display:block}
+.sub-item-label{font-size:12px;color:#888;margin-bottom:6px}
+.sub-activity{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:4px 0;cursor:pointer}
+.sub-activity input{width:14px;height:14px;margin-top:2px;accent-color:#1abc9c}
+.division-body{display:none;padding:12px 16px;border-top:1px solid #e5e7eb}
+.division-body.open{display:block}
+.radio-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.radio-card{border:1.5px solid #e5e7eb;border-radius:8px;padding:12px 20px;cursor:pointer;font-size:13px;color:#374151;display:flex;align-items:center;gap:8px;transition:all .2s}
+.radio-card.selected{border-color:#1abc9c;background:#f0fdf9;color:#1a2340;font-weight:600}
+.legal-options{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+.legal-card{border:2px solid #eee;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:.2s}
+.legal-card:hover,.legal-card.selected{border-color:#1abc9c;background:#f0fdf4}
+.legal-card-title{font-size:14px;font-weight:600;margin-top:8px}
+.legal-card-sub{font-size:12px;color:#888}
+.field-select{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
+.field-select-box{position:relative;margin-bottom:12px}
+.info-box{background:#fef3c7;border-left:3px solid #f59e0b;padding:12px 16px;border-radius:6px;font-size:12px;color:#92400e;margin-top:12px}
+.info-list{padding-left:16px;font-size:12px;color:#92400e;margin-top:6px}
+.info-text{font-size:12px;color:#92400e}
+.facility-options{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:12px}
+.facility-title{font-size:14px;font-weight:600}
+.facility-sub{font-size:12px;color:#888}
+.facility-label{cursor:pointer;border:2px solid #eee;border-radius:12px;padding:16px;transition:.2s}
+.facility-label:hover,.facility-label.selected{border-color:#1abc9c;background:#f0fdf4}
+.divisions-wrap{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.division-item{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+.division-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:#fafafa}
+.division-body{padding:12px 16px;border-top:1px solid #e5e7eb;display:none}
+.edit-link{color:#1abc9c;font-size:13px;text-decoration:none}
+.checkbox-label{display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;margin-bottom:8px}
+.num-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.num-btn{width:52px;height:52px;border-radius:8px;border:2px solid #e0e0e0;background:#fff;font-size:16px;font-weight:600;cursor:pointer;transition:.2s;color:#333}
+.num-btn.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.num-btn:hover{border-color:#1abc9c}
+.banner-placeholder{height:120px;background:linear-gradient(135deg,#1a2340,#2d6a9f);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;margin-bottom:20px}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.dashboard-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.empty-state{text-align:center;padding:40px 20px}
+.empty-icon{font-size:48px;margin-bottom:12px}
+.empty-text{font-size:16px;font-weight:600;color:#1a2340;margin-bottom:6px}
+.empty-sub{font-size:13px;color:#888}
+.empty-tab-msg{font-size:13px;color:#888;padding:12px 0}
+.desc-section{margin-bottom:20px}
+.desc-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:6px}
+.desc-text{font-size:13px;color:#555;line-height:1.7}
+.div-arrow{font-size:12px;color:#aaa}
+.breadcrumb{font-size:12px;color:#888;margin-bottom:16px}
+.edit-btn{color:#1abc9c;background:none;border:none;cursor:pointer;font-size:13px;text-decoration:underline}
+.toggle-bar{display:flex;gap:0;margin-bottom:16px;max-width:400px}
+.toggle-btn{flex:1;padding:10px 16px;border:1px solid #ddd;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#555}
+.toggle-btn:first-child{border-radius:8px 0 0 8px}
+.toggle-btn:last-child{border-radius:0 8px 8px 0}
+.toggle-btn.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.toggle-btn.inactive{background:#fff;color:#555;border-color:#ddd}
+.upload-area{border:2px dashed #1abc9c;border-radius:10px;padding:24px 16px;text-align:center;cursor:pointer;background:#fff;max-width:220px;margin-bottom:12px}
+.upload-area input[type=file]{display:none}
+.upload-icon{font-size:28px;color:#1abc9c;margin-bottom:6px}
+.upload-label{font-size:13px;color:#1abc9c;font-weight:600}
+.ack-box{background:#f8f9fa;border-radius:10px;padding:16px;margin-top:12px}
+.info-list{padding-left:18px;font-size:12px;color:#555;line-height:2;margin-top:8px}
+.info-list li{margin-bottom:4px}
+.resolution-notes{background:#fff0f5;border:1px solid #ffb3cc;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:13px;color:#555}
+
 </style>
+
 </head>
 <body>
-<div class="top-bar">
-    <div class="top-logo">K SPC Free Zone</div>
-    <button class="top-btn">Business Activities</button>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
 </div>
-<div class="breadcrumb"><a href="/spc/company-management">← BACK TO COMPANY MANAGEMENT</a></div>
+<div class="main">
+<a href="/spc/company-management" class="back-link">&#8592; BACK TO COMPANY MANAGEMENT</a>
 <div class="page-header">
     <div class="page-title"><t t-esc="service.get('name', '')"/></div>
     <t t-if="service_type == 'license_reissue'">
-        <a href="/spc/company-management/apply/lr-step1/license_reissue" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/lr-step1/license_reissue" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'renewal'">
-        <a href="/spc/company-management/apply/rn-step1/renewal" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/rn-step1/renewal" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'renewal_amendment'">
-        <a href="/spc/company-management/apply/ra-step1/renewal_amendment" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/ra-step1/renewal_amendment" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'amendment'">
-        <a href="/spc/company-management/apply/amd-step1/amendment" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/amd-step1/amendment" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'visa_allocation_amendment'">
-        <a href="/spc/company-management/apply/va-step1/visa_allocation_amendment" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/va-step1/visa_allocation_amendment" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'certify'">
-        <a href="/spc/company-management/apply/certify-step1/certify" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/certify-step1/certify" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'ec_new'">
-        <a href="/spc/company-management/apply/ec-new-step1/ec_new" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/ec-new-step1/ec_new" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'ec_renewal'">
-        <a href="/spc/company-management/apply/ec-renewal-company/ec_renewal" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/ec-renewal-company/ec_renewal" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'ec_amendment'">
-        <a href="/spc/company-management/apply/ec-amd-company/ec_amendment" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/ec-amd-company/ec_amendment" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
     <t t-elif="service_type == 'ec_cancellation'">
-        <a href="/spc/company-management/apply/ec-cancel-company/ec_cancellation" class="start-btn">START PROCESS</a>
+        <a href="/spc/company-management/apply/ec-cancel-company/ec_cancellation" class="start-btn" style="background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block">START PROCESS</a>
     </t>
 </div>
-<div class="banner-placeholder" t-att-style="service.get('banner_style', 'background:linear-gradient(135deg,#1a2340,#2d6a4f);')">
+<div class="hero-banner" t-att-style="service.get('banner_style', 'background:linear-gradient(135deg,#1a2340,#2d6a4f);')">
     <t t-if="service.get('banner_html')">
         <t t-out="service.get('banner_html', '')"/>
     </t>
@@ -71,8 +136,9 @@ body{font-family:'Segoe UI',sans-serif;background:#fff;color:#333}
         <t t-esc="service.get('description', '')"/>
     </t>
 </div>
+<div class="detail-card">
 <div class="desc-section">
-    <div class="desc-title">Description</div>
+    <h4 style="font-weight:700;margin-bottom:8px">Description</h4>
     <t t-if="service.get('desc_html')">
         <t t-out="service.get('desc_html', '')"/>
     </t>
@@ -118,6 +184,9 @@ body{font-family:'Segoe UI',sans-serif;background:#fff;color:#333}
     </t>
 
 </div>
+</div>
+</div>
+</div>
 </body>
 </html>
 </template>
@@ -126,42 +195,13 @@ body{font-family:'Segoe UI',sans-serif;background:#fff;color:#333}
 <template id="template_lr_step1" name="LR Step1 IDN Details">
 <html>
 <head><meta charset="utf-8"/><title>IDN Details | License Reissue</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.sidebar-links{margin-top:24px}
-.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.field-select{width:100%;max-width:500px;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;background:#fff;margin-bottom:12px}
-.field-input{width:100%;max-width:500px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
-.field-input:focus{border-bottom-color:#1abc9c}
-.spc-nav-buttons{display:flex;justify-content:flex-end;margin-top:16px}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step active"><div class="step-num">1</div><div class="step-label">IDN details</div></div>
         <div class="progress-step"><div class="step-num">2</div><div class="step-label">Legal type</div></div>
@@ -220,9 +260,9 @@ function updateIdnText(sel) {
 body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 .layout{display:flex;min-height:100vh}
 .sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
+.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
 .progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
 .progress-step.active{opacity:1}.progress-step.done{opacity:.8}
 .step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
@@ -234,25 +274,27 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 .main{margin-left:260px;padding:40px 48px;min-height:100vh}
 .form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
 .spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.legal-options{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:8px}
-.legal-card{border:2px solid #e5e7eb;border-radius:10px;padding:16px 24px;cursor:pointer;min-width:180px}
-.legal-card input{display:none}
-.legal-card.selected{border-color:#1abc9c}
-.legal-card-title{font-size:14px;font-weight:700;color:#1abc9c}
-.legal-card-sub{font-size:12px;color:#888;margin-top:4px}
-.package-options{display:flex;gap:16px;flex-wrap:wrap}
-.pkg-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
-.info-box{background:#fff0f6;border:1px solid #f5c2d6;border-radius:8px;padding:12px 16px;font-size:13px;margin-top:16px}
-.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.legal-options{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+.legal-card{border:2px solid #eee;border-radius:12px;padding:20px;cursor:pointer;transition:.2s}
+.legal-card:hover,.legal-card.selected{border-color:#1abc9c;background:#f0fdf4}
+.legal-card input[type=radio]{display:none}
+.legal-card-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.legal-card-sub{font-size:12px;color:#888}
+.package-options{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.pkg-label{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;padding:10px 14px;border:1px solid #e5e7eb;border-radius:8px}
+.pkg-label:hover{border-color:#1abc9c;background:#f0fdf4}
+.pkg-label input{accent-color:#1abc9c;width:16px;height:16px}
+.info-box{background:#fef3c7;border-left:3px solid #f59e0b;padding:12px 16px;border-radius:6px;font-size:12px;color:#92400e;margin-top:12px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:32px}
+.spc-btn-previous{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+.spc-btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">IDN details</div></div>
         <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Legal type</div></div>
@@ -270,7 +312,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <div class="sec-title">01 Select the legal type</div>
                 <div class="legal-options">
                     <label class="legal-card selected" onclick="selectCard(this)">
-                        <input type="radio" name="legal_type" value="fze" checked="checked"/>
+                        <input type="radio" name="legal_type" value="fze" checked="checked" style="display:none"/>
                         <div class="legal-card-title">Free Zone Establishment</div>
                         <div class="legal-card-sub">1 Shareholder (Limited Liability Company)</div>
                     </label>
@@ -321,36 +363,13 @@ function selectCard(el) {
 <template id="template_lr_step4" name="LR Step4 Review">
 <html>
 <head><meta charset="utf-8"/><title>Review | License Reissue</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
-.review-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f3f4f6}
-.review-row{display:flex;gap:16px;margin-bottom:8px;font-size:14px}
-.review-label{color:#888;min-width:180px}
-.review-val{color:#333;font-weight:500}
-.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">IDN details</div></div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
@@ -396,39 +415,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_lr_payment" name="LR Payment">
 <html>
 <head><meta charset="utf-8"/><title>Payment | License Reissue</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.payment-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px;max-width:500px}
-.payment-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.pay-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;color:#555}
-.pay-total{font-weight:700;color:#1a2340;font-size:16px;border-top:1px solid #eee;padding-top:10px;margin-top:10px}
-.method-title{font-size:14px;font-weight:700;margin:16px 0 12px}
-.method-option{border:2px solid #e5e7eb;border-radius:8px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px}
-.method-option input{accent-color:#1abc9c}
-.submit-btn{width:100%;background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer;margin-top:16px}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">IDN details</div></div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal type</div></div>
@@ -465,68 +458,68 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <head>
     <meta charset="utf-8"/>
     <title>Business Activities | SPC Free Zone</title>
-    <style>
+<style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
-.progress-sidebar{width:260px;background:#1a3c6e;color:white;padding:28px 20px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:10}
-.progress-title{font-size:12px;font-weight:600;opacity:.7;margin-bottom:12px;letter-spacing:.5px}
-.progress-step{display:flex;align-items:center;gap:10px;padding:8px 0}
-.progress-step-num{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
+.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.progress-step-num{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#fff}
 .progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
-.progress-step-num.done{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)}
-.progress-step-label{font-size:12px;opacity:.7;line-height:1.3}
-.progress-step-label.active{opacity:1;font-weight:700}
-.progress-total{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
-.form-main{margin-left:260px;padding:40px 48px;min-height:100vh;background:#f5f6fa}
+.progress-step-num.done{background:#fff;color:#1a2340}
+.progress-step-label{font-size:13px;color:#fff;opacity:.6}
+.progress-step-label.active{opacity:1}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
 .form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.step-label{font-size:12px;font-weight:700;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.step-label::after{content:"";flex:1;height:1px;background:#e5e7eb}
-.step-title{font-size:18px;font-weight:700;color:#111827;margin-bottom:4px}
-.step-sub{font-size:13px;color:#6b7280;margin-bottom:16px}
-.search-wrap{position:relative}
-.search-bar{width:100%;padding:13px 48px 13px 16px;border:1px solid #e5e7eb;border-bottom:none;background:white;font-size:14px;outline:none;border-radius:8px 8px 0 0}
-.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#9ca3af;pointer-events:none}
-.tabs{display:flex;border-bottom:2px solid #e5e7eb;background:white;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;overflow-x:auto}
-.tab{padding:12px 18px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;white-space:nowrap;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;background:none}
-.tab.active{color:#1a3c6e;border-bottom-color:#1a3c6e;font-weight:700}
-.tab:hover{color:#1a3c6e}
-.divisions-wrap{border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;background:white;margin-bottom:32px;overflow:hidden}
-.division-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:1px solid #f3f4f6;font-size:14px;font-weight:700;color:#111827}
-.division-header:hover{background:#f9fafb}
-.division-body{display:none}
+.step-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:8px}
+.step-sub{font-size:13px;color:#888;margin-bottom:16px}
+.search-wrap{position:relative;margin-bottom:16px;max-width:500px}
+.search-bar{width:100%;padding:10px 40px 10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+.search-bar:focus{border-color:#1abc9c}
+.search-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:6px 14px;border:1px solid #ddd;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;color:#555}
+.tab.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.divisions-wrap{max-width:800px;margin-bottom:24px}
+.division-item{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:8px}
+.division-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:#fafafa;font-size:14px;font-weight:600;color:#1a2340}
+.division-body{display:none;padding:12px 16px;border-top:1px solid #e5e7eb}
 .division-body.open{display:block}
-.row-item{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid #f3f4f6;font-size:14px;color:#111827}
-.row-item:last-child{border-bottom:none}
-.row-item-left{display:flex;align-items:center;gap:12px}
-.row-item input[type="checkbox"]{width:16px;height:16px;accent-color:#1a3c6e;cursor:pointer;flex-shrink:0}
-.row-expand-btn{background:none;border:none;color:#1a3c6e;font-size:18px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;flex-shrink:0}
-.row-expand-btn:hover{background:#f0f4ff}
-.sub-items{display:none;background:#fafafa;border-top:1px solid #f3f4f6}
+.div-arrow{font-size:12px;color:#aaa}
+.row-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.row-item-left{display:flex;align-items:flex-start;gap:8px;flex:1}
+.row-item input[type=checkbox]{width:15px;height:15px;margin-top:2px;accent-color:#1abc9c;flex-shrink:0}
+.row-expand-btn{background:none;border:1px solid #ddd;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:14px;color:#1a3c6e;margin-left:8px}
+.sub-items{display:none;padding:8px 0 8px 24px}
 .sub-items.open{display:block}
-.sub-item-label{font-size:12px;color:#6b7280;font-weight:600;padding:10px 20px 6px 52px}
-.sub-activity{display:flex;align-items:center;gap:12px;padding:8px 20px 8px 52px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#374151;cursor:pointer}
-.sub-activity:last-child{border-bottom:none}
-.sub-activity input[type="checkbox"]{width:15px;height:15px;accent-color:#1a3c6e;cursor:pointer;flex-shrink:0}
-.sub-activity:hover{background:#f0f4ff}
-.empty-tab-msg{padding:40px;text-align:center;color:#9ca3af;font-size:14px}
-.empty-state{text-align:center;padding:48px 20px;background:white;border-radius:8px;border:1px solid #e5e7eb}
+.sub-item-label{font-size:12px;color:#888;margin-bottom:6px}
+.sub-activity{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:4px 0;cursor:pointer}
+.sub-activity input{width:14px;height:14px;margin-top:2px;accent-color:#1abc9c}
+.empty-state{text-align:center;padding:40px 20px}
 .empty-icon{font-size:48px;margin-bottom:12px}
-.empty-text{font-size:16px;font-weight:700;color:#111827;margin-bottom:4px}
-.empty-sub{font-size:13px;color:#6b7280}
-.btn-row{position:fixed;bottom:32px;right:40px;display:flex;gap:16px;z-index:100}
-.prev-btn{background:white;color:#1a3c6e;border:2px solid #1a3c6e;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
-.next-btn{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
-.footer-links{font-size:12px;color:#9ca3af;text-align:center;padding:20px 0 100px}
-.footer-links a{color:#6b7280;margin:0 8px;text-decoration:none}
-    </style>
+.empty-text{font-size:16px;font-weight:600;color:#1a2340;margin-bottom:6px}
+.empty-sub{font-size:13px;color:#888}
+.sidebar-links{margin-top:16px}
+.sidebar-links a,.sidebar-links span{display:block;color:rgba(255,255,255,.6);font-size:11px;margin-bottom:6px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:32px;gap:16px}
+.spc-btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+.spc-btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
 </head>
 <body>
-
-<div class="progress-sidebar">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px">
-        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px">K</div>
-        <div><div style="font-size:15px;font-weight:700">SPC</div><div style="font-size:10px;opacity:.6">Free Zone</div></div>
-    </div>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,.15)">
         <div class="progress-title">Your progress</div>
         <t t-foreach="steps" t-as="step">
@@ -546,7 +539,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
             </div>
         </t>
     </div>
-    <div class="progress-total">
+    <div class="total-box">
         <div style="font-size:11px;opacity:.6;margin-bottom:2px">Total</div>
         <div style="font-size:11px;opacity:.6">AED</div>
         <div style="font-size:20px;font-weight:700"><t t-esc="'%.2f' % (fee or 0)"/> <span style="font-size:14px">&#9432;</span></div>
@@ -554,7 +547,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
     <a href="/spc/setup-new-company" style="color:white;font-size:11px;text-decoration:underline;display:block;margin-top:14px;opacity:.8">SAVE &amp; CONTINUE LATER</a>
 </div>
 
-<div class="form-main">
+<div class="main">
     <t t-if="form_submit_url">
         <input type="hidden" id="custom_submit_url" t-att-value="form_submit_url"/>
     </t>
@@ -636,17 +629,19 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
     </div>
     <div id="selectedList" style="display:none;background:white;border-radius:8px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:20px"></div>
 
-    <div class="footer-links">
+    <div class="sidebar-links">
         <a href="#">PRIVACY POLICY</a>
         <a href="#">TERMS</a>
         <span>&#169; SPC 2026</span>
     </div>
 </div>
-
-<div class="btn-row">
-    <button class="prev-btn" onclick="window.history.back()">PREVIOUS</button>
-    <button class="next-btn" onclick="validateStep2()">NEXT</button>
 </div>
+<div class="main">
+<div class="spc-nav-buttons">
+    <button class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+    <button class="spc-btn-next" onclick="validateStep2()">NEXT</button>
+</div>
+
 
 <script>
 var selectedActivities = [];
@@ -769,7 +764,7 @@ function validateStep2() {
     form.submit();
 }
 </script>
-</body>
+</div></body>
 </html>
 </template>
 
@@ -777,38 +772,13 @@ function validateStep2() {
 <template id="template_rn_step1" name="RN Step1 Choose License">
 <html>
 <head><meta charset="utf-8"/><title>Choose License | Renewal</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.sidebar-links{margin-top:24px}
-.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.field-select{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;font-size:14px;background:#fff;margin-bottom:12px}
-.info-box{background:#e8f4fd;border:1px solid #bee3f8;border-radius:8px;padding:12px 16px;font-size:13px;margin-top:12px;display:flex;gap:8px}
-.spc-nav-buttons{display:flex;justify-content:flex-end;margin-top:16px}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Choose license</div></div>
         <div class="progress-step"><div class="step-num">2</div><div class="step-label">Legal details</div></div>
@@ -903,45 +873,13 @@ document.addEventListener('DOMContentLoaded', function() {
 <template id="template_rn_step2" name="RN Step2 Legal Details">
 <html>
 <head><meta charset="utf-8"/><title>Legal Details | Renewal</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.legal-options{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:8px}
-.legal-card{border:2px solid #e5e7eb;border-radius:10px;padding:16px 24px;cursor:pointer;min-width:160px}
-.legal-card input{display:none}
-.legal-card.selected{border-color:#1abc9c}
-.legal-card-title{font-size:14px;font-weight:700;color:#1abc9c}
-.legal-card-sub{font-size:12px;color:#888;margin-top:4px}
-.info-box{background:#fff0f6;border:1px solid #f5c2d6;border-radius:8px;padding:12px 16px;font-size:13px;margin-top:16px}
-.pkg-options{display:flex;flex-direction:column;gap:10px}
-.pkg-label{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer}
-.pkg-label input{accent-color:#1abc9c;width:18px;height:18px}
-.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Choose license</div></div>
         <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Legal details</div></div>
@@ -960,7 +898,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <div class="sec-title">01 Formation Type</div>
                 <div class="legal-options">
                     <label class="legal-card selected" onclick="selectCard(this)">
-                        <input type="radio" name="legal_type" value="fze" checked="checked"/>
+                        <input type="radio" name="legal_type" value="fze" checked="checked" style="display:none"/>
                         <div class="legal-card-title">Free zone establishment</div>
                         <div class="legal-card-sub">1 Shareholder</div>
                     </label>
@@ -1009,51 +947,13 @@ function selectCard(el) {
 <template id="template_rn_step4" name="RN Step4 Application Details">
 <html>
 <head><meta charset="utf-8"/><title>Application Details | Renewal</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.field-select-box{width:100%;max-width:500px;display:flex;align-items:center;gap:8px;border:1px solid #ddd;border-radius:6px;padding:10px;margin-bottom:12px;background:#fff}
-.field-select-box select{flex:1;border:none;outline:none;font-size:14px;background:transparent}
-.facility-options{display:flex;flex-direction:column;gap:12px;margin-top:8px}
-.facility-label{display:flex;align-items:flex-start;gap:12px;cursor:pointer}
-.facility-label input{accent-color:#1abc9c;margin-top:2px;width:18px;height:18px;flex-shrink:0}
-.facility-title{font-size:14px;font-weight:700;color:#1abc9c}
-.facility-sub{font-size:12px;color:#888}
-.field-input{width:100%;max-width:300px;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;margin-bottom:8px}
-.upload-area{border:2px dashed #1abc9c;border-radius:10px;padding:32px;text-align:center;cursor:pointer;max-width:300px;background:#f0fdf9}
-.upload-area input{display:none}
-.upload-icon{font-size:32px;color:#1abc9c;margin-bottom:8px}
-.upload-label{font-size:13px;color:#1abc9c;font-weight:600}
-.info-text{font-size:12px;color:#888;margin-top:12px;line-height:1.6;max-width:600px}
-.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Choose license</div></div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal details</div></div>
@@ -1156,38 +1056,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_rn_step5" name="RN Step5 Review">
 <html>
 <head><meta charset="utf-8"/><title>Review | Renewal</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
-.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f3f4f6}
-.review-title{font-size:15px;font-weight:700;color:#1a2340}
-.edit-link{font-size:13px;color:#1abc9c;text-decoration:none;display:flex;align-items:center;gap:4px}
-.review-row{display:flex;gap:16px;margin-bottom:8px;font-size:14px}
-.review-label{color:#888;text-transform:uppercase;font-size:11px;min-width:160px}
-.review-val{color:#333;font-weight:500}
-.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Choose license</div></div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal details</div></div>
@@ -1256,39 +1131,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_rn_payment" name="RN Payment">
 <html>
 <head><meta charset="utf-8"/><title>Payment | Renewal</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.payment-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px;max-width:500px}
-.payment-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.pay-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;color:#555}
-.pay-total{font-weight:700;color:#1a2340;font-size:16px;border-top:1px solid #eee;padding-top:10px;margin-top:10px}
-.method-title{font-size:14px;font-weight:700;margin:16px 0 12px}
-.method-option{border:2px solid #e5e7eb;border-radius:8px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px}
-.method-option input{accent-color:#1abc9c}
-.submit-btn{width:100%;background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer;margin-top:16px}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Choose license</div></div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Legal details</div></div>
@@ -1325,14 +1174,8 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_company_mgmt_success" name="Company Mgmt Success">
 <html>
 <head><meta charset="utf-8"/><title>Success</title>
-<style>
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;align-items:center;justify-content:center;min-height:100vh}
-.success-card{background:#fff;border-radius:16px;padding:48px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.08);max-width:480px}
-.success-icon{font-size:64px;margin-bottom:16px}
-.success-title{font-size:24px;font-weight:700;color:#1a2340;margin-bottom:8px}
-.success-sub{font-size:14px;color:#6b7280;margin-bottom:24px}
-.dashboard-btn{background:#1a2340;color:#fff;border:none;border-radius:8px;padding:12px 32px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="success-card">
@@ -1350,68 +1193,68 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;align-ite
 <head>
     <meta charset="utf-8"/>
     <title>Business Activities | SPC Free Zone</title>
-    <style>
+<style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
-.progress-sidebar{width:260px;background:#1a3c6e;color:white;padding:28px 20px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:10}
-.progress-title{font-size:12px;font-weight:600;opacity:.7;margin-bottom:12px;letter-spacing:.5px}
-.progress-step{display:flex;align-items:center;gap:10px;padding:8px 0}
-.progress-step-num{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
+.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.progress-step-num{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#fff}
 .progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
-.progress-step-num.done{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)}
-.progress-step-label{font-size:12px;opacity:.7;line-height:1.3}
-.progress-step-label.active{opacity:1;font-weight:700}
-.progress-total{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
-.form-main{margin-left:260px;padding:40px 48px;min-height:100vh;background:#f5f6fa}
+.progress-step-num.done{background:#fff;color:#1a2340}
+.progress-step-label{font-size:13px;color:#fff;opacity:.6}
+.progress-step-label.active{opacity:1}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
 .form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.step-label{font-size:12px;font-weight:700;color:#9ca3af;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.step-label::after{content:"";flex:1;height:1px;background:#e5e7eb}
-.step-title{font-size:18px;font-weight:700;color:#111827;margin-bottom:4px}
-.step-sub{font-size:13px;color:#6b7280;margin-bottom:16px}
-.search-wrap{position:relative}
-.search-bar{width:100%;padding:13px 48px 13px 16px;border:1px solid #e5e7eb;border-bottom:none;background:white;font-size:14px;outline:none;border-radius:8px 8px 0 0}
-.search-icon{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#9ca3af;pointer-events:none}
-.tabs{display:flex;border-bottom:2px solid #e5e7eb;background:white;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;overflow-x:auto}
-.tab{padding:12px 18px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;white-space:nowrap;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;background:none}
-.tab.active{color:#1a3c6e;border-bottom-color:#1a3c6e;font-weight:700}
-.tab:hover{color:#1a3c6e}
-.divisions-wrap{border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;background:white;margin-bottom:32px;overflow:hidden}
-.division-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:1px solid #f3f4f6;font-size:14px;font-weight:700;color:#111827}
-.division-header:hover{background:#f9fafb}
-.division-body{display:none}
+.step-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:8px}
+.step-sub{font-size:13px;color:#888;margin-bottom:16px}
+.search-wrap{position:relative;margin-bottom:16px;max-width:500px}
+.search-bar{width:100%;padding:10px 40px 10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+.search-bar:focus{border-color:#1abc9c}
+.search-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:6px 14px;border:1px solid #ddd;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;color:#555}
+.tab.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.divisions-wrap{max-width:800px;margin-bottom:24px}
+.division-item{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:8px}
+.division-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:#fafafa;font-size:14px;font-weight:600;color:#1a2340}
+.division-body{display:none;padding:12px 16px;border-top:1px solid #e5e7eb}
 .division-body.open{display:block}
-.row-item{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid #f3f4f6;font-size:14px;color:#111827}
-.row-item:last-child{border-bottom:none}
-.row-item-left{display:flex;align-items:center;gap:12px}
-.row-item input[type="checkbox"]{width:16px;height:16px;accent-color:#1a3c6e;cursor:pointer;flex-shrink:0}
-.row-expand-btn{background:none;border:none;color:#1a3c6e;font-size:18px;cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;flex-shrink:0}
-.row-expand-btn:hover{background:#f0f4ff}
-.sub-items{display:none;background:#fafafa;border-top:1px solid #f3f4f6}
+.div-arrow{font-size:12px;color:#aaa}
+.row-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.row-item-left{display:flex;align-items:flex-start;gap:8px;flex:1}
+.row-item input[type=checkbox]{width:15px;height:15px;margin-top:2px;accent-color:#1abc9c;flex-shrink:0}
+.row-expand-btn{background:none;border:1px solid #ddd;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:14px;color:#1a3c6e;margin-left:8px}
+.sub-items{display:none;padding:8px 0 8px 24px}
 .sub-items.open{display:block}
-.sub-item-label{font-size:12px;color:#6b7280;font-weight:600;padding:10px 20px 6px 52px}
-.sub-activity{display:flex;align-items:center;gap:12px;padding:8px 20px 8px 52px;border-bottom:1px solid #f3f4f6;font-size:13px;color:#374151;cursor:pointer}
-.sub-activity:last-child{border-bottom:none}
-.sub-activity input[type="checkbox"]{width:15px;height:15px;accent-color:#1a3c6e;cursor:pointer;flex-shrink:0}
-.sub-activity:hover{background:#f0f4ff}
-.empty-tab-msg{padding:40px;text-align:center;color:#9ca3af;font-size:14px}
-.empty-state{text-align:center;padding:48px 20px;background:white;border-radius:8px;border:1px solid #e5e7eb}
+.sub-item-label{font-size:12px;color:#888;margin-bottom:6px}
+.sub-activity{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:4px 0;cursor:pointer}
+.sub-activity input{width:14px;height:14px;margin-top:2px;accent-color:#1abc9c}
+.empty-state{text-align:center;padding:40px 20px}
 .empty-icon{font-size:48px;margin-bottom:12px}
-.empty-text{font-size:16px;font-weight:700;color:#111827;margin-bottom:4px}
-.empty-sub{font-size:13px;color:#6b7280}
-.btn-row{position:fixed;bottom:32px;right:40px;display:flex;gap:16px;z-index:100}
-.prev-btn{background:white;color:#1a3c6e;border:2px solid #1a3c6e;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer}
-.next-btn{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 48px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(233,30,140,.3)}
-.footer-links{font-size:12px;color:#9ca3af;text-align:center;padding:20px 0 100px}
-.footer-links a{color:#6b7280;margin:0 8px;text-decoration:none}
-    </style>
+.empty-text{font-size:16px;font-weight:600;color:#1a2340;margin-bottom:6px}
+.empty-sub{font-size:13px;color:#888}
+.sidebar-links{margin-top:16px}
+.sidebar-links a,.sidebar-links span{display:block;color:rgba(255,255,255,.6);font-size:11px;margin-bottom:6px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:32px;gap:16px}
+.spc-btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+.spc-btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
 </head>
 <body>
-
-<div class="progress-sidebar">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px">
-        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px">K</div>
-        <div><div style="font-size:15px;font-weight:700">SPC</div><div style="font-size:10px;opacity:.6">Free Zone</div></div>
-    </div>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,.15)">
         <div class="progress-title">Your progress</div>
         <t t-foreach="steps" t-as="step">
@@ -1431,7 +1274,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
             </div>
         </t>
     </div>
-    <div class="progress-total">
+    <div class="total-box">
         <div style="font-size:11px;opacity:.6;margin-bottom:2px">Total</div>
         <div style="font-size:11px;opacity:.6">AED</div>
         <div style="font-size:20px;font-weight:700"><t t-esc="'%.2f' % (fee or 0)"/> <span style="font-size:14px">&#9432;</span></div>
@@ -1439,7 +1282,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
     <a href="/spc/setup-new-company" style="color:white;font-size:11px;text-decoration:underline;display:block;margin-top:14px;opacity:.8">SAVE &amp; CONTINUE LATER</a>
 </div>
 
-<div class="form-main">
+<div class="main">
     <t t-if="form_submit_url">
         <input type="hidden" id="custom_submit_url" t-att-value="form_submit_url"/>
     </t>
@@ -1524,16 +1367,18 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
     </div>
     <div id="selectedList" style="display:none;background:white;border-radius:8px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:20px"></div>
 
-    <div class="footer-links">
+    <div class="sidebar-links">
         <a href="#">PRIVACY POLICY</a>
         <a href="#">TERMS</a>
         <span>&#169; SPC 2026</span>
     </div>
 </div>
-
-<div class="btn-row">
-    <button class="prev-btn" onclick="window.history.back()">PREVIOUS</button>
-    <button class="next-btn" onclick="validateStep2()">NEXT</button>
+</div>
+<div class="main">
+<div class="spc-nav-buttons">
+    <button class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+    <button class="spc-btn-next" onclick="validateStep2()">NEXT</button>
+</div>
 </div>
 
 <script>
@@ -1670,43 +1515,13 @@ function validateStep2() {
 <template id="template_ra_step1" name="RA Step1 Company Selection">
 <html>
 <head><meta charset="utf-8"/><title>Company Selection | Renewal Amendment</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.sidebar-links{margin-top:24px}
-.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.toggle-bar{display:flex;gap:0;margin-bottom:16px;border:2px solid #1a2340;border-radius:6px;overflow:hidden;max-width:360px}
-.toggle-btn{flex:1;padding:10px;border:none;font-size:13px;font-weight:600;cursor:pointer}
-.toggle-btn.active{background:#1a2340;color:#fff}
-.toggle-btn.inactive{background:#fff;color:#1a2340}
-.field-select{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;font-size:14px;background:#fff;margin-bottom:12px}
-.field-input{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;font-size:14px}
-.info-box{background:#e8f4fd;border:1px solid #bee3f8;border-radius:8px;padding:12px 16px;font-size:13px;margin-top:12px;display:flex;gap:8px}
-.spc-nav-buttons{display:flex;justify-content:flex-end;margin-top:16px}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Company</div></div>
         <div class="progress-step"><div class="step-num">2</div><div class="step-label">Renewal type</div></div>
@@ -1734,23 +1549,28 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <input type="hidden" name="company_id" id="ra_hidden_company_id"/>
             <input type="hidden" name="company_name" id="ra_hidden_company_name"/>
             <div class="spc-section">
-                <div class="sec-title">01 Select company</div>
-                <div class="toggle-bar">
-                    <button type="button" class="toggle-btn active" id="ra-btn-list" onclick="raShowList()">Select from list</button>
-                    <button type="button" class="toggle-btn inactive" id="ra-btn-manual" onclick="raShowManual()">Enter manually</button>
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select company</div>
+                    <div class="toggle-bar">
+                        <button type="button" class="toggle-btn active" id="ra-btn-list" onclick="raShowList()">Select from list</button>
+                        <button type="button" class="toggle-btn inactive" id="ra-btn-manual" onclick="raShowManual()">Enter manually</button>
+                    </div>
+                    <div id="ra-div-list">
+                        <div class="select-wrap">
+                            <select name="company_id_select" onchange="raSetCompany(this)">
+                                <option value="">Select company</option>
+                                <t t-foreach="companies" t-as="company">
+                                    <option t-att-value="company['id']" t-att-data-name="company['name']"><t t-esc="company['name']"/></option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="info-box">&#9432; Making a selection here will auto-fill the fields with information from the initial application whenever available. Please verify and update the data as needed.</div>
+                    </div>
+                    <div id="ra-div-manual" style="display:none">
+                        <input type="text" class="field-input" id="ra-manual-input" placeholder="Enter company name manually"/>
+                    </div>
                 </div>
-                <div id="ra-div-list">
-                    <select class="field-select" onchange="raSetCompany(this)">
-                        <option value="">Company</option>
-                        <t t-foreach="companies" t-as="company">
-                            <option t-att-value="company['id']" t-att-data-name="company['name']"><t t-esc="company['name']"/></option>
-                        </t>
-                    </select>
-                </div>
-                <div id="ra-div-manual" style="display:none">
-                    <input type="text" class="field-input" id="ra-manual-input" placeholder="Enter company name manually"/>
-                </div>
-                <div class="info-box">&#9432; Making a selection here will auto-fill the fields with information from the initial application whenever available. Please verify and update the data as needed.</div>
             </div>
             <div class="spc-nav-buttons">
                 <button type="submit" class="spc-btn-next">NEXT</button>
@@ -1797,61 +1617,20 @@ document.addEventListener('DOMContentLoaded', function() {
 <template id="template_ra_step2" name="RA Step2 Renewal Type">
 <html>
 <head><meta charset="utf-8"/><title>Renewal Type | Renewal Amendment</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
-.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}
-.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;margin-bottom:10px}
-.radio-label input{accent-color:#1a2340;width:16px;height:16px}
-.checkbox-label{display:flex;align-items:flex-start;gap:10px;font-size:14px;cursor:pointer;padding:10px 0;border-bottom:1px solid #f3f4f6}
-.checkbox-label input{margin-top:2px;width:16px;height:16px;accent-color:#1a2340;flex-shrink:0}
-.upload-area{border:2px dashed #1abc9c;border-radius:10px;padding:24px;text-align:center;cursor:pointer;max-width:300px;background:#f0fdf9;margin-top:8px}
-.upload-area input{display:none}
-.upload-icon{font-size:28px;color:#1abc9c;margin-bottom:6px}
-.upload-label{font-size:13px;color:#1abc9c;font-weight:600}
-.info-list{font-size:12px;color:#555;line-height:1.8;margin-top:12px;padding-left:16px}
-.ack-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin-top:12px}
-.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:24px}
-.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;background:white;cursor:pointer}
-.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+
 </head>
 <body>
 <div class="layout">
     <div class="sidebar">
-        <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
         <div class="progress-title">Your progress</div>
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Company</div></div>
         <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Renewal type</div></div>
-        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Legal type</div></div>
-        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Business activities</div></div>
-        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Shareholder(s)</div></div>
-        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Manager(s)</div></div>
-        <div class="progress-step"><div class="step-num">7</div><div class="step-label">Director(s)</div></div>
-        <div class="progress-step"><div class="step-num">8</div><div class="step-label">UBO</div></div>
-        <div class="progress-step"><div class="step-num">9</div><div class="step-label">Nature of business</div></div>
-        <div class="progress-step"><div class="step-num">10</div><div class="step-label">Supporting documents</div></div>
-        <div class="progress-step"><div class="step-num">11</div><div class="step-label">Review application</div></div>
-        <div class="progress-step"><div class="step-num">12</div><div class="step-label">Payment</div></div>
+        <div id="sidebar-dynamic-steps"></div>
+        <div class="progress-step" id="sidebar-step-supporting"><div class="step-num" id="sidebar-num-supporting">3</div><div class="step-label">Supporting documents</div></div>
+        <div class="progress-step" id="sidebar-step-review"><div class="step-num" id="sidebar-num-review">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step" id="sidebar-step-payment"><div class="step-num" id="sidebar-num-payment">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
     </div>
     <div class="main">
@@ -1896,11 +1675,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                     <div class="sec-body">
                         <div class="sec-title">Upload required document</div>
                         <p style="font-size:13px;color:#555;margin-bottom:12px;font-weight:600">Board resolution</p>
-                        <div class="upload-area" onclick="document.getElementById('boardResUpload').click()">
-                            <input type="file" id="boardResUpload" name="board_resolution" accept=".pdf,.jpg,.jpeg,.png"/>
-                            <div class="upload-icon">&#8679;</div>
-                            <div class="upload-label">Board resolution</div>
+                        <div class="upload-label">Board resolution</div>
+                        <div class="upload-box" onclick="document.getElementById('boardResUpload').click()">
+                            <input type="file" id="boardResUpload" name="board_resolution" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="showUploadName(this,'boardResName')"/>
+                            <div class="upload-icon">&#11014;</div>
+                            <div class="upload-text">Upload document</div>
                         </div>
+                        <div id="boardResName" style="font-size:12px;color:#1abc9c;margin-top:4px"></div>
                         <p style="font-size:13px;color:#1abc9c;margin-top:8px;font-style:italic">'You can download the requested Board Resolution <a href="#" style="color:#1abc9c">here</a>'</p>
                         <ul class="info-list">
                             <li>The resolution must be signed by all authorized individuals (all shareholders).</li>
@@ -1926,8 +1707,938 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </form>
     </div>
 </div>
+<script type="text/javascript">/*<![CDATA[*/
+var AMENDMENT_MAP = [
+    {name: "amendment_legal_type", label: "Legal type"},
+    {name: "amendment_business_activities", label: "Business activities"},
+    {name: "amendment_company_info", label: "Company information"},
+    {name: "amendment_capital_structure", label: "Nature of business"},
+    {name: "amendment_visa_allocation", label: "Visa allocation"},
+    {name: "amendment_facility_type", label: "Facility type"},
+    {name: "amendment_shareholder", label: "Shareholder(s)"},
+    {name: "amendment_manager", label: "Manager(s)"},
+    {name: "amendment_director", label: "Director(s)"}
+];
+function updateSidebar() {
+    var selected = AMENDMENT_MAP.filter(function(a) {
+        var cb = document.querySelector('input[name="' + a.name + '"]');
+        return cb && cb.checked;
+    });
+    var container = document.getElementById('sidebar-dynamic-steps');
+    if (!container) return;
+    container.innerHTML = '';
+    var stepNum = 3;
+    selected.forEach(function(a) {
+        var div = document.createElement('div');
+        div.className = 'progress-step';
+        div.innerHTML = '<div class="step-num">' + stepNum + '</div><div class="step-label">' + a.label + '</div>';
+        container.appendChild(div);
+        stepNum++;
+    });
+    var sn = document.getElementById('sidebar-num-supporting');
+    var rn = document.getElementById('sidebar-num-review');
+    var pn = document.getElementById('sidebar-num-payment');
+    if (sn) sn.textContent = stepNum;
+    if (rn) rn.textContent = stepNum + 1;
+    if (pn) pn.textContent = stepNum + 2;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[type=checkbox]').forEach(function(cb) {
+        cb.addEventListener('change', updateSidebar);
+    });
+    updateSidebar();
+});
+/*]]>*/</script>
 </body>
 </html>
+</template>
+
+
+<!-- RA Step 3: Legal Type -->
+<template id="template_ra_step3" name="RA Step3 Legal Type">
+<html><head><meta charset="utf-8"/><title>Legal Type | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url if form_submit_url else '/spc/company-management/apply/ra-step3/submit'">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Select the legal type</div>
+                <div class="legal-options">
+                    <label class="legal-card selected" onclick="selectCard(this)">
+                        <input type="radio" name="legal_type" value="fze" checked="checked" style="display:none"/>
+                        <div class="legal-card-title">Free Zone Establishment</div>
+                        <div class="legal-card-sub">1 Shareholder (Limited Liability Company)</div>
+                    </label>
+                    <label class="legal-card" onclick="selectCard(this)">
+                        <input type="radio" name="legal_type" value="fzc"/>
+                        <div class="legal-card-title">Free Zone Company</div>
+                        <div class="legal-card-sub">Multiple shareholders (Limited Liability Company)</div>
+                    </label>
+                    <label class="legal-card" onclick="selectCard(this)">
+                        <input type="radio" name="legal_type" value="branch"/>
+                        <div class="legal-card-title">Branch</div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Select package type</div>
+                <div class="package-options">
+                    <label class="pkg-label"><input type="radio" name="package_type" value="Standard" checked="checked"/> Standard</label>
+                    <label class="pkg-label"><input type="radio" name="package_type" value="Publishing"/> Publishing</label>
+                    <label class="pkg-label"><input type="radio" name="package_type" value="E-Publishing"/> E-Publishing</label>
+                    <label class="pkg-label"><input type="radio" name="package_type" value="Instant License - Standard"/> Instant License - Standard</label>
+                    <label class="pkg-label"><input type="radio" name="package_type" value="Instant License - Publishing"/> Instant License - Publishing</label>
+                    <label class="pkg-label"><input type="radio" name="package_type" value="Instant License - E-Publishing"/> Instant License - E-Publishing</label>
+                </div>
+                <div class="info-box">&#9432; For more details on our business setup packages, click <a href="#">here</a></div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script>
+function selectCard(el){
+    document.querySelectorAll('.legal-card').forEach(function(c){c.classList.remove('selected')});
+    el.classList.add('selected');
+    el.querySelector('input[type=radio]').checked = true;
+}
+</script>
+</body></html>
+</template>
+
+<!-- RA Step 4: Business Activities -->
+<template id="template_ra_step4" name="RA Step4 Business Activities">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Business Activities | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
+.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.progress-step-num{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;color:#fff}
+.progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
+.progress-step-num.done{background:#fff;color:#1a2340}
+.progress-step-label{font-size:13px;color:#fff;opacity:.6}
+.progress-step-label.active{opacity:1}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.step-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:8px}
+.step-sub{font-size:13px;color:#888;margin-bottom:16px}
+.search-wrap{position:relative;margin-bottom:16px;max-width:500px}
+.search-bar{width:100%;padding:10px 40px 10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+.search-bar:focus{border-color:#1abc9c}
+.search-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{padding:6px 14px;border:1px solid #ddd;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;color:#555}
+.tab.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.divisions-wrap{max-width:800px;margin-bottom:24px}
+.division-item{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:8px}
+.division-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:#fafafa;font-size:14px;font-weight:600;color:#1a2340}
+.division-body{display:none;padding:12px 16px;border-top:1px solid #e5e7eb}
+.division-body.open{display:block}
+.div-arrow{font-size:12px;color:#aaa}
+.row-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.row-item-left{display:flex;align-items:flex-start;gap:8px;flex:1}
+.row-item input[type=checkbox]{width:15px;height:15px;margin-top:2px;accent-color:#1abc9c;flex-shrink:0}
+.row-expand-btn{background:none;border:1px solid #ddd;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:14px;color:#1a3c6e;margin-left:8px}
+.sub-items{display:none;padding:8px 0 8px 24px}
+.sub-items.open{display:block}
+.sub-item-label{font-size:12px;color:#888;margin-bottom:6px}
+.sub-activity{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:4px 0;cursor:pointer}
+.sub-activity input{width:14px;height:14px;margin-top:2px;accent-color:#1abc9c}
+.empty-state{text-align:center;padding:40px 20px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:32px;gap:16px}
+.spc-btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+.spc-btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,.15)">
+        <div class="progress-title">Your progress</div>
+        <t t-foreach="steps" t-as="step">
+            <div class="progress-step">
+                <t t-if="step_index + 1 == current_step">
+                    <div class="progress-step-num active"><t t-esc="step_index + 1"/></div>
+                    <div class="progress-step-label active"><t t-esc="step"/></div>
+                </t>
+                <t t-elif="step_index + 1 &lt; current_step">
+                    <div class="progress-step-num done">&#10003;</div>
+                    <div class="progress-step-label"><t t-esc="step"/></div>
+                </t>
+                <t t-else="">
+                    <div class="progress-step-num"><t t-esc="step_index + 1"/></div>
+                    <div class="progress-step-label"><t t-esc="step"/></div>
+                </t>
+            </div>
+        </t>
+    </div>
+    <div class="total-box">
+        <div style="font-size:11px;opacity:.6;margin-bottom:2px">Total</div>
+        <div style="font-size:11px;opacity:.6">AED</div>
+        <div style="font-size:20px;font-weight:700"><t t-esc="'%.2f' % (fee or 0)"/> <span style="font-size:14px">&#9432;</span></div>
+    </div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <div class="step-label">01</div>
+    <div class="step-title">Select business activity(s)</div>
+    <div class="step-sub">What business activity(s) will the company practice?</div>
+    <div class="search-wrap">
+        <input type="text" class="search-bar" id="activitySearch" placeholder="Search by keyword" oninput="filterActivities(this.value)"/>
+        <span class="search-icon">&#128269;</span>
+    </div>
+    <div class="tabs" id="tabsRow">
+        <button class="tab active" onclick="filterByTab('',this)">All</button>
+        <t t-foreach="categories" t-as="cat">
+            <button class="tab" t-attf-onclick="filterByTab('#{cat[0]}',this)"><t t-esc="cat[1]"/></button>
+        </t>
+    </div>
+    <div class="divisions-wrap" id="divisionsWrap">
+        <div class="empty-tab-msg" id="emptyTabMsg">Select a category tab to view activities.</div>
+        <t t-foreach="categories" t-as="cat">
+            <t t-set="cat_data" t-value="activities_data.get(cat[0], {})"/>
+            <t t-foreach="cat_data.get('divisions', {}).items()" t-as="div_item">
+                <t t-set="div_name" t-value="div_item[0]"/>
+                <t t-set="div_acts" t-value="div_item[1]"/>
+                <div class="division-item" t-att-data-cat="cat[0]" style="display:none">
+                    <div class="division-header" onclick="toggleDivision(this)">
+                        <span><t t-esc="div_name"/></span>
+                        <span class="div-arrow">&#8964;</span>
+                    </div>
+                    <div class="division-body">
+                        <t t-foreach="div_acts" t-as="act">
+                            <t t-if="'.' not in act['code']">
+                                <t t-set="child_prefix" t-value="act['code'] + '.'"/>
+                                <t t-set="has_children" t-value="any(child_prefix in a['code'] for a in div_acts)"/>
+                                <div class="row-item" t-att-data-parent="act['code']">
+                                    <div class="row-item-left">
+                                        <input type="checkbox" t-att-value="act['name']" t-att-id="'cb_' + act['code']" name="business_activities" onchange="updateSelected(this)"/>
+                                        <label t-att-for="'cb_' + act['code']" style="cursor:pointer;font-weight:600"><t t-esc="act['name']"/></label>
+                                    </div>
+                                    <t t-if="has_children">
+                                        <button type="button" class="row-expand-btn" t-attf-onclick="toggleSub('#{act['code']}', this)" title="Expand">+</button>
+                                    </t>
+                                </div>
+                                <t t-if="has_children">
+                                    <div class="sub-items" t-att-id="'sub_' + act['code']">
+                                        <div class="sub-item-label">This class includes:</div>
+                                        <t t-foreach="div_acts" t-as="child">
+                                            <t t-if="child['code'].startswith(child_prefix)">
+                                                <label class="sub-activity">
+                                                    <input type="checkbox" t-att-value="child['name']" name="business_activities" onchange="updateSelected(this)"/>
+                                                    <span><t t-esc="child['name']"/></span>
+                                                </label>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </t>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </div>
+    <div style="margin-bottom:24px">
+        <div class="step-label">02</div>
+        <div class="step-title">List of business activity(s) selected</div>
+        <div id="selectedList" style="margin-top:12px;min-height:60px;border:1px solid #eee;border-radius:8px;padding:12px">
+            <div id="emptySelected" style="text-align:center;padding:20px;color:#aaa">
+                <div style="font-size:32px">&#127881;</div>
+                <div style="font-weight:600;color:#1a2340">Woohoo!</div>
+                <div style="font-size:13px">No Activity selected yet.</div>
+            </div>
+        </div>
+    </div>
+    <form method="post" t-att-action="form_submit_url" id="actForm">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div id="hiddenActivities"></div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script type="text/javascript">/*<![CDATA[*/
+var selectedActivities = [];
+function filterByTab(cat, btn) {
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+    btn.classList.add('active');
+    var items = document.querySelectorAll('.division-item');
+    var msg = document.getElementById('emptyTabMsg');
+    if (!cat) {
+        items.forEach(function(el){el.style.display='block'});
+        msg.style.display='none';
+    } else {
+        var found = false;
+        items.forEach(function(el){
+            if (el.getAttribute('data-cat') === cat) { el.style.display='block'; found=true; }
+            else el.style.display='none';
+        });
+        msg.style.display = found ? 'none' : 'block';
+    }
+}
+function toggleDivision(hdr) {
+    var body = hdr.nextElementSibling;
+    body.classList.toggle('open');
+}
+function toggleSub(code, btn) {
+    var sub = document.getElementById('sub_' + code);
+    if (sub) { sub.classList.toggle('open'); btn.textContent = sub.classList.contains('open') ? '-' : '+'; }
+}
+function updateSelected(cb) {
+    var val = cb.value;
+    if (cb.checked) { if (selectedActivities.indexOf(val) === -1) selectedActivities.push(val); }
+    else { selectedActivities = selectedActivities.filter(function(v){return v !== val}); }
+    renderSelected();
+}
+function renderSelected() {
+    var list = document.getElementById('selectedList');
+    var empty = document.getElementById('emptySelected');
+    var hidden = document.getElementById('hiddenActivities');
+    hidden.innerHTML = '';
+    if (selectedActivities.length === 0) {
+        empty.style.display = 'block';
+        return;
+    }
+    empty.style.display = 'none';
+    selectedActivities.forEach(function(a) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden'; inp.name = 'business_activities'; inp.value = a;
+        hidden.appendChild(inp);
+    });
+    var html = selectedActivities.map(function(a,i) {
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #f5f5f5;font-size:13px"><span>' + a + '</span><button type="button" onclick="removeActivity(' + i + ')" style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:16px">&#215;</button></div>';
+    }).join('');
+    list.innerHTML = html;
+}
+function removeActivity(idx) {
+    var val = selectedActivities[idx];
+    selectedActivities.splice(idx, 1);
+    document.querySelectorAll('input[type=checkbox]').forEach(function(cb){ if(cb.value===val) cb.checked=false; });
+    renderSelected();
+}
+function filterActivities(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.row-item').forEach(function(row){
+        var label = row.querySelector('label');
+        if (label) row.style.display = label.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+}
+/*]]>*/</script>
+</body></html>
+</template>
+
+
+<!-- RA Step 5: Shareholders -->
+<template id="template_ra_step5" name="RA Step5 Shareholders">
+<html><head><meta charset="utf-8"/><title>Shareholder Information | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.accordion{border:1px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.accordion-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:#fff;font-weight:600;font-size:14px;color:#1a2340}
+.accordion-header:hover{background:#f8f9fa}
+.accordion-arrow{font-size:12px;transition:transform .2s}
+.accordion-arrow.open{transform:rotate(180deg)}
+.accordion-body{display:none;padding:24px;border-top:1px solid #e0e0e0;background:#f9f9f9}
+.accordion-body.open{display:block}
+.field-row{position:relative;margin-bottom:16px}
+.field-row label{position:absolute;top:8px;left:14px;font-size:11px;color:#888;pointer-events:none;z-index:1}
+.field-row .field-input{width:100%;padding:24px 14px 8px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;color:#333;outline:none;background:#fff}
+.field-row .field-input:focus{border-color:#1abc9c}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.type-toggle{display:flex;gap:0;margin-bottom:20px;max-width:300px}
+.type-btn{flex:1;padding:10px;border:1px solid #ddd;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#555}
+.type-btn:first-child{border-radius:8px 0 0 8px}
+.type-btn:last-child{border-radius:0 8px 8px 0}
+.type-btn.active{background:#1a2340;color:#fff;border-color:#1a2340}
+.upload-label{font-size:13px;color:#374151;font-weight:500;margin-bottom:8px;display:block}
+.count-input{width:120px;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:15px;color:#333;outline:none}
+.count-input:focus{border-color:#1abc9c}
+</style>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url" id="ra_sh_form" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Number of shareholders</div>
+                <input class="count-input" type="number" name="shareholder_count" id="sh_count" value="1" min="1" max="10" onchange="buildAccordions()"/>
+            </div>
+        </div>
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Shareholder details</div>
+                <div id="sh_accordions"></div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script type="text/javascript">/*<![CDATA[*/
+function buildAccordions(){
+    var count = parseInt(document.getElementById('sh_count').value) || 1;
+    var container = document.getElementById('sh_accordions');
+    container.innerHTML = '';
+    for(var i = 1; i <= count; i++){
+        container.innerHTML += shAccordion(i);
+    }
+}
+function shAccordion(i){
+    return '<div class="accordion">' +
+        '<div class="accordion-header" onclick="toggleAcc(this)">' +
+            'Shareholder ' + i +
+            '<span class="accordion-arrow">&#8964;</span>' +
+        '</div>' +
+        '<div class="accordion-body open">' +
+            '<div class="type-toggle">' +
+                '<button type="button" class="type-btn active" onclick="shToggleType('+i+',\'individual\',this)">Individual</button>' +
+                '<button type="button" class="type-btn" onclick="shToggleType('+i+',\'corporate\',this)">Corporate</button>' +
+            '</div>' +
+            '<input type="hidden" name="sh_'+i+'_type" id="sh_'+i+'_type" value="individual"/>' +
+            '<div class="two-col">' +
+                '<div class="field-row"><label>First name</label><input class="field-input" type="text" name="sh_'+i+'_first_name" placeholder=" "/></div>' +
+                '<div class="field-row"><label>Last name</label><input class="field-input" type="text" name="sh_'+i+'_last_name" placeholder=" "/></div>' +
+            '</div>' +
+            '<div class="field-row"><label>Passport number</label><input class="field-input" type="text" name="sh_'+i+'_passport_no" placeholder=" "/></div>' +
+            '<div class="field-row"><label>Nationality</label><input class="field-input" type="text" name="sh_'+i+'_nationality" placeholder=" "/></div>' +
+            '<div class="two-col">' +
+                '<div class="field-row"><label>Email</label><input class="field-input" type="email" name="sh_'+i+'_email" placeholder=" "/></div>' +
+                '<div class="field-row"><label>Mobile</label><input class="field-input" type="tel" name="sh_'+i+'_mobile" placeholder=" "/></div>' +
+            '</div>' +
+            '<div class="two-col">' +
+                '<div class="field-row"><label>Date of birth</label><input class="field-input" type="date" name="sh_'+i+'_dob"/></div>' +
+                '<div class="field-row"><label>Shares (%)</label><input class="field-input" type="number" name="sh_'+i+'_shares" placeholder=" " min="0" max="100"/></div>' +
+            '</div>' +
+            '<div class="upload-label">Passport copy</div>' +
+            '<div class="upload-box" onclick="document.getElementById(\'sh_'+i+'_passport\').click()">' +
+                '<input type="file" id="sh_'+i+'_passport" name="sh_'+i+'_passport_copy" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>' +
+                '<div class="upload-icon">&#11014;</div>' +
+                '<div class="upload-text">Upload passport copy</div>' +
+            '</div>' +
+        '</div>' +
+    '</div>';
+}
+function toggleAcc(header){
+    var body = header.nextElementSibling;
+    var arrow = header.querySelector('.accordion-arrow');
+    body.classList.toggle('open');
+    arrow.classList.toggle('open');
+}
+function shToggleType(i, type, btn){
+    document.getElementById('sh_'+i+'_type').value = type;
+    btn.parentElement.querySelectorAll('.type-btn').forEach(function(b){b.classList.remove('active')});
+    btn.classList.add('active');
+}
+document.addEventListener('DOMContentLoaded', function(){ buildAccordions(); });
+/*]]>*/</script>
+</body></html>
+</template>
+
+
+<!-- RA Supporting Documents -->
+<template id="template_ra_supporting_docs" name="RA Supporting Documents">
+<html><head><meta charset="utf-8"/><title>Supporting Documents | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num">
+                <t t-if="snum &lt; current_step">&#10003;</t>
+                <t t-else=""><t t-esc="snum"/></t>
+            </div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="sidebar-links">
+        <a href="#">SAVE &amp; CONTINUE LATER</a>
+        <a href="#">CANCEL APPLICATION</a>
+    </div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Upload supporting documents</div>
+                <div class="upload-row">
+                    <div>
+                        <div class="upload-label">Passport copy of manager(s)</div>
+                        <div class="upload-box" onclick="document.getElementById('doc_passport').click()">
+                            <input type="file" id="doc_passport" name="doc_passport" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                            <div class="upload-icon">&#11014;</div>
+                            <div class="upload-text">Upload document</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">UAE visa / entry stamp copy</div>
+                        <div class="upload-box" onclick="document.getElementById('doc_visa').click()">
+                            <input type="file" id="doc_visa" name="doc_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                            <div class="upload-icon">&#11014;</div>
+                            <div class="upload-text">Upload document</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="upload-label">Authorization form (if applicable)</div>
+                        <div class="upload-box" onclick="document.getElementById('doc_auth').click()">
+                            <input type="file" id="doc_auth" name="doc_auth" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/>
+                            <div class="upload-icon">&#11014;</div>
+                            <div class="upload-text">Upload document</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+</body></html>
+</template>
+
+
+<!-- RA Step 6: Managers -->
+<template id="template_ra_step6" name="RA Step6 Managers">
+<html><head><meta charset="utf-8"/><title>Manager Information | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.accordion{border:1px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.accordion-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:#fff;font-weight:600;font-size:14px;color:#1a2340}
+.accordion-body{display:none;padding:24px;border-top:1px solid #e0e0e0;background:#f9f9f9}
+.accordion-body.open{display:block}
+.field-row{position:relative;margin-bottom:16px}
+.field-row label{position:absolute;top:8px;left:14px;font-size:11px;color:#888;pointer-events:none}
+.field-row .field-input{width:100%;padding:24px 14px 8px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none;background:#fff}
+.field-row .field-input:focus{border-color:#1abc9c}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.count-input{width:120px;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:15px;outline:none}
+.count-input:focus{border-color:#1abc9c}
+</style>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Number of managers</div>
+                <input class="count-input" type="number" name="manager_count" id="mgr_count" value="1" min="1" max="10" onchange="buildMgrAccordions()"/>
+            </div>
+        </div>
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Manager details</div>
+                <div id="mgr_accordions"></div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script type="text/javascript">/*<![CDATA[*/
+function buildMgrAccordions(){
+    var count = parseInt(document.getElementById('mgr_count').value)||1;
+    var c = document.getElementById('mgr_accordions');
+    c.innerHTML='';
+    for(var i=1;i<=count;i++) c.innerHTML+=mgrCard(i);
+}
+function mgrCard(i){
+    return '<div class="accordion"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('open')">Manager '+i+'</div><div class="accordion-body open"><div class="two-col"><div class="field-row"><label>First name</label><input class="field-input" type="text" name="mgr_'+i+'_first_name" placeholder=" "/></div><div class="field-row"><label>Last name</label><input class="field-input" type="text" name="mgr_'+i+'_last_name" placeholder=" "/></div></div><div class="field-row"><label>Nationality</label><input class="field-input" type="text" name="mgr_'+i+'_nationality" placeholder=" "/></div><div class="two-col"><div class="field-row"><label>Email</label><input class="field-input" type="email" name="mgr_'+i+'_email" placeholder=" "/></div><div class="field-row"><label>Mobile</label><input class="field-input" type="tel" name="mgr_'+i+'_mobile" placeholder=" "/></div></div><div class="field-row"><label>Passport number</label><input class="field-input" type="text" name="mgr_'+i+'_passport_no" placeholder=" "/></div><div class="upload-label">Passport copy</div><div class="upload-box" onclick="document.getElementById('mgr_'+i+'_pf').click()"><input type="file" id="mgr_'+i+'_pf" name="mgr_'+i+'_passport_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/><div class="upload-icon">&#11014;</div><div class="upload-text">Upload passport</div></div></div></div>';
+}
+document.addEventListener('DOMContentLoaded', function(){ buildMgrAccordions(); });
+/*]]>*/</script>
+</body></html>
+</template>
+
+<!-- RA Step 7: Directors -->
+<template id="template_ra_step7" name="RA Step7 Directors">
+<html><head><meta charset="utf-8"/><title>Director Information | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.accordion{border:1px solid #e0e0e0;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.accordion-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;cursor:pointer;background:#fff;font-weight:600;font-size:14px;color:#1a2340}
+.accordion-body{display:none;padding:24px;border-top:1px solid #e0e0e0;background:#f9f9f9}
+.accordion-body.open{display:block}
+.field-row{position:relative;margin-bottom:16px}
+.field-row label{position:absolute;top:8px;left:14px;font-size:11px;color:#888;pointer-events:none}
+.field-row .field-input{width:100%;padding:24px 14px 8px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none;background:#fff}
+.field-row .field-input:focus{border-color:#1abc9c}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.count-input{width:120px;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:15px;outline:none}
+</style>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Number of directors</div>
+                <input class="count-input" type="number" name="director_count" id="dir_count" value="1" min="1" max="10" onchange="buildDirAccordions()"/>
+            </div>
+        </div>
+        <div class="spc-section">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Director details</div>
+                <div id="dir_accordions"></div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script type="text/javascript">/*<![CDATA[*/
+function buildDirAccordions(){
+    var count = parseInt(document.getElementById('dir_count').value)||1;
+    var c = document.getElementById('dir_accordions');
+    c.innerHTML='';
+    for(var i=1;i<=count;i++) c.innerHTML+=dirCard(i);
+}
+function dirCard(i){
+    return '<div class="accordion"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('open')">Director '+i+'</div><div class="accordion-body open"><div class="two-col"><div class="field-row"><label>First name</label><input class="field-input" type="text" name="dir_'+i+'_fn" placeholder=" "/></div><div class="field-row"><label>Last name</label><input class="field-input" type="text" name="dir_'+i+'_ln" placeholder=" "/></div></div><div class="field-row"><label>Nationality</label><input class="field-input" type="text" name="dir_'+i+'_nat" placeholder=" "/></div><div class="two-col"><div class="field-row"><label>Email</label><input class="field-input" type="email" name="dir_'+i+'_email" placeholder=" "/></div><div class="field-row"><label>Mobile</label><input class="field-input" type="tel" name="dir_'+i+'_mob" placeholder=" "/></div></div><div class="field-row"><label>Passport number</label><input class="field-input" type="text" name="dir_'+i+'_passport_no" placeholder=" "/></div><div class="upload-label">Passport copy</div><div class="upload-box" onclick="document.getElementById('dir_'+i+'_pf').click()"><input type="file" id="dir_'+i+'_pf" name="dir_'+i+'_pf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/><div class="upload-icon">&#11014;</div><div class="upload-text">Upload passport</div></div></div></div>';
+}
+document.addEventListener('DOMContentLoaded', function(){ buildDirAccordions(); });
+/*]]>*/</script>
+</body></html>
+</template>
+
+
+<!-- RA Company Info -->
+<template id="template_ra_company_info" name="RA Company Info">
+<html><head><meta charset="utf-8"/><title>Company Information | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Company information</div>
+                <div style="margin-bottom:16px">
+                    <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Company name</label>
+                    <input type="text" name="company_name" style="width:100%;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none" placeholder="Enter company name"/>
+                </div>
+                <div style="margin-bottom:16px">
+                    <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Company email</label>
+                    <input type="email" name="company_email" style="width:100%;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none" placeholder="Enter company email"/>
+                </div>
+                <div style="margin-bottom:16px">
+                    <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Company phone</label>
+                    <input type="tel" name="company_phone" style="width:100%;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none" placeholder="Enter company phone"/>
+                </div>
+                <div style="margin-bottom:16px">
+                    <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Company address</label>
+                    <input type="text" name="company_address" style="width:100%;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none" placeholder="Enter company address"/>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+</body></html>
+</template>
+
+<!-- RA Nature of Business -->
+<template id="template_ra_nature" name="RA Nature of Business">
+<html><head><meta charset="utf-8"/><title>Nature of Business | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Nature of business</div>
+                <div style="margin-bottom:16px">
+                    <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Describe the nature of your business</label>
+                    <textarea name="nature_of_business" rows="5" style="width:100%;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none;resize:vertical" placeholder="Describe your business activities..."></textarea>
+                </div>
+                <div style="margin-bottom:16px">
+                    <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Capital structure (AED)</label>
+                    <input type="number" name="capital_structure" style="width:100%;padding:12px 14px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;outline:none" placeholder="Enter capital amount"/>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+</body></html>
+</template>
+
+<!-- RA Visa Allocation -->
+<template id="template_ra_visa" name="RA Visa Allocation">
+<html><head><meta charset="utf-8"/><title>Visa Allocation | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Visa allocation upgrade / downgrade</div>
+                <div class="sec-sub" style="font-size:13px;color:#888;margin-bottom:16px">Select the number of visas required</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px" id="visaGrid">
+                    <t t-foreach="range(1, 11)" t-as="n">
+                        <button type="button" t-attf-class="num-btn #{n == 1 and 'active' or ''}" t-att-onclick="'selectVisa(' + str(n) + ',this)'"><t t-esc="n"/></button>
+                    </t>
+                </div>
+                <input type="hidden" name="visa_count" id="visa_count_val" value="1"/>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script>
+function selectVisa(n,btn){
+    document.querySelectorAll('.num-btn').forEach(function(b){b.classList.remove('active')});
+    btn.classList.add('active');
+    document.getElementById('visa_count_val').value=n;
+}
+</script>
+</body></html>
+</template>
+
+<!-- RA Facility Type -->
+<template id="template_ra_facility" name="RA Facility Type">
+<html><head><meta charset="utf-8"/><title>Facility Type | Renewal Amendment</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="step">
+        <t t-set="snum" t-value="step_index + 1"/>
+        <div t-attf-class="progress-step #{snum == current_step and 'active' or snum &lt; current_step and 'done' or ''}">
+            <div class="step-num"><t t-if="snum &lt; current_step">&#10003;</t><t t-else=""><t t-esc="snum"/></t></div>
+            <div class="step-label"><t t-esc="step"/></div>
+        </div>
+    </t>
+    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+</div>
+<div class="main">
+    <div class="form-title">Renewal with Amendment</div>
+    <form method="post" t-att-action="form_submit_url">
+        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+        <input type="hidden" name="service_type" t-att-value="service_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Select facility type</div>
+                <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px">
+                    <label class="fac-card selected" onclick="selectFac(this)">
+                        <input type="radio" name="facility_type" value="flexi_desk" checked="checked" style="display:none"/>
+                        <div class="fac-card-title">Flexi Desk</div>
+                        <div class="fac-card-sub">Shared workspace</div>
+                    </label>
+                    <label class="fac-card" onclick="selectFac(this)">
+                        <input type="radio" name="facility_type" value="executive_flexi" style="display:none"/>
+                        <div class="fac-card-title">Executive Flexi Desk</div>
+                        <div class="fac-card-sub">Premium shared workspace</div>
+                    </label>
+                    <label class="fac-card" onclick="selectFac(this)">
+                        <input type="radio" name="facility_type" value="private_office" style="display:none"/>
+                        <div class="fac-card-title">Private Office</div>
+                        <div class="fac-card-sub">Dedicated private space</div>
+                    </label>
+                    <label class="fac-card" onclick="selectFac(this)">
+                        <input type="radio" name="facility_type" value="virtual_office" style="display:none"/>
+                        <div class="fac-card-title">Virtual Office</div>
+                        <div class="fac-card-sub">Remote business address</div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <button type="button" class="spc-btn-prev" onclick="window.history.back()">PREVIOUS</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
+        </div>
+    </form>
+</div>
+</div>
+<script>
+function selectFac(el){
+    document.querySelectorAll('.fac-card').forEach(function(c){c.classList.remove('selected')});
+    el.classList.add('selected');
+    el.querySelector('input[type=radio]').checked=true;
+}
+</script>
+</body></html>
 </template>
 
 </data>

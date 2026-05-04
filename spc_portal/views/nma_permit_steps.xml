@@ -1,0 +1,1493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<template id="template_nma_permit_main" name="NMA Permit Main">
+<html><head><meta charset="utf-8"/><title>NMA Permit</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333;padding:32px}
+h2{font-size:22px;font-weight:700;color:#1a2340;margin-bottom:4px}
+.sub{color:#888;font-size:14px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);text-decoration:none;color:inherit;display:block}
+.card-img{height:160px;position:relative;display:flex;align-items:center;padding:0 24px;background:linear-gradient(135deg,#1a3a6b,#2a6cbf)}
+.card-tag{position:absolute;top:12px;left:12px;color:#fff;padding:4px 12px;border-radius:3px;font-size:11px;font-weight:600;background:#0d5c8c}
+.card-text{color:#fff;font-size:22px;font-weight:800;line-height:1.2;margin-top:16px}
+.card-body{padding:16px}
+.card-name{font-weight:600;font-size:15px;margin-bottom:6px;color:#0d5c8c}
+.card-fee{color:#555;font-size:13px;font-weight:600}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+    <h2>NMA Permit</h2>
+    <div class="sub">.</div>
+    <div class="grid">
+        <a href="/spc/company-management/nma-permit/new/additional" class="card">
+            <div class="card-img">
+                <span class="card-tag">New</span>
+                <span class="card-text">MRO<br/>Permit</span>
+            </div>
+            <div class="card-body">
+                <div class="card-name">New</div>
+                <div class="card-fee">AED 200</div>
+            </div>
+        </a>
+    </div>
+</body></html>
+</template>
+
+<template id="template_nma_permit_service_detail" name="NMA Permit Service Detail">
+<html><head><meta charset="utf-8"/><title>NMA Permit - New</title>
+<style>
+body{font-family:"Inter",sans-serif;margin:0;padding:0;background:#fff}
+.header{padding:16px 32px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px}
+.back-link{font-size:12px;color:#6b7280;text-decoration:none}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c;margin:0}
+.start-btn{margin-left:auto;padding:10px 24px;background:#1a2340;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none}
+.hero{width:100%;min-height:200px;background:linear-gradient(135deg,#1a3a6b,#2a6cbf);display:flex;align-items:center;padding:40px 60px;position:relative;color:#fff}
+.hero-badge{display:inline-block;padding:4px 12px;border-radius:4px;font-size:13px;font-weight:700;margin-bottom:12px;background:rgba(0,0,0,.2)}
+.hero-title{font-size:48px;font-weight:800;line-height:1.1}
+.content{max-width:900px;margin:32px auto;padding:0 32px}
+.section-title{font-size:18px;font-weight:700;color:#1a2340;margin:24px 0 4px}
+.divider{border:none;border-top:2px dotted #e5e7eb;margin:4px 0 12px}
+.desc-text{font-size:13px;color:#374151;line-height:1.6}
+.req-list{list-style:decimal;padding-left:20px;font-size:13px;color:#374151;line-height:2.2}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="header">
+    <a href="/spc/company-management/nma-permit" class="back-link">&#8592; BACK TO COMPANY MANAGEMENT</a>
+    <h1 class="page-title">NMA Permit - New</h1>
+    <a href="/spc/apply/nma_permit/step1" class="start-btn">START PROCESS</a>
+</div>
+<div class="hero">
+    <div>
+        <div class="hero-badge">New</div>
+        <div class="hero-title">MRO<br/>Permit</div>
+    </div>
+</div>
+<div class="content">
+    <div class="section-title">Description</div>
+    <hr class="divider"/>
+    <p class="desc-text">This service facilitates obtaining approval from the National Media Authority (NMA) for printing books within the UAE.</p>
+    <div class="section-title">Requirements</div>
+    <hr class="divider"/>
+    <p class="desc-text" style="font-weight:600;margin-bottom:6px;">NMC Permit - Publishing</p>
+    <ol class="req-list">
+        <li>Book Title</li>
+        <li>Author Name</li>
+        <li>Category of the Permit</li>
+        <li>Copy of the Book pdf (20 MB max)</li>
+        <li>Payment</li>
+        <li>Valid Media License</li>
+        <li>Declaration of the Book in Other Languages than Arabic &amp; English</li>
+    </ol>
+    <div class="section-title">Timeline</div>
+    <hr class="divider"/>
+    <p class="desc-text">7-10 days</p>
+    <div class="section-title">Fees</div>
+    <hr class="divider"/>
+    <p class="desc-text">350 AED</p>
+</div>
+</body></html>
+</template>
+
+<template id="template_nma_permit_step1" name="NMA Permit Step 1">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Permit Type | NMA Permit</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px;vertical-align:middle}
+.select-row{display:flex;align-items:center;max-width:560px;margin-bottom:16px}
+.select-row .select-wrap{flex:1;margin-bottom:0}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Permit type</div></div>
+        <div class="progress-step"><div class="step-num">2</div><div class="step-label">Document upload</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount" id="nma_total_amt">210.00 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/apply/nma_permit/step1" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+            <!-- 01 Permit Type -->
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select the permit type</div>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="permit_type" value="printing" onchange="nmaPermitChange(this.value)"/> Printing permit</label>
+                        <label class="radio-label"><input type="radio" name="permit_type" value="trading" onchange="nmaPermitChange(this.value)"/> Trading permit</label>
+                        <label class="radio-label"><input type="radio" name="permit_type" value="text" onchange="nmaPermitChange(this.value)"/> Text permit</label>
+                        <label class="radio-label"><input type="radio" name="permit_type" value="regulatory" onchange="nmaPermitChange(this.value)"/> Regulatory entry permit</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRINTING PERMIT FIELDS -->
+            <div id="fields_printing" style="display:none">
+                <div class="spc-section">
+                    <div class="sec-num">02</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Select type of publication</div>
+                        <div class="select-row">
+                            <div class="select-wrap">
+                                <select name="publication_type" id="pub_type_printing" onchange="nmaPubTypeChange(this.value,'printing')">
+                                    <option value="">Type of publication</option>
+                                    <option value="book">Book</option>
+                                    <option value="map">Map</option>
+                                    <option value="brochures">Brochures and posters</option>
+                                    <option value="movie">Movie</option>
+                                </select>
+                            </div>
+                            <button type="button" class="clear-btn" onclick="document.getElementById('pub_type_printing').value='';nmaPubTypeChange('','printing')">&#10005;</button>
+                        </div>
+                        <!-- BOOK -->
+                        <div id="printing_book" style="display:none">
+                            <div class="sec-title" style="font-size:14px;margin-top:8px;">Book</div>
+                            <input type="text" class="field-input" name="book_title" placeholder="Book title"/>
+                            <input type="text" class="field-input" name="author_name" placeholder="Author name"/><div class="select-row">
+                                <div class="select-wrap">
+                                    <select name="language">
+                                        <option value="">Languages</option>
+                                        <option value="afrikaans">Afrikaans</option>
+                                        <option value="albanian">Albanian</option>
+                                        <option value="amharic">Amharic</option>
+                                        <option value="arabic">Arabic</option>
+                                        <option value="armenian">Armenian</option>
+                                        <option value="azerbaijani">Azerbaijani</option>
+                                        <option value="basque">Basque</option>
+                                        <option value="belarusian">Belarusian</option>
+                                        <option value="bengali">Bengali</option>
+                                        <option value="bosnian">Bosnian</option>
+                                        <option value="bulgarian">Bulgarian</option>
+                                        <option value="catalan">Catalan</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="croatian">Croatian</option>
+                                        <option value="czech">Czech</option>
+                                        <option value="danish">Danish</option>
+                                        <option value="dutch">Dutch</option>
+                                        <option value="english">English</option>
+                                        <option value="esperanto">Esperanto</option>
+                                        <option value="estonian">Estonian</option>
+                                        <option value="filipino">Filipino</option>
+                                        <option value="finnish">Finnish</option>
+                                        <option value="french">French</option>
+                                        <option value="galician">Galician</option>
+                                        <option value="georgian">Georgian</option>
+                                        <option value="german">German</option>
+                                        <option value="greek">Greek</option>
+                                        <option value="gujarati">Gujarati</option>
+                                        <option value="hausa">Hausa</option>
+                                        <option value="hebrew">Hebrew</option>
+                                        <option value="hindi">Hindi</option>
+                                        <option value="hungarian">Hungarian</option>
+                                        <option value="icelandic">Icelandic</option>
+                                        <option value="indonesian">Indonesian</option>
+                                        <option value="irish">Irish</option>
+                                        <option value="italian">Italian</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="kannada">Kannada</option>
+                                        <option value="kazakh">Kazakh</option>
+                                        <option value="khmer">Khmer</option>
+                                        <option value="korean">Korean</option>
+                                        <option value="kurdish">Kurdish</option>
+                                        <option value="lao">Lao</option>
+                                        <option value="latin">Latin</option>
+                                        <option value="latvian">Latvian</option>
+                                        <option value="lithuanian">Lithuanian</option>
+                                        <option value="macedonian">Macedonian</option>
+                                        <option value="malay">Malay</option>
+                                        <option value="malayalam">Malayalam</option>
+                                        <option value="maltese">Maltese</option>
+                                        <option value="maori">Maori</option>
+                                        <option value="marathi">Marathi</option>
+                                        <option value="mongolian">Mongolian</option>
+                                        <option value="nepali">Nepali</option>
+                                        <option value="norwegian">Norwegian</option>
+                                        <option value="pashto">Pashto</option>
+                                        <option value="persian">Persian</option>
+                                        <option value="polish">Polish</option>
+                                        <option value="portuguese">Portuguese</option>
+                                        <option value="punjabi">Punjabi</option>
+                                        <option value="romanian">Romanian</option>
+                                        <option value="russian">Russian</option>
+                                        <option value="serbian">Serbian</option>
+                                        <option value="sinhala">Sinhala</option>
+                                        <option value="slovak">Slovak</option>
+                                        <option value="slovenian">Slovenian</option>
+                                        <option value="somali">Somali</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="swahili">Swahili</option>
+                                        <option value="swedish">Swedish</option>
+                                        <option value="tajik">Tajik</option>
+                                        <option value="tamil">Tamil</option>
+                                        <option value="telugu">Telugu</option>
+                                        <option value="thai">Thai</option>
+                                        <option value="turkish">Turkish</option>
+                                        <option value="ukrainian">Ukrainian</option>
+                                        <option value="urdu">Urdu</option>
+                                        <option value="uzbek">Uzbek</option>
+                                        <option value="vietnamese">Vietnamese</option>
+                                        <option value="welsh">Welsh</option>
+                                        <option value="yoruba">Yoruba</option>
+                                        <option value="zulu">Zulu</option>
+
+                                    </select>
+                                </div>
+                                <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button>
+                            </div>
+                            <div class="sec-title" style="font-size:14px;margin-bottom:8px;">Article Type</div>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="article_type" value="original"/> Original</label>
+                                <label class="radio-label"><input type="radio" name="article_type" value="translated"/> Translated</label>
+                            </div>
+                            <input type="text" class="field-input" name="issue_number" placeholder="Issue Number"/>
+                            <div class="select-row"><div class="select-wrap"><select name="publish_method"><option value="">Publish method</option><option value="printed">Printed Book</option><option value="audio">Audio Book</option><option value="braille">Braille Publication</option><option value="educational">Educational Program</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                            <div class="select-row"><div class="select-wrap"><select name="cover_type"><option value="">Cover Type</option><option value="normal">Normal</option><option value="delux">Delux</option><option value="super_delux">Super Delux</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                            <div class="select-row"><div class="select-wrap"><select name="subject_category" id="subj_cat_printing" onchange="nmaSubjCatChange(this.value,'printing')"><option value="">Subject category</option><option value="general_knowledge">General Knowledge</option><option value="philosophy">Philosophy &amp; Psychology</option><option value="religions">Religions</option><option value="social_science">Social Science</option></select></div><button type="button" class="clear-btn" onclick="document.getElementById('subj_cat_printing').value='';nmaSubjCatChange('','printing')">&#10005;</button></div>
+                            <div id="printing_sub_general_knowledge" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory"><option value="">Subject sub category</option><option value="cs_knowledge">Computer Science, Knowledge and Systems</option><option value="bibliographies">Bibliographies</option><option value="library">Library and Information Sciences</option><option value="encyclopedias">Encyclopedias and book of facts</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                            <div id="printing_sub_philosophy" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory"><option value="">Subject sub category</option><option value="philosophy">Philosophy</option><option value="metaphysics">Metaphysics</option><option value="epistemology">Epistemology</option><option value="parapsychology">Parapsychology and occultism</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                            <div id="printing_sub_religions" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory"><option value="">Subject sub category</option><option value="religion">Religion</option><option value="philosophy_religion">Philosophy and theory of religion</option><option value="bible">The Bible</option><option value="christianity">Christianity</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                            <div id="printing_sub_social_science" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory"><option value="">Subject sub category</option><option value="social_sociology">Social science, sociology and anthropology</option><option value="statistics">Statistics</option><option value="political">Political science</option><option value="economics">Economics</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                        </div>
+                        <!-- MAP -->
+                        <div id="printing_map" style="display:none">
+                            <div class="sec-title" style="font-size:14px;margin-top:8px;">Map</div>
+                            <input type="text" class="field-input" name="pub_title_map" placeholder="Publication title"/>
+                            <input type="text" class="field-input" name="author_name_map" placeholder="Author name"/><div class="select-row">
+                                <div class="select-wrap">
+                                    <select name="language_map">
+                                        <option value="">Languages</option>
+                                        <option value="afrikaans">Afrikaans</option>
+                                        <option value="albanian">Albanian</option>
+                                        <option value="amharic">Amharic</option>
+                                        <option value="arabic">Arabic</option>
+                                        <option value="armenian">Armenian</option>
+                                        <option value="azerbaijani">Azerbaijani</option>
+                                        <option value="basque">Basque</option>
+                                        <option value="belarusian">Belarusian</option>
+                                        <option value="bengali">Bengali</option>
+                                        <option value="bosnian">Bosnian</option>
+                                        <option value="bulgarian">Bulgarian</option>
+                                        <option value="catalan">Catalan</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="croatian">Croatian</option>
+                                        <option value="czech">Czech</option>
+                                        <option value="danish">Danish</option>
+                                        <option value="dutch">Dutch</option>
+                                        <option value="english">English</option>
+                                        <option value="esperanto">Esperanto</option>
+                                        <option value="estonian">Estonian</option>
+                                        <option value="filipino">Filipino</option>
+                                        <option value="finnish">Finnish</option>
+                                        <option value="french">French</option>
+                                        <option value="galician">Galician</option>
+                                        <option value="georgian">Georgian</option>
+                                        <option value="german">German</option>
+                                        <option value="greek">Greek</option>
+                                        <option value="gujarati">Gujarati</option>
+                                        <option value="hausa">Hausa</option>
+                                        <option value="hebrew">Hebrew</option>
+                                        <option value="hindi">Hindi</option>
+                                        <option value="hungarian">Hungarian</option>
+                                        <option value="icelandic">Icelandic</option>
+                                        <option value="indonesian">Indonesian</option>
+                                        <option value="irish">Irish</option>
+                                        <option value="italian">Italian</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="kannada">Kannada</option>
+                                        <option value="kazakh">Kazakh</option>
+                                        <option value="khmer">Khmer</option>
+                                        <option value="korean">Korean</option>
+                                        <option value="kurdish">Kurdish</option>
+                                        <option value="lao">Lao</option>
+                                        <option value="latin">Latin</option>
+                                        <option value="latvian">Latvian</option>
+                                        <option value="lithuanian">Lithuanian</option>
+                                        <option value="macedonian">Macedonian</option>
+                                        <option value="malay">Malay</option>
+                                        <option value="malayalam">Malayalam</option>
+                                        <option value="maltese">Maltese</option>
+                                        <option value="maori">Maori</option>
+                                        <option value="marathi">Marathi</option>
+                                        <option value="mongolian">Mongolian</option>
+                                        <option value="nepali">Nepali</option>
+                                        <option value="norwegian">Norwegian</option>
+                                        <option value="pashto">Pashto</option>
+                                        <option value="persian">Persian</option>
+                                        <option value="polish">Polish</option>
+                                        <option value="portuguese">Portuguese</option>
+                                        <option value="punjabi">Punjabi</option>
+                                        <option value="romanian">Romanian</option>
+                                        <option value="russian">Russian</option>
+                                        <option value="serbian">Serbian</option>
+                                        <option value="sinhala">Sinhala</option>
+                                        <option value="slovak">Slovak</option>
+                                        <option value="slovenian">Slovenian</option>
+                                        <option value="somali">Somali</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="swahili">Swahili</option>
+                                        <option value="swedish">Swedish</option>
+                                        <option value="tajik">Tajik</option>
+                                        <option value="tamil">Tamil</option>
+                                        <option value="telugu">Telugu</option>
+                                        <option value="thai">Thai</option>
+                                        <option value="turkish">Turkish</option>
+                                        <option value="ukrainian">Ukrainian</option>
+                                        <option value="urdu">Urdu</option>
+                                        <option value="uzbek">Uzbek</option>
+                                        <option value="vietnamese">Vietnamese</option>
+                                        <option value="welsh">Welsh</option>
+                                        <option value="yoruba">Yoruba</option>
+                                        <option value="zulu">Zulu</option>
+
+                                    </select>
+                                </div>
+                                <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button>
+                            </div>
+                        </div>
+                        <!-- BROCHURES -->
+                        <div id="printing_brochures" style="display:none">
+                            <div class="sec-title" style="font-size:14px;margin-top:8px;">Brochures and posters</div>
+                            <input type="text" class="field-input" name="pub_title_brochures" placeholder="Publication title"/>
+                            <input type="text" class="field-input" name="author_name_brochures" placeholder="Author name"/><div class="select-row">
+                                <div class="select-wrap">
+                                    <select name="language_brochures">
+                                        <option value="">Languages</option>
+                                        <option value="afrikaans">Afrikaans</option>
+                                        <option value="albanian">Albanian</option>
+                                        <option value="amharic">Amharic</option>
+                                        <option value="arabic">Arabic</option>
+                                        <option value="armenian">Armenian</option>
+                                        <option value="azerbaijani">Azerbaijani</option>
+                                        <option value="basque">Basque</option>
+                                        <option value="belarusian">Belarusian</option>
+                                        <option value="bengali">Bengali</option>
+                                        <option value="bosnian">Bosnian</option>
+                                        <option value="bulgarian">Bulgarian</option>
+                                        <option value="catalan">Catalan</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="croatian">Croatian</option>
+                                        <option value="czech">Czech</option>
+                                        <option value="danish">Danish</option>
+                                        <option value="dutch">Dutch</option>
+                                        <option value="english">English</option>
+                                        <option value="esperanto">Esperanto</option>
+                                        <option value="estonian">Estonian</option>
+                                        <option value="filipino">Filipino</option>
+                                        <option value="finnish">Finnish</option>
+                                        <option value="french">French</option>
+                                        <option value="galician">Galician</option>
+                                        <option value="georgian">Georgian</option>
+                                        <option value="german">German</option>
+                                        <option value="greek">Greek</option>
+                                        <option value="gujarati">Gujarati</option>
+                                        <option value="hausa">Hausa</option>
+                                        <option value="hebrew">Hebrew</option>
+                                        <option value="hindi">Hindi</option>
+                                        <option value="hungarian">Hungarian</option>
+                                        <option value="icelandic">Icelandic</option>
+                                        <option value="indonesian">Indonesian</option>
+                                        <option value="irish">Irish</option>
+                                        <option value="italian">Italian</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="kannada">Kannada</option>
+                                        <option value="kazakh">Kazakh</option>
+                                        <option value="khmer">Khmer</option>
+                                        <option value="korean">Korean</option>
+                                        <option value="kurdish">Kurdish</option>
+                                        <option value="lao">Lao</option>
+                                        <option value="latin">Latin</option>
+                                        <option value="latvian">Latvian</option>
+                                        <option value="lithuanian">Lithuanian</option>
+                                        <option value="macedonian">Macedonian</option>
+                                        <option value="malay">Malay</option>
+                                        <option value="malayalam">Malayalam</option>
+                                        <option value="maltese">Maltese</option>
+                                        <option value="maori">Maori</option>
+                                        <option value="marathi">Marathi</option>
+                                        <option value="mongolian">Mongolian</option>
+                                        <option value="nepali">Nepali</option>
+                                        <option value="norwegian">Norwegian</option>
+                                        <option value="pashto">Pashto</option>
+                                        <option value="persian">Persian</option>
+                                        <option value="polish">Polish</option>
+                                        <option value="portuguese">Portuguese</option>
+                                        <option value="punjabi">Punjabi</option>
+                                        <option value="romanian">Romanian</option>
+                                        <option value="russian">Russian</option>
+                                        <option value="serbian">Serbian</option>
+                                        <option value="sinhala">Sinhala</option>
+                                        <option value="slovak">Slovak</option>
+                                        <option value="slovenian">Slovenian</option>
+                                        <option value="somali">Somali</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="swahili">Swahili</option>
+                                        <option value="swedish">Swedish</option>
+                                        <option value="tajik">Tajik</option>
+                                        <option value="tamil">Tamil</option>
+                                        <option value="telugu">Telugu</option>
+                                        <option value="thai">Thai</option>
+                                        <option value="turkish">Turkish</option>
+                                        <option value="ukrainian">Ukrainian</option>
+                                        <option value="urdu">Urdu</option>
+                                        <option value="uzbek">Uzbek</option>
+                                        <option value="vietnamese">Vietnamese</option>
+                                        <option value="welsh">Welsh</option>
+                                        <option value="yoruba">Yoruba</option>
+                                        <option value="zulu">Zulu</option>
+
+                                    </select>
+                                </div>
+                                <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button>
+                            </div>
+                        </div>
+                        <!-- MOVIE -->
+                        <div id="printing_movie" style="display:none">
+                            <div class="sec-title" style="font-size:14px;margin-top:8px;">Movie</div>
+                            <input type="text" class="field-input" name="pub_title_movie" placeholder="Publication title"/><div class="select-row">
+                                <div class="select-wrap">
+                                    <select name="language_movie">
+                                        <option value="">Languages</option>
+                                        <option value="afrikaans">Afrikaans</option>
+                                        <option value="albanian">Albanian</option>
+                                        <option value="amharic">Amharic</option>
+                                        <option value="arabic">Arabic</option>
+                                        <option value="armenian">Armenian</option>
+                                        <option value="azerbaijani">Azerbaijani</option>
+                                        <option value="basque">Basque</option>
+                                        <option value="belarusian">Belarusian</option>
+                                        <option value="bengali">Bengali</option>
+                                        <option value="bosnian">Bosnian</option>
+                                        <option value="bulgarian">Bulgarian</option>
+                                        <option value="catalan">Catalan</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="croatian">Croatian</option>
+                                        <option value="czech">Czech</option>
+                                        <option value="danish">Danish</option>
+                                        <option value="dutch">Dutch</option>
+                                        <option value="english">English</option>
+                                        <option value="esperanto">Esperanto</option>
+                                        <option value="estonian">Estonian</option>
+                                        <option value="filipino">Filipino</option>
+                                        <option value="finnish">Finnish</option>
+                                        <option value="french">French</option>
+                                        <option value="galician">Galician</option>
+                                        <option value="georgian">Georgian</option>
+                                        <option value="german">German</option>
+                                        <option value="greek">Greek</option>
+                                        <option value="gujarati">Gujarati</option>
+                                        <option value="hausa">Hausa</option>
+                                        <option value="hebrew">Hebrew</option>
+                                        <option value="hindi">Hindi</option>
+                                        <option value="hungarian">Hungarian</option>
+                                        <option value="icelandic">Icelandic</option>
+                                        <option value="indonesian">Indonesian</option>
+                                        <option value="irish">Irish</option>
+                                        <option value="italian">Italian</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="kannada">Kannada</option>
+                                        <option value="kazakh">Kazakh</option>
+                                        <option value="khmer">Khmer</option>
+                                        <option value="korean">Korean</option>
+                                        <option value="kurdish">Kurdish</option>
+                                        <option value="lao">Lao</option>
+                                        <option value="latin">Latin</option>
+                                        <option value="latvian">Latvian</option>
+                                        <option value="lithuanian">Lithuanian</option>
+                                        <option value="macedonian">Macedonian</option>
+                                        <option value="malay">Malay</option>
+                                        <option value="malayalam">Malayalam</option>
+                                        <option value="maltese">Maltese</option>
+                                        <option value="maori">Maori</option>
+                                        <option value="marathi">Marathi</option>
+                                        <option value="mongolian">Mongolian</option>
+                                        <option value="nepali">Nepali</option>
+                                        <option value="norwegian">Norwegian</option>
+                                        <option value="pashto">Pashto</option>
+                                        <option value="persian">Persian</option>
+                                        <option value="polish">Polish</option>
+                                        <option value="portuguese">Portuguese</option>
+                                        <option value="punjabi">Punjabi</option>
+                                        <option value="romanian">Romanian</option>
+                                        <option value="russian">Russian</option>
+                                        <option value="serbian">Serbian</option>
+                                        <option value="sinhala">Sinhala</option>
+                                        <option value="slovak">Slovak</option>
+                                        <option value="slovenian">Slovenian</option>
+                                        <option value="somali">Somali</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="swahili">Swahili</option>
+                                        <option value="swedish">Swedish</option>
+                                        <option value="tajik">Tajik</option>
+                                        <option value="tamil">Tamil</option>
+                                        <option value="telugu">Telugu</option>
+                                        <option value="thai">Thai</option>
+                                        <option value="turkish">Turkish</option>
+                                        <option value="ukrainian">Ukrainian</option>
+                                        <option value="urdu">Urdu</option>
+                                        <option value="uzbek">Uzbek</option>
+                                        <option value="vietnamese">Vietnamese</option>
+                                        <option value="welsh">Welsh</option>
+                                        <option value="yoruba">Yoruba</option>
+                                        <option value="zulu">Zulu</option>
+
+                                    </select>
+                                </div>
+                                <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spc-section">
+                    <div class="sec-num">03</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Remarks</div>
+                        <textarea class="field-input" name="step1_remarks" rows="3" placeholder="Comments" style="resize:vertical;padding-top:8px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRADING PERMIT FIELDS -->
+            <div id="fields_trading" style="display:none">
+                <div class="spc-section">
+                    <div class="sec-num">02</div>
+                    <div class="sec-body">
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="trade_format" value="pager"/> Pager</label>
+                            <label class="radio-label"><input type="radio" name="trade_format" value="electronic"/> Electronic</label>
+                        </div>
+                        <input type="text" class="field-input" name="book_title_trading" placeholder="Book title"/>
+                        <input type="text" class="field-input" name="author_name_trading" placeholder="Author name"/>
+                        <div class="select-row"><div class="select-wrap"><select name="subject_category_trading" id="subj_cat_trading" onchange="nmaSubjCatChange(this.value,'trading')"><option value="">Subject category</option><option value="general_knowledge">General Knowledge</option><option value="philosophy">Philosophy &amp; Psychology</option><option value="religions">Religions</option><option value="social_science">Social Science</option></select></div><button type="button" class="clear-btn" onclick="document.getElementById('subj_cat_trading').value='';nmaSubjCatChange('','trading')">&#10005;</button></div>
+                        <div id="trading_sub_general_knowledge" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory_trading"><option value="">Subject sub category</option><option value="cs_knowledge">Computer Science, Knowledge and Systems</option><option value="bibliographies">Bibliographies</option><option value="library">Library and Information Sciences</option><option value="encyclopedias">Encyclopedias and book of facts</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                        <div id="trading_sub_philosophy" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory_trading"><option value="">Subject sub category</option><option value="philosophy">Philosophy</option><option value="metaphysics">Metaphysics</option><option value="epistemology">Epistemology</option><option value="parapsychology">Parapsychology and occultism</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                        <div id="trading_sub_religions" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory_trading"><option value="">Subject sub category</option><option value="religion">Religion</option><option value="philosophy_religion">Philosophy and theory of religion</option><option value="bible">The Bible</option><option value="christianity">Christianity</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                        <div id="trading_sub_social_science" style="display:none" class="select-row"><div class="select-wrap"><select name="subject_subcategory_trading"><option value="">Subject sub category</option><option value="social_sociology">Social science, sociology and anthropology</option><option value="statistics">Statistics</option><option value="political">Political science</option><option value="economics">Economics</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                        <input type="text" class="field-input" name="print_year" placeholder="Print year"/>
+                        <input type="text" class="field-input" name="distributor_agency" placeholder="Distributor agency"/><div class="select-row">
+                                <div class="select-wrap">
+                                    <select name="language_trading">
+                                        <option value="">Languages</option>
+                                        <option value="afrikaans">Afrikaans</option>
+                                        <option value="albanian">Albanian</option>
+                                        <option value="amharic">Amharic</option>
+                                        <option value="arabic">Arabic</option>
+                                        <option value="armenian">Armenian</option>
+                                        <option value="azerbaijani">Azerbaijani</option>
+                                        <option value="basque">Basque</option>
+                                        <option value="belarusian">Belarusian</option>
+                                        <option value="bengali">Bengali</option>
+                                        <option value="bosnian">Bosnian</option>
+                                        <option value="bulgarian">Bulgarian</option>
+                                        <option value="catalan">Catalan</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="croatian">Croatian</option>
+                                        <option value="czech">Czech</option>
+                                        <option value="danish">Danish</option>
+                                        <option value="dutch">Dutch</option>
+                                        <option value="english">English</option>
+                                        <option value="esperanto">Esperanto</option>
+                                        <option value="estonian">Estonian</option>
+                                        <option value="filipino">Filipino</option>
+                                        <option value="finnish">Finnish</option>
+                                        <option value="french">French</option>
+                                        <option value="galician">Galician</option>
+                                        <option value="georgian">Georgian</option>
+                                        <option value="german">German</option>
+                                        <option value="greek">Greek</option>
+                                        <option value="gujarati">Gujarati</option>
+                                        <option value="hausa">Hausa</option>
+                                        <option value="hebrew">Hebrew</option>
+                                        <option value="hindi">Hindi</option>
+                                        <option value="hungarian">Hungarian</option>
+                                        <option value="icelandic">Icelandic</option>
+                                        <option value="indonesian">Indonesian</option>
+                                        <option value="irish">Irish</option>
+                                        <option value="italian">Italian</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="kannada">Kannada</option>
+                                        <option value="kazakh">Kazakh</option>
+                                        <option value="khmer">Khmer</option>
+                                        <option value="korean">Korean</option>
+                                        <option value="kurdish">Kurdish</option>
+                                        <option value="lao">Lao</option>
+                                        <option value="latin">Latin</option>
+                                        <option value="latvian">Latvian</option>
+                                        <option value="lithuanian">Lithuanian</option>
+                                        <option value="macedonian">Macedonian</option>
+                                        <option value="malay">Malay</option>
+                                        <option value="malayalam">Malayalam</option>
+                                        <option value="maltese">Maltese</option>
+                                        <option value="maori">Maori</option>
+                                        <option value="marathi">Marathi</option>
+                                        <option value="mongolian">Mongolian</option>
+                                        <option value="nepali">Nepali</option>
+                                        <option value="norwegian">Norwegian</option>
+                                        <option value="pashto">Pashto</option>
+                                        <option value="persian">Persian</option>
+                                        <option value="polish">Polish</option>
+                                        <option value="portuguese">Portuguese</option>
+                                        <option value="punjabi">Punjabi</option>
+                                        <option value="romanian">Romanian</option>
+                                        <option value="russian">Russian</option>
+                                        <option value="serbian">Serbian</option>
+                                        <option value="sinhala">Sinhala</option>
+                                        <option value="slovak">Slovak</option>
+                                        <option value="slovenian">Slovenian</option>
+                                        <option value="somali">Somali</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="swahili">Swahili</option>
+                                        <option value="swedish">Swedish</option>
+                                        <option value="tajik">Tajik</option>
+                                        <option value="tamil">Tamil</option>
+                                        <option value="telugu">Telugu</option>
+                                        <option value="thai">Thai</option>
+                                        <option value="turkish">Turkish</option>
+                                        <option value="ukrainian">Ukrainian</option>
+                                        <option value="urdu">Urdu</option>
+                                        <option value="uzbek">Uzbek</option>
+                                        <option value="vietnamese">Vietnamese</option>
+                                        <option value="welsh">Welsh</option>
+                                        <option value="yoruba">Yoruba</option>
+                                        <option value="zulu">Zulu</option>
+
+                                    </select>
+                                </div>
+                                <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button>
+                            </div>
+                        <input type="text" class="field-input" name="national_depository_number" placeholder="National depository number"/>
+                        <input type="text" class="field-input" name="isbn" placeholder="ISBN"/>
+                        <input type="text" class="field-input" name="version_number" placeholder="Version number"/>
+                        <div class="select-row"><div class="select-wrap"><select name="how_obtained"><option value="">How was the book obtained?</option><option value="printing_permit">I have printing permit</option><option value="regulate_permit">I have regulate entry permit</option><option value="book_fair">I bought it from a book fair</option><option value="bookshop_inside">I bought it from a bookshop - inside UAE</option><option value="bookshop_outside">I bought it from a bookshop - outside UAE</option><option value="gifted">It was gifted to me</option></select></div><button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button></div>
+                    </div>
+                </div>
+                <div class="spc-section">
+                    <div class="sec-num">03</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Remarks</div>
+                        <textarea class="field-input" name="step1_remarks_trading" rows="3" placeholder="Comments" style="resize:vertical;padding-top:8px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TEXT PERMIT FIELDS -->
+            <div id="fields_text" style="display:none">
+                <div class="spc-section">
+                    <div class="sec-num">02</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Select type of publication</div>
+                        <div class="select-row">
+                            <div class="select-wrap">
+                                <select name="text_publication_type">
+                                    <option value="">Type of publication</option>
+                                    <option value="book">Book</option>
+                                    <option value="map">Map</option>
+                                    <option value="brochures">Brochures and posters</option>
+                                    <option value="movie">Movie</option>
+                                </select>
+                            </div>
+                            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="spc-section">
+                    <div class="sec-num">03</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Remarks</div>
+                        <textarea class="field-input" name="step1_remarks_text" rows="3" placeholder="Comments" style="resize:vertical;padding-top:8px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REGULATORY ENTRY PERMIT FIELDS -->
+            <div id="fields_regulatory" style="display:none">
+                <div class="spc-section">
+                    <div class="sec-num">02</div>
+                    <div class="sec-body">
+                        <div class="select-row">
+                            <div class="select-wrap">
+                                <select name="material_type" id="material_type_sel" onchange="nmaMaterialTypeChange(this.value)">
+                                    <option value="">Material Type</option>
+                                    <option value="book">Book</option>
+                                    <option value="brochures_catalogs">Brochures, posters and catalogs</option>
+                                </select>
+                            </div>
+                            <button type="button" class="clear-btn" onclick="document.getElementById('material_type_sel').value='';nmaMaterialTypeChange('')">&#10005;</button>
+                        </div>
+                        <!-- Regulatory Book fields -->
+                        <div id="reg_book" style="display:none">
+                            <input type="text" class="field-input" name="reg_number_of_title" placeholder="Number of Title"/>
+                        </div>
+                        <!-- Regulatory Brochures fields -->
+                        <div id="reg_brochures" style="display:none">
+                            <input type="text" class="field-input" name="reg_title" placeholder="Title"/><div class="select-row">
+                                <div class="select-wrap">
+                                    <select name="language_reg">
+                                        <option value="">Languages</option>
+                                        <option value="afrikaans">Afrikaans</option>
+                                        <option value="albanian">Albanian</option>
+                                        <option value="amharic">Amharic</option>
+                                        <option value="arabic">Arabic</option>
+                                        <option value="armenian">Armenian</option>
+                                        <option value="azerbaijani">Azerbaijani</option>
+                                        <option value="basque">Basque</option>
+                                        <option value="belarusian">Belarusian</option>
+                                        <option value="bengali">Bengali</option>
+                                        <option value="bosnian">Bosnian</option>
+                                        <option value="bulgarian">Bulgarian</option>
+                                        <option value="catalan">Catalan</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="croatian">Croatian</option>
+                                        <option value="czech">Czech</option>
+                                        <option value="danish">Danish</option>
+                                        <option value="dutch">Dutch</option>
+                                        <option value="english">English</option>
+                                        <option value="esperanto">Esperanto</option>
+                                        <option value="estonian">Estonian</option>
+                                        <option value="filipino">Filipino</option>
+                                        <option value="finnish">Finnish</option>
+                                        <option value="french">French</option>
+                                        <option value="galician">Galician</option>
+                                        <option value="georgian">Georgian</option>
+                                        <option value="german">German</option>
+                                        <option value="greek">Greek</option>
+                                        <option value="gujarati">Gujarati</option>
+                                        <option value="hausa">Hausa</option>
+                                        <option value="hebrew">Hebrew</option>
+                                        <option value="hindi">Hindi</option>
+                                        <option value="hungarian">Hungarian</option>
+                                        <option value="icelandic">Icelandic</option>
+                                        <option value="indonesian">Indonesian</option>
+                                        <option value="irish">Irish</option>
+                                        <option value="italian">Italian</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="kannada">Kannada</option>
+                                        <option value="kazakh">Kazakh</option>
+                                        <option value="khmer">Khmer</option>
+                                        <option value="korean">Korean</option>
+                                        <option value="kurdish">Kurdish</option>
+                                        <option value="lao">Lao</option>
+                                        <option value="latin">Latin</option>
+                                        <option value="latvian">Latvian</option>
+                                        <option value="lithuanian">Lithuanian</option>
+                                        <option value="macedonian">Macedonian</option>
+                                        <option value="malay">Malay</option>
+                                        <option value="malayalam">Malayalam</option>
+                                        <option value="maltese">Maltese</option>
+                                        <option value="maori">Maori</option>
+                                        <option value="marathi">Marathi</option>
+                                        <option value="mongolian">Mongolian</option>
+                                        <option value="nepali">Nepali</option>
+                                        <option value="norwegian">Norwegian</option>
+                                        <option value="pashto">Pashto</option>
+                                        <option value="persian">Persian</option>
+                                        <option value="polish">Polish</option>
+                                        <option value="portuguese">Portuguese</option>
+                                        <option value="punjabi">Punjabi</option>
+                                        <option value="romanian">Romanian</option>
+                                        <option value="russian">Russian</option>
+                                        <option value="serbian">Serbian</option>
+                                        <option value="sinhala">Sinhala</option>
+                                        <option value="slovak">Slovak</option>
+                                        <option value="slovenian">Slovenian</option>
+                                        <option value="somali">Somali</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="swahili">Swahili</option>
+                                        <option value="swedish">Swedish</option>
+                                        <option value="tajik">Tajik</option>
+                                        <option value="tamil">Tamil</option>
+                                        <option value="telugu">Telugu</option>
+                                        <option value="thai">Thai</option>
+                                        <option value="turkish">Turkish</option>
+                                        <option value="ukrainian">Ukrainian</option>
+                                        <option value="urdu">Urdu</option>
+                                        <option value="uzbek">Uzbek</option>
+                                        <option value="vietnamese">Vietnamese</option>
+                                        <option value="welsh">Welsh</option>
+                                        <option value="yoruba">Yoruba</option>
+                                        <option value="zulu">Zulu</option>
+
+                                    </select>
+                                </div>
+                                <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">&#10005;</button>
+                            </div>
+                            <input type="text" class="field-input" name="reg_number_of_title_brochures" placeholder="Number of Title"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="spc-section">
+                    <div class="sec-num">03</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Remarks</div>
+                        <textarea class="field-input" name="step1_remarks_regulatory" rows="3" placeholder="Comments" style="resize:vertical;padding-top:8px;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons">
+                <span></span>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function nmaPermitChange(v){
+    ['printing','trading','text','regulatory'].forEach(function(t){
+        var el=document.getElementById('fields_'+t);
+        if(el) el.style.display=v===t?'block':'none';
+    });
+    var amounts={'printing':'210.00','trading':'210.00','text':'210.00','regulatory':'1,210.00'};
+    var amt=document.getElementById('nma_total_amt');
+    if(amt) amt.textContent=(amounts[v]||'210.00')+' ⓘ';
+}
+function nmaPubTypeChange(v, prefix){
+    ['book','map','brochures','movie'].forEach(function(t){
+        var el=document.getElementById(prefix+'_'+t);
+        if(el) el.style.display=v===t?'block':'none';
+    });
+}
+function nmaSubjCatChange(v, prefix){
+    ['general_knowledge','philosophy','religions','social_science'].forEach(function(t){
+        var el=document.getElementById(prefix+'_sub_'+t);
+        if(el) el.style.display=v===t?'flex':'none';
+    });
+}
+function nmaMaterialTypeChange(v){
+    document.getElementById('reg_book').style.display=v==='book'?'block':'none';
+    document.getElementById('reg_brochures').style.display=v==='brochures_catalogs'?'block':'none';
+}
+</script>
+</body>
+</html>
+</template>
+
+<template id="template_nma_permit_step2" name="NMA Permit Step 2">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Document Upload | NMA Permit</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:18px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-area{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:220px;height:100px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:12px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.upload-info{font-size:14px;color:#888;cursor:pointer;margin-top:8px}
+.uploaded-file{display:flex;align-items:center;gap:8px;background:#f0f9ff;border:1px solid #bde0f5;border-radius:6px;padding:8px 12px;margin-top:6px;max-width:300px}
+.uploaded-name{font-size:12px;color:#1a2340;font-weight:500;flex:1;word-break:break-all}
+.uploaded-status{font-size:11px;color:#1abc9c;font-weight:600}
+.delete-btn{color:#e74c3c;cursor:pointer;font-size:16px;background:none;border:none;flex-shrink:0}
+.error-msg{display:none;font-size:12px;color:#e74c3c;margin-top:4px;align-items:center;gap:4px}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+    </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Permit type</div></div>
+        <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Document upload</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">411.43 &#9432;</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/apply/nma_permit/step2" method="post" enctype="multipart/form-data" id="nma_doc_form">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Upload Document Submission</div>
+
+                    <!-- Undertaking letter -->
+                    <div class="upload-title">Undertaking letter</div>
+                    <div class="upload-area">
+                        <label for="doc_undertaking" class="upload-box" id="box_undertaking">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Undertaking letter</span>
+                            <input type="file" id="doc_undertaking" name="doc_undertaking" style="display:none;" onchange="nmaFileSelected(this,'undertaking')" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                        <span class="upload-info" title="Please upload the undertaking letter">&#9432;</span>
+                    </div>
+                    <div id="uploaded_undertaking" style="display:none" class="uploaded-file">
+                        <span style="font-size:18px;color:#1a2340;">&#128196;</span>
+                        <div style="flex:1">
+                            <div class="uploaded-name" id="name_undertaking"></div>
+                            <div class="uploaded-status">Complete</div>
+                        </div>
+                        <button type="button" class="delete-btn" onclick="nmaRemoveFile('undertaking')">&#128465;</button>
+                    </div>
+
+                    <!-- Soft copy sample of media -->
+                    <div class="upload-title">Soft copy sample of media</div>
+                    <div class="upload-area">
+                        <label for="doc_soft_copy" class="upload-box" id="box_soft_copy">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Soft copy sample of media</span>
+                            <input type="file" id="doc_soft_copy" name="doc_soft_copy" style="display:none;" onchange="nmaFileSelected(this,'soft_copy')" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                        <span class="upload-info" title="Please upload soft copy sample">&#9432;</span>
+                    </div>
+                    <div id="uploaded_soft_copy" style="display:none" class="uploaded-file">
+                        <span style="font-size:18px;color:#1a2340;">&#128196;</span>
+                        <div style="flex:1">
+                            <div class="uploaded-name" id="name_soft_copy"></div>
+                            <div class="uploaded-status">Complete</div>
+                        </div>
+                        <button type="button" class="delete-btn" onclick="nmaRemoveFile('soft_copy')">&#128465;</button>
+                    </div>
+                    <div id="err_soft_copy" class="error-msg" style="display:none">&#9888; Please upload Soft copy sample of media.</div>
+
+                    <!-- Copy of media license -->
+                    <div class="upload-title">Copy of media license</div>
+                    <div class="upload-area">
+                        <label for="doc_media_license" class="upload-box" id="box_media_license">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Copy of media license</span>
+                            <input type="file" id="doc_media_license" name="doc_media_license" style="display:none;" onchange="nmaFileSelected(this,'media_license')" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                    </div>
+                    <div id="uploaded_media_license" style="display:none" class="uploaded-file">
+                        <span style="font-size:18px;color:#1a2340;">&#128196;</span>
+                        <div style="flex:1">
+                            <div class="uploaded-name" id="name_media_license"></div>
+                            <div class="uploaded-status">Complete</div>
+                        </div>
+                        <button type="button" class="delete-btn" onclick="nmaRemoveFile('media_license')">&#128465;</button>
+                    </div>
+                    <div id="err_media_license" class="error-msg" style="display:none">&#9888; Please upload Copy of media license.</div>
+
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a href="/spc/apply/nma_permit/step1" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function nmaFileSelected(input, key){
+    if(input.files &amp;&amp; input.files[0]){
+        var fname = input.files[0].name;
+        document.getElementById('uploaded_'+key).style.display='flex';
+        document.getElementById('name_'+key).textContent=fname;
+        document.getElementById('box_'+key).style.borderColor='#1abc9c';
+        var err=document.getElementById('err_'+key);
+        if(err) err.style.display='none';
+    }
+}
+function nmaRemoveFile(key){
+    document.getElementById('uploaded_'+key).style.display='none';
+    document.getElementById('box_'+key).style.borderColor='#ccc';
+    var inp=document.querySelector('#box_'+key+' input[type=file]');
+    if(inp) inp.value='';
+}
+</script>
+</body>
+</html>
+</template>
+
+<template id="template_nma_permit_step3" name="NMA Permit Step 3">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Declaration | NMA Permit</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px;vertical-align:middle}
+.select-row{display:flex;align-items:center;max-width:560px;margin-bottom:16px}
+.select-row .select-wrap{flex:1;margin-bottom:0}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Permit type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document upload</div></div>
+        <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">210.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/apply/nma_permit/step3" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">General Declaration</div>
+                    <div class="decl-box">
+                        <p style="margin-bottom:12px;">I/We hereby declare that the information provided in this application is true, accurate and complete to the best of my/our knowledge and belief.</p>
+                        <p style="margin-bottom:12px;">I/We agree to comply with all applicable laws, regulations and rules of SPC Free Zone and the National Media Authority (NMA) of the UAE.</p>
+                        <p>I/We acknowledge that SPC Free Zone reserves the right to revoke the permit in case of non-compliance with the terms and conditions.</p>
+                    </div>
+                    <label class="radio-label" style="font-size:14px;font-weight:500;">
+                        <input type="checkbox" name="declaration_accepted" style="accent-color:#1a2340;width:16px;height:16px;"/>
+                        I have read and agree to the above declaration
+                    </label>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a href="/spc/apply/nma_permit/step2" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_permit_step4" name="NMA Permit Step 4">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Review Application | NMA Permit</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px;vertical-align:middle}
+.select-row{display:flex;align-items:center;max-width:560px;margin-bottom:16px}
+.select-row .select-wrap{flex:1;margin-bottom:0}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Permit type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document upload</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">210.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <p style="color:#888;font-size:13px;margin-bottom:24px;margin-top:-16px;">Please review your application before proceeding to payment.</p>
+        <div class="review-card">
+            <div class="review-card-title">1. Permit Details</div>
+            <table class="review-table">
+                <tr><td>Permit Type</td><td t-esc="step1.get('permit_type','—')"/></tr>
+                <tr><td>Publication Type</td><td t-esc="step1.get('publication_type','—')"/></tr>
+                <tr><td>Book/Publication Title</td><td t-esc="step1.get('book_title','') or step1.get('pub_title_map','') or step1.get('pub_title_brochures','') or step1.get('pub_title_movie','') or '—'"/></tr>
+                <tr><td>Author</td><td t-esc="step1.get('author_name','—')"/></tr>
+                <tr><td>Language</td><td t-esc="step1.get('language','—')"/></tr>
+                <tr><td>Remarks</td><td t-esc="step1.get('step1_remarks','—')"/></tr>
+            </table>
+        </div>
+        <div class="review-card">
+            <div class="review-card-title">2. Declaration</div>
+            <table class="review-table">
+                <tr><td>Declaration Accepted</td><td><t t-if="step3.get('declaration_accepted')">&#10003; Yes</t><t t-else="">No</t></td></tr>
+            </table>
+        </div>
+        <div class="spc-nav-buttons">
+            <a href="/spc/apply/nma_permit/step3" class="spc-btn-previous">PREVIOUS</a>
+            <a href="/spc/apply/nma_permit/step5" class="spc-btn-next" style="border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;text-decoration:none;">NEXT</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_permit_step5" name="NMA Permit Step 5">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Payment | NMA Permit</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px;vertical-align:middle}
+.select-row{display:flex;align-items:center;max-width:560px;margin-bottom:16px}
+.select-row .select-wrap{flex:1;margin-bottom:0}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Permit type</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Document upload</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">210.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Order Summary</div>
+                <table class="review-table" style="max-width:500px;">
+                    <tr><td>NMA Permit - New</td><td style="font-weight:600;">AED 210.00</td></tr>
+                    <tr><td style="font-weight:700;color:#1a2340;font-size:14px;">Total</td><td style="font-weight:700;color:#1a2340;font-size:15px;">AED 210.00</td></tr>
+                </table>
+            </div>
+        </div>
+        <form action="/spc/apply/nma_permit/final-submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-nav-buttons">
+                <a href="/spc/apply/nma_permit/step4" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_permit_success" name="NMA Permit Success">
+<html><head><meta charset="utf-8"/><title>Submitted | NMA Permit</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px;vertical-align:middle}
+.select-row{display:flex;align-items:center;max-width:560px;margin-bottom:16px}
+.select-row .select-wrap{flex:1;margin-bottom:0}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="success-wrap">
+    <div class="success-card">
+        <div class="success-icon">&#10003;</div>
+        <h2 style="color:#1a2340;font-size:22px;font-weight:700;margin-bottom:10px;">Application Submitted!</h2>
+        <p style="color:#666;font-size:14px;line-height:1.7;margin-bottom:16px;">Your NMA Permit application has been successfully submitted.</p>
+        <t t-if="record">
+            <div style="background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee;">
+                <p style="font-size:12px;color:#888;margin-bottom:4px;">Reference Number</p>
+                <p style="font-size:18px;font-weight:700;color:#1a2340;margin:0;" t-esc="record.name"/>
+            </div>
+        </t>
+        <p style="color:#888;font-size:13px;margin-bottom:28px;">Our team will review your application within 7-10 business days.</p>
+        <a href="/spc/company-management/nma-permit" style="display:inline-block;background:#1a2340;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;">BACK TO NMA PERMIT</a>
+    </div>
+</div>
+</body></html>
+</template>
+
+</data>
+</odoo>

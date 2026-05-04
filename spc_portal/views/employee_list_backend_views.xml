@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="view_spc_employee_list_tree" model="ir.ui.view">
+        <field name="name">spc.employee.list.tree</field>
+        <field name="model">spc.employee.list</field>
+        <field name="arch" type="xml">
+            <tree string="Employee List" decoration-info="state=='draft'" decoration-success="state=='approved'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="submission_date"/>
+                <field name="total_amount"/>
+                <field name="state" widget="badge" decoration-info="state=='draft'" decoration-warning="state=='submitted'" decoration-success="state=='approved'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_employee_list_form" model="ir.ui.view">
+        <field name="name">spc.employee.list.form</field>
+        <field name="model">spc.employee.list</field>
+        <field name="arch" type="xml">
+            <form string="Employee List">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,under_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="partner_id"/>
+                            <field name="submission_date" readonly="1"/>
+                            <field name="total_amount"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Declaration">
+                            <group>
+                                <field name="declaration_accepted"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_spc_employee_list_search" model="ir.ui.view">
+        <field name="name">spc.employee.list.search</field>
+        <field name="model">spc.employee.list</field>
+        <field name="arch" type="xml">
+            <search string="Employee List">
+                <field name="name" string="Reference"/>
+                <field name="partner_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_spc_employee_list" model="ir.actions.act_window">
+        <field name="name">Employee List</field>
+        <field name="res_model">spc.employee.list</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_employee_list_app"
+              name="Employee List"
+              parent="menu_spc_applications"
+              action="action_spc_employee_list"
+              sequence="60"/>
+    <menuitem id="menu_spc_employee_list_cm_parent"
+              name="Employee List"
+              parent="menu_spc_company_management"
+              sequence="90"/>
+    <menuitem id="menu_spc_employee_list_cm_child"
+              name="Employee List"
+              parent="menu_spc_employee_list_cm_parent"
+              action="action_spc_employee_list"
+              sequence="10"/>
+
+</data>
+</odoo>

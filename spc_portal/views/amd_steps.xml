@@ -5,42 +5,45 @@
 <template id="template_amd_step1" name="AMD Step1 Company">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Company</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.toggle-wrap{display:flex;gap:0;margin-bottom:20px;border:1px solid #ddd;border-radius:8px;overflow:hidden;width:fit-content}
-.toggle-btn{padding:10px 24px;font-size:13px;cursor:pointer;border:none;background:#fff;color:#333}
-.toggle-btn.active{background:#1abc9c;color:#fff;font-weight:600}
-.flat-input{width:100%;max-width:500px;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px}
-.field-select{width:100%;max-width:500px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-.info-box{background:#f0f9ff;border:1px solid #bee3f8;border-radius:8px;padding:14px 18px;font-size:13px;color:#2b6cb0;margin-bottom:16px;display:flex;gap:10px}
+.type-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+.type-card{border:2px solid #eee;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:.2s}
+.type-card:hover,.type-card.selected{border-color:#1abc9c;background:#f0fdf4}
+.type-card input{display:none}
+.type-card-title{font-size:14px;font-weight:600;margin-top:8px}
+.type-card-sub{font-size:12px;color:#888;margin-top:4px}
+.flat-select{width:100%;max-width:400px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
+.flat-input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.search-bar{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:16px}
+.activity-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:8px}
+.tab-btn{padding:6px 16px;border:none;background:none;cursor:pointer;font-size:13px;color:#888;border-bottom:2px solid transparent}
+.tab-btn.active{color:#1abc9c;border-bottom-color:#1abc9c;font-weight:600}
+.activity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.activity-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;transition:.2s}
+.activity-item:hover{border-color:#1abc9c;background:#f0fdf4}
+.activity-item input{accent-color:#1abc9c;width:15px;height:15px}
+.selected-list{min-height:60px;background:#f9f9f9;border-radius:8px;padding:12px}
+.selected-tag{display:inline-flex;align-items:center;gap:6px;background:#1abc9c;color:#fff;border-radius:20px;padding:4px 12px;font-size:12px;margin:4px}
+.selected-tag button{background:none;border:none;color:#fff;cursor:pointer;font-size:14px;line-height:1}
+.facility-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.fac-card{border:2px solid #eee;border-radius:12px;padding:20px;cursor:pointer;transition:.2s}
+.fac-card:hover,.fac-card.selected{border-color:#1abc9c;background:#f0fdf4}
+.fac-card input[type=radio]{display:none}
+.fac-card-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.fac-card-sub{font-size:12px;color:#888}
+.resolution-notes{background:#fff8e1;border-left:3px solid #f59e0b;padding:12px 16px;border-radius:6px;font-size:12px;color:#92400e;margin-top:12px}
+.check-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;margin-bottom:8px}
+.check-item input{width:16px;height:16px;margin-top:2px;accent-color:#1abc9c}
+.download-link{color:#1abc9c;font-size:13px;text-decoration:underline}
 </style>
+
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-set="step_list" t-value="steps"/>
     <t t-foreach="step_list" t-as="s">
@@ -81,9 +84,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
+        <div class="spc-nav-buttons">
             <div></div>
-            <button type="submit" class="btn-next">NEXT</button>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -114,53 +117,12 @@ function syncCompany(sel){
 <template id="template_amd_step2" name="AMD Step2 Amendment Types">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Company amendment(s)</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.total-box{margin-top:24px;font-size:12px;opacity:.7}
-.total-box .amount{font-size:22px;font-weight:700;opacity:1;color:#fff;display:block}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:6px}
-.sec-sub{font-size:13px;color:#888;margin-bottom:16px}
-.check-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f0f0f0;font-size:14px;cursor:pointer}
-.check-item:last-child{border-bottom:none}
-.check-item input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:#1abc9c}
-.upload-box{border:2px dashed #1abc9c;border-radius:10px;padding:12px 20px;text-align:center;cursor:pointer;background:#f9fffe;margin-bottom:12px;display:flex;align-items:center;gap:12px;max-width:400px}
-.upload-box-icon{font-size:20px;color:#1abc9c}
-.upload-box-label{font-size:13px;font-weight:600;color:#1abc9c}
-.upload-hint{font-size:12px;color:#888}
-.resolution-notes{background:#fff8f0;border:1px solid #fed7aa;border-radius:8px;padding:16px;margin-top:12px}
-.resolution-notes ul{list-style:disc;padding-left:20px;font-size:13px;color:#555;line-height:1.8}
-.download-link{font-size:13px;font-style:italic;margin:12px 0}
-.download-link a{color:#1abc9c;font-weight:600}
-.ack-wrap{display:flex;align-items:flex-start;gap:10px;margin-top:16px;font-size:13px}
-.ack-wrap input{width:16px;height:16px;margin-top:2px;accent-color:#1abc9c}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <div class="progress-step done">
         <div class="step-num">&#10003;</div>
@@ -272,9 +234,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -327,44 +289,13 @@ updateSteps();
 <template id="template_amd_step4" name="AMD Step4 Supporting Documents">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Supporting Documents</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.upload-area{border:2px dashed #ccc;border-radius:10px;padding:32px;text-align:center;cursor:pointer;margin-bottom:16px;transition:.2s}
-.upload-area:hover{border-color:#1abc9c;background:#f9fffe}
-.upload-icon{font-size:32px;color:#1abc9c;margin-bottom:8px}
-.upload-label{font-size:14px;font-weight:600;color:#555}
-.uploaded-list{margin-top:8px}
-.uploaded-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#f0f9ff;border-radius:6px;margin-bottom:6px;font-size:13px}
-.add-more-btn{border:1px dashed #1abc9c;background:#fff;color:#1abc9c;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -393,9 +324,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -419,37 +350,13 @@ function showFiles(inp){
 <template id="template_amd_step5" name="AMD Step5 Review">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Review</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
-.review-card h3{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #eee}
-.review-row{display:flex;gap:16px;margin-bottom:8px;font-size:13px}
-.review-label{color:#888;min-width:160px}
-.review-value{color:#333;font-weight:500}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -482,9 +389,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="review-row"><span class="review-label">Customer Markets</span><span class="review-value"><t t-esc="step3.get('customer_markets', '-')"/></span></div>
             <div class="review-row"><span class="review-label">Supplier Markets</span><span class="review-value"><t t-esc="step3.get('supplier_markets', '-')"/></span></div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -497,40 +404,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_amd_company_info" name="AMD Company Information">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Company Information</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.flat-input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px}
-.flat-textarea{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px;resize:vertical}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -588,9 +468,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -604,45 +484,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_amd_legal_type" name="AMD Legal Type">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Legal Type</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.type-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
-.type-card{border:2px solid #eee;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:.2s}
-.type-card:hover{border-color:#1abc9c}
-.type-card.selected{border-color:#1abc9c;background:#f0fdf4}
-.type-card input{display:none}
-.type-card-title{font-size:14px;font-weight:600;margin-top:8px}
-.type-card-sub{font-size:12px;color:#888;margin-top:4px}
-.flat-select{width:100%;max-width:400px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -699,9 +547,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -721,49 +569,13 @@ function selectCard(el, val){
 <template id="template_amd_business_activities" name="AMD Business Activities">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Business Activities</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:8px}
-.sec-sub{font-size:13px;color:#888;margin-bottom:16px}
-.search-bar{width:100%;padding:10px 16px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:16px}
-.activity-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:8px}
-.tab-btn{padding:6px 16px;border:none;background:none;cursor:pointer;font-size:13px;color:#888;border-bottom:2px solid transparent}
-.tab-btn.active{color:#1abc9c;border-bottom-color:#1abc9c;font-weight:600}
-.activity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
-.activity-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid #eee;border-radius:8px;cursor:pointer;font-size:13px;transition:.2s}
-.activity-item:hover{border-color:#1abc9c;background:#f0fdf4}
-.activity-item input{accent-color:#1abc9c;width:15px;height:15px}
-.selected-list{min-height:60px;background:#f9f9f9;border-radius:8px;padding:12px}
-.selected-tag{display:inline-flex;align-items:center;gap:6px;background:#1abc9c;color:#fff;border-radius:20px;padding:4px 12px;font-size:12px;margin:4px}
-.selected-tag button{background:none;border:none;color:#fff;cursor:pointer;font-size:14px;line-height:1}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -790,15 +602,15 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                         <button type="button" class="tab-btn active" onclick="filterCat('all',this)">All</button>
                         <t t-set="cats" t-value="{}"/>
                         <t t-foreach="activities" t-as="act">
-                            <t t-if="act.category_id and act.category_id.name not in cats">
-                                <t t-set="cats" t-value="{**cats, act.category_id.name: True}"/>
-                                <button type="button" class="tab-btn" t-att-onclick="'filterCat(' + repr(act.category_id.name) + ',this)'"><t t-esc="act.category_id.name"/></button>
+                            <t t-if="act.category and act.category not in cats">
+                                <t t-set="cats" t-value="{**cats, act.category: True}"/>
+                                <button type="button" class="tab-btn" t-att-onclick="'filterCat(' + repr(act.category) + ',this)'"><t t-esc="act.category"/></button>
                             </t>
                         </t>
                     </div>
                     <div class="activity-grid" id="activity_list">
                         <t t-foreach="activities" t-as="act">
-                            <label class="activity-item" t-att-data-cat="act.category_id.name if act.category_id else 'Other'" t-att-data-name="act.name">
+                            <label class="activity-item" t-att-data-cat="act.category if act.category else 'Other'" t-att-data-name="act.name">
                                 <input type="checkbox" t-att-value="act.id" t-att-data-name="act.name" onchange="updateSelected()"/>
                                 <span><t t-esc="act.name"/></span>
                             </label>
@@ -818,9 +630,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -869,43 +681,13 @@ function filterActivities(q){
 <template id="template_amd_facility_type" name="AMD Facility Type">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Facility Type</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.facility-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.fac-card{border:2px solid #eee;border-radius:12px;padding:20px;cursor:pointer;transition:.2s}
-.fac-card:hover,.fac-card.selected{border-color:#1abc9c;background:#f0fdf4}
-.fac-card input[type=radio]{display:none}
-.fac-card-title{font-size:14px;font-weight:600;margin-bottom:4px}
-.fac-card-sub{font-size:12px;color:#888}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -949,9 +731,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -971,43 +753,13 @@ function selectFac(el){
 <template id="template_amd_shareholder" name="AMD Shareholder">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Shareholder Information</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
 
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.flat-input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px}
-.flat-select{width:100%;max-width:400px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
-.flat-textarea{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px;resize:vertical}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -1048,9 +800,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -1062,43 +814,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_amd_manager" name="AMD Manager">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Manager Information</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
 
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.flat-input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px}
-.flat-select{width:100%;max-width:400px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
-.flat-textarea{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px;resize:vertical}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -1138,9 +860,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -1152,43 +874,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_amd_director" name="AMD Director">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Director Information</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
 
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.flat-input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px}
-.flat-select{width:100%;max-width:400px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
-.flat-textarea{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px;resize:vertical}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -1228,9 +920,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>
@@ -1242,43 +934,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 <template id="template_amd_nature" name="AMD Nature of Business">
 <html>
 <head><meta charset="utf-8"/><title>Amendment - Nature of Business</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
-.layout{display:flex;min-height:100vh}
 
-.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto}
-.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
-.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
-.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
-.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
-.progress-step.active{opacity:1}
-.progress-step.done{opacity:.8}
-.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
-.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
-.step-label{font-size:13px}
-
-.main{margin-left:260px;padding:40px 48px;min-height:100vh}
-.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
-.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
-.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
-.sec-row{display:flex;gap:16px}
-.sec-body{flex:1}
-.sec-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.flat-input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px}
-.flat-select{width:100%;max-width:400px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px}
-.flat-textarea{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px;resize:vertical}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
-.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
-.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 36px;font-size:15px;font-weight:700;cursor:pointer}
-</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body>
 <div class="layout">
 <div class="sidebar">
-    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
     <div class="progress-title">Your progress</div>
     <t t-foreach="steps" t-as="s">
         <t t-set="idx" t-value="s_index + 1"/>
@@ -1350,9 +1012,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 </div>
             </div>
         </div>
-        <div class="nav-bar">
-            <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+        <div class="spc-nav-buttons">
+            <a href="#" onclick="history.back();return false;" class="spc-btn-prev">PREVIOUS</a>
+            <button type="submit" class="spc-btn-next">NEXT</button>
         </div>
     </form>
 </div>

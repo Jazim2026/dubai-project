@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- EID APPOINTMENT DETAIL -->
+<template id="eid_appointment_detail" name="EID Appointment Detail">
+<html><head><meta charset="utf-8"/><title>EID Appointment | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}
+.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c}
+.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.hero-banner{border-radius:12px;min-height:320px;background:linear-gradient(135deg,#1a3c6e 40%,#4a90d9 100%);position:relative;display:flex;align-items:flex-end;padding:32px;margin-bottom:32px;overflow:hidden}
+.hero-tag{position:absolute;top:20px;left:20px;background:#1a5c45;color:white;padding:8px 20px;font-size:14px;font-weight:700}
+.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}
+.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.detail-section-title{font-size:17px;font-weight:700;color:#222;margin-bottom:8px}
+.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}
+.detail-desc{font-size:14px;color:#374151;line-height:1.9}
+.detail-desc p{margin-bottom:10px}
+.detail-desc ul,.detail-desc ol{padding-left:22px;margin-bottom:10px}
+.detail-desc li{margin-bottom:6px}
+.detail-desc .section-head{font-weight:700;margin-top:16px;margin-bottom:6px;color:#1a2340}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav">
+  <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
+  <button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button>
+</nav>
+<aside class="cd-sidebar">
+  <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+  <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+  <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+  <a href="/spc/employee-management" class="cd-sidebar-item active">&#128101; Employee Management</a>
+  <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+  <a href="/spc/concierge-services" class="cd-sidebar-item">&#127918; Concierge Services</a>
+  <div class="cd-sidebar-divider"></div>
+  <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+  <a href="/spc/employee-management" class="back-link">&#8249; BACK TO EMPLOYEE MANAGEMENT</a>
+  <div class="page-header">
+    <div class="page-title">EID Appointment - Reschedule</div>
+    <a href="/spc/employee-management/eid-appointment/step1" class="start-btn">START PROCESS</a>
+  </div>
+  <div class="hero-banner">
+    <span class="hero-tag">Reschedule</span>
+    <div class="hero-title">RESCHEDULE<br/>FOR EMIRATES<br/>ID APPOINTMENT</div>
+  </div>
+  <div class="detail-card">
+    <div class="detail-section-title">Description</div>
+    <hr class="detail-divider"/>
+    <div class="detail-desc">
+      <p>This service enables individuals to reschedule their biometric appointment, allowing for adjustments to better fit their schedule and address any changes or conflicts that may arise.</p>
+      <div class="section-head">Requirement:</div>
+      <ul><li>Payment</li></ul>
+      <div class="section-head">Output:</div>
+      <ul><li>Emirates ID Form</li></ul>
+      <div class="section-head">Fees:</div>
+      <ul>
+        <li>Biometric Appointment Rescheduling Fee: AED 350</li>
+        <li>Knowledge Fee: AED 10</li>
+        <li>Total: AED 360</li>
+      </ul>
+      <div class="section-head">Timeline</div>
+      <p>1 business day</p>
+    </div>
+  </div>
+</main>
+</body></html>
+</template>
+
+<!-- EID APPOINTMENT STEP 1 -->
+<template id="eid_appointment_step1" name="EID Appointment Step 1">
+<html><head><meta charset="utf-8"/><title>EID Appointment | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.section-block{display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid #f0f0f0}
+.sec-num{font-size:13px;color:#bbb;font-weight:600;min-width:32px;padding-top:2px}
+.sec-body{flex:1;max-width:720px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:18px}
+.radio-group{display:flex;gap:24px;margin-bottom:18px;flex-wrap:wrap}
+.radio-opt{display:flex;align-items:center;gap:8px;font-size:14px;color:#1a2340;cursor:pointer}
+.radio-opt input[type=radio]{width:18px;height:18px;accent-color:#1a2340}
+.field-input{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;margin-bottom:14px;display:block}
+.field-input:focus{border-bottom-color:#1abc9c}
+.field-input::placeholder{color:#aaa}
+.field-select{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;margin-bottom:14px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23999' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px center}
+.field-textarea{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;resize:none;min-height:72px;font-family:inherit;margin-bottom:14px}
+.field-textarea::placeholder{color:#aaa}
+.dynamic-section{display:none}
+.dynamic-section.show{display:block}
+.manual-fields{display:none}
+.manual-fields.show{display:block}
+.nav-btns{display:flex;justify-content:flex-end;margin-top:32px}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num active">1</div><div class="ps-label active">Applicant details</div></div>
+  <div class="progress-step"><div class="ps-num">2</div><div class="ps-label">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num">3</div><div class="ps-label">Review application</div></div>
+  <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val">360.00 &#9432;</div>
+  </div>
+  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+</div>
+<div class="form-main">
+  <div class="form-title">Reschedule</div>
+  <form action="/spc/employee-management/eid-appointment/step1/submit" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <!-- 01 Applicant Type -->
+    <div class="section-block">
+      <div class="sec-num">01</div>
+      <div class="sec-body">
+        <div class="sec-title">Applicant type</div>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="applicant_type" value="employee" onchange="onTypeChange('employee')"/> Employee</label>
+          <label class="radio-opt"><input type="radio" name="applicant_type" value="investor" onchange="onTypeChange('investor')"/> Investor</label>
+          <label class="radio-opt"><input type="radio" name="applicant_type" value="student" onchange="onTypeChange('student')"/> Student</label>
+        </div>
+
+        <!-- Employee fields -->
+        <div id="empSection" class="dynamic-section">
+          <div class="sec-title" style="font-size:14px;margin-bottom:12px">02</div>
+          <select name="employee_profile_id" class="field-select" id="empProfileSel" onchange="onProfileChange('emp', this.value)">
+            <option value="">Employee profile</option>
+            <option value="manual">+ Add manually</option>
+            <t t-foreach="employees" t-as="e">
+              <option t-att-value="e.id" t-esc="e.name"/>
+            </t>
+          </select>
+          <div id="empManual" class="manual-fields">
+            <input type="text" name="manual_employee_name" class="field-input" placeholder="Employee full name"/>
+          </div>
+        </div>
+
+        <!-- Investor fields -->
+        <div id="invSection" class="dynamic-section">
+          <div class="sec-title" style="font-size:14px;margin-bottom:12px">02</div>
+          <select name="investor_profile_id" class="field-select" id="invProfileSel" onchange="onProfileChange('inv', this.value)">
+            <option value="">Investor / Partner profile</option>
+            <option value="manual">+ Add manually</option>
+            <t t-foreach="investors" t-as="i">
+              <option t-att-value="i.id" t-esc="i.name"/>
+            </t>
+          </select>
+          <div id="invManual" class="manual-fields">
+            <input type="text" name="manual_investor_name" class="field-input" placeholder="Investor full name"/>
+          </div>
+          <select name="partner_profile_id" class="field-select" id="parProfileSel" onchange="onProfileChange('par', this.value)">
+            <option value="">Partner profile</option>
+            <option value="manual">+ Add manually</option>
+            <t t-foreach="investors" t-as="i">
+              <option t-att-value="i.id" t-esc="i.name"/>
+            </t>
+          </select>
+          <div id="parManual" class="manual-fields">
+            <input type="text" name="manual_partner_name" class="field-input" placeholder="Partner full name"/>
+          </div>
+        </div>
+
+        <!-- Student fields -->
+        <div id="stuSection" class="dynamic-section">
+          <div class="sec-title" style="font-size:14px;margin-bottom:12px">02</div>
+          <select name="student_profile_id" class="field-select" id="stuProfileSel" onchange="onProfileChange('stu', this.value)">
+            <option value="">Student profile</option>
+            <option value="manual">+ Add manually</option>
+            <t t-foreach="students" t-as="s">
+              <option t-att-value="s.id" t-esc="s.name"/>
+            </t>
+          </select>
+          <div id="stuManual" class="manual-fields">
+            <input type="text" name="manual_student_name" class="field-input" placeholder="Student full name"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Personal Details -->
+    <div class="section-block">
+      <div class="sec-num">03</div>
+      <div class="sec-body">
+        <div class="sec-title">Personal details</div>
+        <input type="text" name="first_name" class="field-input" placeholder="First name"/>
+        <input type="text" name="last_name" class="field-input" placeholder="Last name"/>
+        <input type="email" name="email" class="field-input" placeholder="Email address"/>
+      </div>
+    </div>
+
+    <!-- 04 Remarks -->
+    <div class="section-block" style="border-bottom:none">
+      <div class="sec-num">04</div>
+      <div class="sec-body">
+        <div class="sec-title">Remarks</div>
+        <textarea name="remarks" class="field-textarea" placeholder="Comments"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button type="submit" class="btn-next">NEXT</button>
+    </div>
+  </form>
+</div>
+<script>
+<![CDATA[
+function onTypeChange(type){
+  document.querySelectorAll('.dynamic-section').forEach(function(s){s.classList.remove('show');});
+  if(type==='employee') document.getElementById('empSection').classList.add('show');
+  if(type==='investor') document.getElementById('invSection').classList.add('show');
+  if(type==='student') document.getElementById('stuSection').classList.add('show');
+}
+function onProfileChange(prefix, val){
+  var manualId = prefix+'Manual';
+  var el = document.getElementById(manualId);
+  if(el){ if(val==='manual'){el.classList.add('show');}else{el.classList.remove('show');} }
+}
+]]>
+</script>
+</body></html>
+</template>
+
+<!-- EID APPOINTMENT DECLARATION -->
+<template id="eid_appointment_declaration" name="EID Appointment Declaration">
+<html><head><meta charset="utf-8"/><title>Declaration | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.decl-box{background:white;border-radius:10px;padding:32px;max-width:760px;font-size:14px;color:#374151;line-height:1.9;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.decl-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.terms-link{color:#1abc9c;font-weight:600;text-decoration:none}
+.ack-row{display:flex;align-items:center;gap:12px;margin-top:20px;font-size:14px;font-weight:600;color:#1a2340}
+.ack-row input{width:17px;height:17px;accent-color:#1a2340;flex-shrink:0}
+.nav-btns{display:flex;justify-content:space-between;margin-top:32px;max-width:760px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Applicant details</div></div>
+  <div class="progress-step"><div class="ps-num active">2</div><div class="ps-label active">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num">3</div><div class="ps-label">Review application</div></div>
+  <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 360.0)"/> &#9432;</div>
+  </div>
+  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+</div>
+<div class="form-main">
+  <div class="form-title">Reschedule</div>
+  <form action="/spc/employee-management/eid-appointment/declaration/submit" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="record_id" t-att-value="record.id"/>
+    <div class="decl-box">
+      <div class="decl-title">Declaration:</div>
+      <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+      <br/>
+      <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+      <br/>
+      <div class="ack-row">
+        <input type="checkbox" name="terms_agreed" id="termsChk" value="yes"/>
+        <label for="termsChk">I have read and agree to the SPC Terms and Conditions.</label>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <a href="/spc/employee-management/eid-appointment/step1" class="btn-prev">PREVIOUS</a>
+      <button type="submit" class="btn-next">NEXT</button>
+    </div>
+  </form>
+</div>
+</body></html>
+</template>
+
+<!-- EID APPOINTMENT REVIEW -->
+<template id="eid_appointment_review" name="EID Appointment Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.review-card{background:white;border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);max-width:820px}
+.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.review-sec-title{font-size:15px;font-weight:700;color:#1a2340}
+.edit-btn{color:#1a2340;font-size:13px;font-weight:600;text-decoration:none}
+.review-row{display:flex;gap:24px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.review-row:last-child{border-bottom:none}
+.review-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;font-weight:600;min-width:240px}
+.review-val{font-size:14px;color:#1a2340;font-weight:500}
+.nav-btns{display:flex;justify-content:space-between;margin-top:24px;max-width:820px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;text-decoration:none;display:inline-block}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Applicant details</div></div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num active">3</div><div class="ps-label active">Review application</div></div>
+  <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 360.0)"/> &#9432;</div>
+  </div>
+</div>
+<div class="form-main">
+  <div class="form-title">Reschedule</div>
+  <div class="review-card">
+    <div class="review-header">
+      <div class="review-sec-title">Applicant Details</div>
+      <a href="/spc/employee-management/eid-appointment/step1" class="edit-btn">&#9998; EDIT</a>
+    </div>
+    <div class="review-row"><div class="review-lbl">APPLICANT TYPE</div><div class="review-val"><t t-esc="record.applicant_type or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">FIRST NAME</div><div class="review-val"><t t-esc="record.first_name or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">LAST NAME</div><div class="review-val"><t t-esc="record.last_name or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">EMAIL</div><div class="review-val"><t t-esc="record.email or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">REMARKS</div><div class="review-val"><t t-esc="record.remarks or '-'"/></div></div>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-sec-title">Declaration</div></div>
+    <div class="review-row"><div class="review-lbl">TERMS AGREED</div><div class="review-val"><t t-esc="'Yes' if record.declaration_accepted else 'No'"/></div></div>
+  </div>
+  <div class="nav-btns">
+    <a t-attf-href="/spc/employee-management/eid-appointment/declaration/#{record.id}" class="btn-prev">PREVIOUS</a>
+    <a t-attf-href="/spc/employee-management/eid-appointment/payment/#{record.id}" class="btn-next">NEXT</a>
+  </div>
+</div>
+</body></html>
+</template>
+
+<!-- EID APPOINTMENT PAYMENT -->
+<template id="eid_appointment_payment" name="EID Appointment Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.pay-card{background:white;border-radius:12px;padding:32px;max-width:560px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pay-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.pay-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;font-size:14px}
+.pay-row:last-of-type{border-bottom:none;font-weight:700;font-size:16px}
+.pay-method-title{font-size:14px;font-weight:600;color:#1a2340;margin:20px 0 12px}
+.pay-option{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:10px;cursor:pointer}
+.pay-option:hover{border-color:#1abc9c}
+.submit-btn{width:100%;background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;margin-top:16px}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Applicant details</div></div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Review application</div></div>
+  <div class="progress-step"><div class="ps-num active">4</div><div class="ps-label active">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 360.0)"/> &#9432;</div>
+  </div>
+</div>
+<div class="form-main">
+  <div class="form-title">Reschedule</div>
+  <div class="pay-card">
+    <div class="pay-title">Payment Summary</div>
+    <div class="pay-row"><span style="color:#555">Biometric Rescheduling Fee</span><span style="color:#1a2340;font-weight:600">AED 350.00</span></div>
+    <div class="pay-row"><span style="color:#555">Knowledge Fee</span><span style="color:#1a2340;font-weight:600">AED 10.00</span></div>
+    <div class="pay-row"><span>Total</span><span>AED <t t-esc="'%.2f' % (record.amount or 360.0)"/></span></div>
+    <div class="pay-method-title">Select payment method</div>
+    <label class="pay-option"><input type="radio" name="payment_method" value="card"/> <span style="font-size:14px">Credit / Debit Card</span></label>
+    <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> <span style="font-size:14px">Online Bank Transfer</span></label>
+    <button class="submit-btn">SUBMIT</button>
+  </div>
+  <a t-attf-href="/spc/employee-management/eid-appointment/review/#{record.id}" class="btn-prev">PREVIOUS</a>
+</div>
+</body></html>
+</template>
+
+</data>
+</odoo>

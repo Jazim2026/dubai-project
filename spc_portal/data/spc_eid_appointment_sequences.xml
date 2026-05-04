@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+    <record id="seq_eid_appointment" model="ir.sequence">
+        <field name="name">EID Appointment</field>
+        <field name="code">spc.eid.appointment</field>
+        <field name="prefix">EID/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</data>
+</odoo>

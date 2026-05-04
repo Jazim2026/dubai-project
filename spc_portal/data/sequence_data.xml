@@ -9,7 +9,52 @@
       <field name="number_next">1</field>
       <field name="number_increment">1</field>
     </record>
-  </data>
+      <record id="seq_spc_eid_replacement" model="ir.sequence">
+        <field name="name">EID Replacement</field>
+        <field name="code">spc.eid.replacement</field>
+        <field name="prefix">EID/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_spc_reentry_permit" model="ir.sequence">
+        <field name="name">Re-Entry Permit</field>
+        <field name="code">spc.reentry.permit</field>
+        <field name="prefix">REP/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_lease_document" model="ir.sequence">
+        <field name="name">Lease Document</field>
+        <field name="code">spc.lease.document</field>
+        <field name="prefix">LD/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_medical" model="ir.sequence">
+        <field name="name">Medical</field>
+        <field name="code">spc.medical</field>
+        <field name="prefix">MED/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_meeting_room" model="ir.sequence">
+        <field name="name">Meeting Room</field>
+        <field name="code">spc.meeting.room</field>
+        <field name="prefix">MRB/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_mofa" model="ir.sequence">
+        <field name="name">MOFA Attestation</field>
+        <field name="code">spc.mofa</field>
+        <field name="prefix">MOFA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+    <record id="seq_spc_banking_assistance" model="ir.sequence">
+        <field name="name">Banking Assistance</field>
+        <field name="code">spc.banking.assistance</field>
+        <field name="prefix">BA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+</data>
 
     <record id="seq_spc_pre_approval" model="ir.sequence">
         <field name="name">SPC Pre-Approval</field>
@@ -61,5 +106,54 @@
         <field name="prefix">EC/%(year)s/</field>
         <field name="padding">4</field>
     </record>
+
+    <record id="seq_spc_business_license" model="ir.sequence">
+        <field name="name">SPC Business License</field>
+        <field name="code">spc.business.license</field>
+        <field name="prefix">BL/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_nma_media_license" model="ir.sequence">
+        <field name="name">SPC NMA Media License</field>
+        <field name="code">spc.nma.media.license</field>
+        <field name="prefix">NMA/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_nma_permit" model="ir.sequence">
+        <field name="name">SPC NMA Permit</field>
+        <field name="code">spc.nma.permit</field>
+        <field name="prefix">NMP/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_employee_list" model="ir.sequence">
+        <field name="name">SPC Employee List</field>
+        <field name="code">spc.employee.list</field>
+        <field name="prefix">EL/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_facility_management" model="ir.sequence">
+        <field name="name">SPC Facility Management</field>
+        <field name="code">spc.facility.management</field>
+        <field name="prefix">FM/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_change_of_status" model="ir.sequence">
+        <field name="name">SPC Change of Status</field>
+        <field name="code">spc.change.of.status</field>
+        <field name="prefix">COS/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_spc_dam" model="ir.sequence">
+        <field name="name">SPC Dedicated Account Manager</field>
+        <field name="code">spc.dedicated.account.manager</field>
+        <field name="prefix">DAM/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
 </odoo>
-<!-- This line should not be added - need to edit properly -->

@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- RE-ENTRY PERMIT DETAIL PAGE -->
+<template id="reentry_permit_detail" name="Re-Entry Permit Detail">
+<html><head><meta charset="utf-8"/><title>Re-Entry Permit | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover{background:#f0f4ff;color:#1a3c6e}.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.page-title{font-size:22px;font-weight:700;color:#1abc9c}.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}.hero-banner{border-radius:12px;overflow:hidden;min-height:280px;position:relative;background:linear-gradient(135deg,#1565c0,#1a237e);display:flex;align-items:flex-end;padding:32px;margin-bottom:32px}.hero-tag{position:absolute;top:20px;left:20px;background:#004d40;color:white;padding:6px 16px;border-radius:4px;font-size:13px;font-weight:700}.hero-title{font-size:48px;font-weight:900;color:white;line-height:1.1}.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span><div><button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button></div></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Re-Entry Permit - New</div>
+        <a href="/spc/apply/reentry_permit/step1" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner">
+        <span class="hero-tag">New</span>
+        <div class="hero-title">Re-Entry</div>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p style="font-weight:700;margin-bottom:8px;">RE- ENTRY PERMIT FOR STAYING OUTSIDE UAE OVER 6 MONTHS</p>
+            <p style="margin-bottom:16px;">Individuals holding UAE Residency Visas, who are required to stay outside the UAE for extended periods exceeding six months due to study, work, or medical treatment, have the option to apply for a re-entry permit. This permit allows them to enter the UAE during their absence and remains valid for a period of 30 days from the date of approval.</p>
+            <p style="font-weight:700;margin-bottom:8px;">Conditions</p>
+            <ol style="padding-left:24px;margin-bottom:16px;">
+                <li>The application must be submitted from outside the country.</li>
+                <li>The client can apply for this request after (180) days of staying outside the country.</li>
+                <li>When the application is approved, the applicant must enter the country within (30) days starting from the approval date.</li>
+                <li>A valid reason must be provided to justify being outside the country for more than (180) days.</li>
+                <li>A fine of (100) dirhams will be charged for every (30) days or less spent outside the country.</li>
+            </ol>
+            <p style="font-weight:700;margin-bottom:8px;">Requirements</p>
+            <ol style="padding-left:24px;margin-bottom:16px;">
+                <li>Valid Passport Copy</li>
+                <li>Residence Visa Copy</li>
+                <li>Payment</li>
+            </ol>
+            <p style="font-weight:700;margin-bottom:8px;">Output documents</p>
+            <p style="margin-bottom:16px;">Entry Permit Approval</p>
+            <p style="font-weight:700;margin-bottom:8px;">Timeline</p>
+            <p>1 to 3 business days</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- RE-ENTRY PERMIT STEP 1 -->
+<template id="reentry_permit_step1" name="Re-Entry Permit Step 1">
+<html><head><meta charset="utf-8"/><title>Re-Entry Permit | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.select-wrap{position:relative;max-width:680px;margin-bottom:16px}.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}.select-row .select-wrap{flex:1;margin-bottom:0}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.phone-wrap{display:flex;align-items:flex-end;gap:8px;margin-bottom:16px;max-width:680px}.phone-code{display:flex;align-items:center;gap:4px;font-size:14px;border-bottom:1px solid #ccc;padding-bottom:10px;min-width:90px}.phone-code select{border:none;background:transparent;font-size:14px;outline:none;cursor:pointer}.phone-input{flex:1;border:none;border-bottom:1px solid #ccc;padding:10px 4px;font-size:14px;outline:none;background:transparent}.upload-label{font-size:14px;color:#333;font-weight:600;margin-bottom:8px}.upload-box{border:2px solid #b0c4de;border-radius:0;padding:20px;text-align:center;cursor:pointer;background:#f8faff;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;max-width:200px;margin-bottom:20px}.upload-icon{color:#1a5fa8;font-size:24px;margin-bottom:6px}.upload-text{color:#1a5fa8;font-size:13px;font-weight:600}.note-text{font-size:12px;color:#e65100;margin-bottom:16px}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">765.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge/reentry-permit">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/reentry_permit/step1/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+      <!-- SECTION 01: Choose Applicant -->
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Choose Applicant</div>
+          <div class="select-wrap">
+            <select name="applicant_name" id="applicant_sel" onchange="fillApplicant(this.value)">
+              <option value="">Choose applicant's name</option>
+              <option value="__manual__">-- Enter manually --</option>
+              <t t-foreach="employees" t-as="emp">
+                <option t-att-value="emp.get('name','')" t-att-data-first="emp.get('first_name','')" t-att-data-last="emp.get('last_name','')" t-att-data-email="emp.get('email','')" t-att-data-mobile="emp.get('mobile','')">
+                  <t t-esc="emp.get('name','')"/>
+                </option>
+              </t>
+            </select>
+          </div>
+          <div id="manual-name-wrap" style="display:none;">
+            <input class="field-input" type="text" id="manual_full_name" placeholder="Type applicant full name" oninput="document.getElementById('inp_first').value=this.value;"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 02: Applicant Details -->
+      <div class="spc-section">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">Applicant's details</div>
+          <input class="field-input" type="text" name="first_name" id="inp_first" placeholder="First name"/>
+          <input class="field-input" type="text" name="last_name" id="inp_last" placeholder="Last name"/>
+          <div class="phone-wrap">
+            <div class="phone-code" style="display:flex;align-items:center;gap:4px;">
+              <span id="phone-flag" style="font-size:18px;">&#127462;&#127466;</span>
+              <select name="phone_code" id="phone_code_sel" onchange="updateFlag(this.value)" style="border:none;background:transparent;font-size:13px;outline:none;cursor:pointer;">
+                <option value="+971" data-flag="&#127462;&#127466;">+971 UAE</option>
+                <option value="+91" data-flag="&#127470;&#127475;">+91 India</option>
+                <option value="+44" data-flag="&#127468;&#127463;">+44 UK</option>
+                <option value="+1" data-flag="&#127482;&#127480;">+1 USA</option>
+                <option value="+92" data-flag="&#127477;&#127472;">+92 Pakistan</option>
+                <option value="+880" data-flag="&#127463;&#127465;">+880 Bangladesh</option>
+                <option value="+63" data-flag="&#127477;&#127469;">+63 Philippines</option>
+                <option value="+966" data-flag="&#127480;&#127462;">+966 Saudi Arabia</option>
+                <option value="+968" data-flag="&#127476;&#127474;">+968 Oman</option>
+                <option value="+974" data-flag="&#127478;&#127462;">+974 Qatar</option>
+                <option value="+973" data-flag="&#127463;&#127469;">+973 Bahrain</option>
+                <option value="+965" data-flag="&#127472;&#127484;">+965 Kuwait</option>
+                <option value="+20" data-flag="&#127466;&#127468;">+20 Egypt</option>
+                <option value="+94" data-flag="&#127473;&#127472;">+94 Sri Lanka</option>
+                <option value="+977" data-flag="&#127475;&#127477;">+977 Nepal</option>
+                <option value="+60" data-flag="&#127474;&#127486;">+60 Malaysia</option>
+                <option value="+65" data-flag="&#127480;&#127468;">+65 Singapore</option>
+                <option value="+62" data-flag="&#127470;&#127465;">+62 Indonesia</option>
+                <option value="+55" data-flag="&#127463;&#127479;">+55 Brazil</option>
+                <option value="+27" data-flag="&#127487;&#127462;">+27 South Africa</option>
+                <option value="+86" data-flag="&#127464;&#127475;">+86 China</option>
+                <option value="+81" data-flag="&#127471;&#127477;">+81 Japan</option>
+                <option value="+49" data-flag="&#127465;&#127466;">+49 Germany</option>
+                <option value="+33" data-flag="&#127467;&#127479;">+33 France</option>
+                <option value="+44" data-flag="&#127468;&#127463;">+44 UK</option>
+                <option value="+39" data-flag="&#127470;&#127481;">+39 Italy</option>
+                <option value="+7" data-flag="&#127479;&#127482;">+7 Russia</option>
+                <option value="+90" data-flag="&#127481;&#127479;">+90 Turkey</option>
+                <option value="+98" data-flag="&#127470;&#127479;">+98 Iran</option>
+              </select>
+            </div>
+            <input class="phone-input" type="text" name="mobile" id="inp_mobile" placeholder="Mobile number"/>
+          </div>
+          <input class="field-input" type="email" name="email" id="inp_email" placeholder="Email address"/>
+          <input class="field-input" type="text" name="passport_number" placeholder="Passport number"/>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="designation">
+                <option value="">Designation</option>
+                <option value="ac_technician">AC Technician</option>
+                <option value="civil_engineer">Civil Engineer</option>
+                <option value="cleaner">Cleaner</option>
+                <option value="cook">Cook</option>
+                <option value="data_entry_operator">Data Entry Operator</option>
+                <option value="driver">Driver</option>
+                <option value="electrical_engineer">Electrical Engineer</option>
+                <option value="it_manager">IT Manager</option>
+                <option value="mechanical_engineer">Mechanical Engineer</option>
+                <option value="nurse">Nurse</option>
+                <option value="office_boy">Office Boy</option>
+                <option value="pharmacist">Pharmacist</option>
+                <option value="programmer">Programmer</option>
+                <option value="security_guard">Security Guard</option>
+                <option value="software_engineer">Software Engineer</option>
+                <option value="storekeeper">Storekeeper</option>
+                <option value="supervisor">Supervisor</option>
+                <option value="teacher">Teacher</option>
+                <option value="technician">Technician</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="visa_type">
+                <option value="">Visa type</option>
+                <option value="employment">Employment Visa</option>
+                <option value="investor">Investor Visa</option>
+                <option value="dependent">Dependent Visa</option>
+                <option value="student">Student Visa</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="reason_outside_uae" id="reason_sel" onchange="checkReason(this.value)">
+                <option value="">Reason of staying outside UAE</option>
+                <option value="study">Study</option>
+                <option value="work">Work</option>
+                <option value="medical">Medical Treatment</option>
+                <option value="others">Others</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';checkReason('')">x</button>
+          </div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="months_outside_uae" id="months_sel" onchange="checkMonths(this.value)">
+                <option value="">Number of months outside the UAE</option>
+                <option value="6">6 Months</option>
+                <option value="7">7 Months</option>
+                <option value="8">8 Months</option>
+                <option value="9">9 Months</option>
+                <option value="10">10 Months</option>
+                <option value="11">11 Months</option>
+                <option value="12">1 Year</option>
+                <option value="18">1.5 Years</option>
+                <option value="24">2 Years</option>
+                <option value="36">3 Years</option>
+                <option value="48">4 Years</option>
+                <option value="60">5 Years</option>
+                <option value="72">6 Years</option>
+                <option value="84">7 Years</option>
+                <option value="96">8 Years</option>
+                <option value="108">9 Years</option>
+                <option value="120">10 Years</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';checkMonths('')">x</button>
+          </div>
+
+          <!-- Always visible: passport + visa uploads + dates -->
+          <div class="upload-label">Passport copy</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-pass">Passport copy</div>
+            <input type="file" name="doc_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-pass').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <div class="upload-label">Residence Visa Copy</div>
+          <label class="upload-box" style="cursor:pointer;">
+            <div class="upload-icon">&#8679;</div>
+            <div class="upload-text" id="n-visa">Residence Visa Copy</div>
+            <input type="file" name="doc_visa" style="display:none;" multiple="multiple" onchange="document.getElementById('n-visa').textContent=this.files.length+' file(s)'"/>
+          </label>
+          <input class="field-input" type="date" name="visa_issue_date" placeholder="Residence visa issue date"/>
+          <input class="field-input" type="date" name="visa_expiry_date" placeholder="Residence visa expiry date"/>
+          <div class="note-text">You will not be able to proceed with the submission if the visa expiry date is less than 35 days away.</div>
+
+          <!-- Conditional: shown only when months selected -->
+          <div id="extra-fields" style="display:none;">
+            <div class="upload-label">Proof of the reason for staying outside the country for more than 6 months</div>
+            <label class="upload-box" style="cursor:pointer;">
+              <div class="upload-icon">&#8679;</div>
+              <div class="upload-text" id="n-proof">Proof of the reason for staying outside the country for more than 6 months</div>
+              <input type="file" name="doc_proof" style="display:none;" multiple="multiple" onchange="document.getElementById('n-proof').textContent=this.files.length+' file(s)'"/>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function fillApplicant(val) {
+    var manualWrap = document.getElementById('manual-name-wrap');
+    if(val === '__manual__') {
+        manualWrap.style.display = 'block';
+        document.getElementById('inp_first').value = '';
+        document.getElementById('inp_last').value = '';
+        document.getElementById('inp_email').value = '';
+        document.getElementById('inp_mobile').value = '';
+        return;
+    }
+    manualWrap.style.display = 'none';
+    var sel = document.getElementById('applicant_sel');
+    var opt = sel.options[sel.selectedIndex];
+    if(opt) {
+        document.getElementById('inp_first').value = opt.getAttribute('data-first') || '';
+        document.getElementById('inp_last').value = opt.getAttribute('data-last') || '';
+        document.getElementById('inp_email').value = opt.getAttribute('data-email') || '';
+        document.getElementById('inp_mobile').value = opt.getAttribute('data-mobile') || '';
+    }
+}
+function updateFlag(code) {
+    var sel = document.getElementById('phone_code_sel');
+    var opt = sel.options[sel.selectedIndex];
+    var flag = opt ? opt.getAttribute('data-flag') : '&#127462;&#127466;';
+    document.getElementById('phone-flag').innerHTML = flag || '&#127462;&#127466;';
+}
+function checkReason(v) { checkExtraFields(); }
+function checkMonths(v) { checkExtraFields(); }
+function checkExtraFields() {
+    var m = document.getElementById('months_sel').value;
+    document.getElementById('extra-fields').style.display = m ? 'block' : 'none';
+}
+</script>
+</body></html>
+</template>
+
+<!-- RE-ENTRY PERMIT DECLARATION -->
+<template id="reentry_permit_declaration" name="Re-Entry Permit Declaration">
+<html><head><meta charset="utf-8"/><title>Re-Entry Permit | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">765.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/reentry-permit">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">New</div>
+    <form method="POST" action="/spc/apply/reentry_permit/declaration/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Declaration</div>
+          <div class="decl-box">
+            <p>I hereby declare that all the information provided in this application is true, accurate and complete. I understand that providing false information may result in rejection of the application and legal consequences. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
+              <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;" t-att-checked="'checked' if record.declaration_accepted else None"/>
+              <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/reentry_permit/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- RE-ENTRY PERMIT REVIEW -->
+<template id="reentry_permit_review" name="Re-Entry Permit Review">
+<html><head><meta charset="utf-8"/><title>Re-Entry Permit | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}.review-table{width:100%;font-size:13px;border-collapse:collapse}.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}.review-table td:first-child{color:#888;width:40%}.review-table td:last-child{font-weight:500}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">765.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge/reentry-permit">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Applicant</td><td><t t-esc="(record.first_name or '') + ' ' + (record.last_name or '')"/></td></tr>
+        <tr><td>Email</td><td><t t-esc="record.email or '-'"/></td></tr>
+        <tr><td>Passport No.</td><td><t t-esc="record.passport_number or '-'"/></td></tr>
+        <tr><td>Reason Outside UAE</td><td><t t-esc="dict(record._fields['reason_outside_uae'].selection).get(record.reason_outside_uae,'-') if record.reason_outside_uae else '-'"/></td></tr>
+        <tr><td>Months Outside UAE</td><td><t t-esc="dict(record._fields['months_outside_uae'].selection).get(record.months_outside_uae,'-') if record.months_outside_uae else '-'"/></td></tr>
+        <tr style="border-top:2px solid #e0e0e0;">
+          <td style="font-weight:700;font-size:15px;padding-top:12px;">Total Fee</td>
+          <td style="font-weight:800;font-size:16px;color:#1abc9c;padding-top:12px;">AED <t t-esc="'%.2f' % record.amount"/></td>
+        </tr>
+      </table>
+    </div>
+    <form method="POST" action="/spc/apply/reentry_permit/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/reentry_permit/declaration/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- RE-ENTRY PERMIT PAYMENT -->
+<template id="reentry_permit_payment" name="Re-Entry Permit Payment">
+<html><head><meta charset="utf-8"/><title>Re-Entry Permit | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.pay-card{background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;text-align:center}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">765.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge/reentry-permit">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:40px;font-weight:900;color:#1a2340;margin-bottom:8px;">AED 765.00</div>
+      <div style="color:#888;font-size:14px;margin-bottom:16px;">Re-Entry Permit Service Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/reentry_permit/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/reentry_permit/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next" style="background:#1a2340;">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- RE-ENTRY SUCCESS -->
+<template id="reentry_permit_success" name="Re-Entry Permit Success">
+<html><head><meta charset="utf-8"/><title>Submitted | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}.success-card{background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <div class="success-card">
+        <div style="font-size:64px;color:#1abc9c;margin-bottom:20px;">&#10003;</div>
+        <div style="font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px;">Application Submitted Successfully!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:8px;">Your Re-Entry Permit application has been submitted.</p>
+        <p style="font-size:15px;color:#555;margin-bottom:32px;">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" style="background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- LEASE DOCUMENT DETAIL PAGE -->
+<template id="lease_document_detail" name="Lease Document Detail">
+<html><head><meta charset="utf-8"/><title>Lease Documents | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.page-title{font-size:22px;font-weight:700;color:#1abc9c}.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}.detail-desc{font-size:14px;color:#374151;line-height:1.8}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span><div><button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button></div></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+    <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <a href="/spc/concierge-services" class="back-link">&#8249; BACK TO CONCIERGE SERVICES</a>
+    <div class="page-header">
+        <div class="page-title">Lease Documents - <t t-esc="lease_title"/></div>
+        <a t-attf-href="/spc/apply/lease_document/step1?type=#{lease_type}" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px;">Description</h4>
+        <hr class="detail-divider"/>
+        <div class="detail-desc">
+            <p>Lease documents are legal agreements that outline the terms and conditions of a renting property.</p>
+        </div>
+    </div>
+</main>
+</body></html>
+</template>
+
+<!-- LEASE DOCUMENT STEP 1 -->
+<template id="lease_document_step1" name="Lease Document Step 1">
+<html><head><meta charset="utf-8"/><title>Lease Documents | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.field-textarea{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px;resize:none;min-height:60px}.select-wrap{position:relative;max-width:680px;margin-bottom:16px}.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}.select-row .select-wrap{flex:1;margin-bottom:0}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a2340}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Lease document details</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">0.00 &#9432;</div></div>
+    <div class="sidebar-links">
+      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">CANCEL APPLICATION</a>
+    </div>
+  </div>
+  <div class="main">
+    <div class="form-title">Lease Documents</div>
+    <form method="POST" action="/spc/apply/lease_document/step1/submit" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="lease_type" t-att-value="lease_type"/>
+
+      <!-- SECTION 01: Lease Details -->
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Lease documents details</div>
+          <input class="field-input" type="text" name="company_name" placeholder="Company Name in English"/>
+          <input class="field-input" type="text" name="manager_first_name" placeholder="Manager first name"/>
+          <input class="field-input" type="text" name="manager_last_name" placeholder="Manager last name"/>
+          <input class="field-input" type="text" name="full_name_arabic" placeholder="Full name in Arabic"/>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="nationality_id">
+                <option value="">Nationality</option>
+                <t t-foreach="countries" t-as="c">
+                  <option t-att-value="c.id"><t t-esc="c.name"/></option>
+                </t>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <input class="field-input" type="text" name="passport_number" placeholder="Passport number"/>
+          <textarea class="field-textarea" name="description_en" placeholder="Description in English"></textarea>
+          <textarea class="field-textarea" name="address_en" placeholder="Address in English"></textarea>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="lease_validity">
+                <option value="">Lease validity</option>
+                <option value="6m">6 Months</option>
+                <option value="1y">1 Year</option>
+                <option value="2y">2 Years</option>
+                <option value="3y">3 Years</option>
+                <option value="4y">4 Years</option>
+                <option value="5y">5 Years</option>
+                <option value="6y">6 Years</option>
+                <option value="7y">7 Years</option>
+                <option value="8y">8 Years</option>
+                <option value="9y">9 Years</option>
+                <option value="10y">10 Years</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+          <input class="field-input" type="number" name="annual_rent" placeholder="Annual Rent"/>
+          <input class="field-input" type="date" name="commencement_date" placeholder="Commencement date"/>
+          <input class="field-input" type="date" name="lease_expiry_date" placeholder="Lease expiry date"/>
+        </div>
+      </div>
+
+      <!-- SECTION 02: Facilities -->
+      <div class="spc-section">
+        <div class="sec-num">02</div>
+        <div class="sec-body">
+          <div class="sec-title">Facilities leasing rate per sqm</div>
+          <div class="select-row">
+            <div class="select-wrap">
+              <select name="facility_type">
+                <option value="">Select facility type</option>
+                <option value="prime15_furnished">SQM in Prime 15 Furnished</option>
+                <option value="prime15_unfurnished">SQM in Prime 15 Unfurnished</option>
+                <option value="prime10_furnished">SQM in Prime 10 Furnished</option>
+                <option value="prime10_unfurnished">SQM in Prime 10 Unfurnished</option>
+              </select>
+            </div>
+            <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 03: Additional Lease -->
+      <div class="spc-section">
+        <div class="sec-num">03</div>
+        <div class="sec-body">
+          <div class="sec-title">Additional lease required?</div>
+          <div style="font-size:14px;color:#555;margin-bottom:12px;">Additional lease required</div>
+          <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="additional_lease" value="yes" onclick="toggleAdditional('yes')"/> Yes</label>
+            <label class="radio-label"><input type="radio" name="additional_lease" value="no" onclick="toggleAdditional('no')" checked="checked"/> No</label>
+          </div>
+          <div id="additional-fields" style="display:none;">
+            <textarea class="field-textarea" name="additional_desc_en" placeholder="Description in English (Additional Lease Agreement)"></textarea>
+            <textarea class="field-textarea" name="additional_address_en" placeholder="Location / Registered Address English (Additional Lease Agreement)"></textarea>
+            <input class="field-input" type="number" name="additional_annual_rent" placeholder="Annual Rent"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="spc-nav-buttons">
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+function toggleAdditional(v) {
+    document.getElementById('additional-fields').style.display = v === 'yes' ? 'block' : 'none';
+}
+</script>
+</body></html>
+</template>
+
+<!-- LEASE DECLARATION -->
+<template id="lease_document_declaration" name="Lease Document Declaration">
+<html><head><meta charset="utf-8"/><title>Lease Documents | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Lease document details</div></div>
+    <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">0.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Lease Documents</div>
+    <form method="POST" action="/spc/apply/lease_document/declaration/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-section">
+        <div class="sec-num">01</div>
+        <div class="sec-body">
+          <div class="sec-title">Declaration</div>
+          <div class="decl-box">
+            <p>I hereby declare that all the information provided in this application is true, accurate and complete. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
+              <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;" t-att-checked="'checked' if record.declaration_accepted else None"/>
+              <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/lease_document/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">NEXT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- LEASE REVIEW -->
+<template id="lease_document_review" name="Lease Document Review">
+<html><head><meta charset="utf-8"/><title>Lease Documents | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}.review-table{width:100%;font-size:13px;border-collapse:collapse}.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}.review-table td:first-child{color:#888;width:40%}.review-table td:last-child{font-weight:500}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Lease document details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">0.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Review Application</div>
+    <div class="review-card">
+      <table class="review-table">
+        <tr><td>Reference</td><td><t t-esc="record.name"/></td></tr>
+        <tr><td>Company Name</td><td><t t-esc="record.company_name or '-'"/></td></tr>
+        <tr><td>Manager</td><td><t t-esc="(record.manager_first_name or '') + ' ' + (record.manager_last_name or '')"/></td></tr>
+        <tr><td>Lease Validity</td><td><t t-esc="dict(record._fields['lease_validity'].selection).get(record.lease_validity,'-') if record.lease_validity else '-'"/></td></tr>
+        <tr><td>Facility Type</td><td><t t-esc="dict(record._fields['facility_type'].selection).get(record.facility_type,'-') if record.facility_type else '-'"/></td></tr>
+        <tr><td>Annual Rent</td><td>AED <t t-esc="'%.2f' % record.annual_rent"/></td></tr>
+        <tr style="border-top:2px solid #e0e0e0;">
+          <td style="font-weight:700;font-size:15px;padding-top:12px;">Total Fee</td>
+          <td style="font-weight:800;font-size:16px;color:#1abc9c;padding-top:12px;">AED <t t-esc="'%.2f' % record.amount"/></td>
+        </tr>
+      </table>
+    </div>
+    <form method="POST" action="/spc/apply/lease_document/review/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/lease_document/declaration/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next">PROCEED TO PAYMENT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- LEASE PAYMENT -->
+<template id="lease_document_payment" name="Lease Document Payment">
+<html><head><meta charset="utf-8"/><title>Lease Documents | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.pay-card{background:#fff;border-radius:12px;padding:40px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;text-align:center}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body><div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Lease document details</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+    <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+    <div class="total-box">Total AED<div class="amount">0.00 &#9432;</div></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+  </div>
+  <div class="main">
+    <div class="form-title">Payment</div>
+    <div class="pay-card">
+      <div style="font-size:40px;font-weight:900;color:#1a2340;margin-bottom:8px;">AED <t t-esc="'%.2f' % record.amount"/></div>
+      <div style="color:#888;font-size:14px;margin-bottom:16px;">Lease Document Service Fee</div>
+      <div style="color:#555;font-size:13px;">Reference: <t t-esc="record.name"/></div>
+    </div>
+    <form method="POST" action="/spc/apply/lease_document/payment/submit">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="record_id" t-att-value="record.id"/>
+      <div class="spc-nav-buttons">
+        <a t-attf-href="/spc/apply/lease_document/review/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
+        <button type="submit" class="spc-btn-next" style="background:#1a2340;">CONFIRM &amp; SUBMIT</button>
+      </div>
+    </form>
+  </div>
+</div></body></html>
+</template>
+
+<!-- LEASE SUCCESS -->
+<template id="lease_document_success" name="Lease Document Success">
+<html><head><meta charset="utf-8"/><title>Submitted | SPC Free Zone</title>
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa}.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}.cd-sidebar-item:hover,.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e}.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}.cd-main{margin-left:220px;margin-top:56px;padding:60px 40px;display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 56px)}.success-card{background:white;border-radius:12px;padding:60px 48px;box-shadow:0 2px 12px rgba(0,0,0,.08);text-align:center;max-width:520px;width:100%}
+</style><t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav"><span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span></nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item active">&#127918; Concierge Services</a>
+    <div class="cd-sidebar-divider"></div>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+    <div class="success-card">
+        <div style="font-size:64px;color:#1abc9c;margin-bottom:20px;">&#10003;</div>
+        <div style="font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px;">Application Submitted Successfully!</div>
+        <p style="font-size:14px;color:#666;margin-bottom:8px;">Your Lease Document application has been submitted.</p>
+        <p style="font-size:15px;color:#555;margin-bottom:32px;">Reference: <strong><t t-esc="record.name"/></strong></p>
+        <a href="/spc/customer-dashboard" style="background:#1abc9c;color:#fff;padding:13px 36px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;display:inline-block;">BACK TO DASHBOARD</a>
+    </div>
+</main>
+</body></html>
+</template>
+
+</odoo>

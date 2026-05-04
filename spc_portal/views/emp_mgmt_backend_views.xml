@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="view_spc_cos_tree" model="ir.ui.view">
+        <field name="name">spc.change.of.status.tree</field>
+        <field name="model">spc.change.of.status</field>
+        <field name="arch" type="xml">
+            <tree string="Change of Status"
+                  decoration-info="state=='draft'"
+                  decoration-success="state=='approved'">
+                <field name="name"/>
+                <field name="applicant_name"/>
+                <field name="visa_status"/>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="partner_id"/>
+                <field name="submission_date"/>
+                <field name="total_amount"/>
+                <field name="state" widget="badge"
+                       decoration-info="state=='draft'"
+                       decoration-warning="state=='submitted'"
+                       decoration-success="state=='approved'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_cos_form" model="ir.ui.view">
+        <field name="name">spc.change.of.status.form</field>
+        <field name="model">spc.change.of.status</field>
+        <field name="arch" type="xml">
+            <form string="Change of Status">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,under_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="partner_id"/>
+                            <field name="submission_date" readonly="1"/>
+                            <field name="total_amount"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Application Details">
+                            <group>
+                                <group>
+                                    <field name="applicant_name"/>
+                                    <field name="visa_status"/>
+                                    <field name="remarks"/>
+                                </group>
+                            </group>
+                            <group string="Documents">
+                                <group string="Cancelled Visa">
+                                    <field name="doc_cancelled_visa" widget="binary" filename="doc_cancelled_visa_name"/>
+                                    <field name="doc_cancelled_visa_name" readonly="1"/>
+                                </group>
+                                <group string="Valid Visa">
+                                    <field name="doc_valid_visa" widget="binary" filename="doc_valid_visa_name"/>
+                                    <field name="doc_valid_visa_name" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Applicant Information">
+                            <group>
+                                <field name="first_name"/>
+                                <field name="last_name"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group>
+                                <field name="declaration_accepted"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_spc_cos_search" model="ir.ui.view">
+        <field name="name">spc.change.of.status.search</field>
+        <field name="model">spc.change.of.status</field>
+        <field name="arch" type="xml">
+            <search string="Change of Status">
+                <field name="name" string="Reference"/>
+                <field name="applicant_name"/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Submitted" name="submitted" domain="[('state','=','submitted')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_spc_cos" model="ir.actions.act_window">
+        <field name="name">Change of Status</field>
+        <field name="res_model">spc.change.of.status</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Employee Management top menu -->
+    <menuitem id="menu_spc_emp_management_top"
+              name="Employee Management"
+              parent="menu_spc_root"
+              sequence="20"/>
+
+    <menuitem id="menu_spc_cos_parent"
+              name="Change of Status"
+              parent="menu_spc_emp_management_top"
+              sequence="10"/>
+
+    <menuitem id="menu_spc_cos_list"
+              name="Change of Status"
+              parent="menu_spc_cos_parent"
+              action="action_spc_cos"
+              sequence="10"/>
+
+</data>
+</odoo>

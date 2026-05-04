@@ -1,0 +1,1075 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ═══════════════════════════════════════════════════════
+     SHARED CSS MACRO  (included in every BL template)
+     ═══════════════════════════════════════════════════════ -->
+<template id="bl_css" name="BL Shared CSS">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-logo{font-size:18px;font-weight:700;margin-bottom:8px}
+.sidebar-logo span{display:block;font-size:11px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px;margin-top:24px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff;font-size:14px}
+.step-label{font-size:13px}
+.sidebar-bottom{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.total-lbl{font-size:10px;text-transform:uppercase;opacity:.5;letter-spacing:1px}
+.total-aed{font-size:11px;opacity:.5}
+.total-amt{font-size:22px;font-weight:700;color:#1abc9c}
+.save-link{display:block;font-size:12px;color:#1abc9c;text-decoration:underline;margin-top:12px;cursor:pointer}
+.cancel-link{display:block;font-size:12px;color:#ef4444;text-decoration:underline;margin-top:6px;cursor:pointer}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px}
+.sec-row{display:flex;gap:16px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:32px}
+.sec-body{flex:1}
+.sec-title{font-size:15px;font-weight:600;margin-bottom:6px;color:#1a2340}
+.sec-sub{font-size:13px;color:#888;margin-bottom:16px}
+.field-lbl{font-size:12px;color:#888;font-weight:500;margin-bottom:8px}
+.flat-input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px;outline:none}
+.flat-input:focus{border-color:#1abc9c}
+.flat-select{width:100%;max-width:500px;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;margin-bottom:12px;outline:none;cursor:pointer}
+.flat-select:focus{border-color:#1abc9c}
+.flat-textarea{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:12px;resize:vertical;outline:none}
+.flat-textarea:focus{border-color:#1abc9c}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.radio-item{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:14px;cursor:pointer}
+.radio-item input[type=radio]{accent-color:#1abc9c;width:16px;height:16px;cursor:pointer}
+.check-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;cursor:pointer;margin-top:12px}
+.check-item input[type=checkbox]{accent-color:#1abc9c;width:16px;height:16px;margin-top:2px;cursor:pointer}
+.info-box{background:#fff8f0;border:1px solid #fed7aa;border-radius:10px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start;margin-top:16px;max-width:600px}
+.info-icon{color:#f97316;font-size:18px;flex-shrink:0;font-style:normal}
+.info-text{font-size:13px;color:#555;line-height:1.6}
+.ack-box{background:#f0f9ff;border:1px solid #bee3f8;border-radius:10px;padding:16px 20px;margin-top:16px;max-width:600px}
+.ack-note{font-size:13px;color:#2b6cb0;margin-bottom:8px;line-height:1.5}
+.ack-link{color:#1abc9c;text-decoration:underline}
+.yn-row{display:flex;gap:12px;margin-top:8px}
+.yn-card{border:2px solid #ddd;border-radius:10px;padding:18px 28px;cursor:pointer;text-align:center;min-width:100px;transition:all .2s}
+.yn-card:hover{border-color:#1abc9c}
+.yn-card.yn-active{border-color:#1abc9c;background:#f0fdf8}
+.yn-icon{font-size:20px;display:block;margin-bottom:6px}
+.yn-icon.yes{color:#1abc9c}
+.yn-icon.no{color:#ef4444}
+.yn-lbl{font-size:14px;font-weight:600;color:#1a2340}
+.visa-row{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.visa-btn{width:46px;height:46px;border-radius:8px;border:2px solid #ddd;background:#fff;font-size:15px;font-weight:600;cursor:pointer;color:#1a2340;transition:all .2s}
+.visa-btn:hover{border-color:#1abc9c}
+.visa-btn.visa-active{background:#1a2340;color:#fff;border-color:#1a2340}
+.nav-bar{display:flex;justify-content:space-between;margin-top:32px}
+.btn-prev{background:#fff;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-prev:hover{background:#f5f6fa}
+.btn-next{background:#1abc9c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+.btn-next:hover{background:#17a589}
+.btn-submit{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 40px;font-size:14px;font-weight:700;cursor:pointer}
+.act-search{width:100%;max-width:500px;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:16px;outline:none}
+.act-search:focus{border-color:#1abc9c}
+.act-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.act-tab{padding:6px 14px;border:1px solid #ddd;border-radius:20px;font-size:12px;cursor:pointer;background:#fff;color:#555;transition:all .2s}
+.act-tab.active{background:#1abc9c;color:#fff;border-color:#1abc9c}
+.act-group{border:1px solid #e5e7eb;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.act-group-hdr{padding:12px 16px;background:#f9fafb;font-size:13px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:#1a2340}
+.act-group-body{padding:4px 0}
+.act-row{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;cursor:pointer}
+.act-row:hover{background:#f0fdf8}
+.act-row input[type=checkbox]{accent-color:#1abc9c;width:15px;height:15px}
+.review-group{background:#fff;border-radius:10px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.05);margin-bottom:16px}
+.review-group-title{font-size:13px;font-weight:700;color:#1abc9c;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.review-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px}
+.review-row:last-child{border-bottom:none}
+.review-key{color:#888}
+.review-val{font-weight:600;color:#1a2340}
+.review-total{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#1a2340;border-radius:10px;margin-top:16px;color:#fff}
+.review-total-amt{font-size:20px;font-weight:700;color:#1abc9c}
+.payment-box{background:#fff;border-radius:10px;padding:24px;box-shadow:0 2px 6px rgba(0,0,0,.05);margin-bottom:16px}
+.payment-line{display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:20px}
+.payment-total{color:#1abc9c;font-size:22px;font-weight:700}
+</style>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SIDEBAR MACRO
+     ═══════════════════════════════════════════════════════ -->
+<template id="bl_sidebar" name="BL Sidebar Macro">
+<div class="sidebar">
+    <div class="sidebar-logo">K SPC<span>Free Zone</span></div>
+    <div class="progress-title">Your progress</div>
+    <t t-foreach="steps" t-as="s">
+        <t t-set="idx" t-value="s_index + 1"/>
+        <div t-attf-class="progress-step #{idx == current_step and 'active' or idx &lt; current_step and 'done' or ''}">
+            <div class="step-num">
+                <t t-if="idx &lt; current_step">&#10003;</t>
+                <t t-else=""><t t-esc="idx"/></t>
+            </div>
+            <div class="step-label"><t t-esc="s"/></div>
+        </div>
+    </t>
+    <div class="sidebar-bottom">
+        <div class="total-lbl">Total</div>
+        <div class="total-aed">AED</div>
+        <div class="total-amt" id="bl-total-amt">
+            <t t-esc="'%.2f' % (bl_data.get('fee', 10.0))"/>
+        </div>
+        <a href="/spc/company-management/business-license/additional/save-later"
+           class="save-link">SAVE &amp; CONTINUE LATER</a>
+        <a href="/spc/company-management/business-license/additional/cancel"
+           class="cancel-link"
+           onclick="return confirm('Cancel this application?')">CANCEL APPLICATION</a>
+    </div>
+</div>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP 1 — Formation Details (Select Package Type)
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_step1" name="BL Step1 Formation Details">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form method="post" action="/spc/company-management/business-license/bl-step1/submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Select package type</div>
+                <div class="field-lbl">License type</div>
+                <t t-foreach="[
+                    ('ultimate',             'Ultimate'),
+                    ('publishing',           'Publishing'),
+                    ('e_publishing',         'E-Publishing'),
+                    ('instant_publishing',   'Instant License - Publishing'),
+                    ('instant_e_publishing', 'Instant License - E-Publishing'),
+                    ('instant_ultimate',     'Instant License - Ultimate'),
+                ]" t-as="lt">
+                    <label class="radio-item">
+                        <input type="radio" name="license_type"
+                               t-att-value="lt[0]"
+                               t-att-checked="bl_data.get('license_type') == lt[0] and 'checked' or False"
+                               class="bl-pkg-radio"/>
+                        <t t-esc="lt[1]"/>
+                    </label>
+                </t>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instant License — shown only for Instant types -->
+    <div id="instant-block" class="spc-section"
+         t-attf-style="display:#{'block' if bl_data.get('license_type','').startswith('instant') else 'none'}">
+        <div class="sec-row">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Instant License</div>
+                <div class="field-lbl">Instant License</div>
+                <label class="radio-item">
+                    <input type="radio" name="instant_license_fee" value="yes"
+                           t-att-checked="bl_data.get('instant_license_fee') == 'yes' and 'checked' or False"/>
+                    Instant License Fee
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <span/>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+<script>
+(function(){
+    var radios  = document.querySelectorAll('.bl-pkg-radio');
+    var block   = document.getElementById('instant-block');
+    radios.forEach(function(r){
+        r.addEventListener('change', function(){
+            block.style.display = this.value.indexOf('instant') === 0 ? 'block' : 'none';
+            // Update sidebar steps via AJAX
+            fetch('/spc/company-management/business-license/bl-ajax-steps', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({jsonrpc:'2.0', method:'call',
+                    params: {field: 'license_type', value: this.value, current_step: <t t-out="current_step"/>}})
+            }).then(function(r){ return r.json(); }).then(function(d){
+                if(d.result){ updateSteps(d.result.steps, d.result.current_step); }
+            });
+        });
+    });
+    function updateSteps(steps, cur){
+        var sidebar = document.querySelector('.sidebar');
+        var old = sidebar.querySelectorAll('.progress-step');
+        old.forEach(function(e){ e.remove(); });
+        var insertBefore = sidebar.querySelector('.sidebar-bottom');
+        steps.forEach(function(s, i){
+            var idx = i + 1;
+            var cls = idx === cur ? 'active' : idx &lt; cur ? 'done' : '';
+            var div = document.createElement('div');
+            div.className = 'progress-step ' + cls;
+            div.innerHTML = '<div class="step-num">'
+                + (idx &lt; cur ? '&#10003;' : idx)
+                + '</div><div class="step-label">' + s + '</div>';
+            sidebar.insertBefore(div, insertBefore);
+        });
+    }
+})();
+</script>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP 2 — Business Activities
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_step2" name="BL Step2 Business Activities">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form method="post" action="/spc/company-management/business-license/bl-step2/submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Select business activity(s)</div>
+                <div class="sec-sub">What business activity(s) will the company practice?</div>
+
+                <input type="text" class="act-search" id="bl-act-search"
+                       placeholder="Search by keyword"/>
+
+                <div class="act-tabs" id="bl-act-tabs">
+                    <button type="button" class="act-tab active" data-cat="all">All</button>
+                    <t t-foreach="categories.keys()" t-as="cat_name">
+                        <button type="button" class="act-tab"
+                                t-att-data-cat="cat_name">
+                            <t t-esc="cat_name"/>
+                        </button>
+                    </t>
+                </div>
+
+                <div id="bl-act-list">
+                    <t t-foreach="categories.items()" t-as="cat_item">
+                        <t t-set="cat_name" t-value="cat_item[0]"/>
+                        <t t-set="cat_acts"  t-value="cat_item[1]"/>
+                        <div class="act-group" t-att-data-cat-id="cat_name">
+                            <div class="act-group-hdr" onclick="toggleActGroup(this)">
+                                <span><t t-esc="cat_name"/></span>
+                                <span>&#8963;</span>
+                            </div>
+                            <div class="act-group-body">
+                                <t t-foreach="cat_acts" t-as="act">
+                                    <div class="act-row"
+                                         t-attf-data-lbl="#{act.name}">
+                                        <input type="checkbox"
+                                               name="activity_ids"
+                                               t-att-value="act.id"
+                                               t-att-checked="str(act.id) in (bl_data.get('activity_ids') or []) and 'checked' or False"/>
+                                        <span><t t-esc="act.name"/></span>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">List of business activity(s) selected</div>
+                <div id="bl-selected-acts" style="margin-top:8px">
+                    <t t-if="not bl_data.get('activity_ids')">
+                        <p style="color:#aaa;font-size:13px">No activities selected yet</p>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a href="/spc/company-management/business-license/bl-step1" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+<script>
+function toggleActGroup(hdr){
+    var body = hdr.nextElementSibling;
+    body.style.display = body.style.display === 'none' ? '' : 'none';
+}
+document.getElementById('bl-act-search').addEventListener('input', function(){
+    var q = this.value.toLowerCase();
+    document.querySelectorAll('.act-row').forEach(function(row){
+        var lbl = (row.getAttribute('data-lbl') || '').toLowerCase();
+        row.style.display = lbl.includes(q) ? '' : 'none';
+    });
+});
+// Hide all groups on load
+document.querySelectorAll('.act-group').forEach(function(g){ g.style.display = 'none'; });
+document.querySelectorAll('.act-tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+        document.querySelectorAll('.act-tab').forEach(function(t){ t.classList.remove('active'); });
+        this.classList.add('active');
+        var cat = this.getAttribute('data-cat');
+        document.querySelectorAll('.act-group').forEach(function(g){
+            if(cat === 'all'){
+                g.style.display = 'none';
+            } else {
+                g.style.display = g.getAttribute('data-cat-id') == cat ? '' : 'none';
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP 3 — License Validity  (dynamic step)
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_step3" name="BL Step3 License Validity">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form method="post" action="/spc/company-management/business-license/bl-step3/submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">License validity period</div>
+                <div class="sec-sub">Duration of time for which the license is valid</div>
+                <div style="display:flex;align-items:center;gap:8px;max-width:400px">
+                    <select name="license_validity" class="flat-select" id="validity-sel" style="margin-bottom:0">
+                        <option value="">License validity</option>
+                        <option value="1" t-att-selected="bl_data.get('license_validity')=='1' and 'selected' or False">1 Year</option>
+                        <option value="2" t-att-selected="bl_data.get('license_validity')=='2' and 'selected' or False">2 Years</option>
+                        <option value="3" t-att-selected="bl_data.get('license_validity')=='3' and 'selected' or False">3 Years</option>
+                        <option value="4" t-att-selected="bl_data.get('license_validity')=='4' and 'selected' or False">4 Years</option>
+                    </select>
+                    <button type="button" onclick="document.getElementById('validity-sel').value=''"
+                            style="background:none;border:none;font-size:18px;cursor:pointer;color:#aaa">&#10007;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a href="/spc/company-management/business-license/bl-step2" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP 4 — Office Facility  (dynamic step)
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_step4" name="BL Step4 Office Facility">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form method="post" action="/spc/company-management/business-license/bl-step4/submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Select facility</div>
+                <div class="field-lbl">Facility Type</div>
+                <t t-foreach="[
+                    ('coworking', 'Coworking'),
+                    ('office',    'Office'),
+                    ('retail',    'Retail'),
+                    ('store',     'Store'),
+                    ('shell_core','Shell and Core'),
+                    ('warehouse', 'Warehouse/Storage'),
+                ]" t-as="ft">
+                    <label class="radio-item">
+                        <input type="radio" name="facility_type"
+                               t-att-value="ft[0]"
+                               t-att-checked="bl_data.get('facility_type') == ft[0] and 'checked' or False"
+                               class="bl-facility-radio"/>
+                        <t t-esc="ft[1]"/>
+                    </label>
+                </t>
+
+                <!-- Acknowledgement — for physical spaces -->
+                <div id="bl-ack-block" class="ack-box"
+                     t-attf-style="display:#{'block' if bl_data.get('facility_type','') not in ('','coworking') else 'none'}">
+                    <p class="ack-note">You have selected a physical office space. One of our team
+                        members will contact you shortly to discuss this in detail.</p>
+                    <p class="ack-note">Please make sure to read our
+                        <a href="#" class="ack-link">Facility Standards and Guidelines</a>.</p>
+                    <p class="field-lbl" style="margin-top:10px">Acknowledgement</p>
+                    <label class="check-item">
+                        <input type="checkbox" name="facility_acknowledgement" value="yes"
+                               t-att-checked="bl_data.get('facility_acknowledgement') == 'yes' and 'checked' or False"/>
+                        <span>I have read and understood the SPC Facility Standards and Guidelines.</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+<script>
+(function(){
+    var PHYSICAL = ['office','retail','store','shell_core','warehouse'];
+    var ackBlock = document.getElementById('bl-ack-block');
+    document.querySelectorAll('.bl-facility-radio').forEach(function(r){
+        r.addEventListener('change', function(){
+            ackBlock.style.display = PHYSICAL.indexOf(this.value) >= 0 ? 'block' : 'none';
+            fetch('/spc/company-management/business-license/bl-ajax-steps', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({jsonrpc:'2.0', method:'call',
+                    params:{field:'facility_type', value:this.value, current_step: <t t-out="current_step"/>}})
+            }).then(function(r){ return r.json(); }).then(function(d){
+                if(d.result){ updateSteps(d.result.steps, d.result.current_step); }
+            });
+        });
+    });
+    function updateSteps(steps, cur){
+        var sidebar = document.querySelector('.sidebar');
+        sidebar.querySelectorAll('.progress-step').forEach(function(e){ e.remove(); });
+        var insertBefore = sidebar.querySelector('.sidebar-bottom');
+        steps.forEach(function(s, i){
+            var idx = i + 1;
+            var cls = idx === cur ? 'active' : idx &lt; cur ? 'done' : '';
+            var div = document.createElement('div');
+            div.className = 'progress-step ' + cls;
+            div.innerHTML = '<div class="step-num">'+(idx &lt; cur ? '&#10003;' : idx)
+                +'</div><div class="step-label">'+s+'</div>';
+            sidebar.insertBefore(div, insertBefore);
+        });
+    }
+})();
+</script>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP 5 — Visa Requirements  (dynamic: only physical facility)
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_step5" name="BL Step5 Visa Requirements">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form method="post" action="/spc/company-management/business-license/bl-step5/submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="visa_count" id="bl-visa-input"
+           t-att-value="bl_data.get('visa_count', 0)"/>
+
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Visa allocation</div>
+                <div class="visa-row">
+                    <t t-foreach="[0,1,2,3,4,5,6]" t-as="n">
+                        <button type="button"
+                                t-attf-class="visa-btn #{'visa-active' if bl_data.get('visa_count',0) == n else ''}"
+                                t-att-data-val="n">
+                            <t t-esc="n"/>
+                        </button>
+                    </t>
+                    <button type="button"
+                            t-attf-class="visa-btn #{'visa-active' if bl_data.get('visa_count',0) >= 7 else ''}"
+                            data-val="7">7+</button>
+                </div>
+                <div class="info-box">
+                    <i class="info-icon">&#8505;</i>
+                    <div class="info-text">
+                        <p>Total number of visas required by the company.</p>
+                        <p>If you need visa allocation above 10, kindly reach out to your
+                           business setup advisor for further assistance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+<script>
+(function(){
+    var btns  = document.querySelectorAll('.visa-btn');
+    var input = document.getElementById('bl-visa-input');
+    btns.forEach(function(btn){
+        btn.addEventListener('click', function(){
+            btns.forEach(function(b){ b.classList.remove('visa-active'); });
+            this.classList.add('visa-active');
+            input.value = parseInt(this.getAttribute('data-val'));
+            fetch('/spc/company-management/business-license/bl-ajax-steps', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({jsonrpc:'2.0', method:'call',
+                    params:{field:'visa_count', value: parseInt(this.getAttribute('data-val')), current_step: <t t-out="current_step"/>}})
+            }).then(function(r){ return r.json(); }).then(function(d){
+                if(d.result){ updateSteps(d.result.steps, d.result.current_step); }
+            });
+        });
+    });
+    function updateSteps(steps, cur){
+        var sidebar = document.querySelector('.sidebar');
+        sidebar.querySelectorAll('.progress-step').forEach(function(e){ e.remove(); });
+        var insertBefore = sidebar.querySelector('.sidebar-bottom');
+        steps.forEach(function(s, i){
+            var idx = i + 1;
+            var cls = idx===cur?'active':idx&lt;cur?'done':'';
+            var div = document.createElement('div');
+            div.className = 'progress-step '+cls;
+            div.innerHTML='<div class="step-num">'+(idx&lt;cur?'&#10003;':idx)+'</div><div class="step-label">'+s+'</div>';
+            sidebar.insertBefore(div, insertBefore);
+        });
+    }
+})();
+</script>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP 6 — Establishment Card  (dynamic: only visa > 0)
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_step6" name="BL Step6 Establishment Card">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form method="post" action="/spc/company-management/business-license/bl-step6/submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <!-- 01 Establishment Card -->
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Establishment Card</div>
+                <div class="sec-sub">Do you want to apply Establishment card with the company formation?</div>
+                <div class="yn-row" id="ec-yn-row">
+                    <div t-attf-class="yn-card #{'yn-active' if bl_data.get('establishment_card')=='yes' else ''}"
+                         onclick="selectYN('ec', 'yes', this)">
+                        <div class="yn-icon yes">&#10003;</div>
+                        <input type="radio" name="establishment_card" value="yes" style="display:none"
+                               t-att-checked="bl_data.get('establishment_card')=='yes' and 'checked' or False"/>
+                        <div class="yn-lbl">Yes</div>
+                    </div>
+                    <div t-attf-class="yn-card #{'yn-active' if bl_data.get('establishment_card')=='no' else ''}"
+                         onclick="selectYN('ec', 'no', this)">
+                        <div class="yn-icon no">&#10007;</div>
+                        <input type="radio" name="establishment_card" value="no" style="display:none"
+                               t-att-checked="bl_data.get('establishment_card')=='no' and 'checked' or False"/>
+                        <div class="yn-lbl">No</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 02 EC Validity — shown only when Yes -->
+    <div id="ec-validity-section" class="spc-section"
+         t-attf-style="display:#{'block' if bl_data.get('establishment_card')=='yes' else 'none'}">
+        <div class="sec-row">
+            <div class="sec-num">02</div>
+            <div class="sec-body">
+                <div class="sec-title">Establishment Card Validity</div>
+                <div class="field-lbl">Establishment card validity</div>
+                <label class="radio-item">
+                    <input type="radio" name="ec_validity" value="2"
+                           t-att-checked="bl_data.get('ec_validity')=='2' and 'checked' or False"/>
+                    2 Years
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="ec_validity" value="3"
+                           t-att-checked="bl_data.get('ec_validity')=='3' and 'checked' or False"/>
+                    3 Years
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- E-Channel -->
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num" id="echannel-num">
+                <t t-out="'03' if bl_data.get('establishment_card')=='yes' else '02'"/>
+            </div>
+            <div class="sec-body">
+                <div class="sec-title">E-Channel</div>
+                <div class="sec-sub">Do you want to apply E-channel with the company formation?</div>
+                <div class="yn-row">
+                    <div t-attf-class="yn-card #{'yn-active' if bl_data.get('e_channel')=='yes' else ''}"
+                         onclick="selectYN('ech', 'yes', this)">
+                        <div class="yn-icon yes">&#10003;</div>
+                        <input type="radio" name="e_channel" value="yes" style="display:none"
+                               t-att-checked="bl_data.get('e_channel')=='yes' and 'checked' or False"/>
+                        <div class="yn-lbl">Yes</div>
+                    </div>
+                    <div t-attf-class="yn-card #{'yn-active' if bl_data.get('e_channel')=='no' else ''}"
+                         onclick="selectYN('ech', 'no', this)">
+                        <div class="yn-icon no">&#10007;</div>
+                        <input type="radio" name="e_channel" value="no" style="display:none"
+                               t-att-checked="bl_data.get('e_channel')=='no' and 'checked' or False"/>
+                        <div class="yn-lbl">No</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+<script>
+function selectYN(group, val, el) {
+    // Style cards
+    var row = el.closest('.yn-row');
+    row.querySelectorAll('.yn-card').forEach(function(c){ c.classList.remove('yn-active'); });
+    el.classList.add('yn-active');
+    // Check radio
+    var radio = el.querySelector('input[type=radio]');
+    if(radio){ radio.checked = true; }
+    // EC specific logic
+    if(group === 'ec') {
+        var validitySection = document.getElementById('ec-validity-section');
+        var numEl = document.getElementById('echannel-num');
+        if(val === 'yes') {
+            validitySection.style.display = 'block';
+            if(numEl) numEl.textContent = '03';
+        } else {
+            validitySection.style.display = 'none';
+            if(numEl) numEl.textContent = '02';
+        }
+    }
+}
+</script>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP — Manager Information
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_manager" name="BL Manager Information">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form t-att-action="bl_submit_url" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Manager Information</div>
+                <div class="two-col">
+                    <div>
+                        <label class="field-lbl">Full Name</label>
+                        <input class="flat-input" type="text" name="manager_name"
+                               t-att-value="bl_data.get('manager_name','')"/>
+                    </div>
+                    <div>
+                        <label class="field-lbl">Nationality</label>
+                        <select class="flat-select" name="manager_nationality_id">
+                            <option value="">Select Nationality</option>
+                            <t t-foreach="countries" t-as="c">
+                                <option t-att-value="c.id"
+                                        t-att-selected="str(c.id) == str(bl_data.get('manager_nationality_id','')) and 'selected' or False">
+                                    <t t-esc="c.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="field-lbl">Date of Birth</label>
+                        <input class="flat-input" type="date" name="manager_dob"
+                               t-att-value="bl_data.get('manager_dob','')"/>
+                    </div>
+                    <div>
+                        <label class="field-lbl">Gender</label>
+                        <select class="flat-select" name="manager_gender">
+                            <option value="">Select</option>
+                            <option value="male"   t-att-selected="bl_data.get('manager_gender')=='male' and 'selected' or False">Male</option>
+                            <option value="female" t-att-selected="bl_data.get('manager_gender')=='female' and 'selected' or False">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="field-lbl">Passport No.</label>
+                        <input class="flat-input" type="text" name="manager_passport_no"
+                               t-att-value="bl_data.get('manager_passport_no','')"/>
+                    </div>
+                    <div>
+                        <label class="field-lbl">Passport Expiry</label>
+                        <input class="flat-input" type="date" name="manager_passport_expiry"
+                               t-att-value="bl_data.get('manager_passport_expiry','')"/>
+                    </div>
+                    <div>
+                        <label class="field-lbl">UID No.</label>
+                        <input class="flat-input" type="text" name="manager_uid_no"
+                               t-att-value="bl_data.get('manager_uid_no','')"/>
+                    </div>
+                    <div>
+                        <label class="field-lbl">Mobile</label>
+                        <input class="flat-input" type="text" name="manager_mobile"
+                               t-att-value="bl_data.get('manager_mobile','')"/>
+                    </div>
+                    <div>
+                        <label class="field-lbl">Email</label>
+                        <input class="flat-input" type="email" name="manager_email"
+                               t-att-value="bl_data.get('manager_email','')"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP — Nature of Business
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_nature" name="BL Nature of Business">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form t-att-action="bl_submit_url" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Nature of Business</div>
+                <div class="sec-sub">Describe the nature of your business activities</div>
+                <textarea class="flat-textarea" name="nature_of_business" rows="6"
+                          placeholder="Enter description..."><t t-esc="bl_data.get('nature_of_business','')"/></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP — Declaration
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_declaration" name="BL Declaration">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form t-att-action="bl_submit_url" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Declaration</div>
+                <div style="background:#f9fafb;border-radius:8px;padding:18px;margin-bottom:16px;font-size:13px;line-height:1.8;color:#555">
+                    I hereby declare that all information provided in this application is true,
+                    accurate and complete to the best of my knowledge. I understand that providing
+                    false information may result in the rejection or cancellation of this application.
+                </div>
+                <label class="check-item">
+                    <input type="checkbox" name="declaration" value="yes"
+                           t-att-checked="bl_data.get('declaration')=='yes' and 'checked' or False"/>
+                    <span>I accept the above declaration and terms.</span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP — Additional Remarks
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_remarks" name="BL Additional Remarks">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form t-att-action="bl_submit_url" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <div class="spc-section">
+        <div class="sec-row">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Additional Remarks</div>
+                <div class="sec-sub">Any additional information (optional)</div>
+                <textarea class="flat-textarea" name="remarks" rows="5"
+                          placeholder="Enter any remarks..."><t t-esc="bl_data.get('remarks','')"/></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-next">NEXT</button>
+    </div>
+</form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP — Review Application
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_review" name="BL Review Application">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+
+<div class="review-group">
+    <div class="review-group-title">Package Details</div>
+    <div class="review-row">
+        <span class="review-key">License Type</span>
+        <span class="review-val"><t t-esc="(bl_data.get('license_type') or '').replace('_',' ').title() or '-'"/></span>
+    </div>
+    <t t-if="bl_data.get('license_validity')">
+        <div class="review-row">
+            <span class="review-key">License Validity</span>
+            <span class="review-val"><t t-esc="bl_data.get('license_validity')"/> Year(s)</span>
+        </div>
+    </t>
+    <t t-if="bl_data.get('facility_type')">
+        <div class="review-row">
+            <span class="review-key">Facility Type</span>
+            <span class="review-val"><t t-esc="(bl_data.get('facility_type') or '').replace('_',' ').title()"/></span>
+        </div>
+    </t>
+    <t t-if="bl_data.get('visa_count')">
+        <div class="review-row">
+            <span class="review-key">Visa Count</span>
+            <span class="review-val"><t t-esc="bl_data.get('visa_count')"/></span>
+        </div>
+    </t>
+</div>
+
+<t t-if="bl_data.get('manager_name')">
+    <div class="review-group">
+        <div class="review-group-title">Manager Information</div>
+        <div class="review-row">
+            <span class="review-key">Name</span>
+            <span class="review-val"><t t-esc="bl_data.get('manager_name','')"/></span>
+        </div>
+        <div class="review-row">
+            <span class="review-key">Email</span>
+            <span class="review-val"><t t-esc="bl_data.get('manager_email','')"/></span>
+        </div>
+        <div class="review-row">
+            <span class="review-key">Mobile</span>
+            <span class="review-val"><t t-esc="bl_data.get('manager_mobile','')"/></span>
+        </div>
+    </div>
+</t>
+
+<div class="review-total">
+    <span>Total Amount</span>
+    <span class="review-total-amt">AED <t t-esc="'%.2f' % (bl_data.get('fee', 10.0))"/></span>
+</div>
+
+<div class="nav-bar" style="margin-top:24px">
+    <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+    <a t-att-href="bl_next_url" class="btn-next" style="text-decoration:none">NEXT</a>
+</div>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     STEP — Payment
+     ═══════════════════════════════════════════════════════ -->
+<template id="template_bl_payment" name="BL Payment">
+<html>
+<head><meta charset="utf-8"/><title>Additional Business License</title>
+<t t-call="spc_portal.bl_css"/>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+<t t-call="spc_portal.bl_sidebar"/>
+<div class="main">
+<div class="form-title">Additional Business License</div>
+<form method="post" action="/spc/company-management/business-license/bl-final-submit">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <div class="payment-box">
+        <div class="payment-line">
+            <span>Total Amount Due</span>
+            <span class="payment-total">AED <t t-esc="'%.2f' % (bl_data.get('fee', 10.0))"/></span>
+        </div>
+        <div class="field-lbl" style="margin-bottom:12px">Select Payment Method</div>
+        <label class="radio-item">
+            <input type="radio" name="payment_method" value="online"/> Online Payment
+        </label>
+        <label class="radio-item">
+            <input type="radio" name="payment_method" value="bank_transfer"/> Bank Transfer
+        </label>
+    </div>
+
+    <div class="nav-bar">
+        <a t-att-href="bl_prev_url" class="btn-prev">PREVIOUS</a>
+        <button type="submit" class="btn-submit">SUBMIT</button>
+    </div>
+</form>
+</div>
+</div>
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

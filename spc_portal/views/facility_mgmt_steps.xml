@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- FACILITY MANAGEMENT STEP 1 -->
+<template id="template_fm_step1" name="Facility Management Step 1">
+<html><head><meta charset="utf-8"/><title>Complaint Details | Facility Management</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Complaint details</div></div>
+        <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">0.00</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/facility-management/apply/new" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+            <!-- 01 Complaint Category -->
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select complaint category</div>
+                    <div class="select-row">
+                        <div class="select-wrap">
+                            <select name="complaint_category" id="fm_cat" onchange="fmCatChange(this.value)">
+                                <option value="">Complaint category</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="air_conditioning">Air Conditioning</option>
+                                <option value="fire_alarm">Fire Alarm/Fighting</option>
+                                <option value="general">General</option>
+                            </select>
+                        </div>
+                        <button type="button" class="clear-btn" onclick="document.getElementById('fm_cat').value='';fmCatChange('');">&#10005;</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02 Incident Type -->
+            <div id="fm_incident_section" style="display:none">
+                <div class="spc-section">
+                    <div class="sec-num">02</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Select incident type</div>
+                        <div class="select-row">
+                            <div class="select-wrap">
+                                <select name="incident_type" id="fm_incident">
+                                    <option value="">Incident type</option>
+                                </select>
+                            </div>
+                            <button type="button" class="clear-btn" onclick="document.getElementById('fm_incident').value='';">&#10005;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 03 Contact Details -->
+                <div class="spc-section">
+                    <div class="sec-num">03</div>
+                    <div class="sec-body">
+                        <div class="sec-title">Provide contact details</div>
+                        <input type="text" class="field-input" name="office_number" placeholder="Office number"/>
+                        <input type="text" class="field-input" name="contact_name" placeholder="Name of contact"/>
+                        <input type="text" class="field-input" name="contact_number" placeholder="Contact number"/>
+                        <textarea class="field-input" name="complaint_description" rows="3" placeholder="Description of complaint"></textarea>
+                        <div class="upload-title">Upload image</div>
+                        <label for="doc_image" class="upload-box-label" id="upload_box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label-text">Upload image</span>
+                            <input type="file" id="doc_image" name="doc_image" style="display:none;"
+                                   accept=".jpg,.jpeg,.png,.pdf"
+                                   onchange="fmFileSelected(this)"/>
+                        </label>
+                        <div id="uploaded_file_info" class="uploaded-file" style="display:none">
+                            <span style="font-size:18px;color:#1a2340;">&#128196;</span>
+                            <div>
+                                <div id="uploaded_file_name" style="font-size:12px;color:#1a2340;font-weight:500;"></div>
+                                <div style="font-size:11px;color:#1abc9c;font-weight:600;">Complete</div>
+                            </div>
+                            <button type="button" onclick="fmRemoveFile()" style="color:#e74c3c;background:none;border:none;cursor:pointer;font-size:16px;margin-left:8px;">&#128465;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spc-nav-buttons" style="justify-content:flex-end">
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+var FM_INCIDENTS = {
+    'electrical': ['Light not working','Light Blinking','Power socket not working','Breaker trip off'],
+    'air_conditioning': ['AC not working','Less cooling','Noising indoor unit','AC leakage'],
+    'fire_alarm': ['Sprinkler','Emergency Light','Other'],
+    'general': ['Door Issues','Lock Issues','Wall Issues','Ceiling Issues']
+};
+function fmCatChange(v){
+    var section = document.getElementById('fm_incident_section');
+    var sel = document.getElementById('fm_incident');
+    if(v &amp;&amp; FM_INCIDENTS[v]){
+        section.style.display = 'block';
+        sel.innerHTML = '&lt;option value=""&gt;Incident type&lt;/option&gt;';
+        FM_INCIDENTS[v].forEach(function(opt){
+            var o = document.createElement('option');
+            o.value = opt.toLowerCase().replace(/ /g,'_');
+            o.textContent = opt;
+            sel.appendChild(o);
+        });
+    } else {
+        section.style.display = 'none';
+    }
+}
+function fmFileSelected(input){
+    if(input.files &amp;&amp; input.files[0]){
+        document.getElementById('uploaded_file_info').style.display='flex';
+        document.getElementById('uploaded_file_name').textContent=input.files[0].name;
+        document.getElementById('upload_box').style.borderColor='#1abc9c';
+    }
+}
+function fmRemoveFile(){
+    document.getElementById('doc_image').value='';
+    document.getElementById('uploaded_file_info').style.display='none';
+    document.getElementById('upload_box').style.borderColor='#1a2340';
+}
+</script>
+</body></html>
+</template>
+
+<!-- FACILITY MANAGEMENT STEP 2 - DECLARATION -->
+<template id="template_fm_step2" name="Facility Management Step 2">
+<html><head><meta charset="utf-8"/><title>Declaration | Facility Management</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Complaint details</div></div>
+        <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">0.00</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <form action="/spc/facility-management/step2" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Declaration</div>
+                    <div class="decl-box">
+                        <p style="margin-bottom:14px;">By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of SPC Terms and Conditions and the laws of the United Arab Emirates.</p>
+                        <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company's ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+                    </div>
+                    <p style="font-size:14px;font-weight:600;margin-bottom:12px;">Acknowledgement</p>
+                    <label class="ack-row">
+                        <input type="checkbox" name="declaration_accepted" style="width:16px;height:16px;"/>
+                        I have read and agree to the SPC Terms and Conditions.
+                    </label>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a href="/spc/facility-management/apply/new" class="spc-btn-prev">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+</template>
+
+<!-- FACILITY MANAGEMENT STEP 3 - REVIEW -->
+<template id="template_fm_step3" name="Facility Management Step 3">
+<html><head><meta charset="utf-8"/><title>Review | Facility Management</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Complaint details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">0.00</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <p style="color:#888;font-size:13px;margin-bottom:24px;margin-top:-16px;">Please review your application before proceeding to payment.</p>
+        <div class="review-card">
+            <div class="review-header">
+                <div class="review-sec-title">1. Complaint Details</div>
+            </div>
+            <div class="review-row"><div class="review-lbl">COMPLAINT CATEGORY</div><div class="review-val" t-esc="step1.get('complaint_category','—')"/></div>
+            <div class="review-row"><div class="review-lbl">INCIDENT TYPE</div><div class="review-val" t-esc="step1.get('incident_type','—')"/></div>
+            <div class="review-row"><div class="review-lbl">OFFICE NUMBER</div><div class="review-val" t-esc="step1.get('office_number','—')"/></div>
+            <div class="review-row"><div class="review-lbl">CONTACT NAME</div><div class="review-val" t-esc="step1.get('contact_name','—')"/></div>
+            <div class="review-row"><div class="review-lbl">CONTACT NUMBER</div><div class="review-val" t-esc="step1.get('contact_number','—')"/></div>
+            <div class="review-row"><div class="review-lbl">DESCRIPTION</div><div class="review-val" t-esc="step1.get('complaint_description','—')"/></div>
+        </div>
+        <div class="review-card">
+            <div class="review-header">
+                <div class="review-sec-title">2. Declaration</div>
+            </div>
+            <div class="review-row">
+                <div class="review-lbl">DECLARATION ACCEPTED</div>
+                <div class="review-val"><t t-if="step2.get('declaration_accepted')">&#10003; Yes</t><t t-else="">No</t></div>
+            </div>
+        </div>
+        <div class="spc-nav-buttons">
+            <a href="/spc/facility-management/step2" class="spc-btn-prev">PREVIOUS</a>
+            <a href="/spc/facility-management/step4" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
+        </div>
+    </div>
+</div>
+</body></html>
+</template>
+
+<!-- FACILITY MANAGEMENT STEP 4 - PAYMENT -->
+<template id="template_fm_step4" name="Facility Management Step 4">
+<html><head><meta charset="utf-8"/><title>Payment | Facility Management</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Complaint details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">0.00</div></div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title">New</div>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Order Summary</div>
+                <div class="review-row"><div class="review-lbl">Facility Management - New</div><div class="review-val">AED 0.00</div></div>
+                <div class="review-row" style="border-top:2px solid #e5e7eb;margin-top:8px;padding-top:8px;">
+                    <div class="review-lbl" style="font-weight:700;color:#1a2340">Total</div>
+                    <div class="review-val" style="font-weight:700;color:#1a2340;font-size:15px">AED 0.00</div>
+                </div>
+            </div>
+        </div>
+        <form action="/spc/facility-management/final-submit" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-nav-buttons">
+                <a href="/spc/facility-management/step3" class="spc-btn-prev">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body></html>
+</template>
+
+<!-- FACILITY MANAGEMENT SUCCESS -->
+<template id="template_fm_success" name="Facility Management Success">
+<html><head><meta charset="utf-8"/><title>Submitted | Facility Management</title>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Complaint details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED<div class="amount">0.00</div></div>
+    </div>
+    <div class="main">
+        <div style="text-align:center;padding-top:80px">
+            <div style="font-size:64px;color:#1abc9c;margin-bottom:24px">&#10003;</div>
+            <div style="font-size:26px;font-weight:700;color:#1a2340;margin-bottom:12px">Application Submitted!</div>
+            <p style="font-size:14px;color:#555;margin-bottom:32px">Your Facility Management request has been submitted successfully. Our team will get back to you shortly.</p>
+            <a href="/spc/facility-management" class="spc-btn-next" style="text-decoration:none;display:inline-block">BACK TO FACILITY MANAGEMENT</a>
+        </div>
+    </div>
+</div>
+</body></html>
+</template>
+
+</data>
+</odoo>

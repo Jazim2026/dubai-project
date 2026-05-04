@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="view_spc_facility_mgmt_tree" model="ir.ui.view">
+        <field name="name">spc.facility.management.tree</field>
+        <field name="model">spc.facility.management</field>
+        <field name="arch" type="xml">
+            <tree string="Facility Management"
+                  decoration-info="state=='draft'"
+                  decoration-success="state=='approved'">
+                <field name="name"/>
+                <field name="complaint_category"/>
+                <field name="incident_type"/>
+                <field name="partner_id"/>
+                <field name="contact_name"/>
+                <field name="contact_number"/>
+                <field name="submission_date"/>
+                <field name="state" widget="badge"
+                       decoration-info="state=='draft'"
+                       decoration-warning="state=='submitted'"
+                       decoration-success="state=='approved'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_facility_mgmt_form" model="ir.ui.view">
+        <field name="name">spc.facility.management.form</field>
+        <field name="model">spc.facility.management</field>
+        <field name="arch" type="xml">
+            <form string="Facility Management">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,under_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="General">
+                            <field name="partner_id"/>
+                            <field name="submission_date" readonly="1"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Complaint Details">
+                            <group>
+                                <group string="Complaint Info">
+                                    <field name="complaint_category"/>
+                                    <field name="incident_type"/>
+                                    <field name="office_number"/>
+                                    <field name="contact_name"/>
+                                    <field name="contact_number"/>
+                                </group>
+                            </group>
+                            <group string="Description">
+                                <field name="complaint_description" nolabel="1" colspan="2"/>
+                            </group>
+                            <group string="Image">
+                                <field name="doc_image" widget="binary" filename="doc_image_name"/>
+                                <field name="doc_image_name" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group>
+                                <field name="declaration_accepted"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_spc_facility_mgmt_search" model="ir.ui.view">
+        <field name="name">spc.facility.management.search</field>
+        <field name="model">spc.facility.management</field>
+        <field name="arch" type="xml">
+            <search string="Facility Management">
+                <field name="name" string="Reference"/>
+                <field name="partner_id"/>
+                <field name="complaint_category"/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <filter string="Submitted" name="submitted" domain="[('state','=','submitted')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_spc_facility_mgmt" model="ir.actions.act_window">
+        <field name="name">Facility Management</field>
+        <field name="res_model">spc.facility.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No Facility Management requests yet</p>
+        </field>
+    </record>
+
+    <!-- Facility Management menu under root -->
+    <menuitem id="menu_spc_facility_management_top"
+              name="Facility Management"
+              parent="menu_spc_root"
+              sequence="25"/>
+
+    <menuitem id="menu_spc_facility_mgmt_list"
+              name="Facility Requests"
+              parent="menu_spc_facility_management_top"
+              action="action_spc_facility_mgmt"
+              sequence="10"/>
+
+</data>
+</odoo>

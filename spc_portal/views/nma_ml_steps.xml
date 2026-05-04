@@ -1,0 +1,1298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<template id="template_nma_main" name="NMA Media License Main">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>NMA Media License</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333;padding:32px}
+h2{font-size:22px;font-weight:700;color:#1a2340;margin-bottom:4px}
+.sub{color:#888;font-size:14px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08);text-decoration:none;color:inherit;display:block}
+.card-img{height:160px;position:relative;display:flex;align-items:center;padding:0 24px}
+.card-tag{position:absolute;top:12px;left:12px;color:#fff;padding:4px 12px;border-radius:3px;font-size:11px;font-weight:600}
+.card-text{color:#fff;font-size:22px;font-weight:800;line-height:1.2;margin-top:16px}
+.card-body{padding:16px}
+.card-name{font-weight:600;font-size:15px;margin-bottom:6px}
+.card-fee{color:#555;font-size:13px;font-weight:600}
+.blue{background:linear-gradient(135deg,#1a3a6b,#2a6cbf)}
+.teal{background:linear-gradient(135deg,#0a7c6e,#1abc9c)}
+.red{background:linear-gradient(135deg,#c0392b,#e74c3c)}
+.grey-img{background:#e0e0e0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+    </style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+    <h2>NMA Media License</h2>
+    <div class="sub">NMA Media License</div>
+    <div class="grid">
+        <a href="/spc/company-management/nma-media-license/new/additional" class="card">
+            <div class="card-img blue">
+                <span class="card-tag" style="background:#0d5c8c">New</span>
+                <span class="card-text">Media<br/>License</span>
+            </div>
+            <div class="card-body">
+                <div class="card-name" style="color:#0d5c8c">New</div>
+                <div class="card-fee">Starting from AED 535.00</div>
+            </div>
+        </a>
+        <a href="/spc/company-management/nma-media-license/renewal/additional" class="card">
+            <div class="card-img teal">
+                <span class="card-tag" style="background:#0a5c52">Renew</span>
+                <span class="card-text">Media<br/>License</span>
+            </div>
+            <div class="card-body">
+                <div class="card-name" style="color:#0a7c6e">Renewal</div>
+                <div class="card-fee">Starting from AED 535.00</div>
+            </div>
+        </a>
+        <a href="/spc/company-management/nma-media-license/amend/additional" class="card">
+            <div class="card-img grey-img">
+                <span style="font-size:24px;color:#bbb">&#128247;</span>
+                <span style="font-size:12px;color:#aaa">No Image Found</span>
+            </div>
+            <div class="card-body">
+                <div class="card-name" style="color:#0d5c8c">Amend</div>
+                <div class="card-fee">Starting from AED 535.00</div>
+            </div>
+        </a>
+        <a href="/spc/company-management/nma-media-license/cancellation/additional" class="card">
+            <div class="card-img red">
+                <span class="card-tag" style="background:#922b21">Cancel</span>
+                <span class="card-text">Media<br/>License</span>
+            </div>
+            <div class="card-body">
+                <div class="card-name" style="color:#c0392b">Cancellation</div>
+                <div class="card-fee">Starting from AED 525.00</div>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
+</template>
+
+<template id="template_nma_service_detail" name="NMA Service Detail">
+<html><head><meta charset="utf-8"/><title>NMA Media License</title>
+<style>
+body{font-family:"Inter",sans-serif;margin:0;padding:0;background:#fff}
+.header{padding:16px 32px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:12px}
+.back-link{font-size:12px;color:#6b7280;text-decoration:none}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c;margin:0}
+.start-btn{margin-left:auto;padding:10px 24px;background:#1a2340;color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none}
+.hero{width:100%;min-height:200px;display:flex;align-items:center;justify-content:flex-start;color:#fff;padding:40px 60px;position:relative}
+.hero-badge{display:inline-block;padding:4px 12px;border-radius:4px;font-size:12px;font-weight:700;margin-bottom:12px;background:rgba(0,0,0,.2)}
+.hero-title{font-size:48px;font-weight:800;line-height:1.1}
+.hero-blue{background:linear-gradient(135deg,#1a3a6b,#2a6cbf)}
+.hero-teal{background:linear-gradient(135deg,#0a7c6e,#1abc9c)}
+.hero-red{background:linear-gradient(135deg,#c0392b,#e74c3c)}
+.hero-grey{background:#e0e0e0;display:flex;align-items:center;justify-content:center}
+.content{max-width:900px;margin:32px auto;padding:0 32px}
+.section-title{font-size:18px;font-weight:700;color:#1a2340;margin:24px 0 4px}
+.divider{border:none;border-top:2px dotted #e5e7eb;margin:4px 0 12px}
+.desc-text{font-size:13px;color:#374151;line-height:1.6}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head><body>
+<div class="header">
+    <a href="/spc/company-management/nma-media-license" class="back-link">&#8592; BACK TO COMPANY MANAGEMENT</a>
+    <h1 class="page-title">NMA Media License - <t t-esc="config.get('label','')"/></h1>
+    <a t-att-href="'/spc/apply/nma_media_license/' + license_type" class="start-btn">START PROCESS</a>
+</div>
+<t t-if="license_type == 'new'">
+    <div class="hero hero-blue">
+        <div>
+            <div class="hero-badge">New</div>
+            <div class="hero-title">Media<br/>License</div>
+        </div>
+    </div>
+</t>
+<t t-elif="license_type == 'renewal'">
+    <div class="hero hero-teal">
+        <div>
+            <div class="hero-badge">Renew</div>
+            <div class="hero-title">Media<br/>License</div>
+        </div>
+    </div>
+</t>
+<t t-elif="license_type == 'cancellation'">
+    <div class="hero hero-red">
+        <div>
+            <div class="hero-badge">Cancel</div>
+            <div class="hero-title">Media<br/>License</div>
+        </div>
+    </div>
+</t>
+<t t-else="">
+    <div class="hero hero-grey" style="min-height:200px;">
+        <span style="color:#999;font-size:16px;">No Image Found</span>
+    </div>
+</t>
+<div class="content">
+    <div class="section-title">Description</div>
+    <hr class="divider"/>
+    <p class="desc-text" t-esc="config.get('description','')"/>
+    <div class="section-title">Timeline</div>
+    <hr class="divider"/>
+    <p class="desc-text"><t t-esc="config.get('timeline',10)"/> days</p>
+    <div class="section-title">Fees</div>
+    <hr class="divider"/>
+    <p class="desc-text">AED <t t-esc="config.get('fee',535)"/></p>
+</div>
+</body></html>
+</template>
+
+<template id="template_nma_step1" name="NMA Step 1 - Application Details">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Application Details | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step active"><div class="step-num">1</div><div class="step-label">Application details</div></div>
+        <div class="progress-step"><div class="step-num">2</div><div class="step-label">Media license activities</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">General Declaration</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Additional Remarks</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">535.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title" t-esc="license_type"/>
+        <form t-att-action="'/spc/apply/nma_media_license/' + license_type" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select company</div>
+                    <input type="text" class="field-input" name="company_name"
+                           placeholder="Company" list="nma_co_list"
+                           t-att-value="step1_data.get('company_name','')"/>
+                    <datalist id="nma_co_list">
+                        <t t-foreach="companies" t-as="c"><option t-att-value="c.name"/></t>
+                    </datalist>
+                </div>
+            </div>
+            <div class="spc-section">
+                <div class="sec-num">02</div>
+                <div class="sec-body">
+                    <div class="sec-title">Manager details</div>
+                    <input type="text" class="field-input" name="manager_name"
+                           placeholder="Select manager"
+                           t-att-value="step1_data.get('manager_name','')"/>
+                    <input type="text" class="field-input" name="manager_first_name"
+                           placeholder="First name"
+                           t-att-value="step1_data.get('manager_first_name','')"/>
+                    <input type="text" class="field-input" name="manager_last_name"
+                           placeholder="Last name"
+                           t-att-value="step1_data.get('manager_last_name','')"/>
+                    <input type="date" class="field-input" name="manager_dob"
+                           t-att-value="step1_data.get('manager_dob','')"/>
+                </div>
+            </div>
+            <div class="spc-section">
+                <div class="sec-num">03</div>
+                <div class="sec-body">
+                    <div class="sec-title">Remarks</div>
+                    <textarea class="field-input" name="step1_remarks" rows="3"
+                              placeholder="Comments"
+                              style="resize:vertical;padding-top:8px;"><t t-esc="step1_data.get('step1_remarks','')"/></textarea>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <span></span>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_step2" name="NMA Step 2 - Media License Activities">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Media License Activities | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Media license activities</div></div>
+        <div class="progress-step"><div class="step-num">3</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">General Declaration</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Additional Remarks</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">535.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title" t-esc="license_type"/>
+        <form t-att-action="'/spc/apply/nma_media_license/' + license_type + '/step2'" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Select up to 5 media license</div>
+                    <div class="activity-row">
+                        <div class="select-wrap">
+                            <select id="nma_num" name="num_activities">
+                                <option value="">Number of media license activities</option>
+                                <option value="1" t-att-selected="step2_data.get('num_activities','')=='1' and 'selected' or False">1</option>
+                                <option value="2" t-att-selected="step2_data.get('num_activities','')=='2' and 'selected' or False">2</option>
+                                <option value="3" t-att-selected="step2_data.get('num_activities','')=='3' and 'selected' or False">3</option>
+                                <option value="4" t-att-selected="step2_data.get('num_activities','')=='4' and 'selected' or False">4</option>
+                                <option value="5" t-att-selected="step2_data.get('num_activities','')=='5' and 'selected' or False">5</option>
+                            </select>
+                        </div>
+                        <button type="button" class="clear-btn" onclick="document.getElementById('nma_num').value='';nmaUpdate();">&#10005;</button>
+                    </div>
+                <div id="nma_arow_1" class="activity-row" style="display:none">
+                    <div class="select-wrap">
+                        <select name="activity_1">
+                            <option value="">Activity 1</option>
+                                <option value="books_issue_import_dist" t-att-selected="step2_data.get('activity_1','') == 'books_issue_import_dist' and 'selected' or False">License for Issuing, Importing, and Distributing Books</option>
+                                <option value="newspapers_magazines" t-att-selected="step2_data.get('activity_1','') == 'newspapers_magazines' and 'selected' or False">License for Distributing and Publishing Newspapers, Magazines, and Periodicals</option>
+                                <option value="books_sell" t-att-selected="step2_data.get('activity_1','') == 'books_sell' and 'selected' or False">License for Selling Books and Publications</option>
+                                <option value="sound_recordings" t-att-selected="step2_data.get('activity_1','') == 'sound_recordings' and 'selected' or False">License for Distributing, Publishing, and Trading Sound Recordings and Audio Media</option>
+
+                        </select>
+                    </div>
+                    <button type="button" class="clear-btn" onclick="nmaRemove(1)">&#10005;</button>
+                </div>
+                <div id="nma_arow_2" class="activity-row" style="display:none">
+                    <div class="select-wrap">
+                        <select name="activity_2">
+                            <option value="">Activity 2</option>
+                                <option value="books_issue_import_dist" t-att-selected="step2_data.get('activity_2','') == 'books_issue_import_dist' and 'selected' or False">License for Issuing, Importing, and Distributing Books</option>
+                                <option value="newspapers_magazines" t-att-selected="step2_data.get('activity_2','') == 'newspapers_magazines' and 'selected' or False">License for Distributing and Publishing Newspapers, Magazines, and Periodicals</option>
+                                <option value="books_sell" t-att-selected="step2_data.get('activity_2','') == 'books_sell' and 'selected' or False">License for Selling Books and Publications</option>
+                                <option value="sound_recordings" t-att-selected="step2_data.get('activity_2','') == 'sound_recordings' and 'selected' or False">License for Distributing, Publishing, and Trading Sound Recordings and Audio Media</option>
+
+                        </select>
+                    </div>
+                    <button type="button" class="clear-btn" onclick="nmaRemove(2)">&#10005;</button>
+                </div>
+                <div id="nma_arow_3" class="activity-row" style="display:none">
+                    <div class="select-wrap">
+                        <select name="activity_3">
+                            <option value="">Activity 3</option>
+                                <option value="books_issue_import_dist" t-att-selected="step2_data.get('activity_3','') == 'books_issue_import_dist' and 'selected' or False">License for Issuing, Importing, and Distributing Books</option>
+                                <option value="newspapers_magazines" t-att-selected="step2_data.get('activity_3','') == 'newspapers_magazines' and 'selected' or False">License for Distributing and Publishing Newspapers, Magazines, and Periodicals</option>
+                                <option value="books_sell" t-att-selected="step2_data.get('activity_3','') == 'books_sell' and 'selected' or False">License for Selling Books and Publications</option>
+                                <option value="sound_recordings" t-att-selected="step2_data.get('activity_3','') == 'sound_recordings' and 'selected' or False">License for Distributing, Publishing, and Trading Sound Recordings and Audio Media</option>
+
+                        </select>
+                    </div>
+                    <button type="button" class="clear-btn" onclick="nmaRemove(3)">&#10005;</button>
+                </div>
+                <div id="nma_arow_4" class="activity-row" style="display:none">
+                    <div class="select-wrap">
+                        <select name="activity_4">
+                            <option value="">Activity 4</option>
+                                <option value="books_issue_import_dist" t-att-selected="step2_data.get('activity_4','') == 'books_issue_import_dist' and 'selected' or False">License for Issuing, Importing, and Distributing Books</option>
+                                <option value="newspapers_magazines" t-att-selected="step2_data.get('activity_4','') == 'newspapers_magazines' and 'selected' or False">License for Distributing and Publishing Newspapers, Magazines, and Periodicals</option>
+                                <option value="books_sell" t-att-selected="step2_data.get('activity_4','') == 'books_sell' and 'selected' or False">License for Selling Books and Publications</option>
+                                <option value="sound_recordings" t-att-selected="step2_data.get('activity_4','') == 'sound_recordings' and 'selected' or False">License for Distributing, Publishing, and Trading Sound Recordings and Audio Media</option>
+
+                        </select>
+                    </div>
+                    <button type="button" class="clear-btn" onclick="nmaRemove(4)">&#10005;</button>
+                </div>
+                <div id="nma_arow_5" class="activity-row" style="display:none">
+                    <div class="select-wrap">
+                        <select name="activity_5">
+                            <option value="">Activity 5</option>
+                                <option value="books_issue_import_dist" t-att-selected="step2_data.get('activity_5','') == 'books_issue_import_dist' and 'selected' or False">License for Issuing, Importing, and Distributing Books</option>
+                                <option value="newspapers_magazines" t-att-selected="step2_data.get('activity_5','') == 'newspapers_magazines' and 'selected' or False">License for Distributing and Publishing Newspapers, Magazines, and Periodicals</option>
+                                <option value="books_sell" t-att-selected="step2_data.get('activity_5','') == 'books_sell' and 'selected' or False">License for Selling Books and Publications</option>
+                                <option value="sound_recordings" t-att-selected="step2_data.get('activity_5','') == 'sound_recordings' and 'selected' or False">License for Distributing, Publishing, and Trading Sound Recordings and Audio Media</option>
+
+                        </select>
+                    </div>
+                    <button type="button" class="clear-btn" onclick="nmaRemove(5)">&#10005;</button>
+                </div>
+
+                </div>
+            </div>
+            <div class="spc-section">
+                <div class="sec-num">02</div>
+                <div class="sec-body">
+                    <div class="sec-title">Business Plan</div>
+                    <textarea class="field-input" name="business_plan" rows="4"
+                              style="resize:vertical;padding-top:8px;"><t t-esc="step2_data.get('business_plan','')"/></textarea>
+                    <div class="note-box">
+                        <span class="note-icon">&#9432;</span>
+                        <span>Please explain the reason and use for the requested Media License for your business.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/apply/nma_media_license/' + license_type" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+(function(){
+    function nmaUpdate(){
+        var n = parseInt(document.getElementById('nma_num').value)||0;
+        for(var i=1;i&lt;=5;i++){
+            var r=document.getElementById('nma_arow_'+i);
+            if(r) r.style.display=i&lt;=n?'flex':'none';
+        }
+    }
+    window.nmaUpdate=nmaUpdate;
+    window.nmaRemove=function(i){
+        var r=document.getElementById('nma_arow_'+i);
+        if(r) r.style.display='none';
+        var s=document.getElementById('nma_num');
+        if(s){var c=parseInt(s.value)||0;if(c>0){s.value=c-1;nmaUpdate();}}
+    };
+    var sel=document.getElementById('nma_num');
+    if(sel){
+        sel.addEventListener('change',nmaUpdate);
+        if(sel.value){ nmaUpdate(); }
+    }
+})();
+</script>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_step3" name="NMA Step 3 - Shareholder Details">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Shareholder Details | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Media license activities</div></div>
+        <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step"><div class="step-num">4</div><div class="step-label">General Declaration</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Additional Remarks</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">535.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title" t-esc="license_type"/>
+        <form t-att-action="'/spc/apply/nma_media_license/' + license_type + '/step3'" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Upload documents for each shareholder</div>
+                    <div class="select-wrap" style="max-width:400px;">
+                        <select name="shareholder_name">
+                            <option value="">Select shareholder</option>
+                            <t t-foreach="shareholders" t-as="sh">
+                                <option t-att-value="sh.name"
+                                        t-att-selected="step3_data.get('shareholder_name','') == sh.name and 'selected' or False">
+                                    <t t-esc="sh.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <p style="font-size:14px;font-weight:600;margin-bottom:10px;margin-top:8px;">Is shareholder resident of UAE?</p>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="shareholder_uae_resident" value="yes" id="nma_res_yes"
+                                   t-att-checked="step3_data.get('shareholder_uae_resident','') == 'yes' and 'checked' or False"
+                                   onchange="nmaSwitchRes(this.value)"/> Yes
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="shareholder_uae_resident" value="no" id="nma_res_no"
+                                   t-att-checked="step3_data.get('shareholder_uae_resident','no') != 'yes' and 'checked' or False"
+                                   onchange="nmaSwitchRes(this.value)"/> No
+                        </label>
+                    </div>
+                    <p style="font-size:12px;color:#888;margin-top:8px;margin-bottom:16px;">
+                        Please fill out and attach the following form:
+                        <a href="#" style="color:#1a2340;">MRO requisition form</a>
+                    </p>
+
+                    <!-- UAE Resident = YES -->
+                    <div id="nma_docs_yes" t-att-style="step3_data.get('shareholder_uae_resident','') == 'yes' and 'display:block' or 'display:none'">
+                        <div class="upload-title">Upload MRO requisition form</div>
+                        <label for="doc_mro_form" class="upload-box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Upload MRO requisition form</span>
+                            <input type="file" id="doc_mro_form" name="doc_mro_form" style="display:none;" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                        <div class="upload-title">Upload photo</div>
+                        <label for="doc_photo" class="upload-box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Upload photo</span>
+                            <input type="file" id="doc_photo" name="doc_photo" style="display:none;" accept=".jpg,.jpeg,.png"/>
+                        </label>
+                        <div class="upload-title">Upload emirates ID</div>
+                        <label for="doc_emirates_id" class="upload-box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Upload emirates ID</span>
+                            <input type="file" id="doc_emirates_id" name="doc_emirates_id" style="display:none;" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                        <div class="upload-title">Power of attorney</div>
+                        <label for="doc_poa_yes" class="upload-box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Power of attorney</span>
+                            <input type="file" id="doc_poa_yes" name="doc_power_of_attorney" style="display:none;" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                        <div class="upload-title">Request form</div>
+                        <label for="doc_rf_yes" class="upload-box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Request form</span>
+                            <input type="file" id="doc_rf_yes" name="doc_request_form" style="display:none;" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                    </div>
+
+                    <!-- UAE Resident = NO -->
+                    <div id="nma_docs_no" t-att-style="step3_data.get('shareholder_uae_resident','no') != 'yes' and 'display:block' or 'display:none'">
+                        <div class="upload-title">Power of attorney</div>
+                        <label for="doc_poa_no" class="upload-box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Power of attorney</span>
+                            <input type="file" id="doc_poa_no" name="doc_power_of_attorney" style="display:none;" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                        <div class="upload-title">Request form</div>
+                        <label for="doc_rf_no" class="upload-box">
+                            <span class="upload-icon">&#11014;</span>
+                            <span class="upload-label">Request form</span>
+                            <input type="file" id="doc_rf_no" name="doc_request_form" style="display:none;" accept=".pdf,.jpg,.jpeg,.png"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step2'" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function nmaSwitchRes(v){
+    var yesDiv = document.getElementById('nma_docs_yes');
+    var noDiv  = document.getElementById('nma_docs_no');
+    yesDiv.style.display = v==='yes' ? 'block' : 'none';
+    noDiv.style.display  = v==='no'  ? 'block' : 'none';
+    // disable inputs in hidden section so they don't submit empty
+    var yesInputs = yesDiv.querySelectorAll('input[type=file]');
+    var noInputs  = noDiv.querySelectorAll('input[type=file]');
+    if(v==='yes'){
+        yesInputs.forEach(function(i){i.disabled=false;});
+        noInputs.forEach(function(i){i.disabled=true;});
+    } else {
+        yesInputs.forEach(function(i){i.disabled=true;});
+        noInputs.forEach(function(i){i.disabled=false;});
+    }
+}
+(function(){
+    var y=document.getElementById('nma_res_yes');
+    var n=document.getElementById('nma_res_no');
+    if(y&amp;&amp;y.checked) nmaSwitchRes('yes');
+    else if(n&amp;&amp;n.checked) nmaSwitchRes('no');
+    else nmaSwitchRes('no');
+})();
+</script>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_step4" name="NMA Step 4 - General Declaration">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>General Declaration | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Media license activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step active"><div class="step-num">4</div><div class="step-label">General Declaration</div></div>
+        <div class="progress-step"><div class="step-num">5</div><div class="step-label">Additional Remarks</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">535.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title" t-esc="license_type"/>
+        <form t-att-action="'/spc/apply/nma_media_license/' + license_type + '/step4'" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">General Declaration</div>
+                    <div class="decl-box">
+                        <p style="margin-bottom:12px;">I/We hereby declare that the information provided in this application is true, accurate and complete to the best of my/our knowledge and belief. I/We understand that any false or misleading information may result in the rejection of this application or cancellation of the license.</p>
+                        <p style="margin-bottom:12px;">I/We agree to comply with all applicable laws, regulations and rules of SPC Free Zone and the National Media Authority (NMA) of the UAE, and to carry out media-related activities only as authorised under the issued license.</p>
+                        <p>I/We acknowledge that SPC Free Zone reserves the right to revoke the license in case of non-compliance with the terms and conditions.</p>
+                    </div>
+                    <label class="radio-label" style="font-size:14px;font-weight:500;">
+                        <input type="checkbox" name="declaration_accepted"
+                               t-att-checked="step4_data.get('declaration_accepted') and 'checked' or False"
+                               style="accent-color:#1a2340;width:16px;height:16px;"/>
+                        I have read and agree to the above declaration
+                    </label>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step3'" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_step5" name="NMA Step 5 - Additional Remarks">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Additional Remarks | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Media license activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">General Declaration</div></div>
+        <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Additional Remarks</div></div>
+        <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">535.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title" t-esc="license_type"/>
+        <form t-att-action="'/spc/apply/nma_media_license/' + license_type + '/step5'" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-section">
+                <div class="sec-num">01</div>
+                <div class="sec-body">
+                    <div class="sec-title">Additional Remarks</div>
+                    <textarea class="field-input" name="additional_remarks" rows="5"
+                              placeholder="Enter any additional comments or remarks here..."
+                              style="resize:vertical;padding-top:8px;"><t t-esc="step5_data.get('additional_remarks','')"/></textarea>
+                </div>
+            </div>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step4'" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">NEXT</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_step6" name="NMA Step 6 - Review Application">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Review Application | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Media license activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">General Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Additional Remarks</div></div>
+        <div class="progress-step active"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+        <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">535.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title" t-esc="license_type"/>
+        <p style="color:#888;font-size:13px;margin-bottom:24px;margin-top:-16px;">Please review your application before proceeding to payment.</p>
+
+        <div class="review-card">
+            <div class="review-card-title">1. Application Details</div>
+            <table class="review-table">
+                <tr><td>Company</td><td t-esc="step1.get('company_name','—')"/></tr>
+                <tr><td>Manager</td><td><t t-esc="(step1.get('manager_first_name','') + ' ' + step1.get('manager_last_name','')).strip() or '—'"/></td></tr>
+                <tr><td>Date of Birth</td><td t-esc="step1.get('manager_dob','—')"/></tr>
+                <tr><td>Remarks</td><td t-esc="step1.get('step1_remarks','—')"/></tr>
+            </table>
+        </div>
+
+        <div class="review-card">
+            <div class="review-card-title">2. Media License Activities</div>
+            <table class="review-table">
+                <tr><td>No. of Activities</td><td t-esc="step2.get('num_activities','—')"/></tr>
+                <t t-foreach="[1,2,3,4,5]" t-as="i">
+                    <t t-if="step2.get('activity_'+str(i),'')">
+                        <tr><td>Activity <t t-esc="i"/></td><td t-esc="step2.get('activity_'+str(i),'')"/></tr>
+                    </t>
+                </t>
+                <tr><td>Business Plan</td><td t-esc="step2.get('business_plan','—')"/></tr>
+            </table>
+        </div>
+
+        <div class="review-card">
+            <div class="review-card-title">3. Shareholder Details</div>
+            <table class="review-table">
+                <tr><td>Shareholder</td><td t-esc="step3.get('shareholder_name','—')"/></tr>
+                <tr><td>UAE Resident</td><td t-esc="step3.get('shareholder_uae_resident','—')"/></tr>
+            </table>
+        </div>
+
+        <div class="review-card">
+            <div class="review-card-title">4. Declaration &amp; Remarks</div>
+            <table class="review-table">
+                <tr><td>Declaration Accepted</td><td><t t-if="step4.get('declaration_accepted')">&#10003; Yes</t><t t-else="">No</t></td></tr>
+                <tr><td>Additional Remarks</td><td t-esc="step5.get('additional_remarks','—')"/></tr>
+            </table>
+        </div>
+
+        <div class="spc-nav-buttons">
+            <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step5'" class="spc-btn-previous">PREVIOUS</a>
+            <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step7'" class="spc-btn-next" style="border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;text-decoration:none;">NEXT</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_step7" name="NMA Step 7 - Payment">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Payment | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
+        <div class="progress-title">Your progress</div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Media license activities</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Shareholder details</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">General Declaration</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Additional Remarks</div></div>
+        <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
+        <div class="progress-step active"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+        <div class="total-box">Total AED
+            <div class="amount">535.00 &#9432;</div>
+        </div>
+        <div class="sidebar-links">
+            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form-title" t-esc="license_type"/>
+        <div class="spc-section">
+            <div class="sec-num">01</div>
+            <div class="sec-body">
+                <div class="sec-title">Order Summary</div>
+                <table class="review-table" style="max-width:500px;">
+                    <tr>
+                        <td>NMA Media License</td>
+                        <td style="font-weight:600;">
+                            <t t-if="license_type == 'cancellation'">AED 525.00</t>
+                            <t t-else="">AED 535.00</t>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700;color:#1a2340;font-size:14px;">Total</td>
+                        <td style="font-weight:700;color:#1a2340;font-size:15px;">
+                            <t t-if="license_type == 'cancellation'">AED 525.00</t>
+                            <t t-else="">AED 535.00</t>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <form t-att-action="'/spc/apply/nma_media_license/' + license_type + '/final-submit'" method="post">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="spc-nav-buttons">
+                <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step6'" class="spc-btn-previous">PREVIOUS</a>
+                <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+
+</template>
+
+<template id="template_nma_success" name="NMA Success">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Application Submitted | NMA Media License</title>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}
+.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}
+.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}
+.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}
+.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}
+.progress-step.active{opacity:1}
+.progress-step.done{opacity:.8}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}
+.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}
+.step-label{font-size:13px}
+.total-box{margin-top:24px;font-size:12px;opacity:.7}
+.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}
+.sidebar-links{margin-top:16px}
+.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}
+.main{margin-left:260px;padding:40px 48px;min-height:100vh}
+.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px;text-transform:capitalize}
+.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}
+.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}
+.sec-body{flex:1}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.field-input{width:100%;max-width:560px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}
+.field-input:focus{border-bottom-color:#1abc9c}
+.select-wrap{position:relative;max-width:560px;margin-bottom:16px}
+.select-wrap::after{content:"▼";position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}
+.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}
+.select-wrap select:focus{border-bottom-color:#1abc9c}
+.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px;margin-bottom:8px}
+.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
+.radio-label input{accent-color:#1a2340}
+.note-box{background:#fff8f0;border:1px solid #f0d9b5;border-radius:8px;padding:14px 16px;margin-top:4px;font-size:13px;line-height:1.6;max-width:560px;display:flex;gap:10px;align-items:flex-start}
+.note-icon{color:#e91e8c;font-size:16px;flex-shrink:0;margin-top:2px}
+.upload-title{font-size:14px;font-weight:600;color:#1a2340;margin-bottom:8px;margin-top:16px}
+.upload-box{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:180px;height:90px;border:1px dashed #ccc;border-radius:8px;cursor:pointer;gap:6px;background:#fafafa;margin-bottom:4px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:20px;color:#1a2340}
+.upload-label{font-size:11px;color:#1a2340;font-weight:600;text-align:center;padding:0 8px}
+.activity-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;max-width:560px}
+.activity-row .select-wrap{flex:1;margin-bottom:0}
+.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.review-card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.review-card-title{font-size:14px;font-weight:700;color:#1a2340;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #eee}
+.review-table{width:100%;font-size:13px;border-collapse:collapse}
+.review-table td{padding:7px 0;border-bottom:1px solid #f5f5f5}
+.review-table td:first-child{color:#888;width:40%}
+.review-table td:last-child{font-weight:500}
+.spc-nav-buttons{display:flex;justify-content:space-between;margin-top:16px}
+.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}
+.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+.decl-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:24px;max-width:680px;margin-bottom:20px;font-size:14px;line-height:1.8;color:#444}
+.success-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#f5f6fa}
+.success-card{background:#fff;border-radius:16px;padding:48px 56px;text-align:center;max-width:520px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.success-icon{width:68px;height:68px;background:#1abc9c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
+.success-ref{background:#f5f6fa;border-radius:8px;padding:14px 20px;margin:20px 0;border:1px solid #eee}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="success-wrap">
+    <div class="success-card">
+        <div class="success-icon">&#10003;</div>
+        <h2 style="color:#1a2340;font-size:22px;font-weight:700;margin-bottom:10px;">Application Submitted!</h2>
+        <p style="color:#666;font-size:14px;line-height:1.7;margin-bottom:16px;">Your NMA Media License application has been successfully submitted.</p>
+        <t t-if="record">
+            <div class="success-ref">
+                <p style="font-size:12px;color:#888;margin-bottom:4px;">Reference Number</p>
+                <p style="font-size:18px;font-weight:700;color:#1a2340;margin:0;" t-esc="record.name"/>
+            </div>
+        </t>
+        <p style="color:#888;font-size:13px;margin-bottom:28px;">Our team will review your application within 10 business days.</p>
+        <a href="/spc/company-management/nma-media-license"
+           style="display:inline-block;background:#1a2340;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px;">
+            BACK TO NMA MEDIA LICENSE
+        </a>
+    </div>
+</div>
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

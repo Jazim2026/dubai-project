@@ -181,7 +181,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <span></span>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="damStep1Validate()">NEXT</button>
             </div>
         </form>
     </div>
@@ -190,6 +190,51 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 function damStakeholderChange(v){
     document.getElementById('dam_employee_wrap').style.display = v==='yes' ? 'block' : 'none';
 }
+</script>
+<script>//<![CDATA[
+function damStakeholderChange(v){
+  var el=document.getElementById('dam_existing_fields');
+  if(el) el.style.display=v==='yes'?'block':'none';
+}
+function damStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  function addErr(field,id){if(field&amp;&amp;!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";field.insertAdjacentElement("afterend",e);}}
+
+  // is_existing_stakeholder
+  var es=document.querySelector('input[name="is_existing_stakeholder"]:checked');
+  if(!es){
+    var esField=document.querySelector('input[name="is_existing_stakeholder"]');
+    addErr(esField,"es_err");
+    showErr("es_err","Please select yes or no.");valid=false;
+  }else hideErr("es_err");
+
+  // first_name
+  var fn=document.querySelector('[name="first_name"]');addErr(fn,"dam_fn_err");
+  if(!fn||fn.value.trim().length&lt;3||fn.value.trim().length&gt;50){showErr("dam_fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("dam_fn_err");
+
+  // last_name
+  var ln=document.querySelector('[name="last_name"]');addErr(ln,"dam_ln_err");
+  if(!ln||ln.value.trim().length&lt;3||ln.value.trim().length&gt;50){showErr("dam_ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("dam_ln_err");
+
+  // email
+  var em=document.querySelector('[name="email"]');addErr(em,"dam_em_err");
+  var emv=em?em.value.trim():"";
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)){showErr("dam_em_err","Please enter a valid email address.");valid=false;}else hideErr("dam_em_err");
+
+  // designation
+  var dg=document.querySelector('[name="designation"]');addErr(dg,"dam_dg_err");
+  if(!dg||dg.value.trim().length&lt;3||dg.value.trim().length&gt;50){showErr("dam_dg_err","Designation must be 3-50 characters.");valid=false;}else hideErr("dam_dg_err");
+
+  // language_preference
+  var lp=document.getElementById("dam_lang");
+  if(!document.getElementById("dam_lp_err")){var e=document.createElement("div");e.id="dam_lp_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";lp.insertAdjacentElement("afterend",e);}
+  if(!lp||!lp.value){showErr("dam_lp_err","Please select a language preference.");valid=false;}else hideErr("dam_lp_err");
+
+  if(valid)document.querySelector("form").submit();
+}
+//]]>
 </script>
 </body></html>
 </template><template id="template_dam_step2" name="DAM Step 2">
@@ -278,11 +323,22 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <a href="/spc/apply/dam/step1" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="damStep2Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>//<![CDATA[
+function damStep2Validate(){
+  var valid=true;
+  var st=document.getElementById("dam_stakeholders");
+  if(!document.getElementById("dam_st_err")){var e=document.createElement("div");e.id="dam_st_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";st.insertAdjacentElement("afterend",e);}
+  if(!st||!st.value){document.getElementById("dam_st_err").textContent="Please select number of stakeholders.";document.getElementById("dam_st_err").style.display="block";valid=false;}
+  else document.getElementById("dam_st_err").style.display="none";
+  if(valid)document.querySelector("form").submit();
+}
+//]]>
+</script>
 </body></html>
 </template><template id="template_dam_step3" name="DAM Step 3">
 <html><head><meta charset="utf-8"/><title>Subscription Duration | DAM</title>
@@ -370,11 +426,22 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <a href="/spc/apply/dam/step2" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="damStep3Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>//<![CDATA[
+function damStep3Validate(){
+  var valid=true;
+  var yr=document.getElementById("dam_years");
+  if(!document.getElementById("dam_yr_err")){var e=document.createElement("div");e.id="dam_yr_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";yr.insertAdjacentElement("afterend",e);}
+  if(!yr||!yr.value){document.getElementById("dam_yr_err").textContent="Please select number of years.";document.getElementById("dam_yr_err").style.display="block";valid=false;}
+  else document.getElementById("dam_yr_err").style.display="none";
+  if(valid)document.querySelector("form").submit();
+}
+//]]>
+</script>
 </body></html>
 </template><template id="template_dam_step4" name="DAM Step 4">
 <html><head><meta charset="utf-8"/><title>Review | DAM</title>

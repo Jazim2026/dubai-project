@@ -1722,7 +1722,7 @@ var AMENDMENT_MAP = [
 function updateSidebar() {
     var selected = AMENDMENT_MAP.filter(function(a) {
         var cb = document.querySelector('input[name="' + a.name + '"]');
-        return cb && cb.checked;
+        return cb &amp;&amp; cb.checked;
     });
     var container = document.getElementById('sidebar-dynamic-steps');
     if (!container) return;
@@ -2145,7 +2145,7 @@ function buildAccordions(){
     var count = parseInt(document.getElementById('sh_count').value) || 1;
     var container = document.getElementById('sh_accordions');
     container.innerHTML = '';
-    for(var i = 1; i <= count; i++){
+    for(var i = 1; i &lt;= count; i++){
         container.innerHTML += shAccordion(i);
     }
 }

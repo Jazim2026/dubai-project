@@ -94,7 +94,7 @@
             </div>
 
             <div class="spc-nav-buttons" style="justify-content:flex-end">
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="fmStep1Validate()">NEXT</button>
             </div>
         </form>
     </div>
@@ -133,6 +133,29 @@ function fmRemoveFile(){
     document.getElementById('doc_image').value='';
     document.getElementById('uploaded_file_info').style.display='none';
     document.getElementById('upload_box').style.borderColor='#1a2340';
+}
+function fmStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  function addErr(f,id){if(f){if(!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";f.insertAdjacentElement("afterend",e);}}}
+  var cat=document.querySelector('[name="complaint_category"]');addErr(cat,"fm_cat_err");
+  if(!cat){showErr("fm_cat_err","Please select a complaint category.");valid=false;}else{if(!cat.value){showErr("fm_cat_err","Please select a complaint category.");valid=false;}else hideErr("fm_cat_err");}
+  var inc=document.querySelector('[name="incident_type"]');
+  var incSec=document.getElementById('fm_incident_section');
+  if(incSec){if(incSec.style.display!=='none'){addErr(inc,"fm_inc_err");if(!inc){showErr("fm_inc_err","Please select an incident type.");valid=false;}else{if(!inc.value){showErr("fm_inc_err","Please select an incident type.");valid=false;}else hideErr("fm_inc_err");}}}
+  var img=document.querySelector('[name="doc_image"]');
+  if(img){if(!img.files||img.files.length===0){if(!document.getElementById("fm_img_err")){var e=document.createElement("div");e.id="fm_img_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";img.parentElement.insertAdjacentElement("afterend",e);}document.getElementById("fm_img_err").textContent="Please upload an image.";document.getElementById("fm_img_err").style.display="block";valid=false;}else{var el=document.getElementById("fm_img_err");if(el)el.style.display="none";}}
+  var on=document.querySelector('[name="office_number"]');addErr(on,"fm_on_err");
+  if(!on){showErr("fm_on_err","Please enter office number.");valid=false;}else{if(!on.value.trim()){showErr("fm_on_err","Please enter office number.");valid=false;}else hideErr("fm_on_err");}
+  var cn=document.querySelector('[name="contact_name"]');addErr(cn,"fm_cn_err");
+  if(!cn){showErr("fm_cn_err","Please enter contact name.");valid=false;}else{if(!cn.value.trim()){showErr("fm_cn_err","Please enter contact name.");valid=false;}else hideErr("fm_cn_err");}
+  var cp=document.querySelector('[name="contact_number"]');addErr(cp,"fm_cp_err");
+  var cpv=cp?cp.value.trim().replace(new RegExp("[^0-9]","g"),""):"";
+  if(cpv.length===0){showErr("fm_cp_err","Please enter a valid contact number.");valid=false;}else hideErr("fm_cp_err");
+  var desc=document.querySelector('[name="complaint_description"]');addErr(desc,"fm_desc_err");
+  if(!desc){showErr("fm_desc_err","Please enter complaint description.");valid=false;}else{if(!desc.value.trim()){showErr("fm_desc_err","Please enter complaint description.");valid=false;}else hideErr("fm_desc_err");}
+  if(valid)document.querySelector("form").submit();
 }
 </script>
 </body></html>
@@ -178,11 +201,24 @@ function fmRemoveFile(){
             </div>
             <div class="spc-nav-buttons">
                 <a href="/spc/facility-management/apply/new" class="spc-btn-prev">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="fmDeclValidate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>
+function fmDeclValidate(){
+  var cb=document.querySelector('[name="declaration_accepted"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById("fm_decl_err")){var e=document.createElement("div");e.id="fm_decl_err";e.style.cssText="color:red;font-size:12px;margin-top:8px";cb.parentElement.insertAdjacentElement("afterend",e);}
+    document.getElementById("fm_decl_err").textContent="Please accept the declaration to continue.";
+    document.getElementById("fm_decl_err").style.display="block";
+    return;
+  }
+  var el=document.getElementById("fm_decl_err");if(el)el.style.display="none";
+  document.querySelector("form").submit();
+}
+</script>
 </body></html>
 </template>
 

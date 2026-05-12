@@ -397,7 +397,7 @@ function setFlag8(bid,mid,flag,code){var b=document.getElementById(bid);if(b)b.i
 function updCnt8(el,id){var s=document.getElementById(id);if(s)s.textContent=el.value.length+' / 100'}
 function saveP8(accId){var b=document.querySelector('#'+accId+' .save-btn');if(b){b.textContent='&#10003; SAVED';b.style.background='#1abc9c'}}
 function delP(accId){var a=document.getElementById(accId);if(a)a.remove()}
-document.addEventListener('click',function(e){document.querySelectorAll('[id$="_fm"]').forEach(function(m){if(!m.classList.contains('hidden')&&m.parentElement&&!m.parentElement.contains(e.target))m.classList.add('hidden')})});
+document.addEventListener('click',function(e){document.querySelectorAll('[id$="_fm"]').forEach(function(m){if(!m.classList.contains('hidden')&amp;&amp;m.parentElement&amp;&amp;!m.parentElement.contains(e.target))m.classList.add('hidden')})});
 function updateDirList(count){
     count=Math.min(Math.max(parseInt(count)||1,1),10);
     var list=document.getElementById('dirList');

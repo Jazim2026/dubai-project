@@ -18,9 +18,18 @@ class SpcPortalController(http.Controller):
     # ── LOGIN ──
     @http.route('/spc/login', type='http', auth='public', website=True, csrf=False)
     def login_page(self, **kw):
+        # Load approved companies for dropdown
+        companies = []
+        try:
+            companies = request.env['spc.approved.company'].sudo().search(
+                [('active', '=', True)], order='company_name asc'
+            )
+        except Exception:
+            companies = []
         return request.render('spc_portal.template_spc_login', {
             'error': kw.get('error', ''),
             'email': kw.get('email', ''),
+            'companies': companies,
         })
 
     @http.route('/spc/login/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -102,10 +111,18 @@ class SpcPortalController(http.Controller):
             rec = request.env['res.partner'].sudo().browse(selected_customer_id)
             if rec.exists():
                 selected_customer = rec
+        # Load approved companies for selected customer
+        approved_companies = []
+        if selected_customer:
+            approved_companies = request.env['spc.approved.company'].sudo().search([
+                ('partner_id', '=', selected_customer.id),
+                ('active', '=', True),
+            ], order='company_name asc')
         return request.render('spc_portal.template_spc_dashboard', {
             'company': user.company_id,
             'customers': customers,
             'selected_customer': selected_customer,
+            'approved_companies': approved_companies,
             'error': kw.get('error', ''),
         })
 
@@ -119,11 +136,10 @@ class SpcPortalController(http.Controller):
 
     @http.route('/spc/dashboard/goto', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def dashboard_goto(self, customer_id='', **kw):
-        if not self._check_spc_session():
-            return request.redirect('/spc/login')
         if customer_id:
             request.session['spc_selected_customer_id'] = int(customer_id)
-        return request.redirect('/spc/customer-dashboard')
+        redirect_to = kw.get("redirect_to") or "/spc/customer-dashboard"
+        return request.redirect(redirect_to)
 
     @http.route('/spc/customer-dashboard', type='http', auth='public', website=True, csrf=False)
     def customer_dashboard(self, **kw):
@@ -479,13 +495,15 @@ class SpcPortalController(http.Controller):
         else:
             sh_count = 1
         sh_count = max(1, min(sh_count, 20))
-        return request.render('spc_portal.template_ra_step5', {
+        return request.render('spc_portal.template_setup_company_step6', {
             'service_type': service_type, 'form_data': existing_data, 'errors': [],
             'customer_info': customer_info,
             'sh_count': sh_count,
             'sh_range': list(range(1, sh_count + 1)),
             'steps': ['Legal type', 'Business activities', 'Company', 'Facility', 'Visa allocation', 'Shareholder(s)', 'Manager(s)', 'Director(s)', 'UBO', 'Nature of business', 'Bank account', 'Documents', 'Review', 'Payment'],
             'current_step': 6,
+            'form_submit_url': '/spc/setup-new-company/apply/step6/submit',
+            'step_base_url': '/spc/setup-new-company/apply/step6/',
         })
 
 
@@ -571,7 +589,7 @@ class SpcPortalController(http.Controller):
             mgr_count = max(1, min(int(url_count), 20))
         else:
             mgr_count = 1
-        return request.render('spc_portal.template_ra_step6', {
+        return request.render('spc_portal.template_setup_company_step7', {
             'service_type': service_type,
             'mgr_count': mgr_count,
             'mgr_range': list(range(1, mgr_count + 1)),
@@ -616,11 +634,13 @@ class SpcPortalController(http.Controller):
     def setup_company_apply_step8(self, service_type, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_ra_step7', {
+        return request.render('spc_portal.template_setup_company_step8', {
             'service_type': service_type,
             'steps': ['Legal type', 'Business activities', 'Company', 'Facility', 'Visa allocation', 'Shareholder(s)', 'Manager(s)', 'Director(s)', 'UBO', 'Nature of business', 'Bank account', 'Documents', 'Review', 'Payment'],
             'current_step': 8,
+            'form_submit_url': '/spc/setup-new-company/apply/step8/submit',
         })
+    @http.route('/spc/setup-new-company/apply/step8/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def setup_company_apply_step8_submit(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
@@ -1093,9 +1113,16 @@ class SpcPortalController(http.Controller):
                 requests_list = request.env['spc.service.request'].sudo().search([
                     ('partner_id', '=', customer.id)
                 ], order='create_date desc')
+        pending_docs = []
+        if customer:
+            pending_docs = request.env['spc.pending.details.doc'].sudo().search([
+                ('partner_id', '=', customer.id),
+                ('state', 'in', ['sent', 'submitted']),
+            ], order='create_date desc')
         return request.render('spc_portal.template_request_tracking', {
             'customer': customer,
             'requests': requests_list,
+            'pending_docs': pending_docs,
         })
 
     # ── NR STEPS ──
@@ -1110,6 +1137,44 @@ class SpcPortalController(http.Controller):
             if rec.exists():
                 customer = rec
         return request.render('spc_portal.template_nr_step2', {'service_type': service_type, 'form_data': {}, 'errors': [], 'customer': customer})
+
+    @http.route('/spc/pending-docs/submit/<int:doc_id>', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    def pending_doc_submit(self, doc_id, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        pending = request.env['spc.pending.details.doc'].sudo().browse(doc_id)
+        if not pending.exists():
+            return request.redirect('/spc/request-tracking')
+
+        # Block resubmission
+        if pending.is_submitted:
+            return request.redirect('/spc/request-tracking?already_submitted=1')
+
+        pending_details = kw.get('pending_details', '')
+
+        received = request.env['spc.received.details'].sudo().create({
+            'pending_id': pending.id,
+            'pending_details': pending_details,
+        })
+
+        import base64
+        files = request.httprequest.files
+        for line in pending.document_line_ids:
+            file_key = 'doc_%d' % line.id
+            if file_key in files:
+                f = files[file_key]
+                if f.filename:
+                    data = base64.b64encode(f.read())
+                    request.env['spc.received.doc.line'].sudo().create({
+                        'received_id': received.id,
+                        'sequence': line.sequence,
+                        'name': line.name,
+                        'document': data,
+                        'document_filename': f.filename,
+                    })
+
+        pending.sudo().write({'is_submitted': True, 'state': 'submitted'})
+        return request.redirect('/spc/request-tracking?submitted=1')
 
     @http.route('/spc/setup-new-company/apply/nr-step2/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def nr_step2_submit(self, **kw):
@@ -1273,12 +1338,28 @@ class SpcPortalController(http.Controller):
             if rec.exists():
                 customer = rec
         countries = request.env['res.country'].sudo().search([])
-        return request.render('spc_portal.template_pa_step4', {
+        existing_data = request.session.get('pa_step4_data', {})
+        url_count = request.params.get('shareholder_count') or kw.get('shareholder_count')
+        sh_count = max(1, min(int(url_count), 20)) if url_count else 1
+        name_parts = (customer.name or '').split(' ', 1) if customer else ['', '']
+        customer_info = {
+            'first_name': name_parts[0] if name_parts else '',
+            'last_name': name_parts[1] if len(name_parts) > 1 else '',
+            'email': customer.email or '' if customer else '',
+            'mobile': (customer.mobile or customer.phone or '') if customer else '',
+            'nationality': customer.country_id.code if customer and customer.country_id else '',
+        }
+        return request.render('spc_portal.template_setup_company_step6', {
             'service_type': service_type,
-            'customer': customer,
-            'countries': countries,
-            'fee': 640,
-            'form_data': request.session.get('pa_step4_data', {}),
+            'form_data': existing_data,
+            'errors': [],
+            'customer_info': customer_info,
+            'sh_count': sh_count,
+            'sh_range': list(range(1, sh_count + 1)),
+            'steps': ['Business activities', 'Company name', 'Shareholder details', 'Declaration', 'Review application', 'Payment'],
+            'current_step': 3,
+            'form_submit_url': '/spc/setup-new-company/apply/pa-step4/submit',
+            'step_base_url': '/spc/setup-new-company/apply/pa-step4/',
         })
 
     @http.route('/spc/setup-new-company/apply/pa-step4/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -1312,6 +1393,8 @@ class SpcPortalController(http.Controller):
         return request.render('spc_portal.template_pa_step5', {
             'service_type': service_type,
             'form_data': request.session.get('pa_step5_data', {}),
+            'steps': ['Business activities', 'Company name', 'Shareholder details', 'Declaration', 'Review application', 'Payment'],
+            'current_step': 4,
         })
 
     @http.route('/spc/setup-new-company/apply/pa-step5/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -1409,6 +1492,7 @@ class SpcPortalController(http.Controller):
 
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             pa = request.env['spc.pre.approval'].sudo().create(vals)
             if activity_ids:
@@ -1642,6 +1726,7 @@ class SpcPortalController(http.Controller):
 
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             if idn_company_id:
                 try:
@@ -1852,6 +1937,7 @@ class SpcPortalController(http.Controller):
 
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             if step1.get('company_id'):
                 try:
@@ -2580,6 +2666,7 @@ class SpcPortalController(http.Controller):
                 'multinational_group': step9.get('multinational_group', ''),
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             if step1.get('company_id'):
                 try:
@@ -3240,6 +3327,7 @@ class SpcPortalController(http.Controller):
                 'multinational_group': step3.get('multinational_group', ''),
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             if step1.get('company_id'):
                 try:
@@ -3593,6 +3681,7 @@ class SpcPortalController(http.Controller):
                 'declaration': bool(request.session.get('ec_decl_data', {}).get('declaration')),
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             if company_data.get('company_id'):
                 try:
@@ -3819,6 +3908,7 @@ class SpcPortalController(http.Controller):
                 'declaration': bool(step2.get('declaration')),
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             request.env['spc.certify'].sudo().create(vals)
             for key in ['certify_step1_data', 'certify_step2_data']:
@@ -4019,6 +4109,7 @@ class SpcPortalController(http.Controller):
                 'remarks': request.session.get('va_step6_data', {}).get('remarks', ''),
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
             }
             if step1.get('company_id'):
                 try:
@@ -6493,6 +6584,7 @@ Important Notes:
         record.sudo().write({
             'state': 'submitted',
             'payment_status': 'paid',
+                'fee': float(kw.get('amount', 0)) or 0.0,
         })
         return request.render('spc_portal.eid_replacement_success', {'record': record})
 

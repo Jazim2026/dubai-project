@@ -182,6 +182,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
       <div class="sec-body">
         <div class="sec-title">Company brand name</div>
         <input type="text" name="company_brand_name" class="field-input" placeholder="Company name"/>
+        <div id="company_err" style="color:red;font-size:12px;display:none;margin-top:4px">Company name must be 10-50 characters.</div>
       </div>
     </div>
 
@@ -191,12 +192,16 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
       <div class="sec-body">
         <div class="sec-title">Assigned contact person details (for transfer and forwarding)</div>
         <input type="text" name="contact_first_name" class="field-input" placeholder="First name"/>
+        <div id="fn_err" style="color:red;font-size:12px;display:none;margin-top:4px">First name must be 2-50 characters (letters only).</div>
         <input type="text" name="contact_last_name" class="field-input" placeholder="Last name"/>
+        <div id="ln_err" style="color:red;font-size:12px;display:none;margin-top:4px">Last name must be 2-50 characters (letters only).</div>
         <div class="phone-wrap">
           <select name="contact_phone_code" class="phone-code" id="phoneCodeSel"></select>
           <input type="tel" name="contact_phone" class="phone-num" placeholder="Phone number"/>
+        <div id="ph_err" style="color:red;font-size:12px;display:none;margin-top:4px">Phone number must be 10-15 digits.</div>
         </div>
         <input type="email" name="contact_email" class="field-input" placeholder="Email address"/>
+        <div id="email_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid email address.</div>
       </div>
     </div>
 
@@ -206,7 +211,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
       <div class="sec-body">
         <div class="sec-title">Preferred instructions</div>
         <textarea name="preferred_greeting" class="field-textarea" placeholder="Preferred greeting message"></textarea>
+        <div id="greet_err" style="color:red;font-size:12px;display:none;margin-top:4px">Preferred greeting must be 10-1000 characters.</div>
         <textarea name="call_instructions" class="field-textarea" placeholder="Call instructions"></textarea>
+        <div id="call_err" style="color:red;font-size:12px;display:none;margin-top:4px">Call instructions must be 5-500 characters.</div>
       </div>
     </div>
 
@@ -216,21 +223,94 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
       <div class="sec-body">
         <div class="sec-title">Company address</div>
         <input type="text" name="address_line1" class="field-input" placeholder="Address line 1"/>
+        <div id="addr1_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address line 1 must be 15-100 characters.</div>
         <input type="text" name="address_line2" class="field-input" placeholder="Address line 2"/>
+        <div id="addr2_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address line 2 must be 15-100 characters.</div>
         <input type="text" name="city" class="field-input" placeholder="City"/>
+        <div id="city_err" style="color:red;font-size:12px;display:none;margin-top:4px">City must be 3-50 characters.</div>
         <select name="country" class="field-select" id="countrySel">
           <option value="">Country</option>
         </select>
+        <div id="country_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a country.</div>
       </div>
     </div>
 
     <div class="nav-btns">
-      <button type="submit" class="btn-next">NEXT</button>
+      <button type="button" class="btn-next" onclick="paValidateStep1()">NEXT</button>
     </div>
   </form>
 </div>
 <script>
 <![CDATA[
+function paValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) {
+    var el = document.getElementById(id);
+    if (el) { el.textContent = msg; el.style.display = 'block'; }
+  }
+  function hideErr(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  }
+
+  // Company Name - min 10, max 50
+  var company = document.querySelector('[name="company_brand_name"]');
+  var cv = company ? company.value.trim() : '';
+  if (cv.length &lt; 10 || cv.length &gt; 50) { showErr('company_err', 'Company name must be 10-50 characters.'); valid = false; } else hideErr('company_err');
+
+  // First Name - min 2, max 50
+  var fn = document.querySelector('[name="contact_first_name"]');
+  var fnv = fn ? fn.value.trim() : '';
+  if (fnv.length &lt; 2 || fnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(fnv)) { showErr('fn_err', 'First name must be 2-50 characters (letters only).'); valid = false; } else hideErr('fn_err');
+
+  // Last Name - min 2, max 50
+  var ln = document.querySelector('[name="contact_last_name"]');
+  var lnv = ln ? ln.value.trim() : '';
+  if (lnv.length &lt; 2 || lnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(lnv)) { showErr('ln_err', 'Last name must be 2-50 characters (letters only).'); valid = false; } else hideErr('ln_err');
+
+  // Phone - exactly 15 digits
+  var ph = document.querySelector('[name="contact_phone"]');
+  var phv = ph ? ph.value.trim() : '';
+  if (phv.length &lt; 10 || phv.length &gt; 15 || !/^[0-9]+$/.test(phv)) { showErr('ph_err', 'Phone number must be 10-15 digits.'); valid = false; } else hideErr('ph_err');
+
+  // Preferred Greeting - min 10, max 1000
+  var greet = document.querySelector('[name="preferred_greeting"]');
+  var gv = greet ? greet.value.trim() : '';
+  if (gv.length &lt; 10 || gv.length &gt; 1000) { showErr('greet_err', 'Preferred greeting must be 10-1000 characters.'); valid = false; } else hideErr('greet_err');
+
+  // Call Instructions - min 5, max 500
+  var call = document.querySelector('[name="call_instructions"]');
+  var callv = call ? call.value.trim() : '';
+  if (callv.length &lt; 5 || callv.length &gt; 500) { showErr('call_err', 'Call instructions must be 5-500 characters.'); valid = false; } else hideErr('call_err');
+
+  // Address Line 1 - min 15, max 100
+  var addr1 = document.querySelector('[name="address_line1"]');
+  var a1v = addr1 ? addr1.value.trim() : '';
+  if (a1v.length &lt; 15 || a1v.length &gt; 100) { showErr('addr1_err', 'Address line 1 must be 15-100 characters.'); valid = false; } else hideErr('addr1_err');
+
+  // Address Line 2 - min 15, max 100
+  var addr2 = document.querySelector('[name="address_line2"]');
+  var a2v = addr2 ? addr2.value.trim() : '';
+  if (a2v.length &lt; 15 || a2v.length &gt; 100) { showErr('addr2_err', 'Address line 2 must be 15-100 characters.'); valid = false; } else hideErr('addr2_err');
+
+  // City - min 3, max 50
+  var city = document.querySelector('[name="city"]');
+  var cityv = city ? city.value.trim() : '';
+  if (cityv.length &lt; 3 || cityv.length &gt; 50) { showErr('city_err', 'City must be 3-50 characters.'); valid = false; } else hideErr('city_err');
+
+  // Email
+  var em = document.querySelector('[name="contact_email"]');
+  var emv = em ? em.value.trim() : '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)) { showErr('email_err', 'Please enter a valid email address.'); valid = false; } else hideErr('email_err');
+
+  // Country - required
+  var country = document.querySelector('[name="country"]');
+  var countryv = country ? country.value.trim() : '';
+  if (!countryv) { showErr('country_err', 'Please select a country.'); valid = false; } else hideErr('country_err');
+
+  if (valid) document.querySelector('form').submit();
+}
+
 var COUNTRY_CODES=[
   {c:'+971',n:'🇦🇪 UAE +971'},{c:'+91',n:'🇮🇳 India +91'},{c:'+1',n:'🇺🇸 USA +1'},
   {c:'+44',n:'🇬🇧 UK +44'},{c:'+92',n:'🇵🇰 Pakistan +92'},{c:'+880',n:'🇧🇩 Bangladesh +880'},
@@ -375,6 +455,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
           <option value="9">9 month</option>
           <option value="12">12 month</option>
         </select>
+        <div id="months_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select number of months.</div>
       </div>
     </div>
 
@@ -384,8 +465,11 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
       <div class="sec-body">
         <div class="sec-title">Company working details</div>
         <input type="text" name="working_days" class="field-input" placeholder="Company working days"/>
-        <input type="text" name="working_hours_from" class="field-input" placeholder="Company working hours (from)"/>
-        <input type="text" name="working_hours_to" class="field-input" placeholder="Company working hours (to)"/>
+        <div id="wdays_err" style="color:red;font-size:12px;display:none;margin-top:4px">Working days must be 5-100 characters.</div>
+        <input type="time" name="working_hours_from" class="field-input"/>
+        <div id="wfrom_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid from time.</div>
+        <input type="time" name="working_hours_to" class="field-input"/>
+        <div id="wto_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid to time.</div>
       </div>
     </div>
 
@@ -409,12 +493,36 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
 
     <div class="nav-btns">
       <a href="/spc/concierge/phone-answering/step1" class="btn-prev">PREVIOUS</a>
-      <button type="submit" class="btn-next">NEXT</button>
+      <button type="button" class="btn-next" onclick="paValidateStep2()">NEXT</button>
     </div>
   </form>
 </div>
 <script>
 <![CDATA[
+function paValidateStep2() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  // Months - required
+  var months = document.getElementById('monthsSel');
+  if (!months || !months.value) { showErr('months_err','Please select number of months.'); valid=false; } else hideErr('months_err');
+
+  // Working days - 5-100 chars, letters/numbers/dots only
+  var wd = document.querySelector('[name="working_days"]');
+  var wdv = wd ? wd.value.trim() : '';
+  if (wdv.length &lt; 5 || wdv.length &gt; 100 || !/^[A-Za-z0-9. ]+$/.test(wdv)) { showErr('wdays_err','Working days must be 5-100 characters (letters, numbers, dots only).'); valid=false; } else hideErr('wdays_err');
+
+  // Working hours from - required time
+  var wfrom = document.querySelector('[name="working_hours_from"]');
+  if (!wfrom || !wfrom.value) { showErr('wfrom_err','Please enter a valid from time.'); valid=false; } else hideErr('wfrom_err');
+
+  // Working hours to - required time
+  var wto = document.querySelector('[name="working_hours_to"]');
+  if (!wto || !wto.value) { showErr('wto_err','Please enter a valid to time.'); valid=false; } else hideErr('wto_err');
+
+  if (valid) document.querySelector('form').submit();
+}
 var FEE_MAP={'1':'315.00','3':'945.00','6':'1,890.00','9':'2,835.00','12':'3,780.00'};
 function updateFee(v){
   var d=document.getElementById('feeDisplay');
@@ -492,15 +600,28 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
       <p>Acknowledgement</p>
       <div class="ack-row">
         <input type="checkbox" name="terms_agreed" id="termsChk" value="yes"/>
+        <div id="terms_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please confirm the declaration to proceed.</div>
         <label for="termsChk">I have read and agree to the SPC Terms and Conditions.</label>
       </div>
     </div>
     <div class="nav-btns">
       <a t-attf-href="/spc/concierge/phone-answering/step2/#{record.id}" class="btn-prev">PREVIOUS</a>
-      <button type="submit" class="btn-next">NEXT</button>
+      <button type="button" class="btn-next" onclick="paValidateDecl()">NEXT</button>
     </div>
   </form>
 </div>
+<script>
+function paValidateDecl() {
+  var chk = document.getElementById('termsChk');
+  var err = document.getElementById('terms_err');
+  if (!chk || !chk.checked) {
+    if (err) err.style.display = 'block';
+    return;
+  }
+  if (err) err.style.display = 'none';
+  document.querySelector('form').submit();
+}
+</script>
 </body></html>
 </template>
 

@@ -193,21 +193,55 @@ function combineOTP(){var otp='';document.querySelectorAll('.spc-otp-box').forEa
             </div>
 
             <div style="margin-bottom:16px;">
-                <select class="spc-input" disabled="disabled" style="opacity:.6;cursor:not-allowed;">
-                    <option>Choose Company</option>
+                <t t-if="approved_companies">
+                <select class="spc-input" name="approved_company_id" style="cursor:pointer;">
+                    <option value="">Choose Company</option>
+                    <t t-foreach="approved_companies" t-as="acomp">
+                        <option t-att-value="acomp.id" t-esc="acomp.company_name"/>
+                    </t>
                 </select>
+                </t>
+                <t t-if="not approved_companies">
+                <select class="spc-input" disabled="disabled" style="opacity:.6;cursor:not-allowed;">
+                    <option>No approved companies yet</option>
+                </select>
+                </t>
             </div>
 
             <t t-if="selected_customer">
-                <form action="/spc/dashboard/goto" method="POST" style="margin-bottom:10px;">
+                <form id="dashboard_form" action="/spc/dashboard/goto" method="POST" style="margin-bottom:10px;">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <input type="hidden" name="customer_id" t-att-value="selected_customer.id"/>
-                    <input type="hidden" name="redirect_to" id="concierge_redirect" value=""/>
-                    <button type="submit" class="spc-btn" style="margin-bottom:0;">GO TO DASHBOARD!!</button>
+                    <input type="hidden" name="redirect_to" id="concierge_redirect" value="/spc/customer-dashboard"/>
+                    <input type="hidden" name="approved_company_id" id="selected_company_id" value=""/>
+                    <button type="button" id="btn_go_dashboard" onclick="goDashboard()" class="spc-btn" style="margin-bottom:0;opacity:.5;cursor:not-allowed;">GO TO DASHBOARD!!</button>
                 </form>
                 <a href="/spc/setup-new-company" class="spc-btn" style="background:#6b7280;display:block;text-align:center;text-decoration:none;margin-bottom:10px;color:white;">Setup new company</a>
-                <button type="button" class="spc-btn" style="background:#6b7280;margin-bottom:0;" onclick="document.getElementById('concierge_redirect').value='/spc/concierge-services';document.getElementById('dashboard_form').submit();">Concierge services</button>
+                <a href="/spc/concierge-services" class="spc-btn" style="background:#6b7280;display:block;text-align:center;text-decoration:none;margin-bottom:0;color:white;">Concierge services</a>
             </t>
+            <script>
+            var companySelect = document.querySelector('select[name="approved_company_id"]');
+            var dashBtn = document.getElementById('btn_go_dashboard');
+            if(companySelect){
+                companySelect.addEventListener('change', function(){
+                    var val = this.value;
+                    if(val){
+                        dashBtn.style.opacity='1';
+                        dashBtn.style.cursor='pointer';
+                        document.getElementById('selected_company_id').value = val;
+                    } else {
+                        dashBtn.style.opacity='.5';
+                        dashBtn.style.cursor='not-allowed';
+                        document.getElementById('selected_company_id').value = '';
+                    }
+                });
+            }
+            function goDashboard(){
+                var val = document.getElementById('selected_company_id').value;
+                if(!val){ return; }
+                document.getElementById('dashboard_form').submit();
+            }
+            </script>
             <t t-if="not selected_customer">
                 <div class="spc-dash-btn-disabled">GO TO DASHBOARD!!</div>
                 <div class="spc-dash-option">Setup new company</div>
@@ -349,8 +383,8 @@ function checkPwd(v){
     set('r-lower',/[a-z]/.test(v));
     set('r-upper',/[A-Z]/.test(v));
     set('r-num',/[0-9]/.test(v));
-    set('r-min',v.length>=8);
-    set('r-max',v.length&lt;=16&amp;&amp;v.length>0);
+    set('r-min',v.length&gt;=8);
+    set('r-max',v.length&lt;=16&amp;&amp;v.length&gt;0);
 }
 function genCaptcha(){
     var c='ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
@@ -363,7 +397,7 @@ function genCaptcha(){
 genCaptcha();
 function validateForm(){
     var pwd=document.getElementById('add-pwd').value;
-    if(!/[a-z]/.test(pwd)||!/[A-Z]/.test(pwd)||!/[0-9]/.test(pwd)||pwd.length&lt;8||pwd.length>16){
+    if(!/[a-z]/.test(pwd)||!/[A-Z]/.test(pwd)||!/[0-9]/.test(pwd)||pwd.length&lt;8||pwd.length&gt;16){
         alert('Password does not meet requirements.');return false;
     }
     if(document.getElementById('captcha-input').value!==document.getElementById('captcha-value').value){
@@ -1161,50 +1195,69 @@ tr:hover td{background:#f9fafb}
 </aside>
 <main class="cd-main">
     <div class="page-title">Request Tracking</div>
-    <p style="color:#6b7280;font-size:13px;margin-bottom:20px"><t t-esc="len(requests)"/> total requests</p>
-    <div class="table-wrap">
-        <t t-if="requests">
-        <table>
-            <thead>
-                <tr>
-                    <th>Request</th>
-                    <th>Applicant Name</th>
-                    <th>Submission Date</th>
-                    <th>Estimated Completion</th>
-                    <th>Fees</th>
-                    <th>Status</th>
-                    <th>Feedback</th>
-                    <th>Task Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <t t-foreach="requests" t-as="req">
-                <tr>
-                    <td><a href="#" class="req-link"><t t-esc="req.service_type"/></a></td>
-                    <td><t t-esc="req.partner_id.name or '-'"/></td>
-                    <td><t t-esc="str(req.submission_date)[:10] if req.submission_date else '-'"/></td>
-                    <td><t t-esc="str(req.estimated_completion) if req.estimated_completion else '-'"/></td>
-                    <td>AED <t t-esc="'%.2f' % req.fees"/></td>
-                    <td>
-                        <span t-attf-class="status-badge status-#{req.state}">
-                            ⊘ <t t-esc="dict(req._fields['state'].selection).get(req.state, req.state)"/>
-                        </span>
-                    </td>
-                    <td><t t-esc="req.feedback or '-'"/></td>
-                    <td><t t-esc="req.task_status or '-'"/></td>
-                </tr>
+    <t t-if="request.params.get('submitted')">
+    <div style="background:#d1fae5;color:#065f46;padding:14px 20px;border-radius:8px;margin-bottom:20px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px">
+        &#10003; Documents submitted successfully!
+    </div>
+    </t>
+    <t t-if="request.params.get('already_submitted')">
+    <div style="background:#fee2e2;color:#991b1b;padding:14px 20px;border-radius:8px;margin-bottom:20px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px">
+        &#9888; This request has already been submitted.
+    </div>
+    </t>
+    <t t-if="pending_docs">
+    <div style="margin-top:32px">
+        <div style="font-size:20px;font-weight:700;color:#1a2340;margin-bottom:16px">&#128203; Pending Documents</div>
+        <t t-foreach="pending_docs" t-as="pdoc">
+        <div style="background:white;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);padding:24px;margin-bottom:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                <div style="font-size:15px;font-weight:700;color:#1a2340"><t t-esc="pdoc.pending_doc_name_type or 'Pending Document Request'"/></div>
+                <span style="background:#fef3c7;color:#92400e;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600">Pending</span>
+            </div>
+            <t t-if="pdoc.pending_details">
+            <div style="background:#f8fafc;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;color:#374151">
+                <strong>Details:</strong> <t t-esc="pdoc.pending_details"/>
+            </div>
+            </t>
+            <t t-if="pdoc.is_submitted">
+            <div style="display:flex;align-items:center;justify-content:space-between;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:14px 20px;margin-top:8px">
+                <div>
+                    <div style="font-size:14px;font-weight:700;color:#065f46">&#10003; Submitted Successfully</div>
+                    <div style="font-size:12px;color:#374151;margin-top:4px">Request: <t t-esc="pdoc.pending_doc_name_type or 'Pending Document Request'"/></div>
+                </div>
+                <span style="background:#d1fae5;color:#065f46;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700">Submitted</span>
+            </div>
+            </t>
+            <t t-if="not pdoc.is_submitted">
+            <form t-attf-action="/spc/pending-docs/submit/#{pdoc.id}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div style="margin-bottom:16px">
+                    <label style="font-size:13px;font-weight:600;color:#1a2340;display:block;margin-bottom:6px">Additional Details</label>
+                    <textarea name="pending_details" rows="3" style="width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-size:13px;resize:vertical" placeholder="Add your comments or details here..."></textarea>
+                </div>
+                <t t-if="pdoc.document_line_ids">
+                <div style="margin-bottom:16px">
+                    <div style="font-size:13px;font-weight:600;color:#1a2340;margin-bottom:12px">Required Documents (<t t-esc="pdoc.count"/>)</div>
+                    <t t-foreach="pdoc.document_line_ids" t-as="dline">
+                    <div style="display:flex;align-items:center;gap:12px;padding:10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px">
+                        <span style="font-size:13px;color:#374151;min-width:150px"><t t-esc="dline.name"/></span>
+                        <input type="file" t-attf-name="doc_#{dline.id}" style="font-size:13px;flex:1"/>
+                    </div>
+                    </t>
+                </div>
                 </t>
-            </tbody>
-        </table>
-        </t>
-        <t t-if="not requests">
-        <div class="empty-state">
-            <div class="empty-icon">🎉</div>
-            <div style="font-size:18px;font-weight:600;margin-bottom:8px">No requests yet!</div>
-            <div style="font-size:13px">Your service requests will appear here.</div>
+                <button type="submit" style="background:#1abc9c;color:white;border:none;border-radius:8px;padding:10px 32px;font-size:14px;font-weight:700;cursor:pointer">Submit</button>
+            </form>
+            </t>
+            <t t-if="pdoc.is_submitted">
+            <div style="background:#d1fae5;color:#065f46;padding:14px 20px;border-radius:8px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px">
+                &#10003; Submitted successfully. Awaiting admin response.
+            </div>
+            </t>
         </div>
         </t>
     </div>
+    </t>
 </main>
 </body>
 </html>

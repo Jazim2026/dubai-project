@@ -479,7 +479,7 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
     var ackBlock = document.getElementById('bl-ack-block');
     document.querySelectorAll('.bl-facility-radio').forEach(function(r){
         r.addEventListener('change', function(){
-            ackBlock.style.display = PHYSICAL.indexOf(this.value) >= 0 ? 'block' : 'none';
+            ackBlock.style.display = PHYSICAL.indexOf(this.value) &gt;= 0 ? 'block' : 'none';
             fetch('/spc/company-management/business-license/bl-ajax-steps', {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},

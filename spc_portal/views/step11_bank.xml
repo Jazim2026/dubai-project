@@ -141,7 +141,7 @@ function filterBanks(input){
 }
 document.addEventListener('click', function(e){
     var opts = document.getElementById('bankOptions');
-    if(opts && !opts.parentElement.contains(e.target)) opts.classList.remove('show');
+    if(opts &amp;&amp; !opts.parentElement.contains(e.target)) opts.classList.remove('show');
 });
 ]]>
 </script>

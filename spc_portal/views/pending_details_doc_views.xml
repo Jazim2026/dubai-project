@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pending Details Doc Tree -->
+    <record id="view_pending_details_doc_tree" model="ir.ui.view">
+        <field name="name">spc.pending.details.doc.tree</field>
+        <field name="model">spc.pending.details.doc</field>
+        <field name="arch" type="xml">
+            <tree string="Pending Details and Docs">
+                <field name="customer_name"/>
+                <field name="partner_id"/>
+                <field name="pending_doc_name_type"/>
+                <field name="count"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Pending Details Doc Form -->
+    <record id="view_pending_details_doc_form" model="ir.ui.view">
+        <field name="name">spc.pending.details.doc.form</field>
+        <field name="model">spc.pending.details.doc</field>
+        <field name="arch" type="xml">
+            <form string="Pending Details and Docs">
+                <header>
+                    <button name="action_send" string="Send" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-secondary" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="partner_id" domain="[('user_ids', '!=', False)]" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="pending_doc_name_type"/>
+                        <field name="count"/>
+                    </group>
+                    <group>
+                        <field name="pending_details" widget="text" placeholder="Enter pending details..."/>
+                    </group>
+                    <notebook>
+                        <page string="Document Uploads">
+                            <field name="document_line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="document" widget="binary" filename="document_filename"/>
+                                    <field name="document_filename" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Received Details Tree -->
+    <record id="view_received_details_tree" model="ir.ui.view">
+        <field name="name">spc.received.details.tree</field>
+        <field name="model">spc.received.details</field>
+        <field name="arch" type="xml">
+            <tree string="Received Details">
+                <field name="customer_name"/>
+                <field name="partner_id"/>
+                <field name="pending_doc_name_type"/>
+                <field name="submission_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Received Details Form -->
+    <record id="view_received_details_form" model="ir.ui.view">
+        <field name="name">spc.received.details.form</field>
+        <field name="model">spc.received.details</field>
+        <field name="arch" type="xml">
+            <form string="Received Details">
+                <sheet>
+                    <group>
+                        <field name="customer_name" readonly="1"/>
+                        <field name="partner_id" readonly="1"/>
+                        <field name="pending_doc_name_type" readonly="1"/>
+                        <field name="submission_date" readonly="1"/>
+                        <field name="state" readonly="1"/>
+                    </group>
+                    <group string="Customer Pending Details">
+                        <field name="pending_details" readonly="1" widget="text"/>
+                    </group>
+                    <notebook>
+                        <page string="Uploaded Documents">
+                            <field name="received_line_ids" readonly="1">
+                                <tree>
+                                    <field name="sequence"/>
+                                    <field name="name"/>
+                                    <field name="document" widget="binary" filename="document_filename"/>
+                                    <field name="document_filename" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Actions -->
+    <record id="action_pending_details_doc" model="ir.actions.act_window">
+        <field name="name">Pending Details and Docs</field>
+        <field name="res_model">spc.pending.details.doc</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_received_details" model="ir.actions.act_window">
+        <field name="name">Received Details</field>
+        <field name="res_model">spc.received.details</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_pending_details_doc_root"
+              name="Pending Details and Docs"
+              parent="menu_spc_root"
+              sequence="31"/>
+
+    <menuitem id="menu_pending_details_doc"
+              name="Pending Details and Docs"
+              parent="menu_pending_details_doc_root"
+              action="action_pending_details_doc"
+              sequence="1"/>
+
+    <menuitem id="menu_received_details"
+              name="Received Details"
+              parent="menu_pending_details_doc_root"
+              action="action_received_details"
+              sequence="2"/>
+</odoo>

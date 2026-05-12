@@ -62,3 +62,8 @@ spc_portal.access_spc_po_box,access_spc_po_box,spc_portal.model_spc_po_box,base.
 spc_portal.access_spc_movement_report,access_spc_movement_report,spc_portal.model_spc_movement_report,base.group_user,1,1,1,0
 
 spc_portal.access_spc_eid_appointment,access_spc_eid_appointment,spc_portal.model_spc_eid_appointment,base.group_user,1,1,1,0
+
+spc_pending_details_doc_access,spc.pending.details.doc access,model_spc_pending_details_doc,base.group_user,1,1,1,1
+spc_pending_doc_line_access,spc.pending.doc.line access,model_spc_pending_doc_line,base.group_user,1,1,1,1
+spc_received_details_access,spc.received.details access,model_spc_received_details,base.group_user,1,1,1,1
+spc_received_doc_line_access,spc.received.doc.line access,model_spc_received_doc_line,base.group_user,1,1,1,1

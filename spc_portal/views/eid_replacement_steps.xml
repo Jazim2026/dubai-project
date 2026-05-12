@@ -171,18 +171,19 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                     <div class="radio-group">
                         <label class="radio-label"><input type="radio" name="visa_type" value="employee" id="v_emp"/> Employee visa</label>
                         <label class="radio-label"><input type="radio" name="visa_type" value="partner_investor" id="v_par"/> Partner / investor visa</label>
-                        <label class="radio-label"><input type="radio" name="visa_type" value="student" id="v_stu"/> Student visa</label>
+                        <label class="radio-label"><input type="radio" name="visa_type" value="student" id="v_stu"/>
+      <div id="visa_type_err" style="color:red;font-size:12px;display:none;margin-top:8px">Please select a visa application type.</div> Student visa</label>
                     </div>
                     <div class="info-box"><span style="color:#e91e8c;font-size:16px;">&#9432;</span> For who is the visa that you are applying for?</div>
                 </div>
             </div>
             <div class="spc-nav-buttons">
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="eidStep1Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 document.querySelectorAll('input[name="visa_type"]').forEach(function(r){
     r.addEventListener('change',function(){
         var isEmp=this.value==='employee';
@@ -192,6 +193,17 @@ document.querySelectorAll('input[name="visa_type"]').forEach(function(r){
         document.getElementById('pay-n').textContent=isEmp?'7':'6';
     });
 });
+
+function eidStep1Validate() {
+  var vt = document.querySelector('input[name="visa_type"]:checked');
+  if (!vt) {
+    document.getElementById('visa_type_err').style.display='block';
+    return;
+  }
+  document.getElementById('visa_type_err').style.display='none';
+  document.querySelector('form').submit();
+}
+//]]>
 </script>
 </body></html>
 </template>
@@ -293,12 +305,17 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
           <div class="sec-title">Applicant details</div>
           <div class="radio-group">
             <label class="radio-label"><input type="radio" name="gender" value="male" t-att-checked="'checked' if record.gender=='male' else None"/> Male</label>
-            <label class="radio-label"><input type="radio" name="gender" value="female" t-att-checked="'checked' if record.gender=='female' else None"/> Female</label>
+            <label class="radio-label"><input type="radio" name="gender" value="female" t-att-checked="'checked' if record.gender=='female' else None"/>
+      <div id="gender_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select gender.</div> Female</label>
           </div>
           <input class="field-input" type="text" name="first_name" placeholder="First name" t-att-value="record.first_name or ''"/>
+      <div id="fname_err" style="color:red;font-size:12px;display:none;margin-top:4px">First name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="last_name" placeholder="Last name" t-att-value="record.last_name or ''"/>
+      <div id="lname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Last name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="father_name" placeholder="Father's full name" t-att-value="record.father_name or ''"/>
+      <div id="fatname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Father's name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="mother_name" placeholder="Mother's full name" t-att-value="record.mother_name or ''"/>
+      <div id="motname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Mother's name must be 3-50 characters.</div>
           <div class="phone-wrap">
             <div class="phone-code">
               <select name="phone_code">
@@ -389,34 +406,44 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
               </select>
             </div>
             <input class="phone-input" type="text" name="phone" placeholder="Home country contact number" t-att-value="record.phone or ''"/>
+      <div id="phone_err" style="color:red;font-size:12px;display:none;margin-top:4px">Phone number must be 10-15 digits.</div>
           </div>
           <input class="field-input" type="email" name="applicant_email" placeholder="Email address" t-att-value="record.applicant_email or ''"/>
+      <div id="email_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid email address.</div>
           <div class="note">Note: Please make sure to enter the employee's email address.</div>
           <input class="field-input" type="text" name="address" placeholder="Address in English" t-att-value="record.address or ''"/>
+      <div id="addr_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address must be 5-500 characters.</div>
           <input class="field-input" type="text" name="city" placeholder="City" t-att-value="record.city or ''"/>
+      <div id="city_err" style="color:red;font-size:12px;display:none;margin-top:4px">City must be 5-500 characters.</div>
           <div class="select-row">
-            <div class="select-wrap"><select name="country_id"><option value="">Country</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.country_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
+            <div class="select-wrap"><select name="country_id"><option value="">Country</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.country_id.id==c.id else None"><t t-esc="c.name"/></option></t></select>
+      <div id="country_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select country.</div></div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
           <input class="field-input" type="date" name="dob" t-att-value="str(record.dob) if record.dob else ''"/>
+      <div id="dob_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select date of birth.</div>
           <div class="select-row">
             <div class="select-wrap"><select name="birth_country_id"><option value="">Country of birth</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.birth_country_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
           <div class="select-row">
-            <div class="select-wrap"><select name="nationality_id"><option value="">Nationality</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.nationality_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
+            <div class="select-wrap"><select name="nationality_id"><option value="">Nationality</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.nationality_id.id==c.id else None"><t t-esc="c.name"/></option></t></select>
+      <div id="nat_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select nationality.</div></div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
           <div class="select-row">
-            <div class="select-wrap"><select name="prev_nationality_id"><option value="">Previous nationality</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.prev_nationality_id.id==c.id else None"><t t-esc="c.name"/></option></t></select></div>
+            <div class="select-wrap"><select name="prev_nationality_id"><option value="">Previous nationality</option><t t-foreach="countries" t-as="c"><option t-att-value="c.id" t-att-selected="'selected' if record.prev_nationality_id.id==c.id else None"><t t-esc="c.name"/></option></t></select>
+      <div id="prev_nat_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select previous nationality.</div></div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
           <div class="select-row">
-            <div class="select-wrap"><select name="marital_status"><option value="">Marital status</option><option value="single" t-att-selected="'selected' if record.marital_status=='single' else None">Single</option><option value="married" t-att-selected="'selected' if record.marital_status=='married' else None">Married</option><option value="divorced" t-att-selected="'selected' if record.marital_status=='divorced' else None">Divorced</option><option value="student" t-att-selected="'selected' if record.marital_status=='student' else None">Student</option></select></div>
+            <div class="select-wrap"><select name="marital_status"><option value="">Marital status</option><option value="single" t-att-selected="'selected' if record.marital_status=='single' else None">Single</option><option value="married" t-att-selected="'selected' if record.marital_status=='married' else None">Married</option><option value="divorced" t-att-selected="'selected' if record.marital_status=='divorced' else None">Divorced</option><option value="student" t-att-selected="'selected' if record.marital_status=='student' else None">Student</option></select>
+      <div id="marital_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select marital status.</div></div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
           <div class="select-row">
-            <div class="select-wrap"><select name="religion"><option value="">Religion</option><option value="hindu" t-att-selected="'selected' if record.religion=='hindu' else None">Hindu</option><option value="muslim" t-att-selected="'selected' if record.religion=='muslim' else None">Muslim</option><option value="christian" t-att-selected="'selected' if record.religion=='christian' else None">Christian</option><option value="buddhism" t-att-selected="'selected' if record.religion=='buddhism' else None">Buddhism</option><option value="other" t-att-selected="'selected' if record.religion=='other' else None">Other</option></select></div>
+            <div class="select-wrap"><select name="religion"><option value="">Religion</option><option value="hindu" t-att-selected="'selected' if record.religion=='hindu' else None">Hindu</option><option value="muslim" t-att-selected="'selected' if record.religion=='muslim' else None">Muslim</option><option value="christian" t-att-selected="'selected' if record.religion=='christian' else None">Christian</option><option value="buddhism" t-att-selected="'selected' if record.religion=='buddhism' else None">Buddhism</option><option value="other" t-att-selected="'selected' if record.religion=='other' else None">Other</option></select>
+      <div id="religion_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select religion.</div></div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
         </div>
@@ -473,6 +500,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <option value="technician" t-att-selected="'selected' if record.designation=='technician' else None">Technician</option>
                 <option value="other" t-att-selected="'selected' if record.designation=='other' else None">Other</option>
               </select>
+      <div id="desig_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select designation.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';document.getElementById('desig-warn').style.display='none'">x</button>
           </div>
@@ -492,6 +520,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <option value="masters" t-att-selected="'selected' if record.highest_qualification=='masters' else None">Master's Degree</option>
                 <option value="doctorate" t-att-selected="'selected' if record.highest_qualification=='doctorate' else None">Doctorate/PhD</option>
               </select>
+      <div id="qual_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select highest qualification.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';document.getElementById('degree-upload').style.display='none'">x</button>
           </div>
@@ -517,6 +546,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </label>
             <label class="yesno-box" id="dep-no" onclick="toggleDep('no')">
               <input type="radio" name="has_dependents" value="no" style="display:none;" t-att-checked="'checked' if record.has_dependents=='no' else None"/>
+      <div id="dep_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select dependent sponsorship option.</div>
               <div class="yesno-symbol">&#10005;</div><div class="yesno-lbl">No</div>
             </label>
           </div>
@@ -561,20 +591,102 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
           </t>
         </div>
       </div>
+      
+      <div id="doc_upload_err" style="color:red;font-size:12px;display:none;margin-bottom:8px;">Please upload all required documents.</div>
       <div class="spc-nav-buttons">
         <a href="/spc/apply/eid_replacement/step1" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="eidStep2Validate()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script>//<![CDATA[
 var unavail=['accountant_manager','business_development_manager','finance_manager'];
 function checkDesig(v){document.getElementById('desig_flag').value=unavail.indexOf(v)!==-1?'1':'0';document.getElementById('desig-warn').style.display=unavail.indexOf(v)!==-1?'block':'none';}
 function checkQual(v){var d=['diploma','bachelors','masters','doctorate'];document.getElementById('degree-upload').style.display=d.indexOf(v)!==-1?'block':'none';}
 function toggleDep(v){document.getElementById('dep-yes').classList.toggle('selected',v==='yes');document.getElementById('dep-no').classList.toggle('selected',v==='no');document.getElementById('dep-details').style.display=v==='yes'?'block':'none';}
 var dv=document.getElementById('desig_sel').value; if(dv) checkDesig(dv);
 var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
+
+function eidStep2Validate() {
+  var valid = true;
+  function showErr(id,msg){var el=document.getElementById(id);if(el){el.textContent=msg;el.style.display="block";}}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+
+  var gen = document.querySelector('input[name="gender"]:checked');
+  if (!gen) { showErr('gender_err','Please select gender.'); valid=false; } else hideErr('gender_err');
+
+  var fn = document.querySelector('[name="first_name"]');
+  var fnv = fn ? fn.value.trim() : '';
+  if (fnv.length &lt; 3 || fnv.length &gt; 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
+
+  var ln = document.querySelector('[name="last_name"]');
+  var lnv = ln ? ln.value.trim() : '';
+  if (lnv.length &lt; 3 || lnv.length &gt; 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
+
+  var fat = document.querySelector('[name="father_name"]');
+  var fatv = fat ? fat.value.trim() : '';
+  if (fatv.length &lt; 3 || fatv.length &gt; 50) { showErr('fatname_err',"Father's name must be 3-50 characters."); valid=false; } else hideErr('fatname_err');
+
+  var mot = document.querySelector('[name="mother_name"]');
+  var motv = mot ? mot.value.trim() : '';
+  if (motv.length &lt; 3 || motv.length &gt; 50) { showErr('motname_err',"Mother's name must be 3-50 characters."); valid=false; } else hideErr('motname_err');
+
+  var ph = document.querySelector('[name="phone"]');
+  var phv = ph ? ph.value.trim().replace(/\D/g,'') : '';
+  if (phv.length &lt; 10 || phv.length &gt; 15) { showErr('phone_err','Phone number must be 10-15 digits.'); valid=false; } else hideErr('phone_err');
+
+  var em = document.querySelector('[name="applicant_email"]');
+  var emv = em ? em.value.trim() : '';
+  if (!emv || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)) { showErr('email_err','Please enter a valid email address.'); valid=false; } else hideErr('email_err');
+
+  var addr = document.querySelector('[name="address"]');
+  var addrv = addr ? addr.value.trim() : '';
+  if (addrv.length &lt; 5 || addrv.length &gt; 500) { showErr('addr_err','Address must be 5-500 characters.'); valid=false; } else hideErr('addr_err');
+
+  var ct = document.querySelector('[name="city"]');
+  var ctv = ct ? ct.value.trim() : '';
+  if (ctv.length &lt; 5 || ctv.length &gt; 500) { showErr('city_err','City must be 5-500 characters.'); valid=false; } else hideErr('city_err');
+
+  var dob = document.querySelector('[name="dob"]');
+  if (!dob || !dob.value) { showErr('dob_err','Please select date of birth.'); valid=false; } else hideErr('dob_err');
+
+  var cid = document.querySelector('[name="country_id"]');
+  if (!cid || !cid.value) { showErr('country_err','Please select country.'); valid=false; } else hideErr('country_err');
+
+  var nat = document.querySelector('[name="nationality_id"]');
+  if (!nat || !nat.value) { showErr('nat_err','Please select nationality.'); valid=false; } else hideErr('nat_err');
+
+  var pnat = document.querySelector('[name="prev_nationality_id"]');
+  if (!pnat || !pnat.value) { showErr('prev_nat_err','Please select previous nationality.'); valid=false; } else hideErr('prev_nat_err');
+
+  var ms = document.querySelector('[name="marital_status"]');
+  if (!ms || !ms.value) { showErr('marital_err','Please select marital status.'); valid=false; } else hideErr('marital_err');
+
+  var rel = document.querySelector('[name="religion"]');
+  if (!rel || !rel.value) { showErr('religion_err','Please select religion.'); valid=false; } else hideErr('religion_err');
+
+  var des = document.querySelector('[name="designation"]');
+  if (!des || !des.value) { showErr('desig_err','Please select designation.'); valid=false; } else hideErr('desig_err');
+
+  var qual = document.querySelector('[name="highest_qualification"]');
+  if (!qual || !qual.value) { showErr('qual_err','Please select highest qualification.'); valid=false; } else hideErr('qual_err');
+
+  var dep = document.querySelector('input[name="has_dependents"]:checked');
+  if (!dep) { showErr('dep_err','Please select dependent sponsorship option.'); valid=false; } else hideErr('dep_err');
+
+    // Document upload validation
+  var docFields = ['doc_photo','doc_evisa','doc_change_status','doc_medical','doc_emp_contract_copy','doc_eid_copy'];
+  var docOk = true;
+  docFields.forEach(function(name){
+    var inp = document.querySelector('input[name="'+name+'"]');
+    if (!inp || inp.files.length === 0) docOk = false;
+  });
+  if (!docOk) { showErr('doc_upload_err','Please upload all required documents.'); valid=false; } else hideErr('doc_upload_err');
+
+  if (valid) document.querySelector('form').submit();
+}
+//]]>
 </script>
 </body></html>
 </template>
@@ -625,17 +737,21 @@ var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
             </label>
             <label class="yesno-box" id="prev-no" onclick="togglePrevVisa('no')">
               <input type="radio" name="prev_residence_visa" value="no" style="display:none;" t-att-checked="'checked' if record.prev_residence_visa=='no' else None"/>
+      <div id="prev_visa_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select yes or no.</div>
               <div class="yesno-symbol">&#10005;</div><div class="yesno-lbl">No</div>
             </label>
           </div>
           <!-- YES fields -->
           <div id="prev-visa-yes-fields" style="display:none;">
             <input class="field-input" type="text" name="eid_number" placeholder="Emirates ID Number (784-XXXX-XXXXXXX-X)" t-att-value="record.eid_number or ''"/>
+      <div id="eid_num_err" style="color:red;font-size:12px;display:none;margin-top:4px">Emirates ID must be in format 784-XXXX-XXXXXXX-X (18 characters).</div>
             <input class="field-input" type="date" name="eid_expiry" t-att-value="str(record.eid_expiry) if record.eid_expiry else ''"/>
+      <div id="eid_exp_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select Emirates ID expiry date.</div>
             <div class="sec-title" style="margin-top:8px;">Biometrics Registration</div>
             <div class="phone-wrap">
               <div class="phone-code"><select name="biometric_phone_code"><option value="+971">&#127462;&#127466; +971</option></select></div>
               <input class="phone-input" type="text" name="biometric_mobile" placeholder="Mobile number" t-att-value="record.biometric_mobile or ''"/>
+      <div id="bio_phone_err" style="color:red;font-size:12px;display:none;margin-top:4px">Phone number must be 3-15 digits.</div>
             </div>
           </div>
           <!-- NO fields -->
@@ -674,7 +790,8 @@ var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
           <div style="font-size:14px;color:#555;margin-bottom:12px;">Do you have a UAE PO Box?</div>
           <div class="radio-group">
             <label class="radio-label"><input type="radio" name="has_uae_pobox" value="yes" onclick="togglePoBox('yes')" t-att-checked="'checked' if record.has_uae_pobox=='yes' else None"/> Yes</label>
-            <label class="radio-label"><input type="radio" name="has_uae_pobox" value="no" onclick="togglePoBox('no')" t-att-checked="'checked' if record.has_uae_pobox=='no' else None"/> No</label>
+            <label class="radio-label"><input type="radio" name="has_uae_pobox" value="no" onclick="togglePoBox('no')" t-att-checked="'checked' if record.has_uae_pobox=='no' else None"/>
+      <div id="pobox_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select PO Box option.</div> No</label>
           </div>
           <div id="pobox-fields" style="display:none;">
             <div class="sec-title" style="margin-top:4px;">UAE PO Box location</div>
@@ -694,6 +811,7 @@ var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
               <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
             </div>
             <input class="field-input" type="text" name="pobox_number" placeholder="PO Box number" t-att-value="record.pobox_number or ''"/>
+      <div id="pobox_num_err" style="color:red;font-size:12px;display:none;margin-top:4px">PO Box number must be 1-10 digits only.</div>
           </div>
         </div>
       </div>
@@ -705,7 +823,8 @@ var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
           <div style="font-size:14px;color:#555;margin-bottom:12px;">Do you want to deliver the physical EID?</div>
           <div class="radio-group">
             <label class="radio-label"><input type="radio" name="deliver_physical_eid" value="yes" onclick="toggleDeliverAddr('yes')" t-att-checked="'checked' if record.deliver_physical_eid=='yes' else None"/> Yes</label>
-            <label class="radio-label"><input type="radio" name="deliver_physical_eid" value="no" onclick="toggleDeliverAddr('no')" t-att-checked="'checked' if record.deliver_physical_eid=='no' else None"/> No</label>
+            <label class="radio-label"><input type="radio" name="deliver_physical_eid" value="no" onclick="toggleDeliverAddr('no')" t-att-checked="'checked' if record.deliver_physical_eid=='no' else None"/>
+      <div id="deliver_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select EID delivery option.</div> No</label>
           </div>
           <div id="delivery-addr-fields" style="display:none;">
             <div class="select-row">
@@ -720,11 +839,14 @@ var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
                   <option value="fujairah">Fujairah</option>
                   <option value="uaq">Umm Al Quwain</option>
                 </select>
+      <div id="del_city_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select delivery city.</div>
               </div>
               <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
             </div>
             <input class="field-input" type="text" name="delivery_landmark" placeholder="Nearest landmark" t-att-value="record.delivery_landmark or ''"/>
+      <div id="del_lmark_err" style="color:red;font-size:12px;display:none;margin-top:4px">Landmark must be 5-50 characters.</div>
             <input class="field-input" type="text" name="delivery_address" placeholder="Address" t-att-value="record.delivery_address or ''"/>
+      <div id="del_addr_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter delivery address.</div>
             <div class="select-row">
               <div class="select-wrap">
                 <select name="delivery_country">
@@ -736,6 +858,7 @@ var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
             <div class="phone-wrap">
               <div class="phone-code"><select name="delivery_phone_code"><option value="+971">&#127462;&#127466; +971</option></select></div>
               <input class="phone-input" type="text" name="delivery_phone" placeholder="Phone number" t-att-value="record.delivery_phone or ''"/>
+      <div id="del_phone_err" style="color:red;font-size:12px;display:none;margin-top:4px">Phone number must be 10-15 digits.</div>
             </div>
           </div>
         </div>
@@ -743,12 +866,12 @@ var qv=document.getElementById('qual_sel').value; if(qv) checkQual(qv);
 
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/eid_replacement/step2/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="eidStep3Validate()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script>//<![CDATA[
 function togglePrevVisa(v){
     document.getElementById('prev-yes').classList.toggle('selected',v==='yes');
     document.getElementById('prev-no').classList.toggle('selected',v==='no');
@@ -769,12 +892,122 @@ var pb=document.querySelector('input[name="has_uae_pobox"]:checked');
 if(pb) togglePoBox(pb.value);
 var dv=document.querySelector('input[name="deliver_physical_eid"]:checked');
 if(dv) toggleDeliverAddr(dv.value);
+
+function eidStep3Validate() {
+  var valid = true;
+  function showErr(id,msg){var el=document.getElementById(id);if(el){el.textContent=msg;el.style.display="block";}}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  var pv = document.querySelector('input[name="prev_residence_visa"]:checked');
+  if (!pv) { showErr('prev_visa_err','Please select yes or no.'); valid=false; } else {
+    hideErr('prev_visa_err');
+    if (pv.value === 'yes') {
+      var eid = document.querySelector('[name="eid_number"]');
+      var eidv = eid ? eid.value.trim() : '';
+      var eidRe = /^784-\d{4}-\d{7}-\d$/;
+      if (!eidRe.test(eidv)) { showErr('eid_num_err','Emirates ID must be in format 784-XXXX-XXXXXXX-X.'); valid=false; } else hideErr('eid_num_err');
+      var eidExp = document.querySelector('[name="eid_expiry"]');
+      if (!eidExp || !eidExp.value) { showErr('eid_exp_err','Please select Emirates ID expiry date.'); valid=false; } else hideErr('eid_exp_err');
+      var pb = document.querySelector('input[name="has_uae_pobox"]:checked');
+      if (!pb) { showErr('pobox_err','Please select PO Box option.'); valid=false; } else {
+        hideErr('pobox_err');
+        if (pb.value === 'yes') {
+          var pbn = document.querySelector('[name="pobox_number"]');
+          var pbnv = pbn ? pbn.value.trim() : '';
+          if (!pbnv || !/^\d{1,10}$/.test(pbnv)) { showErr('pobox_num_err','PO Box number must be 1-10 digits.'); valid=false; } else hideErr('pobox_num_err');
+        } else hideErr('pobox_num_err');
+      }
+      var centerEl = document.querySelector('select[name="biometric_center"]');
+      if (!centerEl || !centerEl.value) { showErr('center_err','Please select a preferred center location.'); valid=false; } else hideErr('center_err');
+      var visibleMobile = '';
+      document.querySelectorAll('input[name="biometric_mobile"]').forEach(function(inp){
+        if (inp.offsetParent !== null) visibleMobile = inp.value.trim().replace(/\D/g,'');
+      });
+      if (visibleMobile.length &lt; 10 || visibleMobile.length &gt; 15) { showErr('bio_phone_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('bio_phone_err');
+    } else {
+      hideErr('eid_num_err'); hideErr('eid_exp_err');
+      hideErr('pobox_err'); hideErr('pobox_num_err');
+      hideErr('center_err'); hideErr('bio_phone_err');
+    }
+  }
+  var deid = document.querySelector('input[name="deliver_physical_eid"]:checked');
+  if (!deid) { showErr('deliver_err','Please select EID delivery option.'); valid=false; } else {
+    hideErr('deliver_err');
+    if (deid.value === 'yes') {
+      var dc = document.querySelector('[name="delivery_city"]');
+      if (!dc || !dc.value) { showErr('del_city_err','Please select delivery city.'); valid=false; } else hideErr('del_city_err');
+      var lm = document.querySelector('[name="delivery_landmark"]');
+      var lmv = lm ? lm.value.trim() : '';
+      if (lmv.length &lt; 5 || lmv.length &gt; 50) { showErr('del_lmark_err','Landmark must be 5-50 characters.'); valid=false; } else hideErr('del_lmark_err');
+      var da = document.querySelector('[name="delivery_address"]');
+      if (!da || !da.value.trim()) { showErr('del_addr_err','Please enter delivery address.'); valid=false; } else hideErr('del_addr_err');
+      var dp = document.querySelector('[name="delivery_phone"]');
+      var dpv = dp ? dp.value.trim().replace(/\D/g,'') : '';
+      if (dpv.length &lt; 10 || dpv.length &gt; 15) { showErr('del_phone_err','Phone number must be 10-15 digits.'); valid=false; } else hideErr('del_phone_err');
+    } else {
+      hideErr('del_city_err'); hideErr('del_lmark_err');
+      hideErr('del_addr_err'); hideErr('del_phone_err');
+    }
+  }
+  if (valid) document.querySelector('form').submit();
+}function eidStep4Validate_disabled() {
+  var valid = true;
+  function showErr(id,msg){var el=document.getElementById(id);if(el){el.textContent=msg;el.style.display="block";}}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+
+  var ct = document.querySelector('input[name="contract_type"]:checked');
+  if (!ct) { showErr('contract_err','Please select contract type.'); valid=false; } else {
+    hideErr('contract_err');
+    if (ct.value === '2yr_limited') {
+      var prob = document.querySelector('input[name="probation_period"]:checked');
+      if (!prob) { showErr('prob_err','Please select probation period.'); valid=false; } else hideErr('prob_err');
+
+      var np = document.querySelector('[name="notice_period"]');
+      var npv = np ? np.value.trim() : '';
+      if (npv.length &lt; 5 || npv.length &gt; 100) { showErr('notice_err','Notice period must be 5-100 characters.'); valid=false; } else hideErr('notice_err');
+
+      var sb = document.querySelector('[name="salary_basic"]');
+      if (!sb || !sb.value) { showErr('sal_basic_err','Please enter basic salary.'); valid=false; } else hideErr('sal_basic_err');
+
+      var sa = document.querySelector('[name="salary_accommodation"]');
+      if (!sa || !sa.value) { showErr('sal_acc_err','Please enter accommodation allowance.'); valid=false; } else hideErr('sal_acc_err');
+
+      var st = document.querySelector('[name="salary_transport"]');
+      if (!st || !st.value) { showErr('sal_trans_err','Please enter transport allowance.'); valid=false; } else hideErr('sal_trans_err');
+
+      var so = document.querySelector('[name="salary_other"]');
+      if (!so || !so.value) { showErr('sal_other_err','Please enter other allowance.'); valid=false; } else hideErr('sal_other_err');
+
+      var stot = document.querySelector('[name="salary_total"]');
+      if (!stot || !stot.value) { showErr('sal_total_err','Please enter total remuneration.'); valid=false; } else hideErr('sal_total_err');
+
+      var ed = document.querySelector('[name="contract_execution"]');
+      if (!ed || !ed.value) { showErr('exec_date_err','Please select contract execution date.'); valid=false; } else hideErr('exec_date_err');
+
+      var sd = document.querySelector('[name="contract_start"]');
+      if (!sd || !sd.value) { showErr('start_date_err','Please select contract start date.'); valid=false; } else hideErr('start_date_err');
+
+      var cd = document.querySelector('[name="contract_end"]');
+      if (!cd || !cd.value) { showErr('end_date_err','Please select contract end date.'); valid=false; } else hideErr('end_date_err');
+    }
+  }
+
+  if (valid) document.querySelector('form').submit();
+}
+//]]>
 </script>
 </body></html>
 </template>
+
+<!-- STEP 4 - EMPLOYMENT CONTRACT -->
+
+
+
+
+
+
 <template id="eid_replacement_step4" name="EID Replacement Step 4">
 <html><head><meta charset="utf-8"/><title>EID Replacement | SPC Free Zone</title>
-<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin-bottom:16px}.field-grid .field-input{max-width:100%}.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a2340}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}.layout{display:flex;min-height:100vh}.sidebar{width:260px;background:#1a2340;color:#fff;padding:32px 20px;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100}.sidebar-logo{font-size:22px;font-weight:700;margin-bottom:32px}.sidebar-logo span{display:block;font-size:12px;font-weight:400;opacity:.6}.progress-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.5;margin-bottom:16px}.progress-step{display:flex;align-items:center;gap:10px;margin-bottom:12px;opacity:.5}.progress-step.active{opacity:1}.progress-step.done{opacity:.8}.step-num{width:28px;height:28px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}.progress-step.active .step-num{background:#1abc9c;border-color:#1abc9c}.progress-step.done .step-num{background:#fff;color:#1a2340;border-color:#fff}.step-label{font-size:13px}.total-box{margin-top:24px;font-size:12px;opacity:.7}.total-box .amount{font-size:20px;font-weight:700;opacity:1;color:#fff}.sidebar-links{margin-top:16px}.sidebar-links a{display:block;color:#fff;font-size:12px;text-decoration:underline;margin-bottom:8px;opacity:.8}.main{margin-left:260px;padding:40px 48px;min-height:100vh;padding-bottom:100px}.form-title{font-size:26px;font-weight:700;color:#1abc9c;margin-bottom:28px}.spc-section{background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:24px;display:flex;gap:24px}.sec-num{font-size:13px;color:#aaa;font-weight:600;min-width:24px}.sec-body{flex:1}.sec-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:16px}.sec-sub{font-size:13px;color:#6b7280;margin-bottom:16px}.field-input{width:100%;max-width:680px;padding:10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;display:block;margin-bottom:16px}.field-input:focus{border-bottom-color:#1abc9c}.select-wrap{position:relative;max-width:680px;margin-bottom:16px}.select-wrap::after{content:"▼";position:absolute;right:32px;top:50%;transform:translateY(-50%);color:#888;pointer-events:none;font-size:11px}.select-wrap select{width:100%;padding:10px 28px 10px 0;border:none;border-bottom:1px solid #ccc;background:transparent;font-size:14px;color:#333;outline:none;appearance:none;cursor:pointer}.select-row{display:flex;align-items:center;max-width:680px;margin-bottom:16px}.select-row .select-wrap{flex:1;margin-bottom:0}.clear-btn{width:26px;height:26px;border-radius:50%;background:#1a2340;color:#fff;border:none;font-size:13px;cursor:pointer;flex-shrink:0;margin-left:8px}.radio-group{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}.radio-label{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}.radio-label input{accent-color:#1a2340}.yesno-wrap{display:flex;gap:16px;margin-bottom:20px;max-width:680px}.yesno-box{border:1.5px solid #e0e0e0;border-radius:8px;padding:16px 32px;text-align:center;cursor:pointer;flex:1}.yesno-box.selected{border-color:#1abc9c;background:#e8f8f5}.yesno-symbol{font-size:20px;margin-bottom:8px}.yesno-lbl{font-size:14px;font-weight:600;color:#333}.phone-wrap{display:flex;align-items:flex-end;gap:8px;margin-bottom:16px;max-width:680px}.phone-code{display:flex;align-items:center;gap:4px;font-size:14px;border-bottom:1px solid #ccc;padding-bottom:10px;min-width:80px}.phone-code select{border:none;background:transparent;font-size:14px;outline:none;cursor:pointer}.phone-input{flex:1;border:none;border-bottom:1px solid #ccc;padding:10px 4px;font-size:14px;outline:none;background:transparent}.spc-nav-buttons{position:fixed;bottom:0;left:260px;right:0;background:#fff;border-top:1px solid #eee;padding:16px 48px;display:flex;justify-content:flex-end;gap:12px;z-index:99}.spc-btn-previous{border:2px solid #1a2340;border-radius:8px;padding:12px 36px;font-size:14px;font-weight:700;color:#1a2340;text-decoration:none;background:white;display:inline-block}.spc-btn-next{background:#e91e8c;color:#fff;border:none;border-radius:8px;padding:12px 48px;font-size:15px;font-weight:700;cursor:pointer}
 </style><t t-call="spc_portal.spc_new_modules_shared_css"/>
 </head>
 <body><div class="layout">
@@ -784,10 +1017,17 @@ if(dv) toggleDeliverAddr(dv.value);
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Application details</div></div>
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Applicant details</div></div>
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Emirates ID details</div></div>
-    <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Employment contract details</div></div>
-    <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
-    <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
-    <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    <t t-if="record.visa_type == 'employee'">
+      <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Employment contract details</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
+    </t>
+    <t t-else="">
+      <div class="progress-step"><div class="step-num">4</div><div class="step-label">Declaration</div></div>
+      <div class="progress-step"><div class="step-num">5</div><div class="step-label">Review application</div></div>
+      <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
+    </t>
     <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
     <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
   </div>
@@ -797,117 +1037,174 @@ if(dv) toggleDeliverAddr(dv.value);
       <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
       <input type="hidden" name="record_id" t-att-value="record.id"/>
 
-      <!-- SECTION 01: Contract Type -->
+      <!-- SEC 01: Contract Type -->
       <div class="spc-section">
         <div class="sec-num">01</div>
         <div class="sec-body">
           <div class="sec-title">Employment Contract Type</div>
-          <div style="font-size:14px;color:#555;margin-bottom:12px;">Contract type</div>
           <div class="radio-group">
             <label class="radio-label">
-              <input type="radio" name="contract_type" value="2yr_limited"
-                     t-att-checked="'checked' if record.contract_type=='2yr_limited' else None"/>
-              2 years (LIMITED)
+              <input type="radio" name="contract_type" value="2yr_limited" onclick="toggleContractSections('2yr_limited')" t-att-checked="'checked' if record.contract_type == '2yr_limited' else None"/> 2 Year Limited Contract
             </label>
             <label class="radio-label">
-              <input type="radio" name="contract_type" value="unlimited"
-                     t-att-checked="'checked' if record.contract_type=='unlimited' else None"/>
-              Unlimited
+              <input type="radio" name="contract_type" value="unlimited" onclick="toggleContractSections('unlimited')" t-att-checked="'checked' if record.contract_type == 'unlimited' else None"/> Unlimited Contract
             </label>
           </div>
+          <div id="contract_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select contract type.</div>
         </div>
       </div>
 
-      <!-- SECTION 02: Probation and Notice -->
-      <div class="spc-section" id="sec-probation" style="display:none;">
+      <!-- SEC 02: Contract Details (shown for 2yr_limited) -->
+      <div class="spc-section" id="sec-contract-details" style="display:none;">
         <div class="sec-num">02</div>
         <div class="sec-body">
-          <div class="sec-title">Probation and notice</div>
-          <div style="font-size:14px;color:#555;margin-bottom:12px;">Probation period (in days)</div>
+          <div class="sec-title">Contract Details</div>
+
+          <div class="sec-title" style="margin-top:8px;font-size:13px;">Probation Period</div>
           <div class="radio-group">
-            <label class="radio-label">
-              <input type="radio" name="probation_period" value="90"
-                     t-att-checked="'checked' if record.probation_period=='90' else None"/>
-              90 Days
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="probation_period" value="180"
-                     t-att-checked="'checked' if record.probation_period=='180' else None"/>
-              180 Days
-            </label>
+            <label class="radio-label"><input type="radio" name="probation_period" value="90" t-att-checked="'checked' if record.probation_period == '90' else None"/> 90 Days</label>
+            <label class="radio-label"><input type="radio" name="probation_period" value="180" t-att-checked="'checked' if record.probation_period == '180' else None"/> 180 Days</label>
           </div>
-          <input class="field-input" type="text" name="notice_period"
-                 placeholder="Notice period (in days)"
-                 t-att-value="record.notice_period or ''"/>
+          <div id="prob_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select probation period.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Notice Period</div>
+          <input class="field-input" type="text" name="notice_period" placeholder="e.g. 30 days / 1 month" t-att-value="record.notice_period or ''"/>
+          <div id="notice_err" style="color:red;font-size:12px;display:none;margin-top:4px">Notice period must be 5-100 characters.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Basic Salary (AED)</div>
+          <input class="field-input" type="number" name="salary_basic" id="salary_basic" placeholder="0.00" min="0" step="0.01" t-att-value="record.salary_basic or ''"/>
+          <div id="sal_basic_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter basic salary.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Accommodation Allowance (AED)</div>
+          <input class="field-input" type="number" name="salary_accommodation" id="salary_accommodation" placeholder="0.00" min="0" step="0.01" t-att-value="record.salary_accommodation or ''"/>
+          <div id="sal_acc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter accommodation allowance.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Transport Allowance (AED)</div>
+          <input class="field-input" type="number" name="salary_transport" id="salary_transport" placeholder="0.00" min="0" step="0.01" t-att-value="record.salary_transport or ''"/>
+          <div id="sal_trans_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter transport allowance.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Other Allowance (AED)</div>
+          <input class="field-input" type="number" name="salary_other" id="salary_other" placeholder="0.00" min="0" step="0.01" t-att-value="record.salary_other or ''"/>
+          <div id="sal_other_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter other allowance.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Total Remuneration (AED)</div>
+          <input class="field-input" type="number" name="salary_total" id="salary_total" placeholder="0.00" readonly="readonly" t-att-value="record.salary_total or ''"/>
+          <div id="sal_total_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter total remuneration.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Contract Execution Date</div>
+          <input class="field-input" type="date" name="contract_execution" t-att-value="str(record.contract_execution) if record.contract_execution else ''"/>
+          <div id="exec_date_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select contract execution date.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Contract Start Date</div>
+          <input class="field-input" type="date" name="contract_start" t-att-value="str(record.contract_start) if record.contract_start else ''"/>
+          <div id="start_date_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select contract start date.</div>
+
+          <div class="sec-title" style="margin-top:12px;font-size:13px;">Contract End Date</div>
+          <input class="field-input" type="date" name="contract_end" t-att-value="str(record.contract_end) if record.contract_end else ''"/>
+          <div id="end_date_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select contract end date.</div>
         </div>
       </div>
 
-      <!-- SECTION 03: Salary Breakdown -->
-      <div class="spc-section" id="sec-salary" style="display:none;">
-        <div class="sec-num">03</div>
+      <!-- SEC 03: Upload Contract -->
+      <div class="spc-section">
+        <div class="sec-num" id="upload-num">03</div>
         <div class="sec-body">
-          <div class="sec-title">Salary breakdown</div>
-          <div class="field-grid">
-            <input class="field-input" type="number" name="salary_basic"
-                   placeholder="Basic salary"
-                   t-att-value="record.salary_basic or ''"/>
-            <input class="field-input" type="number" name="salary_accommodation"
-                   placeholder="Accommodation allowance"
-                   t-att-value="record.salary_accommodation or ''"/>
-            <input class="field-input" type="number" name="salary_transport"
-                   placeholder="Transport allowance"
-                   t-att-value="record.salary_transport or ''"/>
-            <input class="field-input" type="number" name="salary_other"
-                   placeholder="Other allowance"
-                   t-att-value="record.salary_other or ''"/>
-          </div>
-          <input class="field-input" style="max-width:440px;" type="number"
-                 name="salary_total" placeholder="Total remuneration"
-                 t-att-value="record.salary_total or ''"/>
-        </div>
-      </div>
-
-      <!-- SECTION 04: Contract Dates -->
-      <div class="spc-section" id="sec-dates" style="display:none;">
-        <div class="sec-num">04</div>
-        <div class="sec-body">
-          <div class="sec-title">Contract start and end dates</div>
-          <input class="field-input" type="date" name="contract_execution"
-                 placeholder="Execution date"
-                 t-att-value="str(record.contract_execution) if record.contract_execution else ''"/>
-          <input class="field-input" type="date" name="contract_start"
-                 placeholder="Contract start date"
-                 t-att-value="str(record.contract_start) if record.contract_start else ''"/>
-          <input class="field-input" type="date" name="contract_end"
-                 placeholder="Contract end date"
-                 t-att-value="str(record.contract_end) if record.contract_end else ''"/>
+          <div class="sec-title">Upload Employment Contract</div>
+          <label style="border:2px solid #b0c4de;border-radius:4px;padding:16px;text-align:center;cursor:pointer;background:#f8faff;display:flex;flex-direction:column;align-items:center;max-width:300px;">
+            <div style="color:#1a5fa8;font-size:22px;">&#8679;</div>
+            <div style="color:#1a5fa8;font-size:13px;font-weight:600;">Click to upload (up to 5 files)</div>
+            <input type="file" name="doc_contract" style="display:none;" multiple="multiple"/>
+          </label>
+          <div id="doc_contract_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please upload at least one contract document.</div>
+          <t t-if="record.doc_contract_ids">
+            <div style="margin-top:8px;">
+              <t t-foreach="record.doc_contract_ids" t-as="att"><span class="doc-contract-existing" style="display:none;"></span>
+                <span style="display:inline-block;background:#e8f8f5;border:1px solid #1abc9c;border-radius:4px;padding:4px 10px;font-size:12px;margin-right:6px;">&#128206; <t t-esc="att.name"/></span>
+              </t>
+            </div>
+          </t>
         </div>
       </div>
 
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/eid_replacement/step3/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="eidStep4Validate()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
-function toggleContractSections(val) {
-    var show = val === '2yr_limited';
-    document.getElementById('sec-probation').style.display = show ? 'flex' : 'none';
-    document.getElementById('sec-salary').style.display = show ? 'flex' : 'none';
-    document.getElementById('sec-dates').style.display = show ? 'flex' : 'none';
+<script>//<![CDATA[
+// Auto-calculate total
+document.querySelectorAll('#salary_basic,#salary_accommodation,#salary_transport,#salary_other').forEach(function(el){
+  el.addEventListener('input',function(){
+    var b=parseFloat(document.getElementById('salary_basic').value)||0;
+    var a=parseFloat(document.getElementById('salary_accommodation').value)||0;
+    var t=parseFloat(document.getElementById('salary_transport').value)||0;
+    var o=parseFloat(document.getElementById('salary_other').value)||0;
+    document.getElementById('salary_total').value=(b+a+t+o).toFixed(2);
+  });
+});
+function toggleContractSections(v){
+  document.getElementById('sec-contract-details').style.display=v==='2yr_limited'?'flex':'none';
+  document.getElementById('upload-num').textContent=v==='2yr_limited'?'03':'02';
 }
 // attach listeners
 document.querySelectorAll('input[name="contract_type"]').forEach(function(r){
-    r.addEventListener('change', function(){ toggleContractSections(this.value); });
+  r.addEventListener('change',function(){ toggleContractSections(this.value); });
 });
-// init on load
-var checked = document.querySelector('input[name="contract_type"]:checked');
+var checked=document.querySelector('input[name="contract_type"]:checked');
 if(checked) toggleContractSections(checked.value);
+
+function eidStep4Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(el){el.textContent=msg;el.style.display="block";}}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  var ct=document.querySelector('input[name="contract_type"]:checked');
+  if(!ct){showErr('contract_err','Please select contract type.');valid=false;}else{
+    hideErr('contract_err');
+    if(ct.value==='2yr_limited'){
+      var prob=document.querySelector('input[name="probation_period"]:checked');
+      if(!prob){showErr('prob_err','Please select probation period.');valid=false;}else hideErr('prob_err');
+      var np=document.querySelector('[name="notice_period"]');
+      var npv=np?np.value.trim():'';
+      if(npv.length&lt;5||npv.length&gt;100){showErr('notice_err','Notice period must be 5-100 characters.');valid=false;}else hideErr('notice_err');
+      var sb=document.querySelector('[name="salary_basic"]');
+      if(!sb||!sb.value){showErr('sal_basic_err','Please enter basic salary.');valid=false;}else hideErr('sal_basic_err');
+      var sa=document.querySelector('[name="salary_accommodation"]');
+      if(!sa||!sa.value){showErr('sal_acc_err','Please enter accommodation allowance.');valid=false;}else hideErr('sal_acc_err');
+      var st=document.querySelector('[name="salary_transport"]');
+      if(!st||!st.value){showErr('sal_trans_err','Please enter transport allowance.');valid=false;}else hideErr('sal_trans_err');
+      var so=document.querySelector('[name="salary_other"]');
+      if(!so||!so.value){showErr('sal_other_err','Please enter other allowance.');valid=false;}else hideErr('sal_other_err');
+      var stot=document.querySelector('[name="salary_total"]');
+      if(!stot||!stot.value){showErr('sal_total_err','Please enter total remuneration.');valid=false;}else hideErr('sal_total_err');
+      var ed=document.querySelector('[name="contract_execution"]');
+      if(!ed||!ed.value){showErr('exec_date_err','Please select contract execution date.');valid=false;}else hideErr('exec_date_err');
+      var sd=document.querySelector('[name="contract_start"]');
+      if(!sd||!sd.value){showErr('start_date_err','Please select contract start date.');valid=false;}else hideErr('start_date_err');
+      var cd=document.querySelector('[name="contract_end"]');
+      if(!cd||!cd.value){showErr('end_date_err','Please select contract end date.');valid=false;}else hideErr('end_date_err');
+    }
+  }
+  // File upload validation - at least one file required
+  var fileInput = document.querySelector('input[name="doc_contract"]');
+  var hasExisting = document.querySelector('.doc-contract-existing');
+  if (fileInput &amp;&amp; fileInput.files.length === 0 &amp;&amp; !hasExisting) {
+    showErr('doc_contract_err','Please upload at least one contract document.');
+    valid=false;
+  } else {
+    hideErr('doc_contract_err');
+  }
+
+  if(valid)document.querySelector('form').submit();
+}
+//]]>
 </script>
 </body></html>
 </template>
+
+
+
 
 <!-- DECLARATION -->
 <template id="eid_replacement_declaration" name="EID Replacement Declaration">
@@ -949,6 +1246,7 @@ if(checked) toggleContractSections(checked.value);
             <p>I hereby declare that all the information provided in this application is true, accurate and complete. I understand that providing false information may result in rejection of the application and legal consequences. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
             <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
               <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;" t-att-checked="'checked' if record.declaration_accepted else None"/>
+      <div id="eid_decl_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the declaration to proceed.</div>
               <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
             </label>
           </div>
@@ -961,11 +1259,23 @@ if(checked) toggleContractSections(checked.value);
         <t t-else="">
           <a t-attf-href="/spc/apply/eid_replacement/step3/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
         </t>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="eidDeclValidate()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script>//<![CDATA[
+function eidDeclValidate() {
+  var decl = document.querySelector('[name="declaration_accepted"]');
+  if (!decl || !decl.checked) {
+    document.getElementById('eid_decl_err').style.display='block';
+    return;
+  }
+  document.getElementById('eid_decl_err').style.display='none';
+  document.querySelector('form').submit();
+}
+//]]>
+</script>
+</body></html>
 </template>
 
 <!-- REVIEW -->

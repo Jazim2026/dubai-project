@@ -230,11 +230,55 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
         </div>
         <div class="spc-nav-buttons" style="justify-content:flex-end">
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="vipMedStep1Validate()">NEXT</button>
         </div>
     </form>
 </div>
-</div></body></html>
+</div><script>//<![CDATA[
+function vipMedStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  function addErr(field,id){if(!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";field.insertAdjacentElement("afterend",e);}}
+
+  var asel=document.querySelector('[name="applicant_select"]');
+  var aname=document.querySelector('[name="applicant_name"]');
+  var aselv=asel?asel.value.trim():"";
+  var anamev=aname?aname.value.trim():"";
+  if(!aselv&amp;&amp;anamev.length&lt;3){addErr(aname,"ap_err");showErr("ap_err","Please select an applicant or enter name (min 3 characters).");valid=false;}else hideErr("ap_err");
+
+  var fn=document.querySelector('[name="first_name"]');addErr(fn,"fn_err");
+  if(!fn||fn.value.trim().length&lt;3||fn.value.trim().length&gt;50){showErr("fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("fn_err");
+
+  var ln=document.querySelector('[name="last_name"]');addErr(ln,"ln_err");
+  if(!ln||ln.value.trim().length&lt;3||ln.value.trim().length&gt;50){showErr("ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("ln_err");
+
+  var ph=document.querySelector('[name="contact_number"]');addErr(ph,"ph_err");
+  var phv=ph?ph.value.trim().replace(/\D/g,""):"";
+  if(phv.length&lt;10||phv.length&gt;20){showErr("ph_err","Contact number must be 10-20 digits.");valid=false;}else hideErr("ph_err");
+
+  var em=document.querySelector('[name="email"]');addErr(em,"em_err");
+  var emv=em?em.value.trim():"";
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)){showErr("em_err","Please enter a valid email address.");valid=false;}else hideErr("em_err");
+
+  var pd=document.querySelector('[name="preferred_date"]');addErr(pd,"pd_err");
+  if(!pd||!pd.value){showErr("pd_err","Please select a preferred date.");valid=false;}else hideErr("pd_err");
+
+  var bv=document.querySelector('[name="building_villa"]');addErr(bv,"bv_err");
+  if(!bv||bv.value.trim().length&lt;3||bv.value.trim().length&gt;50){showErr("bv_err","Building/Villa must be 3-50 characters.");valid=false;}else hideErr("bv_err");
+
+  var ct=document.querySelector('[name="city"]');
+  if(!document.getElementById("ct_err")){var e=document.createElement("div");e.id="ct_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";ct.parentElement.insertAdjacentElement("afterend",e);}
+  if(!ct||!ct.value){showErr("ct_err","Please select a city.");valid=false;}else hideErr("ct_err");
+
+  var lm=document.querySelector('[name="nearest_landmark"]');addErr(lm,"lm_err");
+  if(!lm||lm.value.trim().length&lt;3||lm.value.trim().length&gt;50){showErr("lm_err","Landmark must be 3-50 characters.");valid=false;}else hideErr("lm_err");
+
+  if(valid)document.querySelector("form").submit();
+}
+//]]>
+</script>
+</body></html>
 </template>
 
 <!-- VIP MEDICAL EID - STEP 2 -->
@@ -276,12 +320,21 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/vip-medical-eid/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="vipMedStep2Validate()">NEXT</button>
         </div>
     </form>
 </div>
 </div>
-<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+<script>//<![CDATA[
+function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function vipMedStep2Validate(){
+  var valid=true;
+  var p=document.getElementById("passport_photo");if(!p||p.files.length===0){if(!document.getElementById("ph2_err")){var e=document.createElement("div");e.id="ph2_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";p.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ph2_err").textContent="Please upload passport-sized photo.";document.getElementById("ph2_err").style.display="block";valid=false;}else{var pe=document.getElementById("ph2_err");if(pe)pe.style.display="none";}
+  var v=document.getElementById("entry_visa");if(!v||v.files.length===0){if(!document.getElementById("ev_err")){var e=document.createElement("div");e.id="ev_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";v.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ev_err").textContent="Please upload entry visa document.";document.getElementById("ev_err").style.display="block";valid=false;}else{var ve=document.getElementById("ev_err");if(ve)ve.style.display="none";}
+  if(valid)document.querySelector("form").submit();
+}
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -420,7 +473,9 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                     </select>
                 </div>
                 <input type="text" id="lic_manual" name="license_number_manual" class="field-input" placeholder="Or type license number manually" t-att-value="record.license_number if record else ''"/>
+        <div id="lic_err" style="color:red;font-size:12px;display:none;margin-top:4px">License number must be 5-15 alphanumeric characters.</div>
                 <input type="text" name="company_name" class="field-input" placeholder="Company name" t-att-value="record.company_name if record else ''"/>
+        <div id="cname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Company name must be 3-50 characters.</div>
             </div>
         </div>
         <div class="spc-section">
@@ -431,11 +486,29 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
         </div>
         <div class="spc-nav-buttons" style="justify-content:flex-end">
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="csValidateStep1()">NEXT</button>
         </div>
     </form>
 </div>
-</div></body></html>
+</div><script><![CDATA[
+function csValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var lic = document.getElementById('lic_manual');
+  var licv = lic ? lic.value.trim() : '';
+  if (licv.length &lt; 5 || licv.length &gt; 15 || !/^[A-Za-z0-9]+$/.test(licv)) {
+    showErr('lic_err','License number must be 5-15 alphanumeric characters.'); valid=false;
+  } else hideErr('lic_err');
+  var cn = document.querySelector('[name="company_name"]');
+  var cnv = cn ? cn.value.trim() : '';
+  if (cnv.length &lt; 3 || cnv.length &gt; 50) {
+    showErr('cname_err','Company name must be 3-50 characters.'); valid=false;
+  } else hideErr('cname_err');
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- COMPANY STAMP - STEP 2 DECLARATION -->
@@ -470,6 +543,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                     <p>Acknowledgement</p>
                     <div class="ack-row">
                         <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+        <div id="terms_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the declaration to proceed.</div>
                         <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
                     </div>
                 </div>
@@ -477,11 +551,21 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/company-stamp/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="csValidateStep2()">NEXT</button>
         </div>
     </form>
 </div>
-</div></body></html>
+</div><script>
+function csValidateStep2() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var terms = document.getElementById('termsCheck');
+  if (!terms || !terms.checked) { showErr('terms_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('terms_err');
+  if (valid) document.querySelector('form').submit();
+}
+</script>
+</body></html>
 </template>
 
 <!-- COMPANY STAMP - REVIEW -->
@@ -626,7 +710,8 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <div class="sec-title">Does the sponsor have visa with SPC?</div>
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="sponsor_has_spc_visa" value="yes" onchange="toggleSpcVisa('yes')"/> Yes</label>
-                    <label class="radio-label"><input type="radio" name="sponsor_has_spc_visa" value="no" onchange="toggleSpcVisa('no')"/> No</label>
+                    <label class="radio-label"><input type="radio" name="sponsor_has_spc_visa" value="no" onchange="toggleSpcVisa('no')"/>
+        <div id="spc_visa_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select an option.</div> No</label>
                 </div>
                 <div id="no_spc_msg" class="info-box hidden">Please ensure the sponsor&#8217;s physical Emirates ID is delivered to SPC Reception within 24 hours of submitting this request.</div>
             </div>
@@ -639,7 +724,8 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="sec-body">
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="sponsor_type" value="employee" onchange="toggleType('employee')"/> Employee</label>
-                    <label class="radio-label"><input type="radio" name="sponsor_type" value="investor" onchange="toggleType('investor')"/> Investor</label>
+                    <label class="radio-label"><input type="radio" name="sponsor_type" value="investor" onchange="toggleType('investor')"/>
+        <div id="sponsor_type_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select Employee or Investor.</div> Investor</label>
                 </div>
             </div>
         </div>
@@ -662,12 +748,16 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <div style="font-size:13px;color:#6b7280;margin-bottom:8px">Gender</div>
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="sponsor_gender" value="male" onchange="toggleGender('male')"/> Male</label>
-                    <label class="radio-label"><input type="radio" name="sponsor_gender" value="female" onchange="toggleGender('female')"/> Female</label>
+                    <label class="radio-label"><input type="radio" name="sponsor_gender" value="female" onchange="toggleGender('female')"/>
+        <div id="gender_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a gender.</div> Female</label>
                 </div>
                 <input type="text" name="sponsor_first_name" class="field-input" placeholder="First Name"/>
+        <div id="sfn_err" style="color:red;font-size:12px;display:none;margin-top:4px">First name must be 2-50 characters (letters only).</div>
                 <input type="text" name="sponsor_last_name" class="field-input" placeholder="Last Name"/>
+        <div id="sln_err" style="color:red;font-size:12px;display:none;margin-top:4px">Last name must be 2-50 characters (letters only).</div>
                 <div id="salary_wrap" class="hidden">
                     <input type="number" name="salary" class="field-input" placeholder="Salary"/>
+        <div id="salary_err" style="color:red;font-size:12px;display:none;margin-top:4px">Salary must be 0-50 characters (numbers and characters only).</div>
                 </div>
                 <div id="desig_wrap" class="hidden">
                     <div class="select-wrap">
@@ -693,19 +783,22 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                             <option value="executive">Executive</option>
                         </select>
                     </div>
+                    <div id="desig_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a designation.</div>
                 </div>
                 <div id="marital_wrap" class="hidden">
                     <div style="font-size:13px;color:#6b7280;margin-bottom:8px">Marital Status</div>
                     <div class="radio-group">
                         <label class="radio-label"><input type="radio" name="sponsor_marital_status" value="married"/> Married</label>
                         <label class="radio-label"><input type="radio" name="sponsor_marital_status" value="widowed"/> Widowed</label>
-                        <label class="radio-label"><input type="radio" name="sponsor_marital_status" value="divorced"/> Divorced</label>
+                        <label class="radio-label"><input type="radio" name="sponsor_marital_status" value="divorced"/>
+        <div id="marital_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a marital status.</div> Divorced</label>
                     </div>
                 </div>
                 <div style="font-size:14px;color:#374151;margin:8px 0">Is the tenancy contract under the sponsor&#8217;s name?</div>
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="tenancy_under_sponsor" value="yes"/> Yes</label>
-                    <label class="radio-label"><input type="radio" name="tenancy_under_sponsor" value="no"/> No</label>
+                    <label class="radio-label"><input type="radio" name="tenancy_under_sponsor" value="no"/>
+        <div id="tenancy_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select an option.</div> No</label>
                 </div>
             </div>
         </div>
@@ -720,6 +813,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                         <div class="upload-label">Passport copy</div>
                         <div class="upload-box" onclick="document.getElementById('passport_copy').click()">
                             <input type="file" id="passport_copy" name="passport_copy" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lp')"/>
+        <div id="passport_file_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport copy is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="lp">File Upload</div>
                         </div>
                     </div>
@@ -727,6 +821,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                         <div class="upload-label">Residence visa copy</div>
                         <div class="upload-box" onclick="document.getElementById('residence_visa').click()">
                             <input type="file" id="residence_visa" name="residence_visa" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lrv')"/>
+        <div id="res_visa_file_err" style="color:red;font-size:12px;display:none;margin-top:4px">Residence visa copy is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="lrv">Residence visa copy</div>
                         </div>
                     </div>
@@ -734,6 +829,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                         <div class="upload-label">Emirates ID copy</div>
                         <div class="upload-box" onclick="document.getElementById('emirates_id').click()">
                             <input type="file" id="emirates_id" name="emirates_id" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'le')"/>
+        <div id="eid_file_err" style="color:red;font-size:12px;display:none;margin-top:4px">Emirates ID copy is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="le">File Upload</div>
                         </div>
                     </div>
@@ -741,6 +837,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                         <div class="upload-label">Attested Tenancy contract</div>
                         <div class="upload-box" onclick="document.getElementById('tenancy_contract').click()">
                             <input type="file" id="tenancy_contract" name="tenancy_contract" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lt')"/>
+        <div id="tenancy_file_err" style="color:red;font-size:12px;display:none;margin-top:4px">Attested tenancy contract is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="lt">Attested Tenancy contract</div>
                         </div>
                     </div>
@@ -748,6 +845,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                         <div class="upload-label">Most recent utility bill copy</div>
                         <div class="upload-box" onclick="document.getElementById('utility_bill').click()">
                             <input type="file" id="utility_bill" name="utility_bill" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lu')"/>
+        <div id="utility_file_err" style="color:red;font-size:12px;display:none;margin-top:4px">Utility bill copy is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="lu">Most recent utility bill copy</div>
                         </div>
                     </div>
@@ -764,7 +862,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 
         </div><!-- end visa_fields_wrap -->
         <div class="spc-nav-buttons" style="justify-content:flex-end">
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="dvValidateStep1()">NEXT</button>
         </div>
     </form>
 </div>
@@ -775,23 +873,74 @@ function toggleSpcVisa(v){
     document.getElementById('visa_fields_wrap').classList.toggle('hidden',v!=='yes');
 }
 function toggleType(v){
-    document.getElementById('emp_select').classList.toggle('hidden',v!=='employee');
-    document.getElementById('inv_select').classList.toggle('hidden',v!=='investor');
-    document.getElementById('salary_wrap').classList.toggle('hidden',v!=='employee');
-    document.getElementById('desig_wrap').classList.toggle('hidden',v!=='employee');
-    document.getElementById('trade_lic_wrap').classList.toggle('hidden',v!=='investor');
-    if(v==='investor') document.getElementById('marital_wrap').classList.remove('hidden');
-    else document.getElementById('marital_wrap').classList.add('hidden');
+    var ef = document.getElementById('employee_fields');
+    var iif = document.getElementById('investor_fields');
+    var sw = document.getElementById('salary_wrap');
+    var dw = document.getElementById('desig_wrap');
+    var mw = document.getElementById('marital_wrap');
+    if(ef) ef.classList.toggle('hidden',v!=='employee');
+    if(iif) iif.classList.toggle('hidden',v!=='investor');
+    if(sw) sw.classList.toggle('hidden',v!=='employee');
+    if(dw) dw.classList.toggle('hidden',v!=='employee');
+    if(mw) mw.classList.remove('hidden');
 }
 function toggleGender(v){
-    document.getElementById('marital_wrap').classList.remove('hidden');
+    var mw = document.getElementById('marital_wrap');
+    if(mw) mw.classList.remove('hidden');
 }
-function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function dvValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  function radioVal(name) { var r=document.querySelector('[name="'+name+'"]:checked'); return r?r.value:''; }
+
+  if (!radioVal('sponsor_has_spc_visa')) { showErr('spc_visa_err','Please select an option.'); valid=false; } else hideErr('spc_visa_err');
+
+  var spcVisa = radioVal('sponsor_has_spc_visa');
+  if (spcVisa === 'yes') {
+    if (!radioVal('sponsor_type')) { showErr('sponsor_type_err','Please select Employee or Investor.'); valid=false; } else hideErr('sponsor_type_err');
+    if (!radioVal('sponsor_gender')) { showErr('gender_err','Please select a gender.'); valid=false; } else hideErr('gender_err');
+
+    var fn = document.querySelector('[name="sponsor_first_name"]');
+    var fnv = fn ? fn.value.trim() : '';
+    if (fnv.length &lt; 2 || fnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(fnv)) { showErr('sfn_err','First name must be 2-50 characters (letters only).'); valid=false; } else hideErr('sfn_err');
+
+    var ln = document.querySelector('[name="sponsor_last_name"]');
+    var lnv = ln ? ln.value.trim() : '';
+    if (lnv.length &lt; 2 || lnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(lnv)) { showErr('sln_err','Last name must be 2-50 characters (letters only).'); valid=false; } else hideErr('sln_err');
+
+    var sType = radioVal('sponsor_type');
+    if (sType === 'employee') {
+      var sal = document.querySelector('[name="salary"]');
+      var salv = sal ? sal.value.trim() : '';
+      if (salv.length &gt; 50) { showErr('salary_err','Salary must be 0-50 characters.'); valid=false; } else hideErr('salary_err');
+      var desig = document.querySelector('[name="designation"]');
+      if (!desig || !desig.value) { showErr('desig_err','Please select a designation.'); valid=false; } else hideErr('desig_err');
+    }
+
+    if (!radioVal('sponsor_marital_status')) { showErr('marital_err','Please select a marital status.'); valid=false; } else hideErr('marital_err');
+    if (!radioVal('tenancy_under_sponsor')) { showErr('tenancy_err','Please select an option.'); valid=false; } else hideErr('tenancy_err');
+
+    var files = [
+      ['passport_copy','passport_file_err','Passport copy is required.'],
+      ['residence_visa','res_visa_file_err','Residence visa copy is required.'],
+      ['emirates_id','eid_file_err','Emirates ID copy is required.'],
+      ['tenancy_contract','tenancy_file_err','Attested tenancy contract is required.'],
+      ['utility_bill','utility_file_err','Utility bill copy is required.'],
+    ];
+    files.forEach(function(f) {
+      var el = document.getElementById(f[0]);
+      if (!el || !el.files || el.files.length === 0) { showErr(f[1], f[2]); valid=false; } else hideErr(f[1]);
+    });
+  }
+
+  if (valid) document.querySelector('form').submit();
+}
 ]]></script>
 </body></html>
 </template>
 
-<!-- DEPENDENT VISA - REVIEW -->
 <template id="dependent_visa_review" name="Dependent Visa Review">
 <html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
@@ -898,24 +1047,31 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
             <div class="sec-body">
                 <div class="sec-title">Dependent details</div>
                 <input type="text" name="dep_first_name" class="field-input" placeholder="First name"/>
+        <div id="dfn_err" style="color:red;font-size:12px;display:none;margin-top:4px">First name must be 2-50 characters (letters only).</div>
                 <input type="text" name="dep_last_name" class="field-input" placeholder="Last name"/>
+        <div id="dln_err" style="color:red;font-size:12px;display:none;margin-top:4px">Last name must be 2-50 characters (letters only).</div>
                 <input type="text" name="dep_father_name" class="field-input" placeholder="Father's name"/>
+        <div id="dfath_err" style="color:red;font-size:12px;display:none;margin-top:4px">Father's name must be 2-50 characters (letters only).</div>
                 <input type="text" name="dep_mother_name" class="field-input" placeholder="Mother's name"/>
+        <div id="dmoth_err" style="color:red;font-size:12px;display:none;margin-top:4px">Mother's name must be 2-50 characters (letters only).</div>
                 <div class="phone-wrap">
                     <span class="phone-flag">&#127462;&#127466; +971</span>
                     <input type="tel" name="dep_mobile" placeholder="UAE mobile number"/>
+        <div id="dmob_err" style="color:red;font-size:12px;display:none;margin-top:4px">Phone must be 10-15 digits.</div>
                 </div>
                 <div class="select-wrap">
                     <select name="dep_nationality" class="field-select">
                         <option value="">Nationality</option>
                         <option>Afghan</option><option>Albanian</option><option>Algerian</option><option>American</option><option>Andorran</option><option>Angolan</option><option>Argentinian</option><option>Armenian</option><option>Australian</option><option>Austrian</option><option>Azerbaijani</option><option>Bahraini</option><option>Bangladeshi</option><option>Belarusian</option><option>Belgian</option><option>Bolivian</option><option>Bosnian</option><option>Brazilian</option><option>British</option><option>Bulgarian</option><option>Cameroonian</option><option>Canadian</option><option>Chilean</option><option>Chinese</option><option>Colombian</option><option>Congolese</option><option>Croatian</option><option>Cuban</option><option>Czech</option><option>Danish</option><option>Dutch</option><option>Ecuadorian</option><option>Egyptian</option><option>Emirati</option><option>Estonian</option><option>Ethiopian</option><option>Finnish</option><option>French</option><option>Georgian</option><option>German</option><option>Ghanaian</option><option>Greek</option><option>Guatemalan</option><option>Honduran</option><option>Hungarian</option><option>Indian</option><option>Indonesian</option><option>Iranian</option><option>Iraqi</option><option>Irish</option><option>Israeli</option><option>Italian</option><option>Ivorian</option><option>Japanese</option><option>Jordanian</option><option>Kazakhstani</option><option>Kenyan</option><option>Korean</option><option>Kuwaiti</option><option>Kyrgyz</option><option>Lebanese</option><option>Libyan</option><option>Lithuanian</option><option>Luxembourgish</option><option>Malaysian</option><option>Maldivian</option><option>Mexican</option><option>Moldovan</option><option>Moroccan</option><option>Mozambican</option><option>Namibian</option><option>Nepalese</option><option>New Zealander</option><option>Nicaraguan</option><option>Nigerian</option><option>Norwegian</option><option>Omani</option><option>Pakistani</option><option>Palestinian</option><option>Panamanian</option><option>Paraguayan</option><option>Peruvian</option><option>Philippine</option><option>Polish</option><option>Portuguese</option><option>Qatari</option><option>Romanian</option><option>Russian</option><option>Saudi</option><option>Senegalese</option><option>Serbian</option><option>Singaporean</option><option>Slovak</option><option>Somali</option><option>South African</option><option>Spanish</option><option>Sri Lankan</option><option>Sudanese</option><option>Swedish</option><option>Swiss</option><option>Syrian</option><option>Taiwanese</option><option>Tajik</option><option>Tanzanian</option><option>Thai</option><option>Tunisian</option><option>Turkish</option><option>Ugandan</option><option>Ukrainian</option><option>Uruguayan</option><option>Uzbek</option><option>Venezuelan</option><option>Vietnamese</option><option>Yemeni</option><option>Zambian</option><option>Zimbabwean</option>
                     </select>
+        <div id="dnat_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select nationality.</div>
                 </div>
                 <div class="select-wrap">
                     <select name="dep_prev_nationality" class="field-select">
                         <option value="">Previous nationality</option>
                         <option>Afghan</option><option>Albanian</option><option>Algerian</option><option>American</option><option>Andorran</option><option>Angolan</option><option>Argentinian</option><option>Armenian</option><option>Australian</option><option>Austrian</option><option>Azerbaijani</option><option>Bahraini</option><option>Bangladeshi</option><option>Belarusian</option><option>Belgian</option><option>Bolivian</option><option>Bosnian</option><option>Brazilian</option><option>British</option><option>Bulgarian</option><option>Cameroonian</option><option>Canadian</option><option>Chilean</option><option>Chinese</option><option>Colombian</option><option>Congolese</option><option>Croatian</option><option>Cuban</option><option>Czech</option><option>Danish</option><option>Dutch</option><option>Ecuadorian</option><option>Egyptian</option><option>Emirati</option><option>Estonian</option><option>Ethiopian</option><option>Finnish</option><option>French</option><option>Georgian</option><option>German</option><option>Ghanaian</option><option>Greek</option><option>Guatemalan</option><option>Honduran</option><option>Hungarian</option><option>Indian</option><option>Indonesian</option><option>Iranian</option><option>Iraqi</option><option>Irish</option><option>Israeli</option><option>Italian</option><option>Ivorian</option><option>Japanese</option><option>Jordanian</option><option>Kazakhstani</option><option>Kenyan</option><option>Korean</option><option>Kuwaiti</option><option>Kyrgyz</option><option>Lebanese</option><option>Libyan</option><option>Lithuanian</option><option>Luxembourgish</option><option>Malaysian</option><option>Maldivian</option><option>Mexican</option><option>Moldovan</option><option>Moroccan</option><option>Mozambican</option><option>Namibian</option><option>Nepalese</option><option>New Zealander</option><option>Nicaraguan</option><option>Nigerian</option><option>Norwegian</option><option>Omani</option><option>Pakistani</option><option>Palestinian</option><option>Panamanian</option><option>Paraguayan</option><option>Peruvian</option><option>Philippine</option><option>Polish</option><option>Portuguese</option><option>Qatari</option><option>Romanian</option><option>Russian</option><option>Saudi</option><option>Senegalese</option><option>Serbian</option><option>Singaporean</option><option>Slovak</option><option>Somali</option><option>South African</option><option>Spanish</option><option>Sri Lankan</option><option>Sudanese</option><option>Swedish</option><option>Swiss</option><option>Syrian</option><option>Taiwanese</option><option>Tajik</option><option>Tanzanian</option><option>Thai</option><option>Tunisian</option><option>Turkish</option><option>Ugandan</option><option>Ukrainian</option><option>Uruguayan</option><option>Uzbek</option><option>Venezuelan</option><option>Vietnamese</option><option>Yemeni</option><option>Zambian</option><option>Zimbabwean</option>
                     </select>
+        <div id="dpnat_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select previous nationality.</div>
                 </div>
                 <div class="select-wrap">
                     <select name="dep_marital_status" class="field-select">
@@ -925,6 +1081,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <option value="divorced">Divorced</option>
                         <option value="widowed">Widowed</option>
                     </select>
+        <div id="dmar_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select marital status.</div>
                 </div>
                 <div class="select-wrap">
                     <select name="dep_religion" class="field-select">
@@ -935,6 +1092,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <option value="buddhism">Buddhism</option>
                         <option value="other">Other</option>
                     </select>
+        <div id="drel_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select religion.</div>
                 </div>
             </div>
         </div>
@@ -948,6 +1106,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <div class="upload-label">Passport copy</div>
                         <div class="upload-box" onclick="document.getElementById('dep_passport').click()">
                             <input type="file" id="dep_passport" name="dep_passport" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldp')"/>
+        <div id="dep_passport_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport copy is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldp">File Upload</div>
                         </div>
                     </div>
@@ -955,6 +1114,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <div class="upload-label">High resolution photo (as per guidelines)</div>
                         <div class="upload-box" onclick="document.getElementById('dep_photo').click()">
                             <input type="file" id="dep_photo" name="dep_photo" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldph')"/>
+        <div id="dep_photo_err" style="color:red;font-size:12px;display:none;margin-top:4px">High resolution photo is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldph">High resolution photo (as per guidelines)</div>
                         </div>
                     </div>
@@ -962,6 +1122,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <div class="upload-label">Passport special page</div>
                         <div class="upload-box" onclick="document.getElementById('dep_passport_special').click()">
                             <input type="file" id="dep_passport_special" name="dep_passport_special" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldps')"/>
+        <div id="dep_passport_sp_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport special page is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldps">Upload new file</div>
                         </div>
                     </div>
@@ -969,6 +1130,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <div class="upload-label">Attested NOC from father</div>
                         <div class="upload-box" onclick="document.getElementById('dep_noc').click()">
                             <input type="file" id="dep_noc" name="dep_noc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'ldnoc')"/>
+        <div id="dep_noc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Attested NOC from father is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="ldnoc">Attested NOC from father</div>
                         </div>
                         <div style="font-size:11px;color:#6b7280;margin-top:4px;max-width:200px">MOFA Attested Affidavit (Dependency Certificate) from Sponsor's Consulate stating that you will take care of the sponsored parents and be responsible for their wellbeing.</div>
@@ -978,16 +1140,58 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/dependent-visa/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="dvValidateStep2()">NEXT</button>
         </div>
     </form>
 </div>
 </div>
-<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+<script><![CDATA[
+function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function dvValidateStep2() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var dfn = document.querySelector('[name="dep_first_name"]');
+  var dfnv = dfn ? dfn.value.trim() : '';
+  if (dfnv.length &lt; 2 || dfnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dfnv)) { showErr('dfn_err','First name must be 2-50 characters.'); valid=false; } else hideErr('dfn_err');
+  var dln = document.querySelector('[name="dep_last_name"]');
+  var dlnv = dln ? dln.value.trim() : '';
+  if (dlnv.length &lt; 2 || dlnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dlnv)) { showErr('dln_err','Last name must be 2-50 characters.'); valid=false; } else hideErr('dln_err');
+  var dfath = document.querySelector('[name="dep_father_name"]');
+  var dfathv = dfath ? dfath.value.trim() : '';
+  if (dfathv.length &lt; 2 || dfathv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dfathv)) { showErr('dfath_err',"Father name must be 2-50 characters."); valid=false; } else hideErr('dfath_err');
+  var dmoth = document.querySelector('[name="dep_mother_name"]');
+  var dmothv = dmoth ? dmoth.value.trim() : '';
+  if (dmothv.length &lt; 2 || dmothv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dmothv)) { showErr('dmoth_err',"Mother name must be 2-50 characters."); valid=false; } else hideErr('dmoth_err');
+  var dmob = document.querySelector('[name="dep_mobile"]');
+  var dmobv = dmob ? dmob.value.trim() : '';
+  if (dmobv.length &lt; 10 || dmobv.length &gt; 15 || !/^[0-9]+$/.test(dmobv)) { showErr('dmob_err','Phone must be 10-15 digits.'); valid=false; } else hideErr('dmob_err');
+  var selects = [
+    ['dep_nationality','dnat_err','Please select nationality.'],
+    ['dep_prev_nationality','dpnat_err','Please select previous nationality.'],
+    ['dep_marital_status','dmar_err','Please select marital status.'],
+    ['dep_religion','drel_err','Please select religion.'],
+  ];
+  selects.forEach(function(s) {
+    var el = document.querySelector('[name="'+s[0]+'"]');
+    if (!el || !el.value) { showErr(s[1], s[2]); valid=false; } else hideErr(s[1]);
+  });
+  var files = [
+    ['dep_passport','dep_passport_err','Passport copy is required.'],
+    ['dep_photo','dep_photo_err','High resolution photo is required.'],
+    ['dep_passport_special','dep_passport_sp_err','Passport special page is required.'],
+    ['dep_noc','dep_noc_err','Attested NOC from father is required.'],
+  ];
+  files.forEach(function(f) {
+    var el = document.getElementById(f[0]);
+    if (!el || !el.files || el.files.length === 0) { showErr(f[1], f[2]); valid=false; } else hideErr(f[1]);
+  });
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
-<!-- DEPENDENT VISA - STEP 3: Application Details -->
 <template id="dependent_visa_step3" name="Dependent Visa Step 3">
 <html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
@@ -1018,7 +1222,8 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                 <div style="font-size:13px;color:#6b7280;margin-bottom:12px">Is the applicant staying inside or outside the UAE at the time of eVisa issuance?</div>
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="applicant_location" value="inside" onchange="toggleLocation('inside')"/> Inside</label>
-                    <label class="radio-label"><input type="radio" name="applicant_location" value="outside" onchange="toggleLocation('outside')"/> Outside</label>
+                    <label class="radio-label"><input type="radio" name="applicant_location" value="outside" onchange="toggleLocation('outside')"/>
+        <div id="loc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select applicant location.</div> Outside</label>
                 </div>
                 <!-- Fields shown only when Inside -->
                 <div id="inside_fields" class="hidden" style="margin-top:16px">
@@ -1027,7 +1232,8 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                     <div class="radio-group">
                         <label class="radio-label"><input type="radio" name="current_status" value="cancelled_resident" onchange="toggleStatus('cancelled_resident')"/> Cancelled resident visa</label>
                         <label class="radio-label" style="flex-direction:column;align-items:flex-start">
-                            <div style="display:flex;align-items:center;gap:8px"><input type="radio" name="current_status" value="valid_visa" onchange="toggleStatus('valid_visa')"/> Valid visa</div>
+                            <div style="display:flex;align-items:center;gap:8px"><input type="radio" name="current_status" value="valid_visa" onchange="toggleStatus('valid_visa')"/>
+        <div id="status_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select applicant current status.</div> Valid visa</div>
                             <div style="font-size:12px;color:#6b7280;padding-left:26px">(such as tourist, on arrival, etc.)</div>
                         </label>
                     </div>
@@ -1035,6 +1241,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <div class="upload-label">Upload cancelled resident visa document</div>
                         <div class="upload-box" onclick="document.getElementById('cancelled_visa_file').click()">
                             <input type="file" id="cancelled_visa_file" name="cancelled_visa_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lcv')"/>
+        <div id="cancelled_visa_err" style="color:red;font-size:12px;display:none;margin-top:4px">Cancelled resident visa document is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="lcv">Upload cancelled resident visa document</div>
                         </div>
                     </div>
@@ -1042,6 +1249,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                         <div class="upload-label">Upload valid visa document</div>
                         <div class="upload-box" onclick="document.getElementById('valid_visa_file').click()">
                             <input type="file" id="valid_visa_file" name="valid_visa_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lvv')"/>
+        <div id="valid_visa_err" style="color:red;font-size:12px;display:none;margin-top:4px">Valid visa document is required.</div>
                             <div class="upload-icon">&#11014;</div><div class="upload-text" id="lvv">Upload valid visa document</div>
                         </div>
                     </div>
@@ -1049,32 +1257,62 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                     <div style="font-size:15px;font-weight:700;color:#1a2340;margin-top:20px;margin-bottom:12px">Is change of status required?</div>
                     <div class="radio-group">
                         <label class="radio-label"><input type="radio" name="change_of_status" value="yes"/> Yes</label>
-                        <label class="radio-label"><input type="radio" name="change_of_status" value="no"/> No</label>
+                        <label class="radio-label"><input type="radio" name="change_of_status" value="no"/>
+        <div id="cos_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select if change of status is required.</div> No</label>
                     </div>
                 </div>
             </div>
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/dependent-visa/step2/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="dvValidateStep3()">NEXT</button>
         </div>
     </form>
 </div>
 </div>
 <script><![CDATA[
+function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
 function toggleLocation(v){
-    document.getElementById('inside_fields').classList.toggle('hidden', v !== 'inside');
+    var inf = document.getElementById('inside_fields');
+    if(inf) inf.classList.toggle('hidden', v !== 'inside');
 }
 function toggleStatus(v){
-    document.getElementById('cancelled_visa_doc').classList.toggle('hidden', v !== 'cancelled_resident');
-    document.getElementById('valid_visa_doc').classList.toggle('hidden', v !== 'valid_visa');
+    var cf = document.getElementById('cancelled_visa_doc');
+    var vf = document.getElementById('valid_visa_doc');
+    if(cf) cf.classList.toggle('hidden', v !== 'cancelled_resident');
+    if(vf) vf.classList.toggle('hidden', v !== 'valid_visa');
 }
-function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function dvValidateStep3() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  function radioVal(name) { var r=document.querySelector('[name="'+name+'"]:checked'); return r?r.value:''; }
+
+  var loc = radioVal('applicant_location');
+  if (!loc) { showErr('loc_err','Please select applicant location.'); valid=false; } else hideErr('loc_err');
+
+  if (loc === 'inside') {
+    var status = radioVal('current_status');
+    if (!status) { showErr('status_err','Please select applicant current status.'); valid=false; } else hideErr('status_err');
+
+    if (status === 'cancelled_resident') {
+      var cvf = document.getElementById('cancelled_visa_file');
+      if (!cvf || !cvf.files || cvf.files.length === 0) { showErr('cancelled_visa_err','Cancelled resident visa document is required.'); valid=false; } else hideErr('cancelled_visa_err');
+    }
+    if (status === 'valid_visa') {
+      var vvf = document.getElementById('valid_visa_file');
+      if (!vvf || !vvf.files || vvf.files.length === 0) { showErr('valid_visa_err','Valid visa document is required.'); valid=false; } else hideErr('valid_visa_err');
+    }
+  }
+
+  if (!radioVal('change_of_status')) { showErr('cos_err','Please select if change of status is required.'); valid=false; } else hideErr('cos_err');
+
+  if (valid) document.querySelector('form').submit();
+}
 ]]></script>
 </body></html>
 </template>
 
-<!-- DEPENDENT VISA - STEP 4: Remark -->
 <template id="dependent_visa_step4" name="Dependent Visa Step 4">
 <html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
@@ -1101,7 +1339,9 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
             <div class="sec-num">01</div>
             <div class="sec-body">
                 <textarea name="additional_info" class="field-input" style="min-height:80px;resize:none" placeholder="Additional information"></textarea>
+        <div id="addinfo_err" style="color:red;font-size:12px;display:none;margin-top:4px">Must be 4-100 characters (letters and numbers only).</div>
                 <textarea name="crm_comments" class="field-input" style="min-height:80px;resize:none;margin-top:8px" placeholder="CRM email comments"></textarea>
+        <div id="crm_err" style="color:red;font-size:12px;display:none;margin-top:4px">Must be 4-100 characters (letters and numbers only).</div>
             </div>
         </div>
         <div class="spc-section">
@@ -1110,22 +1350,42 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                 <div class="upload-label">Upload document</div>
                 <div class="upload-box" onclick="document.getElementById('remark_doc').click()">
                     <input type="file" id="remark_doc" name="remark_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="showName(this,'lrd')"/>
+        <div id="remark_doc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Document upload is required.</div>
                     <div class="upload-icon">&#11014;</div><div class="upload-text" id="lrd">Upload document</div>
                 </div>
             </div>
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/dependent-visa/step3/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="dvValidateStep4()">NEXT</button>
         </div>
     </form>
 </div>
 </div>
-<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+<script><![CDATA[
+function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function dvValidateStep4() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  var ai = document.querySelector('[name="additional_info"]');
+  var aiv = ai ? ai.value.trim() : '';
+  if (aiv.length &lt; 4 || aiv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(aiv)) { showErr('addinfo_err','Must be 4-100 characters (letters and numbers only).'); valid=false; } else hideErr('addinfo_err');
+
+  var crm = document.querySelector('[name="crm_comments"]');
+  var crmv = crm ? crm.value.trim() : '';
+  if (crmv.length &lt; 4 || crmv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(crmv)) { showErr('crm_err','Must be 4-100 characters (letters and numbers only).'); valid=false; } else hideErr('crm_err');
+
+  var rd = document.getElementById('remark_doc');
+  if (!rd || !rd.files || rd.files.length === 0) { showErr('remark_doc_err','Document upload is required.'); valid=false; } else hideErr('remark_doc_err');
+
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
-<!-- DEPENDENT VISA - STEP 5: Declaration -->
 <template id="dependent_visa_step5" name="Dependent Visa Step 5">
 <html><head><meta charset="utf-8"/><title>Dependent Visa | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
@@ -1164,6 +1424,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                     <p>Acknowledgement</p>
                     <div class="ack-row">
                         <input type="checkbox" name="dep_terms_agreed" id="depTermsCheck" value="yes"/>
+        <div id="dep_terms_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the terms and conditions.</div>
                         <label for="depTermsCheck">I have read and agree to the SPC Terms and Conditions.</label>
                     </div>
                 </div>
@@ -1171,11 +1432,21 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/dependent-visa/step4/#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="dvValidateStep5()">NEXT</button>
         </div>
     </form>
 </div>
-</div></body></html>
+</div><script>
+function dvValidateStep5() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var terms = document.getElementById('depTermsCheck');
+  if (!terms || !terms.checked) { showErr('dep_terms_err','Please agree to the terms and conditions.'); valid=false; } else hideErr('dep_terms_err');
+  if (valid) document.querySelector('form[action*="step5/submit"]').submit();
+}
+</script>
+</body></html>
 </template>
 
 
@@ -1283,8 +1554,11 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
             <div class="sec-body">
                 <div class="sec-title">Collection details</div>
                 <input type="date" name="collection_date" class="field-input" placeholder="Preferred collection date" t-att-value="str(record.collection_date) if record and record.collection_date else ''"/>
-                <input type="text" name="collection_time_frame" class="field-input" placeholder="Preferred collection time frame" t-att-value="record.collection_time_frame if record else ''"/>
+                <div id="cdate_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a valid collection date.</div>
+                <input type="time" name="collection_time_frame" class="field-input" t-att-value="record.collection_time_frame if record else ''"/>
+                <div id="ctime_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid collection time.</div>
                 <textarea name="collection_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.collection_address if record else ''"/></textarea>
+                <div id="caddr_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address must be 10-100 characters (letters and numbers only).</div>
             </div>
         </div>
         <!-- 02: Delivery details -->
@@ -1293,8 +1567,11 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
             <div class="sec-body">
                 <div class="sec-title">Delivery details</div>
                 <input type="date" name="delivery_date" class="field-input" placeholder="Preferred delivery date" t-att-value="str(record.delivery_date) if record and record.delivery_date else ''"/>
-                <input type="text" name="delivery_time_frame" class="field-input" placeholder="Preferred delivery time frame" t-att-value="record.delivery_time_frame if record else ''"/>
+                <div id="ddate_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a valid delivery date.</div>
+                <input type="time" name="delivery_time_frame" class="field-input" t-att-value="record.delivery_time_frame if record else ''"/>
+                <div id="dtime_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid delivery time.</div>
                 <textarea name="delivery_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.delivery_address if record else ''"/></textarea>
+                <div id="daddr_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address must be 10-100 characters (letters and numbers only).</div>
             </div>
         </div>
         <!-- 03: Remarks -->
@@ -1306,11 +1583,41 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
             </div>
         </div>
         <div class="spc-nav-buttons" style="justify-content:flex-end">
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="ddValidateStep1()">NEXT</button>
         </div>
     </form>
 </div>
-</div></body></html>
+</div>
+<script>
+function ddValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  var cdate = document.querySelector('[name="collection_date"]');
+  if (!cdate || !cdate.value) { showErr('cdate_err','Please select a valid collection date.'); valid=false; } else hideErr('cdate_err');
+
+  var ctime = document.querySelector('[name="collection_time_frame"]');
+  if (!ctime || !ctime.value) { showErr('ctime_err','Please enter a valid collection time.'); valid=false; } else hideErr('ctime_err');
+
+  var caddr = document.querySelector('[name="collection_address"]');
+  var caddrv = caddr ? caddr.value.trim() : '';
+  if (caddrv.length &lt; 10 || caddrv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(caddrv)) { showErr('caddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('caddr_err');
+
+  var ddate = document.querySelector('[name="delivery_date"]');
+  if (!ddate || !ddate.value) { showErr('ddate_err','Please select a valid delivery date.'); valid=false; } else hideErr('ddate_err');
+
+  var dtime = document.querySelector('[name="delivery_time_frame"]');
+  if (!dtime || !dtime.value) { showErr('dtime_err','Please enter a valid delivery time.'); valid=false; } else hideErr('dtime_err');
+
+  var daddr = document.querySelector('[name="delivery_address"]');
+  var daddrv = daddr ? daddr.value.trim() : '';
+  if (daddrv.length &lt; 10 || daddrv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(daddrv)) { showErr('daddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('daddr_err');
+
+  if (valid) document.querySelector('form').submit();
+}
+</script>
+</body></html>
 </template>
 
 <!-- DOCUMENT DELIVERY - STEP 2 DECLARATION -->
@@ -1345,6 +1652,7 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
                     <p>Acknowledgement</p>
                     <div class="ack-row">
                         <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+        <div id="terms_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please confirm the declaration to proceed.</div>
                         <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
                     </div>
                 </div>
@@ -1352,11 +1660,24 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/doc-delivery/#{record.delivery_type}/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="ddValidateDecl()">NEXT</button>
         </div>
     </form>
 </div>
-</div></body></html>
+</div>
+<script>
+function ddValidateDecl() {
+  var chk = document.getElementById('termsCheck');
+  var err = document.getElementById('terms_err');
+  if (!chk || !chk.checked) {
+    if (err) err.style.display = 'block';
+    return;
+  }
+  if (err) err.style.display = 'none';
+  document.querySelector('form').submit();
+}
+</script>
+</body></html>
 </template>
 
 <!-- DOCUMENT DELIVERY - REVIEW -->
@@ -1486,8 +1807,11 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
             <div class="sec-body">
                 <div class="sec-title">Collection details</div>
                 <input type="date" name="collection_date" class="field-input" placeholder="Preferred collection date" t-att-value="record.collection_date if record and record.collection_date else ''"/>
-                <input type="text" name="collection_time_frame" class="field-input" placeholder="Preferred collection time frame" t-att-value="record.collection_time_frame if record else ''"/>
+                <div id="cdate_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a valid collection date.</div>
+                <input type="time" name="collection_time_frame" class="field-input" t-att-value="record.collection_time_frame if record else ''"/>
+                <div id="ctime_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid collection time.</div>
                 <textarea name="collection_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.collection_address if record else ''"/></textarea>
+                <div id="caddr_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address must be 10-100 characters.</div>
             </div>
         </div>
 
@@ -1497,8 +1821,11 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
             <div class="sec-body">
                 <div class="sec-title">Delivery details</div>
                 <input type="date" name="delivery_date" class="field-input" placeholder="Preferred delivery date" t-att-value="record.delivery_date if record and record.delivery_date else ''"/>
-                <input type="text" name="delivery_time_frame" class="field-input" placeholder="Preferred delivery time frame" t-att-value="record.delivery_time_frame if record else ''"/>
+                <div id="ddate_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a valid delivery date.</div>
+                <input type="time" name="delivery_time_frame" class="field-input" t-att-value="record.delivery_time_frame if record else ''"/>
+                <div id="dtime_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid delivery time.</div>
                 <textarea name="delivery_address" class="field-input" style="min-height:70px;resize:none" placeholder="Address"><t t-esc="record.delivery_address if record else ''"/></textarea>
+                <div id="daddr_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address must be 10-100 characters.</div>
             </div>
         </div>
 
@@ -1512,11 +1839,40 @@ function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textCon
         </div>
 
         <div class="spc-nav-buttons" style="justify-content:flex-end">
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="ddcValidateStep1()">NEXT</button>
         </div>
     </form>
 </div>
 </div>
+<script>
+function ddcValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  var cdate = document.querySelector('[name="collection_date"]');
+  if (!cdate || !cdate.value) { showErr('cdate_err','Please select a valid collection date.'); valid=false; } else hideErr('cdate_err');
+
+  var ctime = document.querySelector('[name="collection_time_frame"]');
+  if (!ctime || !ctime.value) { showErr('ctime_err','Please enter a valid collection time.'); valid=false; } else hideErr('ctime_err');
+
+  var caddr = document.querySelector('[name="collection_address"]');
+  var caddrv = caddr ? caddr.value.trim() : '';
+  if (caddrv.length &lt; 10 || caddrv.length &gt; 100) { showErr('caddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('caddr_err');
+
+  var ddate = document.querySelector('[name="delivery_date"]');
+  if (!ddate || !ddate.value) { showErr('ddate_err','Please select a valid delivery date.'); valid=false; } else hideErr('ddate_err');
+
+  var dtime = document.querySelector('[name="delivery_time_frame"]');
+  if (!dtime || !dtime.value) { showErr('dtime_err','Please enter a valid delivery time.'); valid=false; } else hideErr('dtime_err');
+
+  var daddr = document.querySelector('[name="delivery_address"]');
+  var daddrv = daddr ? daddr.value.trim() : '';
+  if (daddrv.length &lt; 10 || daddrv.length &gt; 100) { showErr('daddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('daddr_err');
+
+  if (valid) document.querySelector('form').submit();
+}
+</script>
 <script><![CDATA[
 function selectStd(v, el) {
     document.querySelectorAll('.delivery-option').forEach(function(d){ d.style.borderColor='#e5e7eb'; d.style.background='white'; });
@@ -1569,6 +1925,7 @@ window.addEventListener('DOMContentLoaded', function(){
                     <p>Acknowledgement</p>
                     <div class="ack-row">
                         <input type="checkbox" name="terms_agreed" id="termsCheck" value="yes"/>
+        <div id="terms_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please confirm the declaration to proceed.</div>
                         <label for="termsCheck">I have read and agree to the SPC Terms and Conditions.</label>
                     </div>
                 </div>
@@ -1576,11 +1933,24 @@ window.addEventListener('DOMContentLoaded', function(){
         </div>
         <div class="spc-nav-buttons">
             <a t-attf-href="/spc/concierge/doc-delivery/courier/step1?record_id=#{record.id}" class="spc-btn-prev">PREVIOUS</a>
-            <button type="submit" class="spc-btn-next">NEXT</button>
+            <button type="button" class="spc-btn-next" onclick="ddcValidateDecl()">NEXT</button>
         </div>
     </form>
 </div>
-</div></body></html>
+</div>
+<script>
+function ddcValidateDecl() {
+  var chk = document.getElementById('termsCheck');
+  var err = document.getElementById('terms_err');
+  if (!chk || !chk.checked) {
+    if (err) err.style.display = 'block';
+    return;
+  }
+  if (err) err.style.display = 'none';
+  document.querySelector('form').submit();
+}
+</script>
+</body></html>
 </template>
 
 <!-- DOCUMENT DELIVERY COURIER - STEP 3 ADDITIONAL REMARKS -->
@@ -1623,7 +1993,16 @@ window.addEventListener('DOMContentLoaded', function(){
     </form>
 </div>
 </div>
-<script><![CDATA[function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}]]></script>
+<script>//<![CDATA[
+function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function vipMedStep2Validate(){
+  var valid=true;
+  var p=document.getElementById("passport_photo");if(!p||p.files.length===0){if(!document.getElementById("ph2_err")){var e=document.createElement("div");e.id="ph2_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";p.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ph2_err").textContent="Please upload passport-sized photo.";document.getElementById("ph2_err").style.display="block";valid=false;}else{var pe=document.getElementById("ph2_err");if(pe)pe.style.display="none";}
+  var v=document.getElementById("entry_visa");if(!v||v.files.length===0){if(!document.getElementById("ev_err")){var e=document.createElement("div");e.id="ev_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";v.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ev_err").textContent="Please upload entry visa document.";document.getElementById("ev_err").style.display="block";valid=false;}else{var ve=document.getElementById("ev_err");if(ve)ve.style.display="none";}
+  if(valid)document.querySelector("form").submit();
+}
+//]]>
+</script>
 </body></html>
 </template>
 

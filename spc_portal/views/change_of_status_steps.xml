@@ -220,34 +220,53 @@ textarea.field-input{resize:vertical;padding-top:8px}
 
             <div class="spc-nav-buttons">
                 <span></span>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="cosStep1Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
 <script>
-function cosVisaChange(v){
-    document.getElementById('cos_cancelled_docs').style.display = v==='cancelled' ? 'block' : 'none';
-    document.getElementById('cos_valid_docs').style.display = v==='valid' ? 'block' : 'none';
-}
-function cosFileSelected(input, key){
-    if(input.files &amp;&amp; input.files[0]){
-        var el = document.getElementById('uploaded_'+key);
-        el.style.display = 'flex';
-        document.getElementById('name_'+key).textContent = input.files[0].name;
-        document.getElementById('box_'+key).style.borderColor = '#1abc9c';
+function cosStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  function addErr(f,id){if(f){if(!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";f.insertAdjacentElement("afterend",e);}}}
+  function inRange(v,mn,mx){return v.length===Math.min(Math.max(v.length,mn),mx);}
+  var an=document.querySelector('[name="applicant_name"]');addErr(an,"cos_an_err");
+  var anv=an?an.value.trim():"";
+  if(!inRange(anv,3,50)){showErr("cos_an_err","Applicant name must be 3-50 characters.");valid=false;}else hideErr("cos_an_err");
+  var vs=document.querySelector('input[name="visa_status"]:checked');
+  var vsf=document.querySelector('input[name="visa_status"]');addErr(vsf,"cos_vs_err");
+  if(!vs){showErr("cos_vs_err","Please select visa status.");valid=false;}else{
+    hideErr("cos_vs_err");
+    if(vs.value==="cancelled"){
+      var dc=document.getElementById("doc_cancelled_visa");addErr(dc,"cos_dc_err");
+      if(!dc||dc.files.length===0){showErr("cos_dc_err","Please upload cancelled resident visa document.");valid=false;}else hideErr("cos_dc_err");
     }
+    if(vs.value==="valid"){
+      var dv=document.getElementById("doc_valid_visa");addErr(dv,"cos_dv_err");
+      if(!dv||dv.files.length===0){showErr("cos_dv_err","Please upload valid visa document.");valid=false;}else hideErr("cos_dv_err");
+    }
+  }
+  if(valid)document.querySelector("form").submit();
+}
+function cosVisaChange(v){
+  document.getElementById("cos_cancelled_docs").style.display=v==="cancelled"?"block":"none";
+  document.getElementById("cos_valid_docs").style.display=v==="valid"?"block":"none";
+}
+function cosFileSelected(input,key){
+  if(input.files){if(input.files[0]){
+    document.getElementById("uploaded_"+key).style.display="flex";
+    document.getElementById("name_"+key).textContent=input.files[0].name;
+    document.getElementById("box_"+key).style.borderColor="#1abc9c";
+  }}
 }
 function cosRemoveFile(key){
-    document.getElementById('uploaded_'+key).style.display = 'none';
-    document.getElementById('box_'+key).style.borderColor = '#1a2340';
-    var inputs = document.getElementById('box_'+key).querySelectorAll('input[type=file]');
-    inputs.forEach(function(i){i.value='';});
+  document.getElementById("uploaded_"+key).style.display="none";
+  document.getElementById("box_"+key).style.borderColor="#1a2340";
+  document.getElementById("box_"+key).querySelectorAll("input[type=file]").forEach(function(i){i.value="";});
 }
-(function(){
-    var vs = document.querySelector('input[name=visa_status]:checked');
-    if(vs) cosVisaChange(vs.value);
-})();
+(function(){var vs=document.querySelector("input[name=visa_status]:checked");if(vs)cosVisaChange(vs.value);})();
 </script>
 </body></html>
 </template>
@@ -343,11 +362,27 @@ textarea.field-input{resize:vertical;padding-top:8px}
             </div>
             <div class="spc-nav-buttons">
                 <a href="/spc/apply/change_of_status/step1" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="cosStep2Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>
+function cosStep2Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  function addErr(f,id){if(f){if(!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";f.insertAdjacentElement("afterend",e);}}}
+  function inRange(v,mn,mx){return v.length===Math.min(Math.max(v.length,mn),mx);}
+  var fn=document.querySelector('[name="first_name"]');addErr(fn,"cos2_fn_err");
+  var fnv=fn?fn.value.trim():"";
+  if(!inRange(fnv,3,50)){showErr("cos2_fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("cos2_fn_err");
+  var ln=document.querySelector('[name="last_name"]');addErr(ln,"cos2_ln_err");
+  var lnv=ln?ln.value.trim():"";
+  if(!inRange(lnv,3,50)){showErr("cos2_ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("cos2_ln_err");
+  if(valid)document.querySelector("form").submit();
+}
+</script>
 </body></html>
 </template>
 
@@ -446,11 +481,24 @@ textarea.field-input{resize:vertical;padding-top:8px}
             </div>
             <div class="spc-nav-buttons">
                 <a href="/spc/apply/change_of_status/step2" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="cosStep3Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>
+function cosStep3Validate(){
+  var valid=true;
+  var cb=document.querySelector('[name="declaration_accepted"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById("cos3_decl_err")){var e=document.createElement("div");e.id="cos3_decl_err";e.style.cssText="color:red;font-size:12px;margin-top:8px";cb.parentElement.insertAdjacentElement("afterend",e);}
+    document.getElementById("cos3_decl_err").textContent="Please accept the declaration to continue.";
+    document.getElementById("cos3_decl_err").style.display="block";
+    valid=false;
+  }else{var el=document.getElementById("cos3_decl_err");if(el)el.style.display="none";}
+  if(valid)document.querySelector("form").submit();
+}
+</script>
 </body></html>
 </template>
 

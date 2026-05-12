@@ -32,3 +32,4 @@ from . import spc_po_box
 from . import spc_movement_report
 
 from . import spc_eid_appointment
+from . import pending_details_doc

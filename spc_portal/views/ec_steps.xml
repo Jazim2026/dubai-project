@@ -99,7 +99,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
             </div>
         </div>
         <div class="nav-bar">
-            <button type="submit" class="btn-next">NEXT</button>
+            <button type="button" class="btn-next" onclick="ecStep1Validate()">NEXT</button>
         </div>
     </form>
 </div>
@@ -112,6 +112,15 @@ function toggleValidity(radio){
 function toggleEchannelValidity(radio){
     var sec = document.getElementById('echannel_validity_section');
     if(sec) sec.style.display = radio.value === 'yes' ? 'block' : 'none';
+}
+function ecStep1Validate(){
+    var ec=document.querySelector('input[name="confirm_establishment_card"]:checked');
+    if(!ec){
+        if(!document.getElementById("ec_ec_err")){var e=document.createElement("div");e.id="ec_ec_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";document.querySelector('input[name="confirm_establishment_card"]').parentElement.insertAdjacentElement("afterend",e);}
+        document.getElementById("ec_ec_err").textContent="Please select an option.";
+        return;
+    }
+    document.querySelector("form").submit();
 }
 </script>
 </body>
@@ -193,11 +202,24 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
         </div>
         <div class="nav-bar">
             <a href="#" onclick="history.back();return false;" class="btn-prev">PREVIOUS</a>
-            <button type="submit" class="btn-next">NEXT</button>
+            <button type="button" class="btn-next" onclick="ecDeclValidate()">NEXT</button>
         </div>
     </form>
 </div>
 </div>
+<script>
+function ecDeclValidate(){
+  var cb=document.querySelector('[name="declaration"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById("ec_decl_err")){var e=document.createElement("div");e.id="ec_decl_err";e.style.cssText="color:red;font-size:12px;margin-top:8px";cb.parentElement.insertAdjacentElement("afterend",e);}
+    document.getElementById("ec_decl_err").textContent="Please accept the declaration to continue.";
+    document.getElementById("ec_decl_err").style.display="block";
+    return;
+  }
+  var el=document.getElementById("ec_decl_err");if(el)el.style.display="none";
+  document.querySelector("form").submit();
+}
+</script>
 </body>
 </html>
 </template>
@@ -445,7 +467,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
             </div>
         </div>
         <div class="nav-bar">
-            <button type="submit" class="btn-next">NEXT</button>
+            <button type="button" class="btn-next" onclick="ecCompanyValidate()">NEXT</button>
         </div>
     </form>
 </div>
@@ -463,6 +485,18 @@ function switchMode(mode){
         sel.style.display='none';man.style.display='block';
         btnMan.className='toggle-btn';btnSel.className='toggle-btn inactive';
     }
+}
+function inRange(v,mn,mx){return v.length===Math.min(Math.max(v.length,mn),mx);}
+function ecCompanyValidate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  var man=document.getElementById('mode_manual');
+  if(man){if(man.style.display!=='none'){
+    var cn=document.querySelector('[name="company_name_manual"]');
+    if(cn){if(!inRange(cn.value.trim(),3,100)){showErr("ec_cn_err","Company name must be 3-100 characters.");valid=false;}else hideErr("ec_cn_err");}
+  }}
+  if(valid)document.querySelector("form").submit();
 }
 </script>
 </body>

@@ -291,12 +291,11 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
 
     <div class="nav-btns">
-      <button type="submit" class="btn-next">NEXT</button>
+      <button type="button" class="btn-next" onclick="poBoxStep1Validate()">NEXT</button>
     </div>
   </form>
 </div>
 <script>
-<![CDATA[
 var FEE={'light':'1,500.00','bronze':'3,000.00'};
 function onPkgChange(val){
   document.getElementById('feeDisplay').textContent=(FEE[val]||'10.00')+' ⓘ';
@@ -304,14 +303,14 @@ function onPkgChange(val){
   if(val==='light'){ex.classList.add('show');}else{ex.classList.remove('show');}
 }
 var PHONE_CODES=[
-  {c:'+971',n:'🇦🇪 +971'},{c:'+91',n:'🇮🇳 +91'},{c:'+1',n:'🇺🇸 +1'},
-  {c:'+44',n:'🇬🇧 +44'},{c:'+92',n:'🇵🇰 +92'},{c:'+880',n:'🇧🇩 +880'},
-  {c:'+63',n:'🇵🇭 +63'},{c:'+966',n:'🇸🇦 +966'},{c:'+974',n:'🇶🇦 +974'},
-  {c:'+965',n:'🇰🇼 +965'},{c:'+973',n:'🇧🇭 +973'},{c:'+968',n:'🇴🇲 +968'},
-  {c:'+962',n:'🇯🇴 +962'},{c:'+961',n:'🇱🇧 +961'},{c:'+20',n:'🇪🇬 +20'},
-  {c:'+90',n:'🇹🇷 +90'},{c:'+98',n:'🇮🇷 +98'},{c:'+86',n:'🇨🇳 +86'},
-  {c:'+81',n:'🇯🇵 +81'},{c:'+60',n:'🇲🇾 +60'},{c:'+65',n:'🇸🇬 +65'},
-  {c:'+94',n:'🇱🇰 +94'},{c:'+977',n:'🇳🇵 +977'},{c:'+61',n:'🇦🇺 +61'}
+  {c:'+971',n:'AE +971'},{c:'+91',n:'IN +91'},{c:'+1',n:'US +1'},
+  {c:'+44',n:'GB +44'},{c:'+92',n:'PK +92'},{c:'+880',n:'BD +880'},
+  {c:'+63',n:'PH +63'},{c:'+966',n:'SA +966'},{c:'+974',n:'QA +974'},
+  {c:'+965',n:'KW +965'},{c:'+973',n:'BH +973'},{c:'+968',n:'OM +968'},
+  {c:'+962',n:'JO +962'},{c:'+961',n:'LB +961'},{c:'+20',n:'EG +20'},
+  {c:'+90',n:'TR +90'},{c:'+98',n:'IR +98'},{c:'+86',n:'CN +86'},
+  {c:'+81',n:'JP +81'},{c:'+60',n:'MY +60'},{c:'+65',n:'SG +65'},
+  {c:'+94',n:'LK +94'},{c:'+977',n:'NP +977'},{c:'+61',n:'AU +61'}
 ];
 (function(){
   var sel=document.getElementById('phoneCodeSel');
@@ -323,7 +322,32 @@ var PHONE_CODES=[
     sel.appendChild(o);
   });
 })();
-]]>
+function inRange(v,mn,mx){return v.length===Math.min(Math.max(v.length,mn),mx);}
+function poBoxStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  function addErr(f,id){if(f){if(!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";f.insertAdjacentElement("afterend",e);}}}
+  var pkg=document.querySelector('input[name="package_type"]:checked');
+  var pkgf=document.querySelector('input[name="package_type"]');addErr(pkgf,"pb_pkg_err");
+  if(!pkg){showErr("pb_pkg_err","Please select a package type.");valid=false;}else{
+    hideErr("pb_pkg_err");
+    if(pkg.value==='light'){
+      var pn=document.querySelector('[name="prev_pobox_number"]');addErr(pn,"pb_pn_err");
+      if(!pn||!pn.value.trim()){showErr("pb_pn_err","Please enter previous PO Box number.");valid=false;}else hideErr("pb_pn_err");
+    }
+  }
+  if(pkg){if(pkg.value==='light'){
+    var mf=document.querySelector('[name="manager_fullname"]');addErr(mf,"pb_mf_err");
+    if(!inRange(mf?mf.value.trim():"",3,50)){showErr("pb_mf_err","Manager name must be 3-50 characters.");valid=false;}else hideErr("pb_mf_err");
+    var ph=document.querySelector('[name="manager_phone"]');addErr(ph,"pb_ph_err");
+    var phv=ph?ph.value.trim().replace(new RegExp("[^0-9]","g"),""):"";
+    if(!inRange(phv,7,15)){showErr("pb_ph_err","Please enter a valid phone number.");valid=false;}else hideErr("pb_ph_err");
+    var sp=document.querySelector('[name="manager_sponsor"]');addErr(sp,"pb_sp_err");
+    if(!inRange(sp?sp.value.trim():"",3,50)){showErr("pb_sp_err","Sponsor name must be 3-50 characters.");valid=false;}else hideErr("pb_sp_err");
+  }}
+  if(valid)document.querySelector("form").submit();
+}
 </script>
 </body></html>
 </template>
@@ -396,10 +420,23 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
     <div class="nav-btns">
       <a href="/spc/concierge/po-box/step1" class="btn-prev">PREVIOUS</a>
-      <button type="submit" class="btn-next">NEXT</button>
+      <button type="button" class="btn-next" onclick="poBoxDeclValidate()">NEXT</button>
     </div>
   </form>
 </div>
+<script>
+function poBoxDeclValidate(){
+  var valid=true;
+  var cb=document.querySelector('[name="terms_agreed"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById("pb_decl_err")){var e=document.createElement("div");e.id="pb_decl_err";e.style.cssText="color:red;font-size:12px;margin-top:8px";cb.parentElement.insertAdjacentElement("afterend",e);}
+    document.getElementById("pb_decl_err").textContent="Please accept the declaration to continue.";
+    document.getElementById("pb_decl_err").style.display="block";
+    valid=false;
+  }else{var el=document.getElementById("pb_decl_err");if(el)el.style.display="none";}
+  if(valid)document.querySelector("form").submit();
+}
+</script>
 </body></html>
 </template>
 

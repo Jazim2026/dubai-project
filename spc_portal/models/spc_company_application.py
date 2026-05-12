@@ -126,6 +126,26 @@ class SpcCompanyApplication(models.Model):
 
     def action_approve(self):
         self.write({'state': 'approved'})
+        # Auto-create approved company record
+        company_name = (
+            self.reserved_name or
+            self.name_preference_1 or
+            self.name_preference_2 or
+            self.name_preference_3 or
+            (self.partner_id.name + ' Company')
+        )
+        existing = self.env['spc.approved.company'].sudo().search([
+            ('application_id', '=', self.id)
+        ], limit=1)
+        if not existing:
+            self.env['spc.approved.company'].sudo().create({
+                'partner_id': self.partner_id.id,
+                'company_name': company_name,
+                'application_id': self.id,
+                'legal_type': self.legal_type or '',
+                'package_type': self.package_type or '',
+                'reference': self.reference or '',
+            })
 
     def action_reject(self):
         return {
@@ -289,3 +309,18 @@ class SpcRejectionWizard(models.TransientModel):
             'state': 'rejected',
             'rejection_reason': self.reason,
         })
+
+
+class SpcApprovedCompany(models.Model):
+    _name = 'spc.approved.company'
+    _description = 'SPC Approved Company'
+    _rec_name = 'company_name'
+    _order = 'create_date desc'
+
+    partner_id = fields.Many2one('res.partner', string='Customer', required=True, ondelete='cascade')
+    company_name = fields.Char(string='Company Name', required=True)
+    application_id = fields.Many2one('spc.company.application', string='Source Application', ondelete='set null')
+    legal_type = fields.Char(string='Legal Type')
+    package_type = fields.Char(string='Package Type')
+    reference = fields.Char(string='Reference')
+    active = fields.Boolean(default=True)

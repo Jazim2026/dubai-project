@@ -99,7 +99,8 @@
           <div class="sec-title">Account Information</div>
           <div class="radio-group-horiz">
             <label class="radio-label"><input type="radio" name="account_type" value="personal" onchange="checkAccountType('personal')" t-att-checked="'checked' if record and record.account_type == 'personal' else None"/> Personal</label>
-            <label class="radio-label"><input type="radio" name="account_type" value="corporate" onchange="checkAccountType('corporate')" t-att-checked="'checked' if record and record.account_type == 'corporate' else None"/> Corporate</label>
+            <label class="radio-label"><input type="radio" name="account_type" value="corporate" onchange="checkAccountType('corporate')" t-att-checked="'checked' if record and record.account_type == 'corporate' else None"/>
+      <div id="actype_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select Personal or Corporate.</div> Corporate</label>
           </div>
           <div id="personal-bank-wrap" style="display:none;">
             <div class="select-row">
@@ -115,6 +116,7 @@
                   <option value="enbd" t-att-selected="'selected' if record and record.preferred_bank == 'enbd' else None">Emirates NBD</option>
                   <option value="cbd" t-att-selected="'selected' if record and record.preferred_bank == 'cbd' else None">CBD</option>
                 </select>
+      <div id="pbank_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a bank account.</div>
               </div>
               <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
             </div>
@@ -122,12 +124,12 @@
         </div>
       </div>
       <div class="spc-nav-buttons">
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baValidateStep1()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 function checkAccountType(v) {
     document.getElementById('personal-bank-wrap').style.display = v === 'personal' ? 'block' : 'none';
     updateSidebar(v, 1);
@@ -143,7 +145,7 @@ function updateSidebar(accountType, shCount) {
     sb.innerHTML = '';
     if(accountType === 'corporate') {
         var steps = ['Company Information','Corporate Documents'];
-        for(var i=1; i&lt;=shCount; i++) steps.push('Shareholder Documents '+i);
+        for(var i=1; i<=shCount; i++) steps.push('Shareholder Documents '+i);
         steps.push('Corporate Bank Account','Review application','Payment');
         steps.forEach(function(s, idx) {
             sb.innerHTML += '<div class="progress-step"><div class="step-num">'+(idx+2)+'</div><div class="step-label">'+s+'</div></div>';
@@ -155,7 +157,21 @@ function updateSidebar(accountType, shCount) {
             '<div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>';
     }
 }
-</script>
+
+
+function baValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var at = document.querySelector('input[name="account_type"]:checked');
+  if (!at) { showErr('actype_err','Please select Personal or Corporate.'); valid=false; } else hideErr('actype_err');
+  if (at &amp;&amp; at.value === 'personal') {
+    var pb = document.querySelector('[name="preferred_bank"]');
+    if (!pb || !pb.value) { showErr('pbank_err','Please select a bank account.'); valid=false; } else hideErr('pbank_err');
+  }
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -194,28 +210,48 @@ function updateSidebar(accountType, shCount) {
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-eid">File Upload</div>
             <input type="file" name="doc_eid" style="display:none;" multiple="multiple" onchange="document.getElementById('n-eid').textContent=this.files.length+' file(s)'"/>
+      <div id="eid_err" style="color:red;font-size:12px;display:none;margin-top:4px">EID Copy is required.</div>
           </label>
           <div class="upload-label-text">Passport Copy</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-pass">File Upload</div>
             <input type="file" name="doc_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-pass').textContent=this.files.length+' file(s)'"/>
+      <div id="pass_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport Copy is required.</div>
           </label>
           <div class="upload-label-text">Salary certificate</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-salary">File Upload</div>
             <input type="file" name="doc_salary" style="display:none;" multiple="multiple" onchange="document.getElementById('n-salary').textContent=this.files.length+' file(s)'"/>
+      <div id="salary_err" style="color:red;font-size:12px;display:none;margin-top:4px">Salary Certificate is required.</div>
           </label>
         </div>
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/banking/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baValidateStep2()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function baValidateStep2() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var files = [
+    ['doc_eid','eid_err','EID Copy is required.'],
+    ['doc_passport','pass_err','Passport Copy is required.'],
+    ['doc_salary','salary_err','Salary Certificate is required.'],
+  ];
+  files.forEach(function(f) {
+    var el = document.querySelector('[name="'+f[0]+'"]');
+    if (!el || !el.files || el.files.length === 0) { showErr(f[1], f[2]); valid=false; } else hideErr(f[1]);
+  });
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- BANKING STEP 3: Corporate Bank Account -->
@@ -263,7 +299,8 @@ function updateSidebar(accountType, shCount) {
           <div style="font-size:15px;font-weight:600;color:#374151;margin-bottom:16px;">Is there a requirement to open a bank account?</div>
           <div class="radio-group-vert">
             <label class="radio-label"><input type="radio" name="need_bank_account" value="yes" onchange="checkBankReq('yes')"/> Yes</label>
-            <label class="radio-label"><input type="radio" name="need_bank_account" value="no" onchange="checkBankReq('no')"/> No</label>
+            <label class="radio-label"><input type="radio" name="need_bank_account" value="no" onchange="checkBankReq('no')"/>
+      <div id="bankreq_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select Yes or No.</div> No</label>
           </div>
           <div id="bank-provider-wrap" style="display:none;">
             <div class="select-row">
@@ -278,6 +315,7 @@ function updateSidebar(accountType, shCount) {
                   <option value="fab">FAB</option>
                   <option value="enbd">Emirates NBD</option>
                 </select>
+      <div id="finprov_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a preferred financial assistance service provider.</div>
               </div>
               <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
             </div>
@@ -291,16 +329,29 @@ function updateSidebar(accountType, shCount) {
         <t t-else="">
           <a t-attf-href="/spc/apply/banking/step2/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
         </t>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baValidateStep3()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 function checkBankReq(v) {
     document.getElementById('bank-provider-wrap').style.display = v === 'yes' ? 'block' : 'none';
 }
-</script>
+
+function baValidateStep3() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var br = document.querySelector('input[name="need_bank_account"]:checked');
+  if (!br) { showErr('bankreq_err','Please select Yes or No.'); valid=false; } else hideErr('bankreq_err');
+  if (br &amp;&amp; br.value === 'yes') {
+    var fp = document.querySelector('[name="preferred_financial_provider"]');
+    if (!fp || !fp.value) { showErr('finprov_err','Please select a preferred financial assistance service provider.'); valid=false; } else hideErr('finprov_err');
+  }
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -480,7 +531,8 @@ function checkBankReq(v) {
           <div style="font-size:14px;color:#374151;margin-bottom:12px;font-weight:500;">Is the Company registered with SPC Free Zone?</div>
           <div class="radio-group-horiz">
             <label class="radio-label"><input type="radio" name="company_registered_spc" value="yes" onchange="checkSpcReg('yes')"/> Yes</label>
-            <label class="radio-label"><input type="radio" name="company_registered_spc" value="no" onchange="checkSpcReg('no')"/> No</label>
+            <label class="radio-label"><input type="radio" name="company_registered_spc" value="no" onchange="checkSpcReg('no')"/>
+      <div id="spcreg_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select Yes or No.</div> No</label>
           </div>
           <div id="spc-yes-wrap" style="display:none;">
             <div class="select-row">
@@ -495,9 +547,11 @@ function checkBankReq(v) {
               <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
             </div>
             <input class="field-input" type="text" name="company_name_manual" placeholder="Company Name"/>
+      <div id="cname_man_err" style="color:red;font-size:12px;display:none;margin-top:4px">Type of company must be 3-50 characters.</div>
           </div>
           <div id="spc-no-wrap" style="display:none;">
             <input class="field-input" type="text" name="company_name_spc" id="company-name-input" placeholder="Type Company Name"/>
+      <div id="cname_spc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Company name must be 3-50 characters.</div>
           </div>
         </div>
       </div>
@@ -509,7 +563,8 @@ function checkBankReq(v) {
           <div style="font-size:14px;color:#374151;margin-bottom:12px;font-weight:500;">Is the Company a multi-shareholder entity?</div>
           <div class="radio-group-horiz">
             <label class="radio-label"><input type="radio" name="multi_shareholder" value="yes" onchange="checkMultiShareholder('yes')"/> Yes</label>
-            <label class="radio-label"><input type="radio" name="multi_shareholder" value="no" onchange="checkMultiShareholder('no')"/> No</label>
+            <label class="radio-label"><input type="radio" name="multi_shareholder" value="no" onchange="checkMultiShareholder('no')"/>
+      <div id="multish_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select Yes or No.</div> No</label>
           </div>
 
           <!-- Yes: shareholder count dropdown -->
@@ -523,6 +578,7 @@ function checkBankReq(v) {
                   <option value="3">03</option>
                   <option value="4">04</option>
                 </select>
+      <div id="shcount_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select number of shareholders.</div>
               </div>
               <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';renderShareholderInputs('')">x</button>
             </div>
@@ -533,18 +589,19 @@ function checkBankReq(v) {
           <div id="multi-no-wrap" style="display:none;">
             <input type="hidden" name="shareholder_count" value="1"/>
             <input class="field-input" type="text" name="shareholder_1_name" placeholder="Shareholder 1"/>
+      <div id="sh1name_err" style="color:red;font-size:12px;display:none;margin-top:4px">Shareholder name must be 3-50 characters.</div>
           </div>
         </div>
       </div>
 
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/banking/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baValidateStep1Corp()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 function checkSpcReg(v) {
     document.getElementById('spc-yes-wrap').style.display = v === 'yes' ? 'block' : 'none';
     document.getElementById('spc-no-wrap').style.display = v === 'no' ? 'block' : 'none';
@@ -554,13 +611,21 @@ function renderShareholderInputs(count) {
     var container = document.getElementById('sh-name-inputs');
     container.innerHTML = '';
     var n = parseInt(count) || 0;
-    for(var i=1; i&lt;=n; i++) {
+    for(var i=1; i<=n; i++) {
+        var wrap = document.createElement('div');
+        wrap.style.marginBottom = '8px';
         var inp = document.createElement('input');
         inp.className = 'field-input';
         inp.type = 'text';
         inp.name = 'shareholder_'+i+'_name';
-        inp.placeholder = 'Shareholder '+i;
-        container.appendChild(inp);
+        inp.placeholder = 'Shareholder '+i+' Name';
+        var err = document.createElement('div');
+        err.id = 'sh'+i+'name_err';
+        err.style.cssText = 'color:red;font-size:12px;display:none;margin-top:4px';
+        err.textContent = 'Shareholder '+i+' name must be 3-50 characters.';
+        wrap.appendChild(inp);
+        wrap.appendChild(err);
+        container.appendChild(wrap);
     }
     updateCorpSidebar(n);
 }
@@ -571,22 +636,73 @@ function updateCorpSidebar(shCount) {
     var n = parseInt(shCount) || 1;
     var html = '';
     var stepNum = 4;
-    for(var i=1; i&lt;=n; i++) {
-        html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+stepNum+'&lt;/div&gt;&lt;div class="step-label"&gt;Shareholder Documents '+i+'&lt;/div&gt;&lt;/div&gt;';
+    for(var i=1; i<=n; i++) {
+        html += '<div class="progress-step"><div class="step-num">'+stepNum+'</div><div class="step-label">Shareholder Documents '+i+'</div></div>';
         stepNum++;
     }
-    html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+stepNum+'&lt;/div&gt;&lt;div class="step-label"&gt;Corporate Bank Account&lt;/div&gt;&lt;/div&gt;';
-    html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+(stepNum+1)+'&lt;/div&gt;&lt;div class="step-label"&gt;Review application&lt;/div&gt;&lt;/div&gt;';
-    html += '&lt;div class="progress-step"&gt;&lt;div class="step-num"&gt;'+(stepNum+2)+'&lt;/div&gt;&lt;div class="step-label"&gt;Payment&lt;/div&gt;&lt;/div&gt;';
+    html += '<div class="progress-step"><div class="step-num">'+stepNum+'</div><div class="step-label">Corporate Bank Account</div></div>';
+    html += '<div class="progress-step"><div class="step-num">'+(stepNum+1)+'</div><div class="step-label">Review application</div></div>';
+    html += '<div class="progress-step"><div class="step-num">'+(stepNum+2)+'</div><div class="step-label">Payment</div></div>';
     sb.innerHTML = html;
 }
+
+window.addEventListener('DOMContentLoaded', function() {
+    var sc = document.getElementById('sh-count-sel');
+    if(sc &amp;&amp; sc.value) renderShareholderInputs(sc.value);
+    var ms = document.querySelector('input[name="multi_shareholder"]:checked');
+    if(ms) checkMultiShareholder(ms.value);
+    var spc = document.querySelector('input[name="company_registered_spc"]:checked');
+    if(spc) checkSpcReg(spc.value);
+});
 
 function checkMultiShareholder(v) {
     document.getElementById('multi-yes-wrap').style.display = v === 'yes' ? 'block' : 'none';
     document.getElementById('multi-no-wrap').style.display = v === 'no' ? 'block' : 'none';
     if(v === 'no') updateCorpSidebar(1);
 }
-</script>
+
+function baValidateStep1Corp() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  var spc = document.querySelector('input[name="company_registered_spc"]:checked');
+  if (!spc) { showErr('spcreg_err','Please select Yes or No.'); valid=false; } else hideErr('spcreg_err');
+  if (spc &amp;&amp; spc.value === 'yes') {
+    var cn = document.getElementById('company-name-input');
+    var cnv = cn ? cn.value.trim() : '';
+    if (cnv.length &lt; 3 || cnv.length &gt; 50) { showErr('cname_spc_err','Company name must be 3-50 characters.'); valid=false; } else hideErr('cname_spc_err');
+  }
+  if (spc &amp;&amp; spc.value === 'no') {
+    var cm = document.querySelector('[name="company_name_manual"]');
+    var cmv = cm ? cm.value.trim() : '';
+    if (cmv.length &lt; 3 || cmv.length &gt; 50) { showErr('cname_man_err','Type of company must be 3-50 characters.'); valid=false; } else hideErr('cname_man_err');
+  }
+
+  var ms = document.querySelector('input[name="multi_shareholder"]:checked');
+  if (!ms) { showErr('multish_err','Please select Yes or No.'); valid=false; } else hideErr('multish_err');
+
+  if (ms &amp;&amp; ms.value === 'yes') {
+    var sc = document.getElementById('sh-count-sel');
+    if (!sc || !sc.value) { showErr('shcount_err','Please select number of shareholders.'); valid=false; } else hideErr('shcount_err');
+    if (sc &amp;&amp; sc.value) {
+      var n = parseInt(sc.value);
+      for(var i=1; i<=n; i++) {
+        var sf = document.querySelector('[name="shareholder_'+i+'_name"]');
+        var sfv = sf ? sf.value.trim() : '';
+        if (sfv.length &lt; 3 || sfv.length &gt; 50) { showErr('sh'+i+'name_err','Shareholder '+i+' name must be 3-50 characters.'); valid=false; } else hideErr('sh'+i+'name_err');
+      }
+    }
+  }
+  if (ms &amp;&amp; ms.value === 'no') {
+    var s1 = document.querySelector('[name="shareholder_1_name"]');
+    var s1v = s1 ? s1.value.trim() : '';
+    if (s1v.length &lt; 3 || s1v.length &gt; 50) { showErr('sh1name_err','Shareholder name must be 3-50 characters.'); valid=false; } else hideErr('sh1name_err');
+  }
+
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -630,40 +746,64 @@ function checkMultiShareholder(v) {
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-bp">File Upload</div>
             <input type="file" name="doc_business_plan" style="display:none;" multiple="multiple" onchange="document.getElementById('n-bp').textContent=this.files.length+' file(s)'"/>
+      <div id="bp_err" style="color:red;font-size:12px;display:none;margin-top:4px">Business Plan is required.</div>
           </label>
           <div class="upload-label-text">Business License</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-bl">File Upload</div>
             <input type="file" name="doc_business_license" style="display:none;" multiple="multiple" onchange="document.getElementById('n-bl').textContent=this.files.length+' file(s)'"/>
+      <div id="bl_err" style="color:red;font-size:12px;display:none;margin-top:4px">Business License is required.</div>
           </label>
           <div class="upload-label-text">Formation Certificate</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-fc">File Upload</div>
             <input type="file" name="doc_formation_cert" style="display:none;" multiple="multiple" onchange="document.getElementById('n-fc').textContent=this.files.length+' file(s)'"/>
+      <div id="fc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Formation Certificate is required.</div>
           </label>
           <div class="upload-label-text">Share Certificate</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-sc">File Upload</div>
             <input type="file" name="doc_share_cert" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sc').textContent=this.files.length+' file(s)'"/>
+      <div id="sc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Share Certificate is required.</div>
           </label>
           <div class="upload-label-text">Tenancy Contract (Ejari)</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-ten">File Upload</div>
             <input type="file" name="doc_tenancy" style="display:none;" multiple="multiple" onchange="document.getElementById('n-ten').textContent=this.files.length+' file(s)'"/>
+      <div id="ten_err" style="color:red;font-size:12px;display:none;margin-top:4px">Tenancy Contract (Ejari) is required.</div>
           </label>
         </div>
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/banking/corp/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baValidateCorpDocs()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function baValidateCorpDocs() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var files = [
+    ['doc_business_plan','bp_err','Business Plan is required.'],
+    ['doc_business_license','bl_err','Business License is required.'],
+    ['doc_formation_cert','fc_err','Formation Certificate is required.'],
+    ['doc_share_cert','sc_err','Share Certificate is required.'],
+    ['doc_tenancy','ten_err','Tenancy Contract (Ejari) is required.'],
+  ];
+  files.forEach(function(f) {
+    var el = document.querySelector('[name="'+f[0]+'"]');
+    if (!el || !el.files || el.files.length === 0) { showErr(f[1], f[2]); valid=false; } else hideErr(f[1]);
+  });
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- BANKING SHAREHOLDER DOCS -->
@@ -710,24 +850,28 @@ function checkMultiShareholder(v) {
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-sh-eid">File Upload</div>
             <input type="file" name="doc_sh_eid" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-eid').textContent=this.files.length+' file(s)'"/>
+      <div id="sh_eid_err" style="color:red;font-size:12px;display:none;margin-top:4px">EID Copy Shareholder is required.</div>
           </label>
           <div class="upload-label-text">Passport copy Shareholder <t t-esc="sh_num"/></div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-sh-pass">File Upload</div>
             <input type="file" name="doc_sh_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-pass').textContent=this.files.length+' file(s)'"/>
+      <div id="sh_pass_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport Copy Shareholder is required.</div>
           </label>
           <div class="upload-label-text">Last 6 months bank statements of personal accounts (outside or inside UAE) Shareholder <t t-esc="sh_num"/></div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-sh-bank">File Upload</div>
             <input type="file" name="doc_sh_bank" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-bank').textContent=this.files.length+' file(s)'"/>
+      <div id="sh_bank_err" style="color:red;font-size:12px;display:none;margin-top:4px">Last 6 Months Bank Statements is required.</div>
           </label>
           <div class="upload-label-text">CV copy Shareholder <t t-esc="sh_num"/></div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-sh-cv">File Upload</div>
             <input type="file" name="doc_sh_cv" style="display:none;" multiple="multiple" onchange="document.getElementById('n-sh-cv').textContent=this.files.length+' file(s)'"/>
+      <div id="sh_cv_err" style="color:red;font-size:12px;display:none;margin-top:4px">CV Copy Shareholder is required.</div>
           </label>
           <div class="info-box">
             <span style="color:#f59e0b;font-size:18px;">&#9432;</span>
@@ -742,11 +886,29 @@ function checkMultiShareholder(v) {
         <t t-else="">
           <a t-attf-href="/spc/apply/banking/corp/shareholder/#{sh_num - 1}/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
         </t>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baValidateShDocs()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function baValidateShDocs() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var files = [
+    ['doc_sh_eid','sh_eid_err','EID Copy Shareholder is required.'],
+    ['doc_sh_passport','sh_pass_err','Passport Copy Shareholder is required.'],
+    ['doc_sh_bank','sh_bank_err','Last 6 Months Bank Statements is required.'],
+    ['doc_sh_cv','sh_cv_err','CV Copy Shareholder is required.'],
+  ];
+  files.forEach(function(f) {
+    var el = document.querySelector('[name="'+f[0]+'"]');
+    if (!el || !el.files || el.files.length === 0) { showErr(f[1], f[2]); valid=false; } else hideErr(f[1]);
+  });
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 
@@ -830,6 +992,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
           <div class="upload-row">
             <div class="upload-box-new">
               <input type="file" name="doc_old_trade_license" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Trade license';"/>
+      <div id="trade_license_err" style="color:red;font-size:12px;display:none;margin-top:4px">Trade License is required.</div>
               <span class="up-arrow">&#8679;</span>
               <span class="up-label">Trade license</span>
             </div>
@@ -848,6 +1011,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
           <div class="upload-row">
             <div class="upload-box-new">
               <input type="file" name="doc_old_formation_cert" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Formation certificate';"/>
+      <div id="formation_cert_err" style="color:red;font-size:12px;display:none;margin-top:4px">Formation Certificate is required.</div>
               <span class="up-arrow">&#8679;</span>
               <span class="up-label">Formation certificate</span>
             </div>
@@ -866,6 +1030,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
           <div class="upload-row">
             <div class="upload-box-new">
               <input type="file" name="doc_old_share_cert" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Share certificate';"/>
+      <div id="share_cert_err" style="color:red;font-size:12px;display:none;margin-top:4px">Share Certificate is required.</div>
               <span class="up-arrow">&#8679;</span>
               <span class="up-label">Share certificate</span>
             </div>
@@ -884,6 +1049,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
           <div class="upload-row">
             <div class="upload-box-new">
               <input type="file" name="doc_old_lease_agreement" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Lease agreement';"/>
+      <div id="lease_agreement_err" style="color:red;font-size:12px;display:none;margin-top:4px">Lease Agreement is required.</div>
               <span class="up-arrow">&#8679;</span>
               <span class="up-label">Lease agreement</span>
             </div>
@@ -902,6 +1068,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
           <div class="upload-row">
             <div class="upload-box-new">
               <input type="file" name="doc_old_memorandum" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Memorandum of association';"/>
+      <div id="memorandum_err" style="color:red;font-size:12px;display:none;margin-top:4px">Memorandum is required.</div>
               <span class="up-arrow">&#8679;</span>
               <span class="up-label">Memorandum of association</span>
             </div>
@@ -920,6 +1087,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
           <div class="upload-row">
             <div class="upload-box-new">
               <input type="file" name="doc_old_good_standing" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Certificate of good standing';"/>
+      <div id="good_standing_err" style="color:red;font-size:12px;display:none;margin-top:4px">Good Standing Certificate is required.</div>
               <span class="up-arrow">&#8679;</span>
               <span class="up-label" style="font-size:11px;">Certificate of good standing (if applicable)</span>
             </div>
@@ -938,6 +1106,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
           <div class="upload-row">
             <div class="upload-box-new">
               <input type="file" name="doc_old_incumbency" accept=".pdf,.jpg,.jpeg,.png" onchange="this.parentNode.querySelector('.up-label').textContent=this.files.length?(this.files.length+' file(s)'):'Incumbency certificate';"/>
+      <div id="incumbency_err" style="color:red;font-size:12px;display:none;margin-top:4px">Incumbency Certificate is required.</div>
               <span class="up-arrow">&#8679;</span>
               <span class="up-label" style="font-size:11px;">Incumbency certificate / Registry extract (if applicable)</span>
             </div>
@@ -972,11 +1141,32 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
       </div>
 
       <div class="spc-nav-buttons">
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baOldValidateStep1()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function baOldValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var files = [
+    ['doc_old_trade_license','trade_license_err','Trade License is required.'],
+    ['doc_old_formation_cert','formation_cert_err','Formation Certificate is required.'],
+    ['doc_old_share_cert','share_cert_err','Share Certificate is required.'],
+    ['doc_old_lease_agreement','lease_agreement_err','Lease Agreement is required.'],
+    ['doc_old_memorandum','memorandum_err','Memorandum is required.'],
+    ['doc_old_good_standing','good_standing_err','Good Standing Certificate is required.'],
+    ['doc_old_incumbency','incumbency_err','Incumbency Certificate is required.'],
+  ];
+  files.forEach(function(f) {
+    var el = document.querySelector('[name="'+f[0]+'"]');
+    if (!el || !el.files || el.files.length === 0) { showErr(f[1], f[2]); valid=false; } else hideErr(f[1]);
+  });
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- ═══════════════════════════════════════════════════
@@ -1054,7 +1244,8 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <label class="radio-label">
               <input type="radio" name="need_bank_account_old" value="no"
                 t-att-checked="(not record.need_bank_account_old or record.need_bank_account_old == 'no') and 'checked' or None"
-                onchange="toggleBank(this.value)"/> No
+                onchange="toggleBank(this.value)"/>
+      <div id="bankreq_old_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select Yes or No.</div> No
             </label>
           </div>
           <div id="bank-wrap" t-att-style="'display:' + ('flex' if record.need_bank_account_old == 'yes' else 'none') + ';align-items:center;max-width:480px;'">
@@ -1066,6 +1257,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <option value="rak" t-att-selected="record.preferred_financial_provider_old == 'rak' and 'selected' or None">RAK Bank</option>
                 <option value="bank_misr" t-att-selected="record.preferred_financial_provider_old == 'bank_misr' and 'selected' or None">Bank Misr</option>
               </select>
+      <div id="finprov_old_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a preferred bank account.</div>
             </div>
             <button type="button" class="clear-btn" onclick="document.querySelector('[name=preferred_financial_provider_old]').value=''">&#215;</button>
           </div>
@@ -1073,16 +1265,29 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/banking/old/docs/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baOldValidateStep2()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 function toggleBank(v) {
     document.getElementById('bank-wrap').style.display = v === 'yes' ? 'flex' : 'none';
 }
-</script>
+
+function baOldValidateStep2() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var br = document.querySelector('input[name="need_bank_account_old"]:checked');
+  if (!br) { showErr('bankreq_old_err','Please select Yes or No.'); valid=false; } else hideErr('bankreq_old_err');
+  if (br &amp;&amp; br.value === 'yes') {
+    var fp = document.querySelector('[name="preferred_financial_provider_old"]');
+    if (!fp || !fp.value) { showErr('finprov_old_err','Please select a preferred bank account.'); valid=false; } else hideErr('finprov_old_err');
+  }
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -1153,17 +1358,28 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
           <p style="font-size:13px;font-weight:600;color:#333;margin-bottom:12px;">Acknowledgement</p>
           <label class="ack-label">
             <input type="checkbox" name="declaration_agreed" value="1" required="required"/>
+      <div id="decl_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the declaration to proceed.</div>
             I have read and agree to the SPC Terms and Conditions.
           </label>
         </div>
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/banking/old/corp/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="baOldValidateDecl()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function baOldValidateDecl() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var decl = document.querySelector('[name="declaration_agreed"]');
+  if (!decl || !decl.checked) { showErr('decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('decl_err');
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- ═══════════════════════════════════════════════════

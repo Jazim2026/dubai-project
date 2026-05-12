@@ -236,24 +236,67 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
 
     <div class="nav-btns">
-      <button type="submit" class="btn-next">NEXT</button>
+      <button type="button" class="btn-next" onclick="eidApptStep1Validate()">NEXT</button>
     </div>
   </form>
 </div>
 <script>
-<![CDATA[
 function onTypeChange(type){
   document.querySelectorAll('.dynamic-section').forEach(function(s){s.classList.remove('show');});
   if(type==='employee') document.getElementById('empSection').classList.add('show');
   if(type==='investor') document.getElementById('invSection').classList.add('show');
   if(type==='student') document.getElementById('stuSection').classList.add('show');
 }
-function onProfileChange(prefix, val){
-  var manualId = prefix+'Manual';
-  var el = document.getElementById(manualId);
-  if(el){ if(val==='manual'){el.classList.add('show');}else{el.classList.remove('show');} }
+function onProfileChange(prefix,val){
+  var el=document.getElementById(prefix+'Manual');
+  if(el){if(val==='manual'){el.classList.add('show');}else{el.classList.remove('show');}}
 }
-]]>
+function inRange(v,mn,mx){return v.length===Math.min(Math.max(v.length,mn),mx);}
+function eidApptStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
+  function addErr(f,id){if(f){if(!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";f.insertAdjacentElement("afterend",e);}}}
+
+  var at=document.querySelector('input[name="applicant_type"]:checked');
+  var atf=document.querySelector('input[name="applicant_type"]');addErr(atf,"ea_at_err");
+  if(!at){showErr("ea_at_err","Please select applicant type.");valid=false;}else{
+    hideErr("ea_at_err");
+    if(at.value==='employee'){
+      var ep=document.getElementById('empProfileSel');
+      if(ep.value==='manual'){
+        var en=document.querySelector('[name="manual_employee_name"]');addErr(en,"ea_en_err");
+        if(!inRange(en?en.value.trim():"",3,50)){showErr("ea_en_err","Employee name must be 3-50 characters.");valid=false;}else hideErr("ea_en_err");
+      }
+    }
+    if(at.value==='investor'){
+      var ip=document.getElementById('invProfileSel');
+      if(ip.value==='manual'){
+        var inn=document.querySelector('[name="manual_investor_name"]');addErr(inn,"ea_in_err");
+        if(!inRange(inn?inn.value.trim():"",3,50)){showErr("ea_in_err","Investor name must be 3-50 characters.");valid=false;}else hideErr("ea_in_err");
+      }
+    }
+    if(at.value==='student'){
+      var sp=document.getElementById('stuProfileSel');
+      if(sp.value==='manual'){
+        var sn=document.querySelector('[name="manual_student_name"]');addErr(sn,"ea_sn_err");
+        if(!inRange(sn?sn.value.trim():"",3,50)){showErr("ea_sn_err","Student name must be 3-50 characters.");valid=false;}else hideErr("ea_sn_err");
+      }
+    }
+  }
+
+  var fn=document.querySelector('[name="first_name"]');addErr(fn,"ea_fn_err");
+  if(!inRange(fn?fn.value.trim():"",3,50)){showErr("ea_fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("ea_fn_err");
+
+  var ln=document.querySelector('[name="last_name"]');addErr(ln,"ea_ln_err");
+  if(!inRange(ln?ln.value.trim():"",3,50)){showErr("ea_ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("ea_ln_err");
+
+  var em=document.querySelector('[name="email"]');addErr(em,"ea_em_err");
+  var emRe=new RegExp("^[^@]+@[^@]+[.][^@]+$");
+  if(!emRe.test(em?em.value.trim():"")){showErr("ea_em_err","Please enter a valid email address.");valid=false;}else hideErr("ea_em_err");
+
+  if(valid)document.querySelector("form").submit();
+}
 </script>
 </body></html>
 </template>
@@ -327,10 +370,23 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
     <div class="nav-btns">
       <a href="/spc/employee-management/eid-appointment/step1" class="btn-prev">PREVIOUS</a>
-      <button type="submit" class="btn-next">NEXT</button>
+      <button type="button" class="btn-next" onclick="eidApptDeclValidate()">NEXT</button>
     </div>
   </form>
 </div>
+<script>
+function eidApptDeclValidate(){
+  var valid=true;
+  var cb=document.querySelector('[name="terms_agreed"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById("ea_decl_err")){var e=document.createElement("div");e.id="ea_decl_err";e.style.cssText="color:red;font-size:12px;margin-top:8px";cb.parentElement.insertAdjacentElement("afterend",e);}
+    document.getElementById("ea_decl_err").textContent="Please accept the declaration to continue.";
+    document.getElementById("ea_decl_err").style.display="block";
+    valid=false;
+  }else{var el=document.getElementById("ea_decl_err");if(el)el.style.display="none";}
+  if(valid)document.querySelector("form").submit();
+}
+</script>
 </body></html>
 </template>
 

@@ -27,6 +27,7 @@
         'views/po_box_steps.xml',
         'views/movement_report_steps.xml',
         'views/eid_appointment_steps.xml',
+        'views/pending_details_doc_views.xml',
         'views/portal_templates.xml',
         'views/step2_business_activities.xml',
             'views/step3_company.xml',
@@ -76,6 +77,11 @@
         'views/medical_meeting_mofa_steps.xml',
         'views/banking_steps.xml',
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'spc_portal/static/src/js/driving_license_validation.js',
+        ],
+    },
     'installable': True,
     'application': True,
     'license': 'LGPL-3',

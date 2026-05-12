@@ -61,6 +61,8 @@
     </a>
   </div>
 </main>
+
+
 </body></html>
 </template>
 
@@ -147,14 +149,22 @@ document.getElementById('startBtn').href = '/spc/concierge/driving-license/'+dlT
         <div class="sec-num">01</div>
         <div class="sec-body">
           <div class="sec-title">Applicant details</div>
-          <input type="text" name="first_name" class="field-input" placeholder="First name" t-att-value="saved.get('first_name','') if saved else ''"/>
-          <input type="text" name="last_name" class="field-input" placeholder="Last name" t-att-value="saved.get('last_name','') if saved else ''"/>
-          <input type="email" name="email" class="field-input" placeholder="Email address" t-att-value="saved.get('email','') if saved else ''"/>
+          <input type="text" name="first_name" class="field-input spc-validate-name" placeholder="First name" maxlength="50" data-min="2" data-errId="first_name_err" t-att-value="saved.get('first_name','') if saved else ''"/>
+          <div id="first_name_err" style="color:red;font-size:12px;display:none;margin-bottom:6px">First name must be 2-50 characters (letters only).</div>
+          <input type="text" name="last_name" class="field-input spc-validate-name" placeholder="Last name" maxlength="50" data-min="2" data-errId="last_name_err" t-att-value="saved.get('last_name','') if saved else ''"/>
+          <div id="last_name_err" style="color:red;font-size:12px;display:none;margin-bottom:6px">Last name must be 2-50 characters (letters only).</div>
+          <input type="text" name="email" class="field-input spc-validate-email" placeholder="Email address" data-errId="email_err" t-att-value="saved.get('email','') if saved else ''"/>
+          <div id="email_err" style="color:red;font-size:12px;display:none;margin-bottom:6px">Please enter a valid email address.</div>
           <div class="phone-row">
             <select name="phone_country_code" class="phone-code" id="countryCodeSel" t-att-data-selected="saved.get('phone_country_code','+971') if saved else '+971'"></select>
-            <input type="tel" name="phone" class="phone-input" placeholder="Phone number" t-att-value="saved.get('phone','') if saved else ''"/>
+            <input type="tel" id="phone" name="phone" class="phone-input" placeholder="Phone number" maxlength="15"
+            onkeypress="if(!/[0-9]/.test(event.key))event.preventDefault();"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,15);"
+            t-att-value="saved.get('phone','') if saved else ''"/>
           </div>
+          <div id="phone_err" style="color:red;font-size:12px;display:none;margin-bottom:6px">Phone number must be digits only, max 15 digits.</div>
           <input type="date" name="date_of_birth" class="field-input" t-att-value="saved.get('date_of_birth','') if saved else ''"/>
+          <div id="dob_err" style="color:red;font-size:12px;display:none;margin-bottom:6px">Date of birth is required.</div>
         </div>
       </div>
       <div class="spc-section">
@@ -166,6 +176,7 @@ document.getElementById('startBtn').href = '/spc/concierge/driving-license/'+dlT
               <div class="upload-label">Passport copy</div>
               <div class="upload-box-solid" onclick="document.getElementById('f_passport').click()">
                 <input type="file" id="f_passport" name="passport" style="display:none" onchange="setLbl(this,'lbl_p')"/>
+                <div id="passport_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport copy is required.</div>
                 <div class="upload-icon-solid">&#11014;</div>
                 <div class="upload-text-solid" id="lbl_p">Upload file</div>
               </div>
@@ -174,6 +185,7 @@ document.getElementById('startBtn').href = '/spc/concierge/driving-license/'+dlT
               <div class="upload-label">Emirates ID copy</div>
               <div class="upload-box-solid" onclick="document.getElementById('f_eid').click()">
                 <input type="file" id="f_eid" name="emirates_id" style="display:none" onchange="setLbl(this,'lbl_eid')"/>
+                <div id="eid_err" style="color:red;font-size:12px;display:none;margin-top:4px">Emirates ID copy is required.</div>
                 <div class="upload-icon-solid">&#11014;</div>
                 <div class="upload-text-solid" id="lbl_eid">Upload file</div>
               </div>
@@ -182,6 +194,7 @@ document.getElementById('startBtn').href = '/spc/concierge/driving-license/'+dlT
               <div class="upload-label">Residence visa copy</div>
               <div class="upload-box-solid" onclick="document.getElementById('f_visa').click()">
                 <input type="file" id="f_visa" name="residence_visa" style="display:none" onchange="setLbl(this,'lbl_v')"/>
+                <div id="visa_err" style="color:red;font-size:12px;display:none;margin-top:4px">Residence visa copy is required.</div>
                 <div class="upload-icon-solid">&#11014;</div>
                 <div class="upload-text-solid" id="lbl_v">Upload file</div>
               </div>
@@ -200,7 +213,7 @@ document.getElementById('startBtn').href = '/spc/concierge/driving-license/'+dlT
             &#8226; Original Emirates ID<br/>
             &#8226; Passport style photo (x4)</p>
             <div class="ack-row" style="margin-top:12px">
-              <input type="checkbox" name="doc_ack" id="docAck" value="yes"/>
+              <input type="checkbox" name="doc_ack" id="docAck" value="yes"/><div id="docAck_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please tick the checkbox to proceed.</div>
               <label for="docAck">I understand that the processing of my application will only start upon the submission of these original documents to the SPC office.</label>
             </div>
           </div>
@@ -271,11 +284,176 @@ document.getElementById('startBtn').href = '/spc/concierge/driving-license/'+dlT
     </div>
 
     <div class="spc-nav-buttons" style="justify-content:flex-end">
-      <button type="submit" class="spc-btn-next">NEXT</button>
+      <button type="button" class="spc-btn-next" onclick="spcValidateStep1()">NEXT</button>
     </div>
+  <script>
+function spcValidateStep1() {
+  var valid=true;
+  var fn=document.querySelector('[name="first_name"]');
+  var ln=document.querySelector('[name="last_name"]');
+  var em=document.querySelector('[name="email"]');
+  var ph=document.getElementById('phone');
+  var dob=document.querySelector('[name="date_of_birth"]');
+  var pp=document.getElementById('f_passport');
+  var eid=document.getElementById('f_eid');
+  var visa=document.getElementById('f_visa');
+  var fnErr=document.getElementById('first_name_err');
+  var lnErr=document.getElementById('last_name_err');
+  var emErr=document.getElementById('email_err');
+  var phErr=document.getElementById('phone_err');
+  var dobErr=document.getElementById('dob_err');
+  var ppErr=document.getElementById('passport_err');
+  var eidErr=document.getElementById('eid_err');
+  var visaErr=document.getElementById('visa_err');
+  var fnv=fn?fn.value.trim():'';
+  if(!fn||fnv.length&lt;2||fnv.length&gt;50||!/^[A-Za-z ]+$/.test(fnv)){if(fnErr)fnErr.style.display='block';valid=false;}else{if(fnErr)fnErr.style.display='none';}
+  var lnv=ln?ln.value.trim():'';
+  if(!ln||lnv.length&lt;2||lnv.length&gt;50||!/^[A-Za-z ]+$/.test(lnv)){if(lnErr)lnErr.style.display='block';valid=false;}else{if(lnErr)lnErr.style.display='none';}
+  var emv=em?em.value.trim():'';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)){if(emErr)emErr.style.display='block';valid=false;}else{if(emErr)emErr.style.display='none';}
+  var phv=ph?ph.value.trim():'';
+  if(!phv||phv.length&lt;7||phv.length&gt;15){if(phErr)phErr.style.display='block';valid=false;}else{if(phErr)phErr.style.display='none';}
+  if(!dob||!dob.value){if(dobErr)dobErr.style.display='block';valid=false;}else{if(dobErr)dobErr.style.display='none';}
+  if(!pp||!pp.files||pp.files.length===0){if(ppErr)ppErr.style.display='block';valid=false;}else{if(ppErr)ppErr.style.display='none';}
+  if(!eid||!eid.files||eid.files.length===0){if(eidErr)eidErr.style.display='block';valid=false;}else{if(eidErr)eidErr.style.display='none';}
+  if(!visa||!visa.files||visa.files.length===0){if(visaErr)visaErr.style.display='block';valid=false;}else{if(visaErr)visaErr.style.display='none';}
+  var docAck=document.getElementById('docAck');
+  var docAckErr=document.getElementById('docAck_err');
+  if(!docAck||!docAck.checked){if(docAckErr)docAckErr.style.display='block';valid=false;}else{if(docAckErr)docAckErr.style.display='none';}
+  if(valid)document.querySelector('form#mainForm').submit();
+}
+window.addEventListener("load", function() {
+  // Name fields - letters only, using querySelector with name attribute
+  ['first_name','last_name'].forEach(function(fieldName) {
+    var inp = document.querySelector('[name="' + fieldName + '"]');
+    var err = document.getElementById(fieldName + '_err');
+    if (!inp) return;
+    inp.addEventListener('keypress', function(e) {
+      if (e.key &amp;&amp; e.key.length === 1 &amp;&amp; !/[A-Za-z ]/.test(e.key)) e.preventDefault();
+    });
+    inp.addEventListener('input', function() {
+      this.value = this.value.replace(/[^A-Za-z ]/g, '');
+      var v = this.value.trim();
+      if (err) err.style.display = (v.length &gt; 0 &amp;&amp; (v.length &lt; 2 || v.length &gt; 50)) ? 'block' : 'none';
+    });
+  });
+  // Email validation
+  var emInp = document.querySelector('[name="email"]');
+  var emErr = document.getElementById('email_err');
+  if (emInp) {
+    emInp.addEventListener('input', function() {
+      var v = this.value.trim();
+      if (emErr) emErr.style.display = (v.length &gt; 0 &amp;&amp; !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) ? 'block' : 'none';
+    });
+  }
+  // Phone - numbers only
+  var ph = document.querySelector('[name="phone"]');
+  if (ph) {
+    ph.addEventListener('keypress', function(e) {
+      if (e.key &amp;&amp; e.key.length === 1 &amp;&amp; !/[0-9]/.test(e.key)) e.preventDefault();
+    });
+    ph.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0,15);
+    });
+  }
+  // Form submit validation
+  var form = document.querySelector('form#mainForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      var valid = true;
+      ['first_name','last_name'].forEach(function(fieldName) {
+        var inp = document.querySelector('[name="' + fieldName + '"]');
+        var err = document.getElementById(fieldName + '_err');
+        if (!inp) return;
+        var v = inp.value.trim();
+        if (v.length &lt; 2 || v.length &gt; 50 || !/^[A-Za-z ]+$/.test(v)) {
+          if (err) err.style.display = 'block'; valid = false;
+        } else { if (err) err.style.display = 'none'; }
+      });
+      var emv = emInp ? emInp.value.trim() : '';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)) {
+        if (emErr) emErr.style.display = 'block'; valid = false;
+      } else { if (emErr) emErr.style.display = 'none'; }
+      var phEl = document.querySelector('[name="phone"]');
+      var phErr = document.getElementById('phone_err');
+      if (phEl) {
+        var phv = phEl.value.trim();
+        if (phv.length === 0 || phv.length &gt; 15) {
+          if (phErr) phErr.style.display = 'block'; valid = false;
+        } else { if (phErr) phErr.style.display = 'none'; }
+      }
+      if (!valid) e.preventDefault();
+    });
+  }
+});
+</script>
   </form>
 </div>
 </div>
+<script>
+window.onload = function() {
+  document.querySelectorAll('.spc-validate-name').forEach(function(inp) {
+    var errId = inp.getAttribute('data-errId');
+    inp.addEventListener('keydown', function(e) {
+      if (e.key &amp;&amp; e.key.length === 1 &amp;&amp; !/[A-Za-z ]/.test(e.key)) e.preventDefault();
+    });
+    inp.addEventListener('input', function() {
+      this.value = this.value.replace(/[^A-Za-z ]/g, '');
+      var v = this.value.trim();
+      var err = document.getElementById(errId);
+      if (err) err.style.display = (v.length &gt; 0 &amp;&amp; (v.length &lt; 2 || v.length &gt; 50)) ? 'block' : 'none';
+    });
+  });
+  document.querySelectorAll('.spc-validate-email').forEach(function(inp) {
+    var errId = inp.getAttribute('data-errId');
+    inp.addEventListener('input', function() {
+      var v = this.value.trim();
+      var err = document.getElementById(errId);
+      if (err) err.style.display = (v.length &gt; 0 &amp;&amp; !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) ? 'block' : 'none';
+    });
+  });
+  var ph = document.querySelector('[name="phone"]');
+  if (ph) {
+    ph.addEventListener('keydown', function(e) {
+      if (e.key &amp;&amp; e.key.length === 1 &amp;&amp; !/[0-9]/.test(e.key)) e.preventDefault();
+    });
+    ph.addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 15);
+    });
+  }
+  var form = document.querySelector('form#mainForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      var valid = true;
+      document.querySelectorAll('.spc-validate-name').forEach(function(inp) {
+        var errId = inp.getAttribute('data-errId');
+        var v = inp.value.trim();
+        var err = document.getElementById(errId);
+        if (v.length &lt; 2 || v.length &gt; 50 || !/^[A-Za-z ]+$/.test(v)) {
+          if (err) err.style.display = 'block'; valid = false;
+        } else { if (err) err.style.display = 'none'; }
+      });
+      document.querySelectorAll('.spc-validate-email').forEach(function(inp) {
+        var errId = inp.getAttribute('data-errId');
+        var v = inp.value.trim();
+        var err = document.getElementById(errId);
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+          if (err) err.style.display = 'block'; valid = false;
+        } else { if (err) err.style.display = 'none'; }
+      });
+      var phEl = document.querySelector('[name="phone"]');
+      var phErr = document.getElementById('phone_err');
+      if (phEl) {
+        var phv = phEl.value.trim();
+        if (phv.length === 0 || phv.length &gt; 15) {
+          if (phErr) phErr.style.display = 'block'; valid = false;
+        } else { if (phErr) phErr.style.display = 'none'; }
+      }
+      if (!valid) e.preventDefault();
+    });
+  }
+};
+</script>
 <script>
 var FEE_MAP = {new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
 var STEP_LABELS = {
@@ -370,6 +548,80 @@ if(dlType==='transfer'){
   populateCountryCodes('countryCodeSel');
 }
 </script>
+
+<script>
+(function() {
+    ["first_name","last_name"].forEach(function(fieldName) {
+        var inp = document.querySelector("[name=\"" + fieldName + "\"]");
+        var err = document.getElementById(fieldName + "_err");
+        if (!inp) return;
+        inp.addEventListener("keypress", function(e) {
+            if (e.key &amp;&amp; e.key.length === 1 &amp;&amp; !/[A-Za-z ]/.test(e.key)) e.preventDefault();
+        });
+        inp.addEventListener("input", function() {
+            this.value = this.value.replace(/[^A-Za-z ]/g, "");
+            var v = this.value.trim();
+            if (err) err.style.display = (v.length &gt; 0 &amp;&amp; (v.length &lt; 2 || v.length &gt; 50)) ? "block" : "none";
+        });
+    });
+    var emInp = document.querySelector("[name=\"email\"]");
+    var emErr = document.getElementById("email_err");
+    if (emInp) {
+        emInp.addEventListener("input", function() {
+            var v = this.value.trim();
+            if (emErr) emErr.style.display = (v.length &gt; 0 &amp;&amp; !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) ? "block" : "none";
+        });
+    }
+    var form = document.querySelector("form#mainForm");
+    if (form) {
+        form.addEventListener("submit", function(e) {
+            var valid = true;
+            ["first_name","last_name"].forEach(function(fieldName) {
+                var inp = document.querySelector("[name=\"" + fieldName + "\"]");
+                var err = document.getElementById(fieldName + "_err");
+                if (!inp) return;
+                var v = inp.value.trim();
+                if (v.length &lt; 2 || v.length &gt; 50 || !/^[A-Za-z ]+$/.test(v)) {
+                    if (err) err.style.display = "block"; valid = false;
+                } else { if (err) err.style.display = "none"; }
+            });
+            var emv = emInp ? emInp.value.trim() : "";
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)) {
+                if (emErr) emErr.style.display = "block"; valid = false;
+            } else { if (emErr) emErr.style.display = "none"; }
+            var phEl = document.getElementById("phone");
+            var phErr = document.getElementById("phone_err");
+            if (phEl) {
+                var phv = phEl.value.trim();
+                if (phv.length &lt; 7 || phv.length &gt; 15) {
+                    if (phErr) phErr.style.display = "block"; valid = false;
+                } else { if (phErr) phErr.style.display = "none"; }
+            }
+            var dobEl = document.querySelector("[name=\"date_of_birth\"]");
+            var dobErr = document.getElementById("dob_err");
+            if (dobEl &amp;&amp; !dobEl.value) {
+                if (dobErr) dobErr.style.display = "block"; valid = false;
+            } else { if (dobErr) dobErr.style.display = "none"; }
+            var passEl = document.getElementById("f_passport");
+            var passErr = document.getElementById("passport_err");
+            if (passEl &amp;&amp; (!passEl.files || passEl.files.length === 0)) {
+                if (passErr) passErr.style.display = "block"; valid = false;
+            } else { if (passErr) passErr.style.display = "none"; }
+            var eidEl = document.getElementById("f_eid");
+            var eidErr = document.getElementById("eid_err");
+            if (eidEl &amp;&amp; (!eidEl.files || eidEl.files.length === 0)) {
+                if (eidErr) eidErr.style.display = "block"; valid = false;
+            } else { if (eidErr) eidErr.style.display = "none"; }
+            var visaEl = document.getElementById("f_visa");
+            var visaErr = document.getElementById("visa_err");
+            if (visaEl &amp;&amp; (!visaEl.files || visaEl.files.length === 0)) {
+                if (visaErr) visaErr.style.display = "block"; valid = false;
+            } else { if (visaErr) visaErr.style.display = "none"; }
+            if (!valid) e.preventDefault();
+        });
+    }
+});
+</script>
 </body></html>
 </template>
 
@@ -461,7 +713,38 @@ if(dlType==='transfer'){
     </div>
     <div class="spc-nav-buttons">
       <a t-attf-href="/spc/concierge/driving-license/transfer/step1" class="spc-btn-prev">PREVIOUS</a>
-      <button type="submit" class="spc-btn-next">NEXT</button>
+      <button type="button" class="spc-btn-next" onclick="
+var valid=true;
+var fn=document.querySelector(&apos;[name=&quot;first_name&quot;]&apos;);
+var ln=document.querySelector(&apos;[name=&quot;last_name&quot;]&apos;);
+var em=document.querySelector(&apos;[name=&quot;email&quot;]&apos;);
+var ph=document.getElementById(&apos;phone&apos;);
+var dob=document.querySelector(&apos;[name=&quot;date_of_birth&quot;]&apos;);
+var pp=document.getElementById(&apos;f_passport&apos;);
+var eid=document.getElementById(&apos;f_eid&apos;);
+var visa=document.getElementById(&apos;f_visa&apos;);
+var fnErr=document.getElementById(&apos;first_name_err&apos;);
+var lnErr=document.getElementById(&apos;last_name_err&apos;);
+var emErr=document.getElementById(&apos;email_err&apos;);
+var phErr=document.getElementById(&apos;phone_err&apos;);
+var dobErr=document.getElementById(&apos;dob_err&apos;);
+var ppErr=document.getElementById(&apos;passport_err&apos;);
+var eidErr=document.getElementById(&apos;eid_err&apos;);
+var visaErr=document.getElementById(&apos;visa_err&apos;);
+var fnv=fn?fn.value.trim():&apos;&apos;;
+if(!fn||fnv.length&lt;2||fnv.length&gt;50||!/^[A-Za-z ]+$/.test(fnv)){if(fnErr)fnErr.style.display=&apos;block&apos;;valid=false;}else{if(fnErr)fnErr.style.display=&apos;none&apos;;}
+var lnv=ln?ln.value.trim():&apos;&apos;;
+if(!ln||lnv.length&lt;2||lnv.length&gt;50||!/^[A-Za-z ]+$/.test(lnv)){if(lnErr)lnErr.style.display=&apos;block&apos;;valid=false;}else{if(lnErr)lnErr.style.display=&apos;none&apos;;}
+var emv=em?em.value.trim():&apos;&apos;;
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)){if(emErr)emErr.style.display=&apos;block&apos;;valid=false;}else{if(emErr)emErr.style.display=&apos;none&apos;;}
+var phv=ph?ph.value.trim():&apos;&apos;;
+if(!phv||phv.length&lt;7||phv.length&gt;15){if(phErr)phErr.style.display=&apos;block&apos;;valid=false;}else{if(phErr)phErr.style.display=&apos;none&apos;;}
+if(!dob||!dob.value){if(dobErr)dobErr.style.display=&apos;block&apos;;valid=false;}else{if(dobErr)dobErr.style.display=&apos;none&apos;;}
+if(!pp||!pp.files||pp.files.length===0){if(ppErr)ppErr.style.display=&apos;block&apos;;valid=false;}else{if(ppErr)ppErr.style.display=&apos;none&apos;;}
+if(!eid||!eid.files||eid.files.length===0){if(eidErr)eidErr.style.display=&apos;block&apos;;valid=false;}else{if(eidErr)eidErr.style.display=&apos;none&apos;;}
+if(!visa||!visa.files||visa.files.length===0){if(visaErr)visaErr.style.display=&apos;block&apos;;valid=false;}else{if(visaErr)visaErr.style.display=&apos;none&apos;;}
+if(valid)document.querySelector(&apos;form#mainForm&apos;).submit();
+">NEXT</button>
     </div>
   </form>
 </div>
@@ -498,7 +781,7 @@ if(dlType==='transfer'){
           <br/>
           <p>Acknowledgement</p>
           <div class="ack-row">
-            <input type="checkbox" name="terms_agreed" id="termsChk" value="yes"/>
+            <input type="checkbox" name="terms_agreed" id="termsChk" value="yes"/><div id="termsChk_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please tick the checkbox to proceed.</div>
             <label for="termsChk">I have read and agree to the SPC Terms and Conditions.</label>
           </div>
         </div>
@@ -506,12 +789,22 @@ if(dlType==='transfer'){
     </div>
     <div class="spc-nav-buttons">
       <a id="prevBtn" href="#" class="spc-btn-prev">PREVIOUS</a>
-      <button type="submit" class="spc-btn-next">NEXT</button>
+      <button type="button" class="spc-btn-next" onclick="spcValidateDecl()">NEXT</button>
     </div>
   </form>
 </div>
 </div>
 <script>
+function spcValidateDecl() {
+  var chk = document.getElementById('termsChk');
+  var err = document.getElementById('termsChk_err');
+  if (!chk || !chk.checked) {
+    if (err) err.style.display = 'block';
+    return;
+  }
+  if (err) err.style.display = 'none';
+  document.querySelector('form#mainForm').submit();
+}
 var FEE_MAP2={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
 var STEPS2={
   new:['Application details','Declaration','Review application','Payment'],
@@ -531,7 +824,7 @@ var html='';
 steps.forEach(function(s,i){
   var done=i&lt;activeIdx; var active=i===activeIdx;
   var cls=done?' done':active?' active':'';
-  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
+  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&amp;#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
 });
 document.getElementById('declSteps').innerHTML=html;
 document.getElementById('declForm').action='/spc/concierge/driving-license/'+dlType+'/declaration/submit';
@@ -600,7 +893,7 @@ var html='';
 steps.forEach(function(s,i){
   var done=i&lt;activeIdx; var active=i===activeIdx;
   var cls=done?' done':active?' active':'';
-  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
+  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&amp;#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
 });
 document.getElementById('rvSteps').innerHTML=html;
 document.getElementById('editBtn').href='/spc/concierge/driving-license/'+dlType+'/step1';
@@ -658,8 +951,8 @@ var html='';
 steps.forEach(function(s,i){
   var done=i&lt;steps.length-1; var active=i===steps.length-1;
   var cls=done?' done':active?' active':'';
-  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
-});
+  html+='<div class="progress-step'+cls+'"><div class="step-num">'+(done?'&amp;#10003;':(i+1))+'</div><div class="step-label">'+s+'</div></div>';
+})();
 document.getElementById('paySteps').innerHTML=html;
 document.getElementById('payPrev').href='/spc/concierge/driving-license/'+dlType+'/review/'+recordId;
 </script>

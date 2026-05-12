@@ -119,13 +119,15 @@
           </div>
           <div id="med-manual-wrap" style="display:none;">
             <input class="field-input" type="text" id="med_manual_name" placeholder="Type applicant full name"/>
+      <div id="ap_name_err" style="color:red;font-size:12px;display:none;margin-top:4px">Applicant name must be 3-50 characters.</div>
           </div>
           <div style="font-size:14px;color:#555;margin-bottom:12px;">Visa application type</div>
           <div class="radio-group">
             <label class="radio-label"><input type="radio" name="visa_type" value="employee" onchange="checkVisa(this.value)"/> Employee visa</label>
             <label class="radio-label"><input type="radio" name="visa_type" value="partner" onchange="checkVisa(this.value)"/> Partner / investor visa</label>
             <label class="radio-label"><input type="radio" name="visa_type" value="student" onchange="checkVisa(this.value)"/> Student visa</label>
-            <label class="radio-label"><input type="radio" name="visa_type" value="green" onchange="checkVisa(this.value)"/> Green visa</label>
+            <label class="radio-label"><input type="radio" name="visa_type" value="green" onchange="checkVisa(this.value)"/>
+      <div id="visa_type_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a visa application type.</div> Green visa</label>
           </div>
         </div>
       </div>
@@ -153,9 +155,13 @@
         <div class="sec-body">
           <div class="sec-title">Applicant Information</div>
           <input class="field-input" type="text" name="first_name" placeholder="First name"/>
+      <div id="fname_err" style="color:red;font-size:12px;display:none;margin-top:4px">First name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="last_name" placeholder="Last name"/>
+      <div id="lname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Last name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="mother_name" placeholder="Mother's name"/>
+      <div id="mname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Mother's name must be 3-50 characters.</div>
           <input class="field-input" type="email" name="email" placeholder="Email"/>
+      <div id="email_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid email address.</div>
           <div class="phone-wrap">
             <div class="phone-code">
               <span id="med-flag">&#127462;&#127466;</span>
@@ -173,8 +179,10 @@
               </select>
             </div>
             <input class="phone-input" type="text" name="mobile" placeholder="Mobile"/>
+      <div id="mobile_err" style="color:red;font-size:12px;display:none;margin-top:4px">Mobile number must be 10-15 digits.</div>
           </div>
           <input class="field-input" type="date" name="dob" placeholder="Date of birth"/>
+      <div id="dob_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select date of birth.</div>
           <div class="select-row">
             <div class="select-wrap">
               <select name="marital_status">
@@ -184,6 +192,7 @@
                 <option value="divorced">Divorced</option>
                 <option value="widowed">Widowed</option>
               </select>
+      <div id="marital_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select marital status.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
@@ -197,6 +206,7 @@
                 <option value="buddhism">Buddhism</option>
                 <option value="other">Other</option>
               </select>
+      <div id="religion_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select religion.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
@@ -213,35 +223,39 @@
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-med-pass">Passport copy</div>
             <input type="file" name="doc_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-med-pass').textContent=this.files.length+' file(s)'"/>
+      <div id="doc_pass_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport copy is required.</div>
           </label>
           <div class="upload-label">Special comments page of passport</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-special">Special comments page of passport</div>
             <input type="file" name="doc_special" style="display:none;" multiple="multiple" onchange="document.getElementById('n-special').textContent=this.files.length+' file(s)'"/>
+      <div id="doc_special_err" style="color:red;font-size:12px;display:none;margin-top:4px">Special document is required.</div>
           </label>
           <div class="upload-label">Entry visa with change of status or entry stamp copy</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-entry">Entry visa with change of status or entry stamp copy</div>
             <input type="file" name="doc_entry_visa" style="display:none;" multiple="multiple" onchange="document.getElementById('n-entry').textContent=this.files.length+' file(s)'"/>
+      <div id="doc_entry_err" style="color:red;font-size:12px;display:none;margin-top:4px">Entry visa is required.</div>
           </label>
           <div class="upload-label">Passport-sized photo</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-photo">Passport-sized photo</div>
             <input type="file" name="doc_photo" style="display:none;" multiple="multiple" onchange="document.getElementById('n-photo').textContent=this.files.length+' file(s)'"/>
+      <div id="doc_photo_err" style="color:red;font-size:12px;display:none;margin-top:4px">Photo is required.</div>
           </label>
         </div>
       </div>
 
       <div class="spc-nav-buttons">
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="medValidateStep1()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 function medFillApplicant(val) {
     var wrap = document.getElementById('med-manual-wrap');
     wrap.style.display = val === '__manual__' ? 'block' : 'none';
@@ -265,7 +279,78 @@ function updateMedFlag(sel) {
     var opt = sel.options[sel.selectedIndex];
     document.getElementById('med-flag').innerHTML = opt.getAttribute('data-flag') || '&#127462;&#127466;';
 }
-</script>
+
+function medValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  // Applicant name
+  var apSel = document.getElementById('med_applicant_sel');
+  var manName = document.getElementById('med_manual_name');
+  if (apSel &amp;&amp; apSel.value === '__manual__') {
+    var mv = manName ? manName.value.trim() : '';
+    if (mv.length &lt; 3 || mv.length &gt; 50) { showErr('ap_name_err','Applicant name must be 3-50 characters.'); valid=false; } else hideErr('ap_name_err');
+  } else {
+    if (!apSel || !apSel.value) { showErr('ap_name_err','Please select or enter applicant name.'); valid=false; } else hideErr('ap_name_err');
+  }
+
+  // Visa type
+  var vt = document.querySelector('input[name="visa_type"]:checked');
+  if (!vt) { showErr('visa_type_err','Please select a visa application type.'); valid=false; } else hideErr('visa_type_err');
+
+  // First name
+  var fn = document.querySelector('[name="first_name"]');
+  var fnv = fn ? fn.value.trim() : '';
+  if (fnv.length &lt; 3 || fnv.length &gt; 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
+
+  // Last name
+  var ln = document.querySelector('[name="last_name"]');
+  var lnv = ln ? ln.value.trim() : '';
+  if (lnv.length &lt; 3 || lnv.length &gt; 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
+
+  // Mother name
+  var mn = document.querySelector('[name="mother_name"]');
+  var mnv = mn ? mn.value.trim() : '';
+  if (mnv.length &lt; 3 || mnv.length &gt; 50) { showErr('mname_err','Mother\'s name must be 3-50 characters.'); valid=false; } else hideErr('mname_err');
+
+  // Email
+  var em = document.querySelector('[name="email"]');
+  var emv = em ? em.value.trim() : '';
+  if (!emv || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)) { showErr('email_err','Please enter a valid email address.'); valid=false; } else hideErr('email_err');
+
+  // Mobile
+  var mob = document.querySelector('[name="mobile"]');
+  var mobv = mob ? mob.value.trim().replace(/\D/g,'') : '';
+  if (mobv.length &lt; 10 || mobv.length &gt; 15) { showErr('mobile_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('mobile_err');
+
+  // DOB
+  var dob = document.querySelector('[name="dob"]');
+  if (!dob || !dob.value) { showErr('dob_err','Please select date of birth.'); valid=false; } else hideErr('dob_err');
+
+  // Marital status
+  var ms = document.querySelector('[name="marital_status"]');
+  if (!ms || !ms.value) { showErr('marital_err','Please select marital status.'); valid=false; } else hideErr('marital_err');
+
+  // Religion
+  var rel = document.querySelector('[name="religion"]');
+  if (!rel || !rel.value) { showErr('religion_err','Please select religion.'); valid=false; } else hideErr('religion_err');
+
+  // Document uploads
+  var docs = [
+    ['doc_passport','doc_pass_err','Passport copy is required.'],
+    ['doc_special','doc_special_err','Special document is required.'],
+    ['doc_entry_visa','doc_entry_err','Entry visa is required.'],
+    ['doc_photo','doc_photo_err','Photo is required.'],
+  ];
+  docs.forEach(function(d) {
+    var el = document.querySelector('[name="'+d[0]+'"]');
+    if (!el || !el.files || el.files.length === 0) { showErr(d[1], d[2]); valid=false; } else hideErr(d[1]);
+  });
+
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -299,6 +384,7 @@ function updateMedFlag(sel) {
             <p>I hereby declare that all the information provided in this application is true, accurate and complete. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
             <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
               <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;"/>
+      <div id="med_decl_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the declaration to proceed.</div>
               <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
             </label>
           </div>
@@ -306,11 +392,21 @@ function updateMedFlag(sel) {
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/medical/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="medValidateDecl()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function medValidateDecl() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var decl = document.querySelector('[name="declaration_accepted"]');
+  if (!decl || !decl.checked) { showErr('med_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('med_decl_err');
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- MEDICAL REVIEW -->
@@ -486,7 +582,9 @@ function updateMedFlag(sel) {
         <div class="sec-body">
           <div class="sec-title">Meeting room booking</div>
           <input class="field-input" type="date" name="booking_date" placeholder="Booking Date"/>
+      <div id="bdate_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a booking date.</div>
           <input class="field-input" type="time" name="booking_start_time" placeholder="Booking Start Time"/>
+      <div id="btime_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a booking start time.</div>
           <div class="select-row">
             <div class="select-wrap">
               <select name="meeting_duration">
@@ -502,6 +600,7 @@ function updateMedFlag(sel) {
                 <option value="6hr">6 Hours</option>
                 <option value="full_day">Full Day (8 Hours)</option>
               </select>
+      <div id="bdur_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select a duration.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
@@ -509,11 +608,25 @@ function updateMedFlag(sel) {
         </div>
       </div>
       <div class="spc-nav-buttons">
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="mrValidateStep1()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function mrValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var bd = document.querySelector('[name="booking_date"]');
+  if (!bd || !bd.value) { showErr('bdate_err','Please select a booking date.'); valid=false; } else hideErr('bdate_err');
+  var bt = document.querySelector('[name="booking_start_time"]');
+  if (!bt || !bt.value) { showErr('btime_err','Please select a booking start time.'); valid=false; } else hideErr('btime_err');
+  var dur = document.querySelector('[name="meeting_duration"]');
+  if (!dur || !dur.value) { showErr('bdur_err','Please select a duration.'); valid=false; } else hideErr('bdur_err');
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- MEETING ROOM REVIEW -->
@@ -726,6 +839,7 @@ function updateMedFlag(sel) {
             </div>
           </div>
           <input type="hidden" name="doc_type_invoice" id="inv-val" value="0"/>
+      <div id="doctype_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select at least one document type.</div>
         </div>
       </div>
 
@@ -744,6 +858,7 @@ function updateMedFlag(sel) {
                 <option value="7">7</option><option value="8">8</option><option value="9">9</option>
                 <option value="10">10</option>
               </select>
+      <div id="ind-count-err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select number of documents.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='0';renderUploads('ind','0')">x</button>
           </div>
@@ -766,6 +881,7 @@ function updateMedFlag(sel) {
                 <option value="7">7</option><option value="8">8</option><option value="9">9</option>
                 <option value="10">10</option>
               </select>
+      <div id="com-count-err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select number of documents.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='0';renderUploads('com','0')">x</button>
           </div>
@@ -788,6 +904,7 @@ function updateMedFlag(sel) {
                 <option value="7">7</option><option value="8">8</option><option value="9">9</option>
                 <option value="10">10</option>
               </select>
+      <div id="inv-count-err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select number of documents.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='0';renderUploads('inv','0')">x</button>
           </div>
@@ -807,6 +924,7 @@ function updateMedFlag(sel) {
                   <option t-att-value="c.id"><t t-esc="c.name"/></option>
                 </t>
               </select>
+      <div id="origin_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select document origin country.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
@@ -814,12 +932,12 @@ function updateMedFlag(sel) {
       </div>
 
       <div class="spc-nav-buttons">
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="mofaValidateStep1()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 var checked = {ind: false, com: false, inv: false};
 function toggleCheck(key) {
     checked[key] = !checked[key];
@@ -848,18 +966,87 @@ function renderUploads(key, count) {
     var container = document.getElementById(key+'-uploads');
     container.innerHTML = '';
     var n = parseInt(count) || 0;
-    for(var i=1; i&lt;=n; i++) {
+    for(var i=1; i<=n; i++) {
         var div = document.createElement('div');
-        div.innerHTML = '&lt;div class="upload-label"&gt;Upload document '+i+'&lt;/div&gt;'+
-            '&lt;label class="upload-box" style="cursor:pointer;"&gt;'+
-            '&lt;div class="upload-icon"&gt;&#8679;&lt;/div&gt;'+
-            '&lt;div class="upload-text" id="'+key+'-fn-'+i+'"&gt;Upload document '+i+'&lt;/div&gt;'+
-            '&lt;input type="file" name="doc_'+key+'_'+i+'" style="display:none;" onchange="document.getElementById(\''+key+'-fn-'+i+'\').textContent=this.files[0].name"/&gt;'+
-            '&lt;/label&gt;';
+        div.style.marginBottom = '12px';
+        var label = document.createElement('div');
+        label.className = 'upload-label';
+        label.textContent = 'Upload document '+i;
+        var uploadBox = document.createElement('label');
+        uploadBox.className = 'upload-box';
+        uploadBox.style.cursor = 'pointer';
+        var icon = document.createElement('div');
+        icon.className = 'upload-icon';
+        icon.innerHTML = '&#8679;';
+        var txt = document.createElement('div');
+        txt.className = 'upload-text';
+        txt.id = key+'-fn-'+i;
+        txt.textContent = 'Upload document '+i;
+        var inp = document.createElement('input');
+        inp.type = 'file';
+        inp.name = 'doc_'+key+'_'+i;
+        inp.style.display = 'none';
+        inp.setAttribute('data-upload-key', key+'-'+i);
+        inp.onchange = (function(k, idx) {
+            return function() {
+                document.getElementById(k+'-fn-'+idx).textContent = this.files[0].name;
+                hideErr(k+'-upload-'+idx+'-err');
+            };
+        })(key, i);
+        var errDiv = document.createElement('div');
+        errDiv.id = key+'-upload-'+i+'-err';
+        errDiv.style.cssText = 'color:red;font-size:12px;display:none;margin-top:4px';
+        errDiv.textContent = 'Document '+i+' is required.';
+        uploadBox.appendChild(icon);
+        uploadBox.appendChild(txt);
+        uploadBox.appendChild(inp);
+        div.appendChild(label);
+        div.appendChild(uploadBox);
+        div.appendChild(errDiv);
         container.appendChild(div);
     }
 }
-</script>
+function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+function mofaValidateStep1() {
+    var valid = true;
+    // At least one doc type selected
+    if (!checked.ind &amp;&amp; !checked.com &amp;&amp; !checked.inv) {
+        showErr('doctype_err','Please select at least one document type.');
+        valid = false;
+    } else {
+        hideErr('doctype_err');
+    }
+    // Origin country
+    var oc = document.querySelector('[name="origin_country_id"]');
+    if (!oc || !oc.value) { showErr('origin_err','Please select document origin country.'); valid=false; } else hideErr('origin_err');
+    // Validate upload fields for each selected type
+    var keys = [];
+    if(checked.ind) keys.push(['ind', document.getElementById('ind-count')]);
+    if(checked.com) keys.push(['com', document.getElementById('com-count')]);
+    if(checked.inv) keys.push(['inv', document.getElementById('inv-count')]);
+    keys.forEach(function(kc) {
+        var key = kc[0], sel = kc[1];
+        if (!sel || !sel.value) {
+            showErr(key+'-count-err','Please select number of documents.');
+            valid = false;
+        } else {
+            hideErr(key+'-count-err');
+            var n = parseInt(sel.value);
+            for(var i=1; i<=n; i++) {
+                var inp = document.querySelector('[name="doc_'+key+'_'+i+'"]');
+                if (!inp || !inp.files || inp.files.length === 0) {
+                    showErr(key+'-upload-'+i+'-err','Document '+i+' is required.');
+                    valid = false;
+                } else {
+                    hideErr(key+'-upload-'+i+'-err');
+                }
+            }
+        }
+    });
+    if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -893,6 +1080,7 @@ function renderUploads(key, count) {
             <p>I hereby declare that all the information provided in this application is true, accurate and complete. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
             <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
               <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;"/>
+      <div id="mofa_decl_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the declaration to proceed.</div>
               <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
             </label>
           </div>
@@ -900,11 +1088,21 @@ function renderUploads(key, count) {
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/mofa/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="mofaValidateDecl()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function mofaValidateDecl() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var decl = document.querySelector('[name="declaration_accepted"]');
+  if (!decl || !decl.checked) { showErr('mofa_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('mofa_decl_err');
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- MOFA REVIEW -->

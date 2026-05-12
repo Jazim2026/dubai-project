@@ -102,6 +102,7 @@
           </div>
           <div id="manual-name-wrap" style="display:none;">
             <input class="field-input" type="text" id="manual_full_name" placeholder="Type applicant full name" oninput="document.getElementById('inp_first').value=this.value;"/>
+      <div id="ap_name_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter applicant name (3-50 characters).</div>
           </div>
         </div>
       </div>
@@ -112,7 +113,9 @@
         <div class="sec-body">
           <div class="sec-title">Applicant's details</div>
           <input class="field-input" type="text" name="first_name" id="inp_first" placeholder="First name"/>
+      <div id="fname_err" style="color:red;font-size:12px;display:none;margin-top:4px">First name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="last_name" id="inp_last" placeholder="Last name"/>
+      <div id="lname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Last name must be 3-50 characters.</div>
           <div class="phone-wrap">
             <div class="phone-code" style="display:flex;align-items:center;gap:4px;">
               <span id="phone-flag" style="font-size:18px;">&#127462;&#127466;</span>
@@ -149,9 +152,12 @@
               </select>
             </div>
             <input class="phone-input" type="text" name="mobile" id="inp_mobile" placeholder="Mobile number"/>
+      <div id="mobile_err" style="color:red;font-size:12px;display:none;margin-top:4px">Mobile number must be 10-15 digits.</div>
           </div>
           <input class="field-input" type="email" name="email" id="inp_email" placeholder="Email address"/>
+      <div id="email_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter a valid email address.</div>
           <input class="field-input" type="text" name="passport_number" placeholder="Passport number"/>
+      <div id="re_pass_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport number must be 6-20 alphanumeric characters.</div>
           <div class="select-row">
             <div class="select-wrap">
               <select name="designation">
@@ -177,6 +183,7 @@
                 <option value="technician">Technician</option>
                 <option value="other">Other</option>
               </select>
+      <div id="desig_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select designation.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
@@ -201,6 +208,7 @@
                 <option value="medical">Medical Treatment</option>
                 <option value="others">Others</option>
               </select>
+      <div id="reason_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select reason for staying outside Dubai.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';checkReason('')">x</button>
           </div>
@@ -226,6 +234,7 @@
                 <option value="108">9 Years</option>
                 <option value="120">10 Years</option>
               </select>
+      <div id="months_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select number of months outside Dubai.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value='';checkMonths('')">x</button>
           </div>
@@ -236,15 +245,19 @@
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-pass">Passport copy</div>
             <input type="file" name="doc_passport" style="display:none;" multiple="multiple" onchange="document.getElementById('n-pass').textContent=this.files.length+' file(s)'"/>
+      <div id="doc_pass_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport copy is required.</div>
           </label>
           <div class="upload-label">Residence Visa Copy</div>
           <label class="upload-box" style="cursor:pointer;">
             <div class="upload-icon">&#8679;</div>
             <div class="upload-text" id="n-visa">Residence Visa Copy</div>
             <input type="file" name="doc_visa" style="display:none;" multiple="multiple" onchange="document.getElementById('n-visa').textContent=this.files.length+' file(s)'"/>
+      <div id="doc_visa_err" style="color:red;font-size:12px;display:none;margin-top:4px">Residential copy is required.</div>
           </label>
           <input class="field-input" type="date" name="visa_issue_date" placeholder="Residence visa issue date"/>
+      <div id="issue_date_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select visa issue date.</div>
           <input class="field-input" type="date" name="visa_expiry_date" placeholder="Residence visa expiry date"/>
+      <div id="expiry_date_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select visa expiry date.</div>
           <div class="note-text">You will not be able to proceed with the submission if the visa expiry date is less than 35 days away.</div>
 
           <!-- Conditional: shown only when months selected -->
@@ -260,12 +273,12 @@
       </div>
 
       <div class="spc-nav-buttons">
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="reentryValidateStep1()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 function fillApplicant(val) {
     var manualWrap = document.getElementById('manual-name-wrap');
     if(val === '__manual__') {
@@ -298,7 +311,69 @@ function checkExtraFields() {
     var m = document.getElementById('months_sel').value;
     document.getElementById('extra-fields').style.display = m ? 'block' : 'none';
 }
-</script>
+
+function reentryValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  // Applicant name
+  var apSel = document.getElementById('applicant_sel');
+  var manName = document.getElementById('manual_full_name');
+  if (apSel &amp;&amp; apSel.value === '__manual__') {
+    var mv = manName ? manName.value.trim() : '';
+    if (mv.length &lt; 3 || mv.length &gt; 50) { showErr('ap_name_err','Please enter applicant name (3-50 characters).'); valid=false; } else hideErr('ap_name_err');
+  } else {
+    if (!apSel || !apSel.value) { showErr('ap_name_err','Please select or enter applicant name.'); valid=false; } else hideErr('ap_name_err');
+  }
+
+  var fn = document.querySelector('[name="first_name"]');
+  var fnv = fn ? fn.value.trim() : '';
+  if (fnv.length &lt; 3 || fnv.length &gt; 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
+
+  var ln = document.querySelector('[name="last_name"]');
+  var lnv = ln ? ln.value.trim() : '';
+  if (lnv.length &lt; 3 || lnv.length &gt; 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
+
+  var mob = document.querySelector('[name="mobile"]');
+  var mobv = mob ? mob.value.trim().replace(/\D/g,'') : '';
+  if (mobv.length &lt; 10 || mobv.length &gt; 15) { showErr('mobile_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('mobile_err');
+
+  var em = document.querySelector('[name="email"]');
+  var emv = em ? em.value.trim() : '';
+  if (!emv || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emv)) { showErr('email_err','Please enter a valid email address.'); valid=false; } else hideErr('email_err');
+
+  var pp = document.querySelector('[name="passport_number"]');
+  var ppv = pp ? pp.value.trim() : '';
+  if (!ppv || ppv.length &lt; 6 || ppv.length &gt; 20 || !/^[A-Za-z0-9]+$/.test(ppv)) { showErr('re_pass_err','Passport number must be 6-20 alphanumeric characters.'); valid=false; } else hideErr('re_pass_err');
+
+  var desig = document.querySelector('[name="designation"]');
+  if (!desig || !desig.value) { showErr('desig_err','Please select designation.'); valid=false; } else hideErr('desig_err');
+
+  var reason = document.querySelector('[name="reason_outside_uae"]');
+  if (!reason || !reason.value) { showErr('reason_err','Please select reason for staying outside Dubai.'); valid=false; } else hideErr('reason_err');
+
+  var months = document.querySelector('[name="months_outside_uae"]');
+  if (!months || !months.value) { showErr('months_err','Please select number of months outside Dubai.'); valid=false; } else hideErr('months_err');
+
+  var docs = [
+    ['doc_passport','doc_pass_err','Passport copy is required.'],
+    ['doc_visa','doc_visa_err','Residential copy is required.'],
+  ];
+  docs.forEach(function(d) {
+    var el = document.querySelector('[name="'+d[0]+'"]');
+    if (!el || !el.files || el.files.length === 0) { showErr(d[1], d[2]); valid=false; } else hideErr(d[1]);
+  });
+
+  var vid = document.querySelector('[name="visa_issue_date"]');
+  if (!vid || !vid.value) { showErr('issue_date_err','Please select visa issue date.'); valid=false; } else hideErr('issue_date_err');
+
+  var ved = document.querySelector('[name="visa_expiry_date"]');
+  if (!ved || !ved.value) { showErr('expiry_date_err','Please select visa expiry date.'); valid=false; } else hideErr('expiry_date_err');
+
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -332,6 +407,7 @@ function checkExtraFields() {
             <p>I hereby declare that all the information provided in this application is true, accurate and complete. I understand that providing false information may result in rejection of the application and legal consequences. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
             <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
               <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;" t-att-checked="'checked' if record.declaration_accepted else None"/>
+      <div id="re_decl_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the declaration to proceed.</div>
               <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
             </label>
           </div>
@@ -339,11 +415,21 @@ function checkExtraFields() {
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/reentry_permit/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="reentryValidateDecl()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function reentryValidateDecl() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var decl = document.querySelector('[name="declaration_accepted"]');
+  if (!decl || !decl.checked) { showErr('re_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('re_decl_err');
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- RE-ENTRY PERMIT REVIEW -->
@@ -520,9 +606,13 @@ function checkExtraFields() {
         <div class="sec-body">
           <div class="sec-title">Lease documents details</div>
           <input class="field-input" type="text" name="company_name" placeholder="Company Name in English"/>
+      <div id="cname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Company name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="manager_first_name" placeholder="Manager first name"/>
+      <div id="mfname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Manager first name must be 3-50 characters.</div>
           <input class="field-input" type="text" name="manager_last_name" placeholder="Manager last name"/>
-          <input class="field-input" type="text" name="full_name_arabic" placeholder="Full name in Arabic"/>
+      <div id="mlname_err" style="color:red;font-size:12px;display:none;margin-top:4px">Manager last name must be 3-50 characters.</div>
+          <input class="field-input" type="text" name="full_name_arabic" placeholder="&#x627;&#x644;&#x627;&#x633;&#x645; &#x627;&#x644;&#x643;&#x627;&#x645;&#x644; &#x628;&#x627;&#x644;&#x639;&#x631;&#x628;&#x64a;&#x629;" dir="rtl" style="text-align:right;direction:rtl;" oninput="this.value=this.value.replace(/[^؀-ۿ\s]/g,&apos;&apos;);" />
+      <div id="arabic_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please enter full name in Arabic only.</div>
           <div class="select-row">
             <div class="select-wrap">
               <select name="nationality_id">
@@ -531,12 +621,16 @@ function checkExtraFields() {
                   <option t-att-value="c.id"><t t-esc="c.name"/></option>
                 </t>
               </select>
+      <div id="nat_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select nationality.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
           <input class="field-input" type="text" name="passport_number" placeholder="Passport number"/>
+      <div id="pass_err" style="color:red;font-size:12px;display:none;margin-top:4px">Passport number must be 6-20 alphanumeric characters.</div>
           <textarea class="field-textarea" name="description_en" placeholder="Description in English"></textarea>
+      <div id="desc_err" style="color:red;font-size:12px;display:none;margin-top:4px">Description must be 3-1000 characters.</div>
           <textarea class="field-textarea" name="address_en" placeholder="Address in English"></textarea>
+      <div id="addr_err" style="color:red;font-size:12px;display:none;margin-top:4px">Address must be 3-1000 characters.</div>
           <div class="select-row">
             <div class="select-wrap">
               <select name="lease_validity">
@@ -553,12 +647,15 @@ function checkExtraFields() {
                 <option value="9y">9 Years</option>
                 <option value="10y">10 Years</option>
               </select>
+      <div id="lvalid_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select lease validity.</div>
             </div>
             <button type="button" class="clear-btn" onclick="this.previousElementSibling.querySelector('select').value=''">x</button>
           </div>
           <input class="field-input" type="number" name="annual_rent" placeholder="Annual Rent"/>
           <input class="field-input" type="date" name="commencement_date" placeholder="Commencement date"/>
+      <div id="comm_date_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select commencement date.</div>
           <input class="field-input" type="date" name="lease_expiry_date" placeholder="Lease expiry date"/>
+      <div id="expiry_date_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please select lease expiry date.</div>
         </div>
       </div>
 
@@ -601,16 +698,64 @@ function checkExtraFields() {
       </div>
 
       <div class="spc-nav-buttons">
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="leaseValidateStep1()">NEXT</button>
       </div>
     </form>
   </div>
 </div>
-<script>
+<script><![CDATA[
 function toggleAdditional(v) {
     document.getElementById('additional-fields').style.display = v === 'yes' ? 'block' : 'none';
 }
-</script>
+
+function leaseValidateStep1() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+
+  var cn = document.querySelector('[name="company_name"]');
+  var cnv = cn ? cn.value.trim() : '';
+  if (cnv.length &lt; 3 || cnv.length &gt; 50) { showErr('cname_err','Company name must be 3-50 characters.'); valid=false; } else hideErr('cname_err');
+
+  var mfn = document.querySelector('[name="manager_first_name"]');
+  var mfnv = mfn ? mfn.value.trim() : '';
+  if (mfnv.length &lt; 3 || mfnv.length &gt; 50) { showErr('mfname_err','Manager first name must be 3-50 characters.'); valid=false; } else hideErr('mfname_err');
+
+  var mln = document.querySelector('[name="manager_last_name"]');
+  var mlnv = mln ? mln.value.trim() : '';
+  if (mlnv.length &lt; 3 || mlnv.length &gt; 50) { showErr('mlname_err','Manager last name must be 3-50 characters.'); valid=false; } else hideErr('mlname_err');
+
+  var ara = document.querySelector('[name="full_name_arabic"]');
+  var arav = ara ? ara.value.trim() : '';
+  if (!arav || !/^[؀-ۿ\s]+$/.test(arav)) { showErr('arabic_err','Please enter full name in Arabic only.'); valid=false; } else hideErr('arabic_err');
+
+  var nat = document.querySelector('[name="nationality_id"]');
+  if (!nat || !nat.value) { showErr('nat_err','Please select nationality.'); valid=false; } else hideErr('nat_err');
+
+  var pp = document.querySelector('[name="passport_number"]');
+  var ppv = pp ? pp.value.trim() : '';
+  if (!ppv || ppv.length &lt; 6 || ppv.length &gt; 20 || !/^[A-Za-z0-9]+$/.test(ppv)) { showErr('pass_err','Passport number must be 6-20 alphanumeric characters.'); valid=false; } else hideErr('pass_err');
+
+  var desc = document.querySelector('[name="description_en"]');
+  var descv = desc ? desc.value.trim() : '';
+  if (descv.length &lt; 3 || descv.length &gt; 1000) { showErr('desc_err','Description must be 3-1000 characters.'); valid=false; } else hideErr('desc_err');
+
+  var addr = document.querySelector('[name="address_en"]');
+  var addrv = addr ? addr.value.trim() : '';
+  if (addrv.length &lt; 3 || addrv.length &gt; 1000) { showErr('addr_err','Address must be 3-1000 characters.'); valid=false; } else hideErr('addr_err');
+
+  var lv = document.querySelector('[name="lease_validity"]');
+  if (!lv || !lv.value) { showErr('lvalid_err','Please select lease validity.'); valid=false; } else hideErr('lvalid_err');
+
+  var cd = document.querySelector('[name="commencement_date"]');
+  if (!cd || !cd.value) { showErr('comm_date_err','Please select commencement date.'); valid=false; } else hideErr('comm_date_err');
+
+  var ed = document.querySelector('[name="lease_expiry_date"]');
+  if (!ed || !ed.value) { showErr('expiry_date_err','Please select lease expiry date.'); valid=false; } else hideErr('expiry_date_err');
+
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
 </body></html>
 </template>
 
@@ -644,6 +789,7 @@ function toggleAdditional(v) {
             <p>I hereby declare that all the information provided in this application is true, accurate and complete. I authorize SPC Free Zone to process my application and submit it to the relevant authorities on my behalf.</p>
             <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-top:16px;">
               <input type="checkbox" name="declaration_accepted" value="1" style="width:18px;height:18px;margin-top:2px;accent-color:#1abc9c;" t-att-checked="'checked' if record.declaration_accepted else None"/>
+      <div id="lease_decl_err" style="color:red;font-size:12px;display:none;margin-top:4px">Please agree to the declaration to proceed.</div>
               <span style="font-size:14px;color:#333;font-weight:600;">I agree to the above declaration and terms</span>
             </label>
           </div>
@@ -651,11 +797,21 @@ function toggleAdditional(v) {
       </div>
       <div class="spc-nav-buttons">
         <a t-attf-href="/spc/apply/lease_document/step1/#{record.id}" class="spc-btn-previous">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="leaseValidateDecl()">NEXT</button>
       </div>
     </form>
   </div>
-</div></body></html>
+</div><script><![CDATA[
+function leaseValidateDecl() {
+  var valid = true;
+  function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
+  function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
+  var decl = document.querySelector('[name="declaration_accepted"]');
+  if (!decl || !decl.checked) { showErr('lease_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('lease_decl_err');
+  if (valid) document.querySelector('form').submit();
+}
+]]></script>
+</body></html>
 </template>
 
 <!-- LEASE REVIEW -->

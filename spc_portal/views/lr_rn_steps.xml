@@ -239,13 +239,14 @@
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function updateIdnText(sel) {
     var opt = sel.options[sel.selectedIndex];
     if (opt.value) {
         document.getElementById('idnText').value = opt.getAttribute('data-name') || opt.value;
     }
 }
+//]]>
 </script>
 </body>
 </html>
@@ -348,12 +349,13 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectCard(el) {
     document.querySelectorAll('.legal-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     el.querySelector('input[type=radio]').checked = true;
 }
+//]]>
 </script>
 </body>
 </html>
@@ -643,7 +645,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 </div>
 
 
-<script>
+<script>//<![CDATA[
 var selectedActivities = [];
 
 function toggleDivision(header) {
@@ -763,6 +765,7 @@ function validateStep2() {
     document.body.appendChild(form);
     form.submit();
 }
+//]]>
 </script>
 </div></body>
 </html>
@@ -828,7 +831,7 @@ function validateStep2() {
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function showList() {
     document.getElementById('div-list').style.display = 'block';
     document.getElementById('div-manual').style.display = 'none';
@@ -856,7 +859,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (form) {
         form.addEventListener('submit', function() {
             var manualDiv = document.getElementById('div-manual');
-            if (manualDiv &amp;&amp; manualDiv.style.display !== 'none') {
+            if (manualDiv && manualDiv.style.display !== 'none') {
                 var manual = document.getElementById('manual_company').value;
                 document.getElementById('hidden_company_id').value = '';
                 document.getElementById('hidden_company_name').value = manual;
@@ -864,6 +867,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -932,12 +938,13 @@ document.addEventListener('DOMContentLoaded', function() {
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectCard(el) {
     document.querySelectorAll('.legal-card').forEach(c => c.classList.remove('selected'));
     el.classList.add('selected');
     el.querySelector('input[type=radio]').checked = true;
 }
+//]]>
 </script>
 </body>
 </html>
@@ -1381,7 +1388,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 </div>
 </div>
 
-<script>
+<script>//<![CDATA[
 var selectedActivities = [];
 
 function toggleDivision(header) {
@@ -1475,7 +1482,7 @@ function validateStep2() {
     form.method = 'POST';
     var submitUrl = '/spc/company-management/apply/rn-step3/submit';
     var customUrlInput = document.getElementById('custom_submit_url');
-    if (customUrlInput &amp;&amp; customUrlInput.value) { submitUrl = customUrlInput.value; }
+    if (customUrlInput && customUrlInput.value) { submitUrl = customUrlInput.value; }
     
     
     form.action = submitUrl;
@@ -1503,6 +1510,9 @@ function validateStep2() {
     document.body.appendChild(form);
     form.submit();
 }
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -1578,7 +1588,7 @@ function validateStep2() {
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function raShowList() {
     document.getElementById('ra-div-list').style.display = 'block';
     document.getElementById('ra-div-manual').style.display = 'none';
@@ -1601,13 +1611,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (form) {
         form.addEventListener('submit', function() {
             var manualDiv = document.getElementById('ra-div-manual');
-            if (manualDiv &amp;&amp; manualDiv.style.display !== 'none') {
+            if (manualDiv && manualDiv.style.display !== 'none') {
                 document.getElementById('ra_hidden_company_id').value = '';
                 document.getElementById('ra_hidden_company_name').value = document.getElementById('ra-manual-input').value;
             }
         });
     }
 });
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -1707,7 +1720,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </form>
     </div>
 </div>
-<script type="text/javascript">/*<![CDATA[*/
+<script>//<![CDATA[
 var AMENDMENT_MAP = [
     {name: "amendment_legal_type", label: "Legal type"},
     {name: "amendment_business_activities", label: "Business activities"},
@@ -1722,7 +1735,7 @@ var AMENDMENT_MAP = [
 function updateSidebar() {
     var selected = AMENDMENT_MAP.filter(function(a) {
         var cb = document.querySelector('input[name="' + a.name + '"]');
-        return cb &amp;&amp; cb.checked;
+        return cb && cb.checked;
     });
     var container = document.getElementById('sidebar-dynamic-steps');
     if (!container) return;
@@ -1748,7 +1761,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     updateSidebar();
 });
-/*]]>*/</script>
+//]]>
+</script>
 </body>
 </html>
 </template>
@@ -1821,12 +1835,13 @@ document.addEventListener('DOMContentLoaded', function() {
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectCard(el){
     document.querySelectorAll('.legal-card').forEach(function(c){c.classList.remove('selected')});
     el.classList.add('selected');
     el.querySelector('input[type=radio]').checked = true;
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -2003,7 +2018,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </form>
 </div>
 </div>
-<script type="text/javascript">/*<![CDATA[*/
+<script>//<![CDATA[
 var selectedActivities = [];
 function filterByTab(cat, btn) {
     document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
@@ -2069,7 +2084,8 @@ function filterActivities(q) {
         if (label) row.style.display = label.textContent.toLowerCase().includes(q) ? '' : 'none';
     });
 }
-/*]]>*/</script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -2140,12 +2156,12 @@ function filterActivities(q) {
     </form>
 </div>
 </div>
-<script type="text/javascript">/*<![CDATA[*/
+<script>//<![CDATA[
 function buildAccordions(){
     var count = parseInt(document.getElementById('sh_count').value) || 1;
     var container = document.getElementById('sh_accordions');
     container.innerHTML = '';
-    for(var i = 1; i &lt;= count; i++){
+    for(var i = 1; i <= count; i++){
         container.innerHTML += shAccordion(i);
     }
 }
@@ -2196,7 +2212,8 @@ function shToggleType(i, type, btn){
     btn.classList.add('active');
 }
 document.addEventListener('DOMContentLoaded', function(){ buildAccordions(); });
-/*]]>*/</script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -2331,7 +2348,7 @@ document.addEventListener('DOMContentLoaded', function(){ buildAccordions(); });
     </form>
 </div>
 </div>
-<script type="text/javascript">/*<![CDATA[*/
+<script>//<![CDATA[
 function buildMgrAccordions(){
     var count = parseInt(document.getElementById('mgr_count').value)||1;
     var c = document.getElementById('mgr_accordions');
@@ -2342,7 +2359,8 @@ function mgrCard(i){
     return '<div class="accordion"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('open')">Manager '+i+'</div><div class="accordion-body open"><div class="two-col"><div class="field-row"><label>First name</label><input class="field-input" type="text" name="mgr_'+i+'_first_name" placeholder=" "/></div><div class="field-row"><label>Last name</label><input class="field-input" type="text" name="mgr_'+i+'_last_name" placeholder=" "/></div></div><div class="field-row"><label>Nationality</label><input class="field-input" type="text" name="mgr_'+i+'_nationality" placeholder=" "/></div><div class="two-col"><div class="field-row"><label>Email</label><input class="field-input" type="email" name="mgr_'+i+'_email" placeholder=" "/></div><div class="field-row"><label>Mobile</label><input class="field-input" type="tel" name="mgr_'+i+'_mobile" placeholder=" "/></div></div><div class="field-row"><label>Passport number</label><input class="field-input" type="text" name="mgr_'+i+'_passport_no" placeholder=" "/></div><div class="upload-label">Passport copy</div><div class="upload-box" onclick="document.getElementById('mgr_'+i+'_pf').click()"><input type="file" id="mgr_'+i+'_pf" name="mgr_'+i+'_passport_file" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/><div class="upload-icon">&#11014;</div><div class="upload-text">Upload passport</div></div></div></div>';
 }
 document.addEventListener('DOMContentLoaded', function(){ buildMgrAccordions(); });
-/*]]>*/</script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -2402,7 +2420,7 @@ document.addEventListener('DOMContentLoaded', function(){ buildMgrAccordions(); 
     </form>
 </div>
 </div>
-<script type="text/javascript">/*<![CDATA[*/
+<script>//<![CDATA[
 function buildDirAccordions(){
     var count = parseInt(document.getElementById('dir_count').value)||1;
     var c = document.getElementById('dir_accordions');
@@ -2413,7 +2431,8 @@ function dirCard(i){
     return '<div class="accordion"><div class="accordion-header" onclick="this.nextElementSibling.classList.toggle('open')">Director '+i+'</div><div class="accordion-body open"><div class="two-col"><div class="field-row"><label>First name</label><input class="field-input" type="text" name="dir_'+i+'_fn" placeholder=" "/></div><div class="field-row"><label>Last name</label><input class="field-input" type="text" name="dir_'+i+'_ln" placeholder=" "/></div></div><div class="field-row"><label>Nationality</label><input class="field-input" type="text" name="dir_'+i+'_nat" placeholder=" "/></div><div class="two-col"><div class="field-row"><label>Email</label><input class="field-input" type="email" name="dir_'+i+'_email" placeholder=" "/></div><div class="field-row"><label>Mobile</label><input class="field-input" type="tel" name="dir_'+i+'_mob" placeholder=" "/></div></div><div class="field-row"><label>Passport number</label><input class="field-input" type="text" name="dir_'+i+'_passport_no" placeholder=" "/></div><div class="upload-label">Passport copy</div><div class="upload-box" onclick="document.getElementById('dir_'+i+'_pf').click()"><input type="file" id="dir_'+i+'_pf" name="dir_'+i+'_pf" style="display:none" accept=".pdf,.jpg,.jpeg,.png"/><div class="upload-icon">&#11014;</div><div class="upload-text">Upload passport</div></div></div></div>';
 }
 document.addEventListener('DOMContentLoaded', function(){ buildDirAccordions(); });
-/*]]>*/</script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -2563,12 +2582,13 @@ document.addEventListener('DOMContentLoaded', function(){ buildDirAccordions(); 
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectVisa(n,btn){
     document.querySelectorAll('.num-btn').forEach(function(b){b.classList.remove('active')});
     btn.classList.add('active');
     document.getElementById('visa_count_val').value=n;
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -2631,12 +2651,13 @@ function selectVisa(n,btn){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectFac(el){
     document.querySelectorAll('.fac-card').forEach(function(c){c.classList.remove('selected')});
     el.classList.add('selected');
     el.querySelector('input[type=radio]').checked=true;
 }
+//]]>
 </script>
 </body></html>
 </template>

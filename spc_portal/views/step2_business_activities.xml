@@ -93,7 +93,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
         <div style="font-size:11px;opacity:.6">AED</div>
         <div style="font-size:20px;font-weight:700"><t t-esc="'%.2f' % fee"/> <span style="font-size:14px">&#9432;</span></div>
     </div>
-    <a href="/spc/setup-new-company" style="color:white;font-size:11px;text-decoration:underline;display:block;margin-top:14px;opacity:.8">SAVE &amp; CONTINUE LATER</a>
+    <a href="/spc/setup-new-company" style="color:white;font-size:11px;text-decoration:underline;display:block;margin-top:14px;opacity:.8">SAVE &amp; EXIT</a>
 </div>
 
 <div class="form-main">
@@ -190,7 +190,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;display:flex;min
     <button class="next-btn" onclick="validateStep2()">NEXT</button>
 </div>
 
-<script>
+<script>//<![CDATA[
 var selectedActivities = [];
 
 function toggleDivision(header) {
@@ -288,7 +288,7 @@ function validateStep2() {
     }
     // Support custom submit URL from hidden input
     var customUrlInput = document.getElementById('custom_submit_url');
-    if (customUrlInput &amp;&amp; customUrlInput.value) { submitUrl = customUrlInput.value; }
+    if (customUrlInput && customUrlInput.value) { submitUrl = customUrlInput.value; }
     form.action = submitUrl;
     // CSRF token
     var csrf = document.createElement('input');
@@ -314,6 +314,9 @@ function validateStep2() {
     document.body.appendChild(form);
     form.submit();
 }
+
+//
+//]]>
 </script>
 </body>
 </html>

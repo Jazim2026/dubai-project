@@ -8,14 +8,18 @@ class SpcDrivingLicense(models.Model):
 
     name = fields.Char('Reference', readonly=True, default='New')
     partner_id = fields.Many2one('res.partner', 'Customer')
+    approved_company_id = fields.Many2one('spc.approved.company', string='Company')
     license_type = fields.Selection([
         ('new','New'),('amendment','Amendment'),
         ('duplicate','Duplicate'),('renewal','Renewal'),('transfer','Transfer'),
     ], string='License Type')
     state = fields.Selection([
         ('draft','Draft'),('submitted','Submitted'),
-        ('in_review','In Review'),('approved','Approved'),('rejected','Rejected'),
+        ('in_review','In Review'),('documents_approved', 'Documents Approved'),('payment_approved', 'Payment Approved'),('complaints_approved', 'Complaints Approved'),('under_process', 'Under Process'),('completed', 'Completed'),('approved','Approved'),('rejected','Rejected'),
     ], default='draft')
+    # Request Tracking
+    current_step = fields.Integer(string='Current Step', default=1)
+    started_date = fields.Datetime(string='Started Date', readonly=True)
 
     # Applicant details
     first_name = fields.Char('First Name')
@@ -57,3 +61,22 @@ class SpcDrivingLicense(models.Model):
     def action_in_review(self): self.state = 'in_review'
     def action_approve(self): self.state = 'approved'
     def action_reject(self): self.state = 'rejected'
+    def action_approve_documents(self): self.state = 'documents_approved'
+    def action_approve_payment(self): self.state = 'payment_approved'
+    def action_approve_complaints(self): self.state = 'complaints_approved'
+    def action_under_process(self): self.state = 'under_process'
+    def action_completed(self): self.state = 'completed'
+
+    def action_send_notification(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Send Notification',
+            'res_model': 'spc.send.notification.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_source_model': self._name,
+                'default_source_id': self.id,
+            }
+        }
+

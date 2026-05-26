@@ -40,7 +40,7 @@
     </t>
     <div class="total-box">Total AED<div class="amount">360.00</div></div>
     <div class="sidebar-links">
-        <a href="/spc/company-management/corporate-letters/save-later">SAVE &amp; CONTINUE LATER</a>
+        <a href="/spc/company-management/corporate-letters/save-later">SAVE &amp; EXIT</a>
         <a href="/spc/company-management/corporate-letters/cancel" style="color:#f87171">CANCEL APPLICATION</a>
     </div>
 </div>
@@ -322,12 +322,81 @@
 
     <div class="spc-nav-buttons">
         <a href="/spc/company-management" class="spc-btn-prev">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="clStep1Validate()">NEXT</button>
     </div>
 </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
+function clStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement('div');el.id=id;el.style.cssText='color:red;font-size:12px;margin-top:4px';}el.textContent=msg;el.style.display='block';}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display='none';}
+  function addErrAfter(el,id){if(el&&!document.getElementById(id)){var e=document.createElement('div');e.id=id;e.style.cssText='color:red;font-size:12px;margin-top:4px';el.parentElement.appendChild(e);}}
+
+  // Company name
+  var co=document.querySelector('[name="company_name"]');addErrAfter(co,'cl_co_err');
+  if(!co||!co.value){showErr('cl_co_err','Please select a company.');valid=false;}else hideErr('cl_co_err');
+
+  // License expiry date
+  var ld=document.querySelector('[name="license_expiry_date"]');addErrAfter(ld,'cl_ld_err');
+  if(!ld||!ld.value){showErr('cl_ld_err','Please select the license expiry date.');valid=false;}else hideErr('cl_ld_err');
+
+  // Letter type
+  var lt=document.querySelector('[name="letter_type"]');addErrAfter(lt,'cl_lt_err');
+  if(!lt||!lt.value){showErr('cl_lt_err','Please select a corporate letter type.');valid=false;}else hideErr('cl_lt_err');
+
+  if(lt&&lt.value){
+    // NOC validations
+    if(lt.value==='noc'){
+      var nt=document.getElementById('nocType');addErrAfter(nt,'cl_nt_err');
+      if(!nt||!nt.value){showErr('cl_nt_err','Please select the type of NOC.');valid=false;}else{
+        hideErr('cl_nt_err');
+        // Police section
+        if(nt.value==='police_report'){
+          var ps=document.querySelector('[name="police_station_name"]');addErrAfter(ps,'cl_ps_err');
+          if(!ps||!ps.value.trim()){showErr('cl_ps_err','Please enter police station name.');valid=false;}else hideErr('cl_ps_err');
+          var pe=document.querySelector('[name="police_emirate"]');addErrAfter(pe,'cl_pe_err');
+          if(!pe||!pe.value){showErr('cl_pe_err','Please select emirate.');valid=false;}else hideErr('cl_pe_err');
+        }
+        // DED section
+        if(nt.value==='establish_ded'){
+          var de=document.querySelector('[name="ded_emirate"]');addErrAfter(de,'cl_de_err');
+          if(!de||!de.value){showErr('cl_de_err','Please select emirate.');valid=false;}else hideErr('cl_de_err');
+          var dl=document.querySelector('[name="ded_office_location"]');addErrAfter(dl,'cl_dl_err');
+          if(!dl||!dl.value.trim()){showErr('cl_dl_err','Please enter office location.');valid=false;}else hideErr('cl_dl_err');
+        }
+        // Vehicle register
+        if(nt.value==='register_vehicle'){
+          var vt=document.querySelector('[name="vehicle_type"]:checked');
+          if(!vt){if(!document.getElementById('cl_vt_err')){var e=document.createElement('div');e.id='cl_vt_err';e.style.cssText='color:red;font-size:12px;margin-top:4px';document.getElementById('vTypeRow').insertAdjacentElement('afterend',e);}showErr('cl_vt_err','Please select vehicle type.');valid=false;}else{hideErr('cl_vt_err');
+            var ve=document.querySelector('[name="vehicle_engine"]');addErrAfter(ve,'cl_ve_err');
+            if(!ve||!ve.value.trim()){showErr('cl_ve_err','Please enter engine number.');valid=false;}else hideErr('cl_ve_err');
+            var vy=document.querySelector('[name="vehicle_model_year"]');addErrAfter(vy,'cl_vy_err');
+            if(!vy||!vy.value.trim()){showErr('cl_vy_err','Please enter model year.');valid=false;}else hideErr('cl_vy_err');
+          }
+        }
+        // Vehicle transfer
+        if(nt.value==='transfer_vehicle'){
+          var tvt=document.querySelector('[name="transfer_vehicle_type"]:checked');
+          if(!tvt){if(!document.getElementById('cl_tvt_err')){var e=document.createElement('div');e.id='cl_tvt_err';e.style.cssText='color:red;font-size:12px;margin-top:4px';document.getElementById('tVTypeRow').insertAdjacentElement('afterend',e);}showErr('cl_tvt_err','Please select vehicle type.');valid=false;}else{hideErr('cl_tvt_err');
+            if(tvt.value==='lmv'){
+              var tc=document.querySelector('[name="transfer_chassis"]');addErrAfter(tc,'cl_tc_err');
+              if(!tc||!tc.value.trim()){showErr('cl_tc_err','Please enter chassis number.');valid=false;}else hideErr('cl_tc_err');
+              var ten=document.querySelector('[name="transfer_engine"]');addErrAfter(ten,'cl_ten_err');
+              if(!ten||!ten.value.trim()){showErr('cl_ten_err','Please enter engine number.');valid=false;}else hideErr('cl_ten_err');
+              var tmy=document.querySelector('[name="vehicle_model_year"]');
+              var rf=document.getElementById('regFile');
+              if(!rf||!rf.files||rf.files.length===0){if(!document.getElementById('cl_rf_err')){var e=document.createElement('div');e.id='cl_rf_err';e.style.cssText='color:red;font-size:12px;margin-top:4px';rf.parentElement.insertAdjacentElement('afterend',e);}showErr('cl_rf_err','Please upload car registration copy.');valid=false;}else hideErr('cl_rf_err');
+            }
+          }
+        }
+      }
+    }
+  }
+  if(valid)document.querySelector('form').submit();
+}
+
 function handleLetterType(v){
     document.getElementById("otherNameField").style.display=v==="other"?"":"none";
     document.getElementById("nocSection").style.display=v?"":"none";
@@ -357,6 +426,7 @@ function selectTVType(t,el){
     el.querySelector("input").checked=true;
     document.getElementById("tLmvFields").style.display=t==="lmv"?"":"none";
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -388,11 +458,26 @@ function selectTVType(t,el){
     </div>
     <div class="spc-nav-buttons">
         <a href="/spc/company-management/corporate-letters/step1" class="spc-btn-prev">PREVIOUS</a>
-        <button type="submit" class="spc-btn-next">NEXT</button>
+        <button type="button" class="spc-btn-next" onclick="clDeclValidate()">NEXT</button>
     </div>
 </form>
 </div>
 </div>
+<script>//<![CDATA[
+function clDeclValidate(){
+  var cb=document.querySelector('[name="declaration"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById('cl_decl_err')){var e=document.createElement('div');e.id='cl_decl_err';e.style.cssText='color:red;font-size:12px;margin-top:8px';cb.parentElement.insertAdjacentElement('afterend',e);}
+    document.getElementById('cl_decl_err').textContent='Please accept the declaration to continue.';
+    document.getElementById('cl_decl_err').style.display='block';
+    return;
+  }
+  var el=document.getElementById('cl_decl_err');if(el)el.style.display='none';
+  document.querySelector('form').submit();
+}
+//
+//]]>
+</script>
 </body></html>
 </template>
 

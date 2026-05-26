@@ -197,7 +197,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 (function(){
     var radios  = document.querySelectorAll('.bl-pkg-radio');
     var block   = document.getElementById('instant-block');
@@ -222,16 +222,19 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         var insertBefore = sidebar.querySelector('.sidebar-bottom');
         steps.forEach(function(s, i){
             var idx = i + 1;
-            var cls = idx === cur ? 'active' : idx &lt; cur ? 'done' : '';
+            var cls = idx === cur ? 'active' : idx < cur ? 'done' : '';
             var div = document.createElement('div');
             div.className = 'progress-step ' + cls;
             div.innerHTML = '<div class="step-num">'
-                + (idx &lt; cur ? '&#10003;' : idx)
+                + (idx < cur ? '&#10003;' : idx)
                 + '</div><div class="step-label">' + s + '</div>';
             sidebar.insertBefore(div, insertBefore);
         });
     }
 })();
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -324,7 +327,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function toggleActGroup(hdr){
     var body = hdr.nextElementSibling;
     body.style.display = body.style.display === 'none' ? '' : 'none';
@@ -352,6 +355,7 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
         });
     });
 });
+//]]>
 </script>
 </body>
 </html>
@@ -473,13 +477,13 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
 </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 (function(){
     var PHYSICAL = ['office','retail','store','shell_core','warehouse'];
     var ackBlock = document.getElementById('bl-ack-block');
     document.querySelectorAll('.bl-facility-radio').forEach(function(r){
         r.addEventListener('change', function(){
-            ackBlock.style.display = PHYSICAL.indexOf(this.value) &gt;= 0 ? 'block' : 'none';
+            ackBlock.style.display = PHYSICAL.indexOf(this.value) >= 0 ? 'block' : 'none';
             fetch('/spc/company-management/business-license/bl-ajax-steps', {
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
@@ -496,15 +500,18 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
         var insertBefore = sidebar.querySelector('.sidebar-bottom');
         steps.forEach(function(s, i){
             var idx = i + 1;
-            var cls = idx === cur ? 'active' : idx &lt; cur ? 'done' : '';
+            var cls = idx === cur ? 'active' : idx < cur ? 'done' : '';
             var div = document.createElement('div');
             div.className = 'progress-step ' + cls;
-            div.innerHTML = '<div class="step-num">'+(idx &lt; cur ? '&#10003;' : idx)
+            div.innerHTML = '<div class="step-num">'+(idx < cur ? '&#10003;' : idx)
                 +'</div><div class="step-label">'+s+'</div>';
             sidebar.insertBefore(div, insertBefore);
         });
     }
 })();
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -544,7 +551,7 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
                         </button>
                     </t>
                     <button type="button"
-                            t-attf-class="visa-btn #{'visa-active' if bl_data.get('visa_count',0) >= 7 else ''}"
+                            t-attf-class="visa-btn #{'visa-active' if bl_data.get('visa_count',0) &gt;= 7 else ''}"
                             data-val="7">7+</button>
                 </div>
                 <div class="info-box">
@@ -566,7 +573,7 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
 </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 (function(){
     var btns  = document.querySelectorAll('.visa-btn');
     var input = document.getElementById('bl-visa-input');
@@ -591,14 +598,17 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
         var insertBefore = sidebar.querySelector('.sidebar-bottom');
         steps.forEach(function(s, i){
             var idx = i + 1;
-            var cls = idx===cur?'active':idx&lt;cur?'done':'';
+            var cls = idx===cur?'active':idx<cur?'done':'';
             var div = document.createElement('div');
             div.className = 'progress-step '+cls;
-            div.innerHTML='<div class="step-num">'+(idx&lt;cur?'&#10003;':idx)+'</div><div class="step-label">'+s+'</div>';
+            div.innerHTML='<div class="step-num">'+(idx<cur?'&#10003;':idx)+'</div><div class="step-label">'+s+'</div>';
             sidebar.insertBefore(div, insertBefore);
         });
     }
 })();
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -707,7 +717,7 @@ document.querySelectorAll('.act-tab').forEach(function(tab){
 </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectYN(group, val, el) {
     // Style cards
     var row = el.closest('.yn-row');
@@ -729,6 +739,7 @@ function selectYN(group, val, el) {
         }
     }
 }
+//]]>
 </script>
 </body>
 </html>

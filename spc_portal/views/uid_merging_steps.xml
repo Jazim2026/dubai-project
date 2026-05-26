@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- UID MERGING DETAIL -->
+<template id="uid_merging_detail" name="UID Merging Detail">
+<html><head><meta charset="utf-8"/><title>UID Merging | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:32px 40px}
+.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:flex;align-items:center;gap:4px;margin-bottom:16px;font-weight:600}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-title{font-size:22px;font-weight:700;color:#1abc9c}
+.start-btn{background:#1a2340;color:white;border:none;border-radius:8px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none}
+.hero-banner{border-radius:12px;min-height:320px;background:linear-gradient(135deg,#1a3c6e 40%,#4a90d9 100%);position:relative;display:flex;align-items:flex-end;padding:32px;margin-bottom:32px;overflow:hidden}
+.hero-tag{position:absolute;top:20px;left:20px;background:#1a5c45;color:white;padding:8px 20px;font-size:14px;font-weight:700}
+.hero-title{font-size:56px;font-weight:900;color:white;line-height:1.1}
+.detail-card{background:white;border-radius:12px;padding:32px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.detail-section-title{font-size:17px;font-weight:700;color:#222;margin-bottom:8px}
+.detail-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}
+.detail-desc{font-size:14px;color:#374151;line-height:1.9}
+.detail-desc p{margin-bottom:10px}
+.detail-desc ol{padding-left:22px;margin-bottom:10px}
+.detail-desc li{margin-bottom:6px}
+.detail-desc .section-head{font-weight:700;margin-top:16px;margin-bottom:6px;color:#1a2340}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav">
+  <span class="cd-nav-logo">SPC <span style="font-weight:300">| Free Zone</span></span>
+  <button style="background:#1a2340;color:white;border:none;border-radius:6px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer">Business Activities</button>
+</nav>
+<aside class="cd-sidebar">
+  <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+  <a href="/spc/request-tracking" class="cd-sidebar-item">&#128203; Request Tracking</a>
+  <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+  <a href="/spc/employee-management" class="cd-sidebar-item active">&#128101; Employee Management</a>
+  <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+  <a href="/spc/concierge-services" class="cd-sidebar-item">&#127918; Concierge Services</a>
+  <div class="cd-sidebar-divider"></div>
+  <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+  <a href="/spc/employee-management" class="back-link">&#8249; BACK TO EMPLOYEE MANAGEMENT</a>
+  <div class="page-header">
+    <div class="page-title">UID Merging - New</div>
+    <a href="/spc/employee-management/uid-merging/step1" class="start-btn">START PROCESS</a>
+  </div>
+  <div class="hero-banner">
+    <span class="hero-tag">New</span>
+    <div class="hero-title">UID<br/>Merge</div>
+  </div>
+  <div class="detail-card">
+    <div class="detail-section-title">Description</div>
+    <hr class="detail-divider"/>
+    <div class="detail-desc">
+      <p>The Unified Identification Number is a six-digit number automatically assigned to anyone who enters the UAE. This six-digit number is used to identify a person entering the UAE for any reason (employment, tourist, dependent, etc.) for immigration records. This number will also be used for residence visa applications and Emirates ID processing.</p>
+      <p>The Unified Identification Number is a six-digit number automatically assigned to anyone who enters the UAE. This number is used to identify a person entering the UAE for any reason (employment, tourism, dependency, etc.) for immigration records. It is also used for residence visa applications and Emirates ID processing.</p>
+      <p>Why do UID numbers need merging?</p>
+      <p>In some cases, individuals are assigned multiple UID numbers due to system errors. Each individual must only have one UID number. Duplicate records in the immigration system can cause problems when entering or exiting the UAE and applying for a residency visa. To reconcile immigration records, multiple UID numbers must be merged. Merging UID numbers requires submitting the original passport to Immigration along with the UID numbers to be merged.</p>
+      <p>To reconcile immigration records, Multiple UID numbers have to be merged in order for immigration records to be reconciled. Merging UID numbers requires submitting the original passport to Immigration with the UID numbers to be merged.</p>
+      <div class="section-head">Requirement(s)</div>
+      <ol>
+        <li>Passport copy including signature page</li>
+        <li>Old and current visa copies</li>
+        <li>Cancellation paper If recently had a cancelled visa</li>
+      </ol>
+      <div class="section-head">Timeline</div>
+      <p>1-3 business day</p>
+      <div class="section-head">Fees</div>
+      <p>AED 400</p>
+    </div>
+  </div>
+</main>
+</body></html>
+</template>
+
+<!-- UID MERGING STEP 1 -->
+<template id="uid_merging_step1" name="UID Merging Step 1">
+<html><head><meta charset="utf-8"/><title>UID Merging | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.section-block{display:flex;gap:24px;align-items:flex-start;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid #f0f0f0}
+.sec-num{font-size:13px;color:#bbb;font-weight:600;min-width:32px;padding-top:2px}
+.sec-body{flex:1;max-width:720px}
+.sec-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:18px}
+.field-input{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;margin-bottom:14px;display:block}
+.field-input:focus{border-bottom-color:#1abc9c}
+.field-input::placeholder{color:#aaa}
+.field-select{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;margin-bottom:14px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23999' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px center}
+.phone-wrap{display:flex;border-bottom:2px solid #e0e0e0;margin-bottom:14px;align-items:center}
+.phone-flag select{border:none;background:transparent;font-size:14px;outline:none;cursor:pointer;padding:14px 8px 14px 0}
+.phone-num{flex:1;padding:14px 0;border:none;background:transparent;font-size:14px;outline:none}
+.phone-num::placeholder{color:#aaa}
+.upload-box{border:2px solid #e0e0e0;padding:20px;text-align:center;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.upload-box:hover{border-color:#1abc9c}
+.upload-icon{font-size:22px;color:#1abc9c;flex-shrink:0}
+.upload-label{font-size:13px;color:#1abc9c;font-weight:600}
+.upload-filename{font-size:13px;color:#374151;margin-left:auto}
+.field-textarea{width:100%;padding:14px 0;border:none;border-bottom:2px solid #e0e0e0;background:transparent;font-size:14px;color:#333;outline:none;resize:none;min-height:72px;font-family:inherit;margin-bottom:14px}
+.field-textarea::placeholder{color:#aaa}
+.nav-btns{display:flex;justify-content:flex-end;margin-top:32px}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num active">1</div><div class="ps-label active">Dependent details</div></div>
+  <div class="progress-step"><div class="ps-num">2</div><div class="ps-label">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num">3</div><div class="ps-label">Review application</div></div>
+  <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val">410.00 &#9432;</div>
+  </div>
+  <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
+  <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+</div>
+<div class="form-main">
+  <div class="form-title">New</div>
+  <form action="/spc/employee-management/uid-merging/step1/submit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+    <!-- 01 Assigned contact person details -->
+    <div class="section-block">
+      <div class="sec-num">01</div>
+      <div class="sec-body">
+        <div class="sec-title">Assigned contact person details</div>
+        <select name="employee_id" class="field-select" id="employeeSel" onchange="onEmployeeChange(this.value)">
+          <option value="">Select the employee</option>
+          <option value="manual">+ Add manually</option>
+          <t t-foreach="partners" t-as="p">
+            <option t-att-value="p.id" t-esc="p.name"/>
+          </t>
+        </select>
+        <div id="manualEmployee" style="display:none">
+          <input type="text" name="manual_employee_name" class="field-input" placeholder="Employee name"/>
+        </div>
+        <input type="text" name="first_name" class="field-input" placeholder="First name"/>
+        <input type="text" name="last_name" class="field-input" placeholder="Last name"/>
+        <div class="phone-wrap">
+          <div class="phone-flag">
+            <select name="phone_code" id="phoneCodeSel"></select>
+          </div>
+          <input type="tel" name="contact_number" class="phone-num" placeholder="Contact number"/>
+        </div>
+        <input type="email" name="email" class="field-input" placeholder="Email address"/>
+      </div>
+    </div>
+
+    <!-- 02 Date of birth + Passport copy -->
+    <div class="section-block">
+      <div class="sec-num">02</div>
+      <div class="sec-body">
+        <input type="date" name="date_of_birth" class="field-input" placeholder="Date of birth"/>
+        <div class="upload-box" onclick="document.getElementById('passportFile').click()">
+          <div class="upload-icon">&#8679;</div>
+          <div class="upload-label">Passport copy</div>
+          <div class="upload-filename" id="passportFileName">No file chosen</div>
+          <input type="file" id="passportFile" name="passport_copy" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="document.getElementById('passportFileName').textContent=this.files[0]?this.files[0].name:'No file chosen'"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Visa Application Number -->
+    <div class="section-block">
+      <div class="sec-num">03</div>
+      <div class="sec-body">
+        <input type="text" name="visa_application_number" class="field-input" placeholder="Visa Application Number"/>
+      </div>
+    </div>
+
+    <!-- 04 Visa cancellation / other passport -->
+    <div class="section-block">
+      <div class="sec-num">04</div>
+      <div class="sec-body">
+        <div class="upload-box" onclick="document.getElementById('visaDoc').click()">
+          <div class="upload-icon">&#8679;</div>
+          <div class="upload-label">visa cancellation / other passport</div>
+          <div class="upload-filename" id="visaDocName">No file chosen</div>
+          <input type="file" id="visaDoc" name="visa_cancellation_doc" style="display:none" accept=".pdf,.jpg,.jpeg,.png" onchange="document.getElementById('visaDocName').textContent=this.files[0]?this.files[0].name:'No file chosen'"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Comments -->
+    <div class="section-block" style="border-bottom:none">
+      <div class="sec-num">05</div>
+      <div class="sec-body">
+        <textarea name="comments" class="field-textarea" placeholder="Comments"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button type="button" class="btn-next" onclick="uidStep1Validate()">NEXT</button>
+    </div>
+  </form>
+</div>
+<script>//<![CDATA[
+var PHONE_CODES=[
+  {c:'+971',n:'AE +971'},{c:'+91',n:'IN +91'},{c:'+1',n:'US +1'},
+  {c:'+44',n:'GB +44'},{c:'+92',n:'PK +92'},{c:'+880',n:'BD +880'},
+  {c:'+63',n:'PH +63'},{c:'+966',n:'SA +966'},{c:'+974',n:'QA +974'},
+  {c:'+965',n:'KW +965'},{c:'+973',n:'BH +973'},{c:'+968',n:'OM +968'},
+  {c:'+962',n:'JO +962'},{c:'+20',n:'EG +20'},{c:'+90',n:'TR +90'},
+  {c:'+86',n:'CN +86'},{c:'+81',n:'JP +81'},{c:'+60',n:'MY +60'},
+  {c:'+65',n:'SG +65'},{c:'+94',n:'LK +94'},{c:'+977',n:'NP +977'},
+  {c:'+61',n:'AU +61'},{c:'+27',n:'ZA +27'},{c:'+234',n:'NG +234'}
+];
+function onEmployeeChange(val){
+  document.getElementById('manualEmployee').style.display = val==='manual'?'block':'none';
+}
+(function(){
+  var sel=document.getElementById('phoneCodeSel');
+  if(!sel) return;
+  PHONE_CODES.forEach(function(cc){
+    var o=document.createElement('option');
+    o.value=cc.c; o.textContent=cc.n;
+    if(cc.c==='+971') o.selected=true;
+    sel.appendChild(o);
+  });
+})();
+function uidStep1Validate(){
+  var valid=true;
+  function addErr(f,id,msg){
+    if(!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";f.insertAdjacentElement("afterend",e);}
+    if(msg){document.getElementById(id).textContent=msg;document.getElementById(id).style.display="block";}
+    else{var el=document.getElementById(id);if(el)el.style.display="none";}
+  }
+  var fn=document.getElementsByName('first_name')[0];
+  if(!fn||fn.value.trim().length<2){addErr(fn,"uid_fn_err","First name is required.");valid=false;}else addErr(fn,"uid_fn_err","");
+  var ln=document.getElementsByName('last_name')[0];
+  if(!ln||ln.value.trim().length<2){addErr(ln,"uid_ln_err","Last name is required.");valid=false;}else addErr(ln,"uid_ln_err","");
+  var em=document.getElementsByName('email')[0];
+  var emRe=/^[^@]+@[^@]+[.][^@]+$/;
+  if(!em||!emRe.test(em.value.trim())){addErr(em,"uid_em_err","Please enter a valid email.");valid=false;}else addErr(em,"uid_em_err","");
+  var dob=document.getElementsByName('date_of_birth')[0];
+  if(!dob||!dob.value){addErr(dob,"uid_dob_err","Please select date of birth.");valid=false;}else addErr(dob,"uid_dob_err","");
+  var pf=document.getElementById('passportFile');
+  if(!pf||pf.files.length===0){addErr(pf,"uid_pf_err","Please upload passport copy.");valid=false;}else addErr(pf,"uid_pf_err","");
+  if(valid) document.querySelector("form").submit();
+}
+
+//
+//]]>
+</script>
+</body></html>
+</template>
+
+<!-- UID MERGING DECLARATION -->
+<template id="uid_merging_declaration" name="UID Merging Declaration">
+<html><head><meta charset="utf-8"/><title>Declaration | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.ps-link{color:white;font-size:12px;text-decoration:underline;display:block;margin-top:14px;opacity:.8;background:none;border:none;cursor:pointer;text-align:left;padding:0}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.decl-box{background:white;border-radius:10px;padding:32px;max-width:760px;font-size:14px;color:#374151;line-height:1.9;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.decl-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.terms-link{color:#1abc9c;font-weight:600;text-decoration:none}
+.ack-row{display:flex;align-items:center;gap:12px;margin-top:20px;font-size:14px;font-weight:600;color:#1a2340}
+.ack-row input{width:17px;height:17px;accent-color:#1a2340;flex-shrink:0}
+.nav-btns{display:flex;justify-content:space-between;margin-top:32px;max-width:760px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;cursor:pointer}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Dependent details</div></div>
+  <div class="progress-step"><div class="ps-num active">2</div><div class="ps-label active">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num">3</div><div class="ps-label">Review application</div></div>
+  <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 400.0)"/> &#9432;</div>
+  </div>
+  <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
+  <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+</div>
+<div class="form-main">
+  <div class="form-title">New</div>
+  <form action="/spc/employee-management/uid-merging/declaration/submit" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="record_id" t-att-value="record.id"/>
+    <div class="decl-box">
+      <div class="decl-title">Declaration:</div>
+      <p>By clicking below, I hereby agree and acknowledge my responsibility to remain in compliance, at all times, with all applicable undertakings and declarations, as may be required by SPC. I further reaffirm my acceptance of <a href="#" class="terms-link">SPC Terms and Conditions</a> and the laws of the United Arab Emirates.</p>
+      <br/>
+      <p>Neither SPC nor its affiliates shall assume liability for any actual or purported failure to comply with applicable laws and regulations, whether by the company&#8217;s ultimate beneficial owner(s), manager(s), agents or otherwise.</p>
+      <br/>
+      <div class="ack-row">
+        <input type="checkbox" name="terms_agreed" id="termsChk" value="yes"/>
+        <label for="termsChk">I have read and agree to the SPC Terms and Conditions.</label>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <a href="/spc/employee-management/uid-merging/step1" class="btn-prev">PREVIOUS</a>
+      <button type="button" class="btn-next" onclick="uidDeclValidate()">NEXT</button>
+    </div>
+  </form>
+</div>
+<script>//<![CDATA[
+function uidDeclValidate(){
+  var cb=document.querySelector('[name="terms_agreed"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById("uid_decl_err")){var e=document.createElement("div");e.id="uid_decl_err";e.style.cssText="color:red;font-size:12px;margin-top:8px";cb.parentElement.insertAdjacentElement("afterend",e);}
+    document.getElementById("uid_decl_err").textContent="Please accept the declaration to continue.";
+    document.getElementById("uid_decl_err").style.display="block";
+    return;
+  }
+  document.querySelector("form").submit();
+}
+//]]>
+</script>
+</body></html>
+</template>
+
+<!-- UID MERGING REVIEW -->
+<template id="uid_merging_review" name="UID Merging Review">
+<html><head><meta charset="utf-8"/><title>Review | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.review-card{background:white;border-radius:12px;padding:28px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);max-width:820px}
+.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.review-sec-title{font-size:15px;font-weight:700;color:#1a2340}
+.edit-btn{color:#1a2340;font-size:13px;font-weight:600;text-decoration:none}
+.review-row{display:flex;gap:24px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.review-row:last-child{border-bottom:none}
+.review-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#9ca3af;font-weight:600;min-width:240px}
+.review-val{font-size:14px;color:#1a2340;font-weight:500}
+.nav-btns{display:flex;justify-content:space-between;margin-top:24px;max-width:820px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block}
+.btn-next{background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px 52px;font-size:15px;font-weight:700;text-decoration:none;display:inline-block}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Dependent details</div></div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num active">3</div><div class="ps-label active">Review application</div></div>
+  <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 400.0)"/> &#9432;</div>
+  </div>
+</div>
+<div class="form-main">
+  <div class="form-title">New</div>
+  <div class="review-card">
+    <div class="review-header">
+      <div class="review-sec-title">Application Details</div>
+      <a href="/spc/employee-management/uid-merging/step1" class="edit-btn">&#9998; EDIT</a>
+    </div>
+    <div class="review-row"><div class="review-lbl">FIRST NAME</div><div class="review-val"><t t-esc="record.first_name or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">LAST NAME</div><div class="review-val"><t t-esc="record.last_name or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">EMAIL</div><div class="review-val"><t t-esc="record.email or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">CONTACT NUMBER</div><div class="review-val"><t t-esc="(record.phone_code or '') + ' ' + (record.contact_number or '-')"/></div></div>
+    <div class="review-row"><div class="review-lbl">DATE OF BIRTH</div><div class="review-val"><t t-esc="str(record.date_of_birth) if record.date_of_birth else '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">VISA APPLICATION NUMBER</div><div class="review-val"><t t-esc="record.visa_application_number or '-'"/></div></div>
+    <div class="review-row"><div class="review-lbl">COMMENTS</div><div class="review-val"><t t-esc="record.comments or '-'"/></div></div>
+  </div>
+  <div class="review-card">
+    <div class="review-header"><div class="review-sec-title">Declaration</div></div>
+    <div class="review-row"><div class="review-lbl">TERMS AGREED</div><div class="review-val"><t t-esc="'Yes' if record.declaration_accepted else 'No'"/></div></div>
+  </div>
+  <div class="nav-btns">
+    <a t-attf-href="/spc/employee-management/uid-merging/declaration/#{record.id}" class="btn-prev">PREVIOUS</a>
+    <a t-attf-href="/spc/employee-management/uid-merging/payment/#{record.id}" class="btn-next">NEXT</a>
+  </div>
+</div>
+</body></html>
+</template>
+
+<!-- UID MERGING PAYMENT -->
+<template id="uid_merging_payment" name="UID Merging Payment">
+<html><head><meta charset="utf-8"/><title>Payment | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-height:100vh}
+.progress-sidebar{width:280px;background:#1a2340;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.ps-logo{font-size:18px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c;font-size:22px}
+.ps-subtitle{font-size:11px;opacity:.5}
+.progress-title{font-size:11px;font-weight:600;opacity:.7;margin:24px 0 16px;text-transform:uppercase;letter-spacing:1px}
+.progress-step{display:flex;align-items:flex-start;gap:14px;padding:10px 0}
+.ps-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ps-num.active{background:#1abc9c;border-color:#1abc9c}
+.ps-num.done{background:white;border-color:white;color:#1a2340}
+.ps-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.ps-label.active{opacity:1;font-weight:700;font-size:14px}
+.ps-total{margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.15)}
+.ps-total-lbl{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:.5px}
+.ps-total-val{font-size:22px;font-weight:700;margin-top:2px}
+.form-main{margin-left:280px;padding:40px 56px;min-height:100vh;flex:1}
+.form-title{font-size:32px;font-weight:700;color:#1abc9c;margin-bottom:36px}
+.pay-card{background:white;border-radius:12px;padding:32px;max-width:560px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.pay-title{font-size:16px;font-weight:700;color:#1a2340;margin-bottom:20px}
+.pay-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;font-size:14px}
+.pay-row:last-of-type{border-bottom:none;font-weight:700;font-size:16px}
+.pay-method-title{font-size:14px;font-weight:600;color:#1a2340;margin:20px 0 12px}
+.pay-option{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:10px;cursor:pointer}
+.pay-option:hover{border-color:#1abc9c}
+.submit-btn{width:100%;background:#e91e8c;color:white;border:none;border-radius:8px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;margin-top:20px}
+.btn-prev{background:white;color:#1a2340;border:2px solid #1a2340;border-radius:8px;padding:14px 36px;font-size:14px;font-weight:700;text-decoration:none;display:inline-block;margin-top:16px}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<div class="progress-sidebar">
+  <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+  <div class="ps-subtitle">Free Zone</div>
+  <div class="progress-title">Your progress</div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Dependent details</div></div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Declaration</div></div>
+  <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Review application</div></div>
+  <div class="progress-step"><div class="ps-num active">4</div><div class="ps-label active">Payment</div></div>
+  <div class="ps-total">
+    <div class="ps-total-lbl">Total AED</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 400.0)"/> &#9432;</div>
+  </div>
+</div>
+<div class="form-main">
+  <div class="form-title">New</div>
+  <form action="/spc/employee-management/uid-merging/payment/submit" method="post">
+    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+    <input type="hidden" name="record_id" t-att-value="record.id"/>
+    <div class="pay-card">
+      <div class="pay-title">Payment Summary</div>
+      <div class="pay-row">
+        <span style="color:#555">UID Merging Service Fee</span>
+        <span style="color:#1a2340;font-weight:600">AED <t t-esc="'%.2f' % (record.amount or 400.0)"/></span>
+      </div>
+      <div class="pay-row">
+        <span>Total</span>
+        <span>AED <t t-esc="'%.2f' % (record.amount or 400.0)"/></span>
+      </div>
+      <div class="pay-method-title">Select payment method</div>
+      <label class="pay-option"><input type="radio" name="payment_method" value="card"/> <span style="font-size:14px">Credit / Debit Card</span></label>
+      <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> <span style="font-size:14px">Online Bank Transfer</span></label>
+      <button class="submit-btn" type="submit">SUBMIT</button>
+    </div>
+    <a t-attf-href="/spc/employee-management/uid-merging/review/#{record.id}" class="btn-prev">PREVIOUS</a>
+  </form>
+</div>
+</body></html>
+</template>
+
+</data>
+</odoo>

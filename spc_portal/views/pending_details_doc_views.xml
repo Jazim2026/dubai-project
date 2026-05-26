@@ -115,20 +115,9 @@
     </record>
 
     <!-- Menus -->
-    <menuitem id="menu_pending_details_doc_root"
-              name="Pending Details and Docs"
-              parent="menu_spc_root"
-              sequence="31"/>
+    <!-- menuitem removed -->
 
-    <menuitem id="menu_pending_details_doc"
-              name="Pending Details and Docs"
-              parent="menu_pending_details_doc_root"
-              action="action_pending_details_doc"
-              sequence="1"/>
+    <!-- menuitem removed -->
 
-    <menuitem id="menu_received_details"
-              name="Received Details"
-              parent="menu_pending_details_doc_root"
-              action="action_received_details"
-              sequence="2"/>
+    <!-- menuitem removed -->
 </odoo>

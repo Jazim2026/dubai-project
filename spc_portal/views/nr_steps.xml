@@ -48,7 +48,7 @@
         <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Review application</div></div>
         <div class="progress-step"><div class="ps-num">5</div><div class="ps-label">Payment</div></div>
         <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
         <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
@@ -141,13 +141,12 @@
         </form>
     </div>
 </div>
-<script>
-<![CDATA[
+<script>//<![CDATA[
 function toggleReserved(val) {
     document.getElementById('reserved_section').style.display = val === 'yes' ? 'block' : 'none';
     document.getElementById('proposed_section').style.display = val === 'yes' ? 'none' : 'flex';
 }
-]]>
+//]]>
 </script>
 </body>
 </html>
@@ -174,7 +173,7 @@ function toggleReserved(val) {
         <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Review application</div></div>
         <div class="progress-step"><div class="ps-num">5</div><div class="ps-label">Payment</div></div>
         <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
         <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
@@ -231,7 +230,7 @@ function toggleReserved(val) {
         <div class="progress-step"><div class="ps-num active">4</div><div class="ps-label">Review application</div></div>
         <div class="progress-step"><div class="ps-num">5</div><div class="ps-label">Payment</div></div>
         <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
         <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
@@ -333,7 +332,7 @@ function toggleReserved(val) {
         <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Review application</div></div>
         <div class="progress-step"><div class="ps-num active">5</div><div class="ps-label">Payment</div></div>
         <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
         <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
@@ -383,47 +382,51 @@ function toggleReserved(val) {
 <template id="template_nr_service_detail" name="NR Service Detail">
 <html><head><meta charset="utf-8"/><title>Name Reservation - New</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
-
 </head><body>
-<div class="header">
-    <a href="/spc/company-management" class="back-link">&#8592; BACK TO COMPANY MANAGEMENT</a>
-    <h1 class="page-title">Name Reservation - Name Reservation - New</h1>
-    <a href="/spc/company-management/apply/name_reservation" class="start-btn">START PROCESS</a>
+<div class="layout">
+<div class="sidebar">
+    <div class="sidebar-logo">&#9670; SPC<span>Free Zone</span></div>
 </div>
-<div class="hero">
-    <div style="text-align:center">
-        <div class="hero-badge">New</div>
+<div class="main">
+    <a href="/spc/company-management" class="back-link">&#8592; BACK TO COMPANY MANAGEMENT</a>
+    <div class="page-header">
+        <div class="page-title">Name Reservation - New</div>
+        <a href="/spc/company-management/apply/name_reservation" class="start-btn">START PROCESS</a>
+    </div>
+    <div class="hero-banner" style="background:linear-gradient(135deg,#1a2340 60%,#2d6a9f)">
+        <span class="hero-tag">New</span>
         <div class="hero-title">Name<br/>Reservation</div>
     </div>
+    <div class="detail-card">
+        <h4 style="font-weight:700;margin-bottom:8px">Description</h4>
+        <hr class="detail-divider"/>
+        <p class="detail-desc">This service allows an investor to reserve a company name for a specific duration to prepare for company registration.</p>
+        <h4 style="font-weight:700;margin:16px 0 8px">Requirements</h4>
+        <hr class="detail-divider"/>
+        <ol style="padding-left:20px;font-size:13px;color:#374151;line-height:2.2">
+            <li>Passport Copies and Supporting Documents of the Applicant</li>
+            <li>Proposed Name</li>
+            <li>Company Activities</li>
+            <li>Other Supporting Documents (If applicable)</li>
+            <li>Payment</li>
+        </ol>
+        <h4 style="font-weight:700;margin:16px 0 8px">Output Documents</h4>
+        <hr class="detail-divider"/>
+        <ol style="padding-left:20px;font-size:13px;color:#374151;line-height:2.2">
+            <li>Formation Name Reservation Certificate</li>
+            <li>Payment Receipt</li>
+        </ol>
+        <h4 style="font-weight:700;margin:16px 0 8px">Output Documents for Collection</h4>
+        <hr class="detail-divider"/>
+        <p class="detail-desc">Electronic document not required to be collected</p>
+        <h4 style="font-weight:700;margin:16px 0 8px">Timeline</h4>
+        <hr class="detail-divider"/>
+        <p class="detail-desc">1 business day</p>
+        <h4 style="font-weight:700;margin:16px 0 8px">SPC Fees</h4>
+        <hr class="detail-divider"/>
+        <p class="detail-desc">AED 500</p>
+    </div>
 </div>
-<div class="content">
-    <div class="section-title">Description</div>
-    <hr class="divider"/>
-    <p class="desc-text">This service allows an investor to reserve a company name for a specific duration to prepare for company registration.</p>
-    <div class="section-title">Requirements</div>
-    <hr class="divider"/>
-    <ol class="req-list">
-        <li>Passport Copies and Supporting Documents of the Applicant</li>
-        <li>Proposed Name</li>
-        <li>Company Activities</li>
-        <li>Other Supporting Documents (If applicable)</li>
-        <li>Payment</li>
-    </ol>
-    <div class="section-title">Output documents</div>
-    <hr class="divider"/>
-    <ol class="req-list">
-        <li>Formation Name Reservation Certificate</li>
-        <li>Payment Receipt</li>
-    </ol>
-    <div class="section-title">Output documents for collection</div>
-    <hr class="divider"/>
-    <p class="desc-text">Electronic document not required to be collected</p>
-    <div class="section-title">Timeline</div>
-    <hr class="divider"/>
-    <p class="desc-text">1 business day</p>
-    <div class="section-title">SPC fees</div>
-    <hr class="divider"/>
-    <p class="desc-text">AED 500</p>
 </div>
 </body></html>
 </template>

@@ -75,7 +75,7 @@
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">765.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge/reentry-permit">SAVE &amp; EXIT</a>
       <a href="/spc/concierge/reentry-permit">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -278,7 +278,7 @@
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function fillApplicant(val) {
     var manualWrap = document.getElementById('manual-name-wrap');
     if(val === '__manual__') {
@@ -320,24 +320,24 @@ function reentryValidateStep1() {
   // Applicant name
   var apSel = document.getElementById('applicant_sel');
   var manName = document.getElementById('manual_full_name');
-  if (apSel &amp;&amp; apSel.value === '__manual__') {
+  if (apSel && apSel.value === '__manual__') {
     var mv = manName ? manName.value.trim() : '';
-    if (mv.length &lt; 3 || mv.length &gt; 50) { showErr('ap_name_err','Please enter applicant name (3-50 characters).'); valid=false; } else hideErr('ap_name_err');
+    if (mv.length < 3 || mv.length > 50) { showErr('ap_name_err','Please enter applicant name (3-50 characters).'); valid=false; } else hideErr('ap_name_err');
   } else {
     if (!apSel || !apSel.value) { showErr('ap_name_err','Please select or enter applicant name.'); valid=false; } else hideErr('ap_name_err');
   }
 
   var fn = document.querySelector('[name="first_name"]');
   var fnv = fn ? fn.value.trim() : '';
-  if (fnv.length &lt; 3 || fnv.length &gt; 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
+  if (fnv.length < 3 || fnv.length > 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
 
   var ln = document.querySelector('[name="last_name"]');
   var lnv = ln ? ln.value.trim() : '';
-  if (lnv.length &lt; 3 || lnv.length &gt; 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
+  if (lnv.length < 3 || lnv.length > 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
 
   var mob = document.querySelector('[name="mobile"]');
   var mobv = mob ? mob.value.trim().replace(/\D/g,'') : '';
-  if (mobv.length &lt; 10 || mobv.length &gt; 15) { showErr('mobile_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('mobile_err');
+  if (mobv.length < 10 || mobv.length > 15) { showErr('mobile_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('mobile_err');
 
   var em = document.querySelector('[name="email"]');
   var emv = em ? em.value.trim() : '';
@@ -345,7 +345,7 @@ function reentryValidateStep1() {
 
   var pp = document.querySelector('[name="passport_number"]');
   var ppv = pp ? pp.value.trim() : '';
-  if (!ppv || ppv.length &lt; 6 || ppv.length &gt; 20 || !/^[A-Za-z0-9]+$/.test(ppv)) { showErr('re_pass_err','Passport number must be 6-20 alphanumeric characters.'); valid=false; } else hideErr('re_pass_err');
+  if (!ppv || ppv.length < 6 || ppv.length > 20 || !/^[A-Za-z0-9]+$/.test(ppv)) { showErr('re_pass_err','Passport number must be 6-20 alphanumeric characters.'); valid=false; } else hideErr('re_pass_err');
 
   var desig = document.querySelector('[name="designation"]');
   if (!desig || !desig.value) { showErr('desig_err','Please select designation.'); valid=false; } else hideErr('desig_err');
@@ -373,7 +373,9 @@ function reentryValidateStep1() {
 
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -392,7 +394,7 @@ function reentryValidateStep1() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">765.00 &#9432;</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/reentry-permit">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge/reentry-permit">SAVE &amp; EXIT</a><a href="/spc/concierge/reentry-permit">CANCEL APPLICATION</a></div>
   </div>
   <div class="main">
     <div class="form-title">New</div>
@@ -419,7 +421,7 @@ function reentryValidateStep1() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function reentryValidateDecl() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -428,7 +430,9 @@ function reentryValidateDecl() {
   if (!decl || !decl.checked) { showErr('re_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('re_decl_err');
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -590,7 +594,7 @@ function reentryValidateDecl() {
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">0.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge/reentry-permit">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -703,7 +707,7 @@ function reentryValidateDecl() {
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function toggleAdditional(v) {
     document.getElementById('additional-fields').style.display = v === 'yes' ? 'block' : 'none';
 }
@@ -715,15 +719,15 @@ function leaseValidateStep1() {
 
   var cn = document.querySelector('[name="company_name"]');
   var cnv = cn ? cn.value.trim() : '';
-  if (cnv.length &lt; 3 || cnv.length &gt; 50) { showErr('cname_err','Company name must be 3-50 characters.'); valid=false; } else hideErr('cname_err');
+  if (cnv.length < 3 || cnv.length > 50) { showErr('cname_err','Company name must be 3-50 characters.'); valid=false; } else hideErr('cname_err');
 
   var mfn = document.querySelector('[name="manager_first_name"]');
   var mfnv = mfn ? mfn.value.trim() : '';
-  if (mfnv.length &lt; 3 || mfnv.length &gt; 50) { showErr('mfname_err','Manager first name must be 3-50 characters.'); valid=false; } else hideErr('mfname_err');
+  if (mfnv.length < 3 || mfnv.length > 50) { showErr('mfname_err','Manager first name must be 3-50 characters.'); valid=false; } else hideErr('mfname_err');
 
   var mln = document.querySelector('[name="manager_last_name"]');
   var mlnv = mln ? mln.value.trim() : '';
-  if (mlnv.length &lt; 3 || mlnv.length &gt; 50) { showErr('mlname_err','Manager last name must be 3-50 characters.'); valid=false; } else hideErr('mlname_err');
+  if (mlnv.length < 3 || mlnv.length > 50) { showErr('mlname_err','Manager last name must be 3-50 characters.'); valid=false; } else hideErr('mlname_err');
 
   var ara = document.querySelector('[name="full_name_arabic"]');
   var arav = ara ? ara.value.trim() : '';
@@ -734,15 +738,15 @@ function leaseValidateStep1() {
 
   var pp = document.querySelector('[name="passport_number"]');
   var ppv = pp ? pp.value.trim() : '';
-  if (!ppv || ppv.length &lt; 6 || ppv.length &gt; 20 || !/^[A-Za-z0-9]+$/.test(ppv)) { showErr('pass_err','Passport number must be 6-20 alphanumeric characters.'); valid=false; } else hideErr('pass_err');
+  if (!ppv || ppv.length < 6 || ppv.length > 20 || !/^[A-Za-z0-9]+$/.test(ppv)) { showErr('pass_err','Passport number must be 6-20 alphanumeric characters.'); valid=false; } else hideErr('pass_err');
 
   var desc = document.querySelector('[name="description_en"]');
   var descv = desc ? desc.value.trim() : '';
-  if (descv.length &lt; 3 || descv.length &gt; 1000) { showErr('desc_err','Description must be 3-1000 characters.'); valid=false; } else hideErr('desc_err');
+  if (descv.length < 3 || descv.length > 1000) { showErr('desc_err','Description must be 3-1000 characters.'); valid=false; } else hideErr('desc_err');
 
   var addr = document.querySelector('[name="address_en"]');
   var addrv = addr ? addr.value.trim() : '';
-  if (addrv.length &lt; 3 || addrv.length &gt; 1000) { showErr('addr_err','Address must be 3-1000 characters.'); valid=false; } else hideErr('addr_err');
+  if (addrv.length < 3 || addrv.length > 1000) { showErr('addr_err','Address must be 3-1000 characters.'); valid=false; } else hideErr('addr_err');
 
   var lv = document.querySelector('[name="lease_validity"]');
   if (!lv || !lv.value) { showErr('lvalid_err','Please select lease validity.'); valid=false; } else hideErr('lvalid_err');
@@ -755,7 +759,9 @@ function leaseValidateStep1() {
 
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -774,7 +780,7 @@ function leaseValidateStep1() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">0.00 &#9432;</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge/reentry-permit">SAVE &amp; EXIT</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
   </div>
   <div class="main">
     <div class="form-title">Lease Documents</div>
@@ -801,7 +807,7 @@ function leaseValidateStep1() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function leaseValidateDecl() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -810,7 +816,9 @@ function leaseValidateDecl() {
   if (!decl || !decl.checked) { showErr('lease_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('lease_decl_err');
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//
+//]]>
+</script>
 </body></html>
 </template>
 

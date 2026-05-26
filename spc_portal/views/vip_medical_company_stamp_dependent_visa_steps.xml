@@ -193,7 +193,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -245,17 +245,17 @@ function vipMedStep1Validate(){
   var aname=document.querySelector('[name="applicant_name"]');
   var aselv=asel?asel.value.trim():"";
   var anamev=aname?aname.value.trim():"";
-  if(!aselv&amp;&amp;anamev.length&lt;3){addErr(aname,"ap_err");showErr("ap_err","Please select an applicant or enter name (min 3 characters).");valid=false;}else hideErr("ap_err");
+  if(!aselv&&anamev.length < 3){addErr(aname,"ap_err");showErr("ap_err","Please select an applicant or enter name (min 3 characters).");valid=false;}else hideErr("ap_err");
 
   var fn=document.querySelector('[name="first_name"]');addErr(fn,"fn_err");
-  if(!fn||fn.value.trim().length&lt;3||fn.value.trim().length&gt;50){showErr("fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("fn_err");
+  if(!fn||fn.value.trim().length < 3||fn.value.trim().length > 50){showErr("fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("fn_err");
 
   var ln=document.querySelector('[name="last_name"]');addErr(ln,"ln_err");
-  if(!ln||ln.value.trim().length&lt;3||ln.value.trim().length&gt;50){showErr("ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("ln_err");
+  if(!ln||ln.value.trim().length < 3||ln.value.trim().length > 50){showErr("ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("ln_err");
 
   var ph=document.querySelector('[name="contact_number"]');addErr(ph,"ph_err");
   var phv=ph?ph.value.trim().replace(/\D/g,""):"";
-  if(phv.length&lt;10||phv.length&gt;20){showErr("ph_err","Contact number must be 10-20 digits.");valid=false;}else hideErr("ph_err");
+  if(phv.length < 10||phv.length > 20){showErr("ph_err","Contact number must be 10-20 digits.");valid=false;}else hideErr("ph_err");
 
   var em=document.querySelector('[name="email"]');addErr(em,"em_err");
   var emv=em?em.value.trim():"";
@@ -265,17 +265,18 @@ function vipMedStep1Validate(){
   if(!pd||!pd.value){showErr("pd_err","Please select a preferred date.");valid=false;}else hideErr("pd_err");
 
   var bv=document.querySelector('[name="building_villa"]');addErr(bv,"bv_err");
-  if(!bv||bv.value.trim().length&lt;3||bv.value.trim().length&gt;50){showErr("bv_err","Building/Villa must be 3-50 characters.");valid=false;}else hideErr("bv_err");
+  if(!bv||bv.value.trim().length < 3||bv.value.trim().length > 50){showErr("bv_err","Building/Villa must be 3-50 characters.");valid=false;}else hideErr("bv_err");
 
   var ct=document.querySelector('[name="city"]');
   if(!document.getElementById("ct_err")){var e=document.createElement("div");e.id="ct_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";ct.parentElement.insertAdjacentElement("afterend",e);}
   if(!ct||!ct.value){showErr("ct_err","Please select a city.");valid=false;}else hideErr("ct_err");
 
   var lm=document.querySelector('[name="nearest_landmark"]');addErr(lm,"lm_err");
-  if(!lm||lm.value.trim().length&lt;3||lm.value.trim().length&gt;50){showErr("lm_err","Landmark must be 3-50 characters.");valid=false;}else hideErr("lm_err");
+  if(!lm||lm.value.trim().length < 3||lm.value.trim().length > 50){showErr("lm_err","Landmark must be 3-50 characters.");valid=false;}else hideErr("lm_err");
 
   if(valid)document.querySelector("form").submit();
 }
+//
 //]]>
 </script>
 </body></html>
@@ -294,7 +295,7 @@ function vipMedStep1Validate(){
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -326,13 +327,14 @@ function vipMedStep1Validate(){
 </div>
 </div>
 <script>//<![CDATA[
-function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
 function vipMedStep2Validate(){
   var valid=true;
   var p=document.getElementById("passport_photo");if(!p||p.files.length===0){if(!document.getElementById("ph2_err")){var e=document.createElement("div");e.id="ph2_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";p.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ph2_err").textContent="Please upload passport-sized photo.";document.getElementById("ph2_err").style.display="block";valid=false;}else{var pe=document.getElementById("ph2_err");if(pe)pe.style.display="none";}
   var v=document.getElementById("entry_visa");if(!v||v.files.length===0){if(!document.getElementById("ev_err")){var e=document.createElement("div");e.id="ev_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";v.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ev_err").textContent="Please upload entry visa document.";document.getElementById("ev_err").style.display="block";valid=false;}else{var ve=document.getElementById("ev_err");if(ve)ve.style.display="none";}
   if(valid)document.querySelector("form").submit();
 }
+//
 //]]>
 </script>
 </body></html>
@@ -457,7 +459,7 @@ function vipMedStep2Validate(){
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">260.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -490,24 +492,25 @@ function vipMedStep2Validate(){
         </div>
     </form>
 </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function csValidateStep1() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
   function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
   var lic = document.getElementById('lic_manual');
   var licv = lic ? lic.value.trim() : '';
-  if (licv.length &lt; 5 || licv.length &gt; 15 || !/^[A-Za-z0-9]+$/.test(licv)) {
+  if (licv.length < 5 || licv.length > 15 || !/^[A-Za-z0-9]+$/.test(licv)) {
     showErr('lic_err','License number must be 5-15 alphanumeric characters.'); valid=false;
   } else hideErr('lic_err');
   var cn = document.querySelector('[name="company_name"]');
   var cnv = cn ? cn.value.trim() : '';
-  if (cnv.length &lt; 3 || cnv.length &gt; 50) {
+  if (cnv.length < 3 || cnv.length > 50) {
     showErr('cname_err','Company name must be 3-50 characters.'); valid=false;
   } else hideErr('cname_err');
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -524,7 +527,7 @@ function csValidateStep1() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">260.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -555,7 +558,7 @@ function csValidateStep1() {
         </div>
     </form>
 </div>
-</div><script>
+</div><script>//<![CDATA[
 function csValidateStep2() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -564,6 +567,7 @@ function csValidateStep2() {
   if (!terms || !terms.checked) { showErr('terms_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('terms_err');
   if (valid) document.querySelector('form').submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -696,7 +700,7 @@ function csValidateStep2() {
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -867,7 +871,7 @@ function csValidateStep2() {
     </form>
 </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function toggleSpcVisa(v){
     document.getElementById('no_spc_msg').classList.toggle('hidden',v!=='no');
     document.getElementById('visa_fields_wrap').classList.toggle('hidden',v!=='yes');
@@ -888,7 +892,7 @@ function toggleGender(v){
     var mw = document.getElementById('marital_wrap');
     if(mw) mw.classList.remove('hidden');
 }
-function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
 function dvValidateStep1() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -904,17 +908,17 @@ function dvValidateStep1() {
 
     var fn = document.querySelector('[name="sponsor_first_name"]');
     var fnv = fn ? fn.value.trim() : '';
-    if (fnv.length &lt; 2 || fnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(fnv)) { showErr('sfn_err','First name must be 2-50 characters (letters only).'); valid=false; } else hideErr('sfn_err');
+    if (fnv.length < 2 || fnv.length > 50 || !/^[A-Za-z ]+$/.test(fnv)) { showErr('sfn_err','First name must be 2-50 characters (letters only).'); valid=false; } else hideErr('sfn_err');
 
     var ln = document.querySelector('[name="sponsor_last_name"]');
     var lnv = ln ? ln.value.trim() : '';
-    if (lnv.length &lt; 2 || lnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(lnv)) { showErr('sln_err','Last name must be 2-50 characters (letters only).'); valid=false; } else hideErr('sln_err');
+    if (lnv.length < 2 || lnv.length > 50 || !/^[A-Za-z ]+$/.test(lnv)) { showErr('sln_err','Last name must be 2-50 characters (letters only).'); valid=false; } else hideErr('sln_err');
 
     var sType = radioVal('sponsor_type');
     if (sType === 'employee') {
       var sal = document.querySelector('[name="salary"]');
       var salv = sal ? sal.value.trim() : '';
-      if (salv.length &gt; 50) { showErr('salary_err','Salary must be 0-50 characters.'); valid=false; } else hideErr('salary_err');
+      if (salv.length > 50) { showErr('salary_err','Salary must be 0-50 characters.'); valid=false; } else hideErr('salary_err');
       var desig = document.querySelector('[name="designation"]');
       if (!desig || !desig.value) { showErr('desig_err','Please select a designation.'); valid=false; } else hideErr('desig_err');
     }
@@ -937,7 +941,8 @@ function dvValidateStep1() {
 
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1035,7 +1040,7 @@ function dvValidateStep1() {
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -1145,27 +1150,27 @@ function dvValidateStep1() {
     </form>
 </div>
 </div>
-<script><![CDATA[
-function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+<script>//<![CDATA[
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
 function dvValidateStep2() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
   function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
   var dfn = document.querySelector('[name="dep_first_name"]');
   var dfnv = dfn ? dfn.value.trim() : '';
-  if (dfnv.length &lt; 2 || dfnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dfnv)) { showErr('dfn_err','First name must be 2-50 characters.'); valid=false; } else hideErr('dfn_err');
+  if (dfnv.length < 2 || dfnv.length > 50 || !/^[A-Za-z ]+$/.test(dfnv)) { showErr('dfn_err','First name must be 2-50 characters.'); valid=false; } else hideErr('dfn_err');
   var dln = document.querySelector('[name="dep_last_name"]');
   var dlnv = dln ? dln.value.trim() : '';
-  if (dlnv.length &lt; 2 || dlnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dlnv)) { showErr('dln_err','Last name must be 2-50 characters.'); valid=false; } else hideErr('dln_err');
+  if (dlnv.length < 2 || dlnv.length > 50 || !/^[A-Za-z ]+$/.test(dlnv)) { showErr('dln_err','Last name must be 2-50 characters.'); valid=false; } else hideErr('dln_err');
   var dfath = document.querySelector('[name="dep_father_name"]');
   var dfathv = dfath ? dfath.value.trim() : '';
-  if (dfathv.length &lt; 2 || dfathv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dfathv)) { showErr('dfath_err',"Father name must be 2-50 characters."); valid=false; } else hideErr('dfath_err');
+  if (dfathv.length < 2 || dfathv.length > 50 || !/^[A-Za-z ]+$/.test(dfathv)) { showErr('dfath_err',"Father name must be 2-50 characters."); valid=false; } else hideErr('dfath_err');
   var dmoth = document.querySelector('[name="dep_mother_name"]');
   var dmothv = dmoth ? dmoth.value.trim() : '';
-  if (dmothv.length &lt; 2 || dmothv.length &gt; 50 || !/^[A-Za-z ]+$/.test(dmothv)) { showErr('dmoth_err',"Mother name must be 2-50 characters."); valid=false; } else hideErr('dmoth_err');
+  if (dmothv.length < 2 || dmothv.length > 50 || !/^[A-Za-z ]+$/.test(dmothv)) { showErr('dmoth_err',"Mother name must be 2-50 characters."); valid=false; } else hideErr('dmoth_err');
   var dmob = document.querySelector('[name="dep_mobile"]');
   var dmobv = dmob ? dmob.value.trim() : '';
-  if (dmobv.length &lt; 10 || dmobv.length &gt; 15 || !/^[0-9]+$/.test(dmobv)) { showErr('dmob_err','Phone must be 10-15 digits.'); valid=false; } else hideErr('dmob_err');
+  if (dmobv.length < 10 || dmobv.length > 15 || !/^[0-9]+$/.test(dmobv)) { showErr('dmob_err','Phone must be 10-15 digits.'); valid=false; } else hideErr('dmob_err');
   var selects = [
     ['dep_nationality','dnat_err','Please select nationality.'],
     ['dep_prev_nationality','dpnat_err','Please select previous nationality.'],
@@ -1188,7 +1193,8 @@ function dvValidateStep2() {
   });
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1207,7 +1213,7 @@ function dvValidateStep2() {
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -1270,8 +1276,8 @@ function dvValidateStep2() {
     </form>
 </div>
 </div>
-<script><![CDATA[
-function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+<script>//<![CDATA[
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
 function toggleLocation(v){
     var inf = document.getElementById('inside_fields');
     if(inf) inf.classList.toggle('hidden', v !== 'inside');
@@ -1309,7 +1315,8 @@ function dvValidateStep3() {
 
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1328,7 +1335,7 @@ function dvValidateStep3() {
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -1362,8 +1369,8 @@ function dvValidateStep3() {
     </form>
 </div>
 </div>
-<script><![CDATA[
-function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+<script>//<![CDATA[
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
 function dvValidateStep4() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -1371,18 +1378,19 @@ function dvValidateStep4() {
 
   var ai = document.querySelector('[name="additional_info"]');
   var aiv = ai ? ai.value.trim() : '';
-  if (aiv.length &lt; 4 || aiv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(aiv)) { showErr('addinfo_err','Must be 4-100 characters (letters and numbers only).'); valid=false; } else hideErr('addinfo_err');
+  if (aiv.length < 4 || aiv.length > 100 || !/^[A-Za-z0-9 .,\-]+$/.test(aiv)) { showErr('addinfo_err','Must be 4-100 characters (letters and numbers only).'); valid=false; } else hideErr('addinfo_err');
 
   var crm = document.querySelector('[name="crm_comments"]');
   var crmv = crm ? crm.value.trim() : '';
-  if (crmv.length &lt; 4 || crmv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(crmv)) { showErr('crm_err','Must be 4-100 characters (letters and numbers only).'); valid=false; } else hideErr('crm_err');
+  if (crmv.length < 4 || crmv.length > 100 || !/^[A-Za-z0-9 .,\-]+$/.test(crmv)) { showErr('crm_err','Must be 4-100 characters (letters and numbers only).'); valid=false; } else hideErr('crm_err');
 
   var rd = document.getElementById('remark_doc');
   if (!rd || !rd.files || rd.files.length === 0) { showErr('remark_doc_err','Document upload is required.'); valid=false; } else hideErr('remark_doc_err');
 
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1401,7 +1409,7 @@ function dvValidateStep4() {
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -1436,7 +1444,7 @@ function dvValidateStep4() {
         </div>
     </form>
 </div>
-</div><script>
+</div><script>//<![CDATA[
 function dvValidateStep5() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -1445,6 +1453,7 @@ function dvValidateStep5() {
   if (!terms || !terms.checked) { showErr('dep_terms_err','Please agree to the terms and conditions.'); valid=false; } else hideErr('dep_terms_err');
   if (valid) document.querySelector('form[action*="step5/submit"]').submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -1541,7 +1550,7 @@ function dvValidateStep5() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title" style="text-transform:capitalize"><t t-esc="dtype.title()"/></div>
@@ -1588,7 +1597,7 @@ function dvValidateStep5() {
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function ddValidateStep1() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -1602,7 +1611,7 @@ function ddValidateStep1() {
 
   var caddr = document.querySelector('[name="collection_address"]');
   var caddrv = caddr ? caddr.value.trim() : '';
-  if (caddrv.length &lt; 10 || caddrv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(caddrv)) { showErr('caddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('caddr_err');
+  if (caddrv.length < 10 || caddrv.length > 100 || !/^[A-Za-z0-9 .,\-]+$/.test(caddrv)) { showErr('caddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('caddr_err');
 
   var ddate = document.querySelector('[name="delivery_date"]');
   if (!ddate || !ddate.value) { showErr('ddate_err','Please select a valid delivery date.'); valid=false; } else hideErr('ddate_err');
@@ -1612,10 +1621,12 @@ function ddValidateStep1() {
 
   var daddr = document.querySelector('[name="delivery_address"]');
   var daddrv = daddr ? daddr.value.trim() : '';
-  if (daddrv.length &lt; 10 || daddrv.length &gt; 100 || !/^[A-Za-z0-9 .,\-]+$/.test(daddrv)) { showErr('daddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('daddr_err');
+  if (daddrv.length < 10 || daddrv.length > 100 || !/^[A-Za-z0-9 .,\-]+$/.test(daddrv)) { showErr('daddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('daddr_err');
 
   if (valid) document.querySelector('form').submit();
 }
+//
+//]]>
 </script>
 </body></html>
 </template>
@@ -1633,7 +1644,7 @@ function ddValidateStep1() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title" style="text-transform:capitalize"><t t-esc="(record.delivery_type or 'driver').title()"/></div>
@@ -1665,7 +1676,7 @@ function ddValidateStep1() {
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function ddValidateDecl() {
   var chk = document.getElementById('termsCheck');
   var err = document.getElementById('terms_err');
@@ -1676,6 +1687,7 @@ function ddValidateDecl() {
   if (err) err.style.display = 'none';
   document.querySelector('form').submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -1775,7 +1787,7 @@ function ddValidateDecl() {
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount" id="total_amt">10.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">Courier</div>
@@ -1844,7 +1856,7 @@ function ddValidateDecl() {
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function ddcValidateStep1() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -1858,7 +1870,7 @@ function ddcValidateStep1() {
 
   var caddr = document.querySelector('[name="collection_address"]');
   var caddrv = caddr ? caddr.value.trim() : '';
-  if (caddrv.length &lt; 10 || caddrv.length &gt; 100) { showErr('caddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('caddr_err');
+  if (caddrv.length < 10 || caddrv.length > 100) { showErr('caddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('caddr_err');
 
   var ddate = document.querySelector('[name="delivery_date"]');
   if (!ddate || !ddate.value) { showErr('ddate_err','Please select a valid delivery date.'); valid=false; } else hideErr('ddate_err');
@@ -1868,12 +1880,14 @@ function ddcValidateStep1() {
 
   var daddr = document.querySelector('[name="delivery_address"]');
   var daddrv = daddr ? daddr.value.trim() : '';
-  if (daddrv.length &lt; 10 || daddrv.length &gt; 100) { showErr('daddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('daddr_err');
+  if (daddrv.length < 10 || daddrv.length > 100) { showErr('daddr_err','Address must be 10-100 characters.'); valid=false; } else hideErr('daddr_err');
 
   if (valid) document.querySelector('form').submit();
 }
+//
+//]]>
 </script>
-<script><![CDATA[
+<script>//<![CDATA[
 function selectStd(v, el) {
     document.querySelectorAll('.delivery-option').forEach(function(d){ d.style.borderColor='#e5e7eb'; d.style.background='white'; });
     el.style.borderColor = '#1abc9c';
@@ -1888,7 +1902,8 @@ window.addEventListener('DOMContentLoaded', function(){
     var checked = document.querySelector('input[name=delivery_standard]:checked');
     if(checked) selectStd(checked.value, checked.closest('.delivery-option'));
 });
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1906,7 +1921,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">Courier</div>
@@ -1938,7 +1953,7 @@ window.addEventListener('DOMContentLoaded', function(){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function ddcValidateDecl() {
   var chk = document.getElementById('termsCheck');
   var err = document.getElementById('terms_err');
@@ -1949,6 +1964,7 @@ function ddcValidateDecl() {
   if (err) err.style.display = 'none';
   document.querySelector('form').submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -1967,7 +1983,7 @@ function ddcValidateDecl() {
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
     <div class="form-title">Courier</div>
@@ -1994,13 +2010,14 @@ function ddcValidateDecl() {
 </div>
 </div>
 <script>//<![CDATA[
-function showName(i,l){if(i.files&amp;&amp;i.files[0])document.getElementById(l).textContent=i.files[0].name;}
+function showName(i,l){if(i.files&&i.files[0])document.getElementById(l).textContent=i.files[0].name;}
 function vipMedStep2Validate(){
   var valid=true;
   var p=document.getElementById("passport_photo");if(!p||p.files.length===0){if(!document.getElementById("ph2_err")){var e=document.createElement("div");e.id="ph2_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";p.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ph2_err").textContent="Please upload passport-sized photo.";document.getElementById("ph2_err").style.display="block";valid=false;}else{var pe=document.getElementById("ph2_err");if(pe)pe.style.display="none";}
   var v=document.getElementById("entry_visa");if(!v||v.files.length===0){if(!document.getElementById("ev_err")){var e=document.createElement("div");e.id="ev_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";v.closest(".upload-box").insertAdjacentElement("afterend",e);}document.getElementById("ev_err").textContent="Please upload entry visa document.";document.getElementById("ev_err").style.display="block";valid=false;}else{var ve=document.getElementById("ev_err");if(ve)ve.style.display="none";}
   if(valid)document.querySelector("form").submit();
 }
+//
 //]]>
 </script>
 </body></html>

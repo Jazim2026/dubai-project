@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="lr_tracking_detail" name="LR Tracking Detail">
+<html><head><meta charset="utf-8"/><title>License Reissue | SPC Free Zone</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
+.cd-nav{height:64px;background:linear-gradient(90deg,#1a2340 60%,#e91e8c 100%);display:flex;align-items:center;justify-content:space-between;padding:0 32px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo{display:flex;align-items:center;gap:10px}
+.cd-nav-logo img{height:36px}
+.cd-nav-logo span{color:white;font-size:18px;font-weight:700}
+.cd-nav-right{display:flex;align-items:center;gap:16px}
+.cd-nav-btn{background:white;color:#1a2340;border:none;border-radius:6px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer}
+.cd-nav-user{color:white;font-size:13px;font-weight:600;background:rgba(255,255,255,.15);padding:8px 16px;border-radius:6px}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:64px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:64px;padding:32px 40px}
+.back-link{color:#6b7280;font-size:13px;text-decoration:none;display:flex;align-items:center;gap:4px;margin-bottom:20px;font-weight:600}
+.page-title{font-size:26px;font-weight:800;color:#1abc9c;margin-bottom:24px}
+.progress-bar{background:#1a2340;border-radius:10px;padding:28px 32px;display:flex;align-items:flex-start;gap:0;margin-bottom:28px;overflow:hidden}
+.progress-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.progress-step:not(:last-child)::after{content:'';position:absolute;top:18px;left:50%;width:100%;height:3px;background:rgba(255,255,255,.2);z-index:0}
+.progress-step.done::after{background:#1abc9c}
+.ps-circle{width:38px;height:38px;border-radius:50%;border:3px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:16px;color:white;background:#1a2340;position:relative;z-index:1}
+.ps-circle.done{background:#1abc9c;border-color:#1abc9c;font-size:20px}
+.ps-state{font-size:11px;color:rgba(255,255,255,.6);margin-top:8px;text-align:center}
+.ps-state.done{color:#1abc9c}
+.ps-label{font-size:12px;color:white;font-weight:700;text-align:center;margin-top:4px}
+.info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:28px}
+.info-card{background:white;border-radius:10px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.info-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:#9ca3af;font-weight:700;margin-bottom:6px}
+.info-value{font-size:15px;font-weight:700;color:#1a2340}
+.info-link{font-size:13px;color:#1abc9c;font-weight:600;text-decoration:none;display:block;margin-top:4px}
+.docs-section{background:white;border-radius:10px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.docs-title{font-size:18px;font-weight:700;color:#1a2340;margin-bottom:16px}
+.docs-divider{border:none;border-bottom:2px dashed #e0e0e0;margin-bottom:20px}
+.docs-sub{font-size:14px;font-weight:700;color:#374151;margin-bottom:12px}
+.doc-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #f3f4f6}
+.doc-row:last-child{border-bottom:none}
+.doc-check{width:18px;height:18px;accent-color:#1a2340}
+.doc-name{font-size:13px;font-weight:600;color:#1a2340}
+.doc-template{font-size:12px;color:#6b7280}
+</style>
+<t t-call="spc_portal.spc_new_modules_shared_css"/>
+</head>
+<body>
+<nav class="cd-nav">
+  <div class="cd-nav-logo">
+    <span>&#9670; K SPC | Free Zone</span>
+  </div>
+  <div class="cd-nav-right">
+    <button class="cd-nav-btn">Business Activities</button>
+    <span class="cd-nav-user">&#128100;</span>
+  </div>
+</nav>
+<aside class="cd-sidebar">
+  <a href="/spc/customer-dashboard" class="cd-sidebar-item">&#128202; Dashboard</a>
+  <a href="/spc/request-tracking" class="cd-sidebar-item active">&#128203; Request Tracking</a>
+  <a href="/spc/company-management" class="cd-sidebar-item">&#127970; Company Management</a>
+  <a href="/spc/employee-management" class="cd-sidebar-item">&#128101; Employee Management</a>
+  <a href="/spc/facility-management" class="cd-sidebar-item">&#127959; Facility Management</a>
+  <a href="/spc/concierge-services" class="cd-sidebar-item">&#127918; Concierge Services</a>
+  <div class="cd-sidebar-divider"></div>
+  <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">&#128682; Log out</a>
+</aside>
+<main class="cd-main">
+  <a href="/spc/request-tracking" class="back-link">&#8249; BACK TO REQUEST TRACKING</a>
+  <div class="page-title"><t t-esc="record.reference or 'License Reissue'"/></div>
+
+  <!-- Progress Bar -->
+  <t t-set="s" t-value="record.state"/>
+  <t t-set="done_doc" t-value="s in ['documents_approved','payment_approved','complaints_approved','under_process','completed','approved']"/>
+  <t t-set="done_pay" t-value="s in ['payment_approved','complaints_approved','under_process','completed','approved']"/>
+  <t t-set="done_comp" t-value="s in ['complaints_approved','under_process','completed','approved']"/>
+  <t t-set="done_proc" t-value="s in ['under_process','completed','approved']"/>
+  <t t-set="done_compl" t-value="s in ['completed','approved']"/>
+
+  <div class="progress-bar">
+    <div t-att-class="'progress-step' + (' done' if done_doc else '')">
+      <div t-att-class="'ps-circle' + (' done' if done_doc else '')">
+        <t t-if="done_doc">&#10003;</t><t t-else="">1</t>
+      </div>
+      <div t-att-class="'ps-state' + (' done' if done_doc else '')">
+        <t t-if="done_doc">Approved</t><t t-else="">Pending</t>
+      </div>
+      <div class="ps-label">Document Verification</div>
+    </div>
+    <div t-att-class="'progress-step' + (' done' if done_pay else '')">
+      <div t-att-class="'ps-circle' + (' done' if done_pay else '')">
+        <t t-if="done_pay">&#10003;</t><t t-else="">2</t>
+      </div>
+      <div t-att-class="'ps-state' + (' done' if done_pay else '')">
+        <t t-if="done_pay">Approved</t><t t-else="">Pending</t>
+      </div>
+      <div class="ps-label">Payment Approval</div>
+    </div>
+    <div t-att-class="'progress-step' + (' done' if done_comp else '')">
+      <div t-att-class="'ps-circle' + (' done' if done_comp else '')">
+        <t t-if="done_comp">&#10003;</t><t t-else="">3</t>
+      </div>
+      <div t-att-class="'ps-state' + (' done' if done_comp else '')">
+        <t t-if="done_comp">Approved</t><t t-else="">Pending</t>
+      </div>
+      <div class="ps-label">Compliance Verification</div>
+    </div>
+    <div t-att-class="'progress-step' + (' done' if done_proc else '')">
+      <div t-att-class="'ps-circle' + (' done' if done_proc else '')">
+        <t t-if="done_proc">&#10003;</t><t t-else="">4</t>
+      </div>
+      <div t-att-class="'ps-state' + (' done' if done_proc else '')">
+        <t t-if="done_proc">Approved</t><t t-else="">Pending</t>
+      </div>
+      <div class="ps-label">Application Under Process</div>
+    </div>
+    <div t-att-class="'progress-step' + (' done' if done_compl else '')">
+      <div t-att-class="'ps-circle' + (' done' if done_compl else '')">
+        <t t-if="done_compl">&#10003;</t><t t-else="">5</t>
+      </div>
+      <div t-att-class="'ps-state' + (' done' if done_compl else '')">
+        <t t-if="done_compl">Approved</t><t t-else="">Pending</t>
+      </div>
+      <div class="ps-label">Application Completed</div>
+    </div>
+  </div>
+
+  <!-- Info Grid -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-label">Request Number</div>
+      <div class="info-value"><t t-esc="record.reference or '-'"/></div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Submission Date</div>
+      <div class="info-value"><t t-esc="record.started_date.strftime('%d/%m/%Y') if record.started_date else '-'"/></div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Fees</div>
+      <div class="info-value">AED <t t-esc="'%.2f' % (record.fee or 0.0)"/></div>
+    </div>
+    <div class="info-card">
+      <div class="info-label">Completion Estimate</div>
+      <div class="info-value"><t t-esc="record.completion_estimate.strftime('%d/%m/%Y') if record.completion_estimate else '-'"/></div>
+    </div>
+  </div>
+
+  <!-- Documents Section -->
+  <div class="docs-section">
+    <div class="docs-title">Documents</div>
+    <hr class="docs-divider"/>
+    <div class="docs-sub">Application Details</div>
+    <div class="doc-row">
+      <input type="checkbox" class="doc-check" disabled=""/>
+      <div>
+        <div class="doc-name">License Reissue Application</div>
+        <div class="doc-template"><t t-esc="record.reference or '-'"/></div>
+      </div>
+    </div>
+    <t t-if="record.idn_number">
+    <div class="doc-row">
+      <input type="checkbox" class="doc-check" disabled=""/>
+      <div>
+        <div class="doc-name">IDN Number</div>
+        <div class="doc-template"><t t-esc="record.idn_number"/></div>
+      </div>
+    </div>
+    </t>
+  </div>
+</main>
+</body></html>
+</template>
+</data>
+</odoo>

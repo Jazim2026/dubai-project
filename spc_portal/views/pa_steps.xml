@@ -684,7 +684,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
 </div>
 
-<script type="text/javascript">
+<script>//<![CDATA[
 <![CDATA[
 function toggleAccordion(n){var b=document.getElementById('body_'+n);var a=document.getElementById('arrow_'+n);b.classList.toggle('open');a.classList.toggle('open')}
 function toggleSpcUser(n,val){var s=document.getElementById('sh_'+n+'_spc_search');var t=document.getElementById('sh_'+n+'_type_section');if(val==='yes'){s.classList.remove('hidden');t.classList.add('hidden')}else{s.classList.add('hidden');t.classList.remove('hidden')}}
@@ -701,7 +701,7 @@ function showClear(clearId,sel){var btn=document.getElementById(clearId);if(btn)
 function clearSelect(selId,clearId){var s=document.getElementById(selId);if(s)s.value='';var b=document.getElementById(clearId);if(b)b.classList.add('hidden')}
 function toggleFlagMenu(n){var m=document.getElementById('sh_'+n+'_flag_menu');if(m)m.classList.toggle('hidden')}
 function setFlag(n,flag,code,country){var btn=document.getElementById('sh_'+n+'_flag_btn');if(btn)btn.innerHTML=flag+' '+code+' &#9660;';var m=document.getElementById('sh_'+n+'_flag_menu');if(m)m.classList.add('hidden')}
-document.addEventListener('click',function(e){document.querySelectorAll('[id$="_flag_menu"]').forEach(function(m){if(!m.classList.contains('hidden')&amp;&amp;!m.parentElement.contains(e.target)){m.classList.add('hidden')}})})
+document.addEventListener('click',function(e){document.querySelectorAll('[id$="_flag_menu"]').forEach(function(m){if(!m.classList.contains('hidden')&&!m.parentElement.contains(e.target)){m.classList.add('hidden')}})})
 function updateShareholderList(count){
     count=Math.min(Math.max(parseInt(count)||1,1),20);
     var list=document.getElementById('shareholderList');
@@ -721,7 +721,7 @@ function updateShareholderList(count){
         }
     }
 }
-]]>
+//]]>
 </script>
 
 </body>

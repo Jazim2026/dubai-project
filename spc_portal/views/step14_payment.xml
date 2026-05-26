@@ -238,7 +238,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </div>
 </div>
 
-<script type="text/javascript">
+<script>//<![CDATA[
 function selectPayment(type) {
     ['cash','cheque','bank','card_manual','card'].forEach(function(t) {
         var opt = document.getElementById('opt_' + t);
@@ -263,6 +263,7 @@ function applyPromo() {
         btn.style.background = '#1a2340';
     }, 2000);
 }
+//]]>
 </script>
 </body>
 </html>

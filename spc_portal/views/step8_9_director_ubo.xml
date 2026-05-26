@@ -384,7 +384,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </form>
     </div>
 </div>
-<script type="text/javascript">
+<script>//<![CDATA[
 <![CDATA[
 function togAcc8(bid,aid){var b=document.getElementById(bid);var a=document.getElementById(aid);if(b)b.classList.toggle('open');if(a)a.classList.toggle('open')}
 function togDef8(pre,val){['sh','spc','new'].forEach(function(k){var el=document.getElementById(pre+'_'+k+'_sec');if(el)el.classList.add('hidden')});var show=document.getElementById(pre+'_'+val+'_sec');if(show)show.classList.remove('hidden')}
@@ -397,7 +397,7 @@ function setFlag8(bid,mid,flag,code){var b=document.getElementById(bid);if(b)b.i
 function updCnt8(el,id){var s=document.getElementById(id);if(s)s.textContent=el.value.length+' / 100'}
 function saveP8(accId){var b=document.querySelector('#'+accId+' .save-btn');if(b){b.textContent='&#10003; SAVED';b.style.background='#1abc9c'}}
 function delP(accId){var a=document.getElementById(accId);if(a)a.remove()}
-document.addEventListener('click',function(e){document.querySelectorAll('[id$="_fm"]').forEach(function(m){if(!m.classList.contains('hidden')&amp;&amp;m.parentElement&amp;&amp;!m.parentElement.contains(e.target))m.classList.add('hidden')})});
+document.addEventListener('click',function(e){document.querySelectorAll('[id$="_fm"]').forEach(function(m){if(!m.classList.contains('hidden')&&m.parentElement&&!m.parentElement.contains(e.target))m.classList.add('hidden')})});
 function updateDirList(count){
     count=Math.min(Math.max(parseInt(count)||1,1),10);
     var list=document.getElementById('dirList');
@@ -425,7 +425,7 @@ function updateDirList(count){
         for(var j=existing;j>count;j--){var el=document.getElementById('dir_acc_'+j);if(el)el.remove()}
     }
 }
-]]>
+//]]>
 </script>
 </body>
 </html>
@@ -730,7 +730,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </form>
     </div>
 </div>
-<script type="text/javascript">
+<script>//<![CDATA[
 <![CDATA[
 function togAcc9(bid,aid){var b=document.getElementById(bid);var a=document.getElementById(aid);if(b)b.classList.toggle('open');if(a)a.classList.toggle('open')}
 function selectUboCard(n,val){
@@ -788,7 +788,7 @@ function updateUboList(count){
         for(var j=existing;j>count;j--){var el=document.getElementById('ubo_acc_'+j);if(el)el.remove()}
     }
 }
-]]>
+//]]>
 </script>
 </body>
 </html>

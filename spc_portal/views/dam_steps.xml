@@ -62,14 +62,14 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">10.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="damSaveExit1();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/concierge-services">CANCEL APPLICATION</a>
         </div>
     </div>
 
     <div class="main">
         <div class="form-title">New</div>
-        <form action="/spc/apply/dam/step1" method="post">
+        <form id="dam_main_form1" action="/spc/apply/dam/step1" method="post">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <div class="spc-section">
                 <div class="sec-num">01</div>
@@ -186,10 +186,11 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function damStakeholderChange(v){
     document.getElementById('dam_employee_wrap').style.display = v==='yes' ? 'block' : 'none';
 }
+//]]>
 </script>
 <script>//<![CDATA[
 function damStakeholderChange(v){
@@ -200,7 +201,7 @@ function damStep1Validate(){
   var valid=true;
   function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
   function hideErr(id){var el=document.getElementById(id);if(el)el.style.display="none";}
-  function addErr(field,id){if(field&amp;&amp;!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";field.insertAdjacentElement("afterend",e);}}
+  function addErr(field,id){if(field&&!document.getElementById(id)){var e=document.createElement("div");e.id=id;e.style.cssText="color:red;font-size:12px;margin-top:4px";field.insertAdjacentElement("afterend",e);}}
 
   // is_existing_stakeholder
   var es=document.querySelector('input[name="is_existing_stakeholder"]:checked');
@@ -212,11 +213,11 @@ function damStep1Validate(){
 
   // first_name
   var fn=document.querySelector('[name="first_name"]');addErr(fn,"dam_fn_err");
-  if(!fn||fn.value.trim().length&lt;3||fn.value.trim().length&gt;50){showErr("dam_fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("dam_fn_err");
+  if(!fn||fn.value.trim().length<3||fn.value.trim().length>50){showErr("dam_fn_err","First name must be 3-50 characters.");valid=false;}else hideErr("dam_fn_err");
 
   // last_name
   var ln=document.querySelector('[name="last_name"]');addErr(ln,"dam_ln_err");
-  if(!ln||ln.value.trim().length&lt;3||ln.value.trim().length&gt;50){showErr("dam_ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("dam_ln_err");
+  if(!ln||ln.value.trim().length<3||ln.value.trim().length>50){showErr("dam_ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("dam_ln_err");
 
   // email
   var em=document.querySelector('[name="email"]');addErr(em,"dam_em_err");
@@ -225,14 +226,31 @@ function damStep1Validate(){
 
   // designation
   var dg=document.querySelector('[name="designation"]');addErr(dg,"dam_dg_err");
-  if(!dg||dg.value.trim().length&lt;3||dg.value.trim().length&gt;50){showErr("dam_dg_err","Designation must be 3-50 characters.");valid=false;}else hideErr("dam_dg_err");
+  if(!dg||dg.value.trim().length<3||dg.value.trim().length>50){showErr("dam_dg_err","Designation must be 3-50 characters.");valid=false;}else hideErr("dam_dg_err");
 
   // language_preference
   var lp=document.getElementById("dam_lang");
   if(!document.getElementById("dam_lp_err")){var e=document.createElement("div");e.id="dam_lp_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";lp.insertAdjacentElement("afterend",e);}
   if(!lp||!lp.value){showErr("dam_lp_err","Please select a language preference.");valid=false;}else hideErr("dam_lp_err");
 
-  if(valid)document.querySelector("form").submit();
+  if(valid)document.getElementById("dam_main_form1").submit();
+}
+//
+function damSaveExit1(){
+    var f=document.createElement('form');f.method='post';f.action='/spc/apply/dam/save-exit';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={'csrf_token':csrf?csrf.value:'','current_step':'1',
+        'is_existing_stakeholder':(document.querySelector('input[name="is_existing_stakeholder"]:checked')||{value:''}).value,
+        'employee_list':document.querySelector('[name="employee_list"]')?document.querySelector('[name="employee_list"]').value:'',
+        'first_name':document.querySelector('[name="first_name"]')?document.querySelector('[name="first_name"]').value:'',
+        'last_name':document.querySelector('[name="last_name"]')?document.querySelector('[name="last_name"]').value:'',
+        'contact_number':document.querySelector('[name="contact_number"]')?document.querySelector('[name="contact_number"]').value:'',
+        'email':document.querySelector('[name="email"]')?document.querySelector('[name="email"]').value:'',
+        'designation':document.querySelector('[name="designation"]')?document.querySelector('[name="designation"]').value:'',
+        'language_preference':document.querySelector('[name="language_preference"]')?document.querySelector('[name="language_preference"]').value:''
+    };
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
 }
 //]]>
 </script>
@@ -298,14 +316,14 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">10.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="damSaveExit2();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/concierge-services">CANCEL APPLICATION</a>
         </div>
     </div>
 
     <div class="main">
         <div class="form-title">New</div>
-        <form action="/spc/apply/dam/step2" method="post">
+        <form id="dam_main_form2" action="/spc/apply/dam/step2" method="post">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <div class="spc-section">
                 <div class="sec-num">01</div>
@@ -335,7 +353,17 @@ function damStep2Validate(){
   if(!document.getElementById("dam_st_err")){var e=document.createElement("div");e.id="dam_st_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";st.insertAdjacentElement("afterend",e);}
   if(!st||!st.value){document.getElementById("dam_st_err").textContent="Please select number of stakeholders.";document.getElementById("dam_st_err").style.display="block";valid=false;}
   else document.getElementById("dam_st_err").style.display="none";
-  if(valid)document.querySelector("form").submit();
+  if(valid)document.getElementById("dam_main_form2").submit();
+}
+//
+function damSaveExit2(){
+    var f=document.createElement('form');f.method='post';f.action='/spc/apply/dam/save-exit';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={'csrf_token':csrf?csrf.value:'','current_step':'2',
+        'number_of_stakeholders':document.querySelector('[name="number_of_stakeholders"]')?document.querySelector('[name="number_of_stakeholders"]').value:''
+    };
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
 }
 //]]>
 </script>
@@ -401,14 +429,14 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">10.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="damSaveExit3();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/concierge-services">CANCEL APPLICATION</a>
         </div>
     </div>
 
     <div class="main">
         <div class="form-title">New</div>
-        <form action="/spc/apply/dam/step3" method="post">
+        <form id="dam_main_form3" action="/spc/apply/dam/step3" method="post">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <div class="spc-section">
                 <div class="sec-num">01</div>
@@ -438,7 +466,17 @@ function damStep3Validate(){
   if(!document.getElementById("dam_yr_err")){var e=document.createElement("div");e.id="dam_yr_err";e.style.cssText="color:red;font-size:12px;margin-top:4px";yr.insertAdjacentElement("afterend",e);}
   if(!yr||!yr.value){document.getElementById("dam_yr_err").textContent="Please select number of years.";document.getElementById("dam_yr_err").style.display="block";valid=false;}
   else document.getElementById("dam_yr_err").style.display="none";
-  if(valid)document.querySelector("form").submit();
+  if(valid)document.getElementById("dam_main_form3").submit();
+}
+//
+function damSaveExit3(){
+    var f=document.createElement('form');f.method='post';f.action='/spc/apply/dam/save-exit';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={'csrf_token':csrf?csrf.value:'','current_step':'3',
+        'number_of_years':document.querySelector('[name="number_of_years"]')?document.querySelector('[name="number_of_years"]').value:''
+    };
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
 }
 //]]>
 </script>
@@ -504,7 +542,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">10.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="damSaveExit4();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/concierge-services">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -541,6 +579,15 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </div>
     </div>
 </div>
+<script>//<![CDATA[
+function damSaveExit4(){
+    var f=document.createElement('form');f.method='post';f.action='/spc/apply/dam/save-exit';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={'csrf_token':csrf?csrf.value:'','current_step':'4'};
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
+}
+//]]></script>
 </body></html>
 </template><template id="template_dam_step5" name="DAM Step 5">
 <html><head><meta charset="utf-8"/><title>Payment | DAM</title>
@@ -603,7 +650,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">10.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="damSaveExit5();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/concierge-services">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -629,6 +676,15 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </form>
     </div>
 </div>
+<script>//<![CDATA[
+function damSaveExit5(){
+    var f=document.createElement('form');f.method='post';f.action='/spc/apply/dam/save-exit';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={'csrf_token':csrf?csrf.value:'','current_step':'5'};
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
+}
+//]]></script>
 </body></html>
 </template><template id="template_dam_success" name="DAM Success">
 <html><head><meta charset="utf-8"/><title>Submitted | DAM</title>

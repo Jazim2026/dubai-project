@@ -26,12 +26,22 @@
                 <header>
                     <button name="action_under_review" string="Mark Under Review" type="object"
                             invisible="state not in ['submitted']" class="btn-secondary"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <button name="action_approve" string="Approve" type="object"
                             invisible="state not in ['submitted','under_review']" class="btn-primary"/>
                     <button name="action_reject" string="Reject" type="object"
-                            invisible="state not in ['submitted','under_review']" class="btn-danger"/>
+                            invisible="state not in ['submitted','under_review','documents_approved','payment_approved','complaints_approved','under_process']" class="btn-danger"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,under_review,approved,rejected"/>
+                           statusbar_visible="draft,submitted,documents_approved,payment_approved,complaints_approved,under_process,completed"/>
                 </header>
                 <sheet>
                     <div class="oe_title"><h1><field name="reference"/></h1></div>
@@ -793,168 +803,6 @@
     <menuitem id="menu_spc_ec_cancellation" name="Cancellation"
         parent="menu_spc_establishment_card_group"
         action="action_spc_ec_cancellation" sequence="40"/>
-
-    <!-- ══ Business License Backend ══ -->
-    <record id="spc_bl_tree" model="ir.ui.view">
-        <field name="name">spc.business.license.tree</field>
-        <field name="model">spc.business.license</field>
-        <field name="arch" type="xml">
-            <tree string="Business Licenses"
-                  decoration-success="state == 'approved'"
-                  decoration-warning="state in ('submitted','in_progress')"
-                  decoration-danger="state == 'rejected'">
-                <field name="reference"/>
-                <field name="customer_id"/>
-                <field name="license_type"/>
-                <field name="license_validity"/>
-                <field name="facility_type"/>
-                <field name="visa_count"/>
-                <field name="fee"/>
-                <field name="state" widget="badge"
-                       decoration-success="state == 'approved'"
-                       decoration-warning="state in ('submitted','in_progress')"
-                       decoration-danger="state == 'rejected'"/>
-            </tree>
-        </field>
-    </record>
-
-    <record id="spc_bl_form" model="ir.ui.view">
-        <field name="name">spc.business.license.form</field>
-        <field name="model">spc.business.license</field>
-        <field name="arch" type="xml">
-            <form string="Business License">
-                <header>
-                    <button name="action_under_review" string="Mark In Progress" type="object"
-                            invisible="state not in ['submitted']" class="btn-secondary"/>
-                    <button name="action_approve" string="Approve" type="object"
-                            invisible="state not in ['submitted','in_progress']" class="btn-primary"/>
-                    <button name="action_reject" string="Reject" type="object"
-                            invisible="state not in ['submitted','in_progress']" class="btn-danger"/>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,in_progress,approved,rejected"/>
-                </header>
-                <sheet>
-                    <div class="oe_title"><h1><field name="reference"/></h1></div>
-                    <group>
-                        <group string="Customer Info">
-                            <field name="customer_id"/>
-                            <field name="fee"/>
-                            <field name="payment_method"/>
-                            <field name="payment_status"/>
-                        </group>
-                        <group string="Package">
-                            <field name="license_type"/>
-                            <field name="instant_license_fee"/>
-                            <field name="license_validity"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Office Facility and Visa">
-                            <group>
-                                <group string="Office Facility">
-                                    <field name="facility_type"/>
-                                    <field name="facility_acknowledgement"/>
-                                </group>
-                                <group string="Visa Requirements">
-                                    <field name="visa_count"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Establishment Card">
-                            <group>
-                                <group>
-                                    <field name="establishment_card"/>
-                                    <field name="ec_validity"/>
-                                </group>
-                                <group>
-                                    <field name="e_channel"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Business Activities">
-                            <field name="business_activity_ids" widget="many2many_tags"/>
-                        </page>
-                        <page string="Manager Information">
-                            <group string="Personal Details">
-                                <group>
-                                    <field name="manager_name"/>
-                                    <field name="manager_nationality_id"/>
-                                    <field name="manager_dob"/>
-                                    <field name="manager_gender"/>
-                                </group>
-                                <group>
-                                    <field name="manager_mobile"/>
-                                    <field name="manager_email"/>
-                                    <field name="manager_uae_resident"/>
-                                </group>
-                            </group>
-                            <group string="Documents and IDs">
-                                <group>
-                                    <field name="manager_passport_no"/>
-                                    <field name="manager_passport_expiry"/>
-                                    <field name="manager_uid_no"/>
-                                </group>
-                                <group>
-                                    <field name="manager_visa_no"/>
-                                    <field name="manager_eid_no"/>
-                                </group>
-                            </group>
-
-                        </page>
-                        <page string="Nature of Business">
-                            <group>
-                                <group>
-                                    <field name="nature_of_business"/>
-                                    <field name="annual_turnover"/>
-                                </group>
-                                <group>
-                                    <field name="customer_markets"/>
-                                    <field name="supplier_markets"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page string="Declaration and Remarks">
-                            <group>
-                                <field name="declaration"/>
-                                <field name="remarks"/>
-                            </group>
-                        </page>
-                        <page string="Documents">
-                            <field name="document_line_ids" readonly="1">
-                                <tree>
-                                    <field name="stage" string="Stage"/>
-                                    <field name="document_type" string="Document Type"/>
-                                    <field name="related_to" string="Related To (Person/Entity)"/>
-                                    <field name="file_name" string="File Name"/>
-                                    <field name="uploaded_on" string="Uploaded On"/>
-                                    <field name="file_data" widget="binary" filename="file_name" string="Download"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Admin Notes">
-                            <field name="admin_notes"/>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="action_spc_bl_additional" model="ir.actions.act_window">
-        <field name="name">Additional Business License</field>
-        <field name="res_model">spc.business.license</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_spc_business_license"
-              name="Business License"
-              parent="menu_spc_company_management"
-              sequence="30"/>
-    <menuitem id="menu_spc_bl_additional"
-              name="Additional Business License"
-              parent="menu_spc_business_license"
-              action="action_spc_bl_additional"
-              sequence="10"/>
 
 
     <!-- ══ Corporate Letter Backend ══ -->

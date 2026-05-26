@@ -18,13 +18,22 @@
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount">0.00</div></div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="fmSaveExitSidebar1();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
+        </div>
+        <div id="fm_sidebar_save1_holder" style="display:none">
+            <span id="sb_csrf" t-att-data-csrf="request.csrf_token()"></span>
+            <span id="sb_complaint_category"></span>
+            <span id="sb_incident_type"></span>
+            <span id="sb_office_number"></span>
+            <span id="sb_contact_name"></span>
+            <span id="sb_contact_number"></span>
+            <span id="sb_complaint_description"></span>
         </div>
     </div>
     <div class="main">
         <div class="form-title">New</div>
-        <form action="/spc/facility-management/apply/new" method="post" enctype="multipart/form-data">
+        <form id="fm_main_form1" action="/spc/facility-management/apply/new" method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
             <!-- 01 Complaint Category -->
@@ -96,10 +105,39 @@
             <div class="spc-nav-buttons" style="justify-content:flex-end">
                 <button type="button" class="spc-btn-next" onclick="fmStep1Validate()">NEXT</button>
             </div>
+
+            <script>//<![CDATA[
+            function fmSaveExitSidebar1(){
+                var f=document.createElement('form');
+                f.method='post';f.action='/spc/facility-management/save-exit';
+                var fields={
+                    'csrf_token': document.querySelector('[name="csrf_token"]') ? document.querySelector('[name="csrf_token"]').value : '',
+                    'current_step': '1',
+                    'complaint_category': document.getElementById('fm_cat') ? document.getElementById('fm_cat').value : '',
+                    'incident_type': document.getElementById('fm_incident') ? document.getElementById('fm_incident').value : '',
+                    'office_number': document.querySelector('[name="office_number"]') ? document.querySelector('[name="office_number"]').value : '',
+                    'contact_name': document.querySelector('[name="contact_name"]') ? document.querySelector('[name="contact_name"]').value : '',
+                    'contact_number': document.querySelector('[name="contact_number"]') ? document.querySelector('[name="contact_number"]').value : '',
+                    'complaint_description': document.querySelector('[name="complaint_description"]') ? document.querySelector('[name="complaint_description"]').value : ''
+                };
+                for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+                document.body.appendChild(f);f.submit();
+            }
+            function fmSaveExit1(){
+                document.getElementById('se_complaint_category').value = document.getElementById('fm_cat') ? document.getElementById('fm_cat').value : '';
+                document.getElementById('se_incident_type').value = document.getElementById('fm_incident') ? document.getElementById('fm_incident').value : '';
+                document.getElementById('se_office_number').value = document.querySelector('[name="office_number"]') ? document.querySelector('[name="office_number"]').value : '';
+                document.getElementById('se_contact_name').value = document.querySelector('[name="contact_name"]') ? document.querySelector('[name="contact_name"]').value : '';
+                document.getElementById('se_contact_number').value = document.querySelector('[name="contact_number"]') ? document.querySelector('[name="contact_number"]').value : '';
+                document.getElementById('se_complaint_description').value = document.querySelector('[name="complaint_description"]') ? document.querySelector('[name="complaint_description"]').value : '';
+                document.getElementById('fm_save_exit_form1').submit();
+            }
+            //]]>
+            </script>
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 var FM_INCIDENTS = {
     'electrical': ['Light not working','Light Blinking','Power socket not working','Breaker trip off'],
     'air_conditioning': ['AC not working','Less cooling','Noising indoor unit','AC leakage'],
@@ -109,9 +147,9 @@ var FM_INCIDENTS = {
 function fmCatChange(v){
     var section = document.getElementById('fm_incident_section');
     var sel = document.getElementById('fm_incident');
-    if(v &amp;&amp; FM_INCIDENTS[v]){
+    if(v && FM_INCIDENTS[v]){
         section.style.display = 'block';
-        sel.innerHTML = '&lt;option value=""&gt;Incident type&lt;/option&gt;';
+        sel.innerHTML = '<option value="">Incident type</option>';
         FM_INCIDENTS[v].forEach(function(opt){
             var o = document.createElement('option');
             o.value = opt.toLowerCase().replace(/ /g,'_');
@@ -123,7 +161,7 @@ function fmCatChange(v){
     }
 }
 function fmFileSelected(input){
-    if(input.files &amp;&amp; input.files[0]){
+    if(input.files && input.files[0]){
         document.getElementById('uploaded_file_info').style.display='flex';
         document.getElementById('uploaded_file_name').textContent=input.files[0].name;
         document.getElementById('upload_box').style.borderColor='#1abc9c';
@@ -155,8 +193,11 @@ function fmStep1Validate(){
   if(cpv.length===0){showErr("fm_cp_err","Please enter a valid contact number.");valid=false;}else hideErr("fm_cp_err");
   var desc=document.querySelector('[name="complaint_description"]');addErr(desc,"fm_desc_err");
   if(!desc){showErr("fm_desc_err","Please enter complaint description.");valid=false;}else{if(!desc.value.trim()){showErr("fm_desc_err","Please enter complaint description.");valid=false;}else hideErr("fm_desc_err");}
-  if(valid)document.querySelector("form").submit();
+  if(valid)document.getElementById("fm_main_form1").submit();
 }
+
+//
+//]]>
 </script>
 </body></html>
 </template>
@@ -176,9 +217,10 @@ function fmStep1Validate(){
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount">0.00</div></div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="fmSaveExitStep2();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
         </div>
+
     </div>
     <div class="main">
         <div class="form-title">New</div>
@@ -206,8 +248,17 @@ function fmStep1Validate(){
         </form>
     </div>
 </div>
-<script>
-function fmDeclValidate(){
+<script>//<![CDATA[
+function fmSaveExitStep2(){
+                var f=document.createElement('form');
+                f.method='post';f.action='/spc/facility-management/save-exit';
+                var csrf=document.querySelector('[name="csrf_token"]');
+                var cb=document.querySelector('[name="declaration_accepted"]');
+                var fields={'csrf_token':csrf?csrf.value:'','current_step':'2','declaration_accepted':cb&&cb.checked?'on':'off'};
+                for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+                document.body.appendChild(f);f.submit();
+            }
+            function fmDeclValidate(){
   var cb=document.querySelector('[name="declaration_accepted"]');
   if(!cb||!cb.checked){
     if(!document.getElementById("fm_decl_err")){var e=document.createElement("div");e.id="fm_decl_err";e.style.cssText="color:red;font-size:12px;margin-top:8px";cb.parentElement.insertAdjacentElement("afterend",e);}
@@ -218,6 +269,15 @@ function fmDeclValidate(){
   var el=document.getElementById("fm_decl_err");if(el)el.style.display="none";
   document.querySelector("form").submit();
 }
+function fmSaveExitStep3(){
+    var f=document.createElement('form');
+    f.method='post';f.action='/spc/facility-management/save-exit';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={'csrf_token':csrf?csrf.value:'','current_step':'3'};
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
+}
+//]]>
 </script>
 </body></html>
 </template>
@@ -237,9 +297,10 @@ function fmDeclValidate(){
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount">0.00</div></div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="fmSaveExitStep3();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
         </div>
+
     </div>
     <div class="main">
         <div class="form-title">New</div>
@@ -268,8 +329,19 @@ function fmDeclValidate(){
             <a href="/spc/facility-management/step2" class="spc-btn-prev">PREVIOUS</a>
             <a href="/spc/facility-management/step4" class="spc-btn-next" style="text-decoration:none;display:inline-flex;align-items:center">NEXT</a>
         </div>
+
     </div>
 </div>
+<script>//<![CDATA[
+function fmSaveExitStep4(){
+    var f=document.createElement('form');
+    f.method='post';f.action='/spc/facility-management/save-exit';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={'csrf_token':csrf?csrf.value:'','current_step':'4'};
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
+}
+//]]></script>
 </body></html>
 </template>
 
@@ -288,9 +360,10 @@ function fmDeclValidate(){
         <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount">0.00</div></div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="fmSaveExitStep4();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/facility-management" style="color:#f87171">CANCEL APPLICATION</a>
         </div>
+
     </div>
     <div class="main">
         <div class="form-title">New</div>
@@ -312,6 +385,7 @@ function fmDeclValidate(){
                 <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
             </div>
         </form>
+
     </div>
 </div>
 </body></html>

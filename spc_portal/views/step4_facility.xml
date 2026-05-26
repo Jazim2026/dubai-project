@@ -155,7 +155,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </div>
 </div>
 
-<script type="text/javascript">
+<script>//<![CDATA[
 function selectFacility(type) {
     // Remove selected from all cards
     ['coworking','office','store','shell'].forEach(function(t) {
@@ -191,6 +191,7 @@ function clearDropdown(enId, arId) {
     document.getElementsByName(enId)[0].value = '';
     if (arId) document.getElementsByName(arId)[0].value = '';
 }
+//]]>
 </script>
 </body>
 </html>

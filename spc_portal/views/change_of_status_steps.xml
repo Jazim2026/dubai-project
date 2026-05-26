@@ -105,14 +105,14 @@ textarea.field-input{resize:vertical;padding-top:8px}
             <div class="amount">710.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="cosSaveExit1();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/employee-management">CANCEL APPLICATION</a>
         </div>
     </div>
 
     <div class="main">
         <div class="form-title">New</div>
-        <form action="/spc/apply/change_of_status/step1" method="post" enctype="multipart/form-data">
+        <form id="cos_main_form1" action="/spc/apply/change_of_status/step1" method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
             <!-- 01 Select Applicant -->
@@ -225,7 +225,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function cosStep1Validate(){
   var valid=true;
   function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
@@ -267,6 +267,21 @@ function cosRemoveFile(key){
   document.getElementById("box_"+key).querySelectorAll("input[type=file]").forEach(function(i){i.value="";});
 }
 (function(){var vs=document.querySelector("input[name=visa_status]:checked");if(vs)cosVisaChange(vs.value);})();
+function cosSaveExit1(){
+    var f=document.createElement('form');
+    f.method='post';f.action='/spc/employee-management/change-of-status/save-exit';f.enctype='multipart/form-data';
+    var csrf=document.querySelector('[name="csrf_token"]');
+    var fields={
+        'csrf_token':csrf?csrf.value:'',
+        'current_step':'1',
+        'applicant_name':document.querySelector('[name="applicant_name"]')?document.querySelector('[name="applicant_name"]').value:'',
+        'visa_status':(document.querySelector('input[name="visa_status"]:checked')||{value:''}).value,
+        'remarks':document.querySelector('[name="remarks"]')?document.querySelector('[name="remarks"]').value:''
+    };
+    for(var k in fields){var i=document.createElement('input');i.type='hidden';i.name=k;i.value=fields[k];f.appendChild(i);}
+    document.body.appendChild(f);f.submit();
+}
+//]]>
 </script>
 </body></html>
 </template>
@@ -339,14 +354,14 @@ textarea.field-input{resize:vertical;padding-top:8px}
             <div class="amount">710.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="cosSaveExit2();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/employee-management">CANCEL APPLICATION</a>
         </div>
     </div>
 
     <div class="main">
         <div class="form-title">New</div>
-        <form action="/spc/apply/change_of_status/step2" method="post">
+        <form id="cos_main_form2" action="/spc/apply/change_of_status/step2" method="post">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <div class="spc-section">
                 <div class="sec-num">01</div>
@@ -367,7 +382,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function cosStep2Validate(){
   var valid=true;
   function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.style.cssText="color:red;font-size:12px;margin-top:4px";}el.textContent=msg;el.style.display="block";}
@@ -382,6 +397,7 @@ function cosStep2Validate(){
   if(!inRange(lnv,3,50)){showErr("cos2_ln_err","Last name must be 3-50 characters.");valid=false;}else hideErr("cos2_ln_err");
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -454,14 +470,14 @@ textarea.field-input{resize:vertical;padding-top:8px}
             <div class="amount">710.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="cosSaveExit3();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/employee-management">CANCEL APPLICATION</a>
         </div>
     </div>
 
     <div class="main">
         <div class="form-title">New</div>
-        <form action="/spc/apply/change_of_status/step3" method="post">
+        <form id="cos_main_form3" action="/spc/apply/change_of_status/step3" method="post">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <div class="spc-section">
                 <div class="sec-num">01</div>
@@ -486,7 +502,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
 function cosStep3Validate(){
   var valid=true;
   var cb=document.querySelector('[name="declaration_accepted"]');
@@ -498,6 +514,7 @@ function cosStep3Validate(){
   }else{var el=document.getElementById("cos3_decl_err");if(el)el.style.display="none";}
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -570,7 +587,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
             <div class="amount">710.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="cosSaveExit4();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/employee-management">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -676,7 +693,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
             <div class="amount">710.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="#" onclick="cosSaveExit5();return false;">SAVE &amp; EXIT</a>
             <a href="/spc/employee-management">CANCEL APPLICATION</a>
         </div>
     </div>

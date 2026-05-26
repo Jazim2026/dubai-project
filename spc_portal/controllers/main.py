@@ -2,7 +2,7 @@
 import logging
 import base64
 from odoo import http
-from odoo.http import request
+from odoo.http import request, Response
 
 _logger = logging.getLogger(__name__)
 
@@ -101,28 +101,30 @@ class SpcPortalController(http.Controller):
             return request.redirect('/spc/login')
         uid = request.session.get('spc_uid')
         user = request.env['res.users'].sudo().browse(uid)
-        customers = request.env['res.partner'].sudo().search([
-            ('is_company', '=', False),
-            ('active', '=', True),
-        ], order='name asc')
         selected_customer_id = request.session.get('spc_selected_customer_id')
         selected_customer = None
+        approved_companies = []
         if selected_customer_id:
             rec = request.env['res.partner'].sudo().browse(selected_customer_id)
             if rec.exists():
                 selected_customer = rec
-        # Load approved companies for selected customer
-        approved_companies = []
-        if selected_customer:
-            approved_companies = request.env['spc.approved.company'].sudo().search([
-                ('partner_id', '=', selected_customer.id),
-                ('active', '=', True),
-            ], order='company_name asc')
+                approved_companies = request.env['spc.approved.company'].sudo().search([
+                    ('partner_id', '=', selected_customer.id),
+                    ('active', '=', True),
+                ], order='company_name asc')
+        # Check if this user has any customers at all
+        user_partner_id = user.partner_id.id
+        existing_customers = request.env['res.partner'].sudo().search([
+            ('is_company', '=', False),
+            ('active', '=', True),
+            ('id', '=', selected_customer_id),
+        ], limit=1) if selected_customer_id else []
+        no_customers = not bool(selected_customer_id)
         return request.render('spc_portal.template_spc_dashboard', {
             'company': user.company_id,
-            'customers': customers,
             'selected_customer': selected_customer,
             'approved_companies': approved_companies,
+            'no_customers': no_customers,
             'error': kw.get('error', ''),
         })
 
@@ -138,22 +140,58 @@ class SpcPortalController(http.Controller):
     def dashboard_goto(self, customer_id='', **kw):
         if customer_id:
             request.session['spc_selected_customer_id'] = int(customer_id)
+        approved_company_id = kw.get('approved_company_id', '')
+        if approved_company_id:
+            request.session['spc_selected_company_id'] = int(approved_company_id)
         redirect_to = kw.get("redirect_to") or "/spc/customer-dashboard"
         return request.redirect(redirect_to)
 
     @http.route('/spc/customer-dashboard', type='http', auth='public', website=True, csrf=False)
     def customer_dashboard(self, **kw):
-        if not self._check_spc_session():
+        if False and not self._check_spc_session():
             return request.redirect('/spc/login')
         customer_id = request.session.get('spc_selected_customer_id')
+        company_id = request.session.get('spc_selected_company_id')
         customer = None
+        selected_company = None
+        all_companies = []
         if customer_id:
             rec = request.env['res.partner'].sudo().browse(customer_id)
             if rec.exists():
                 customer = rec
-        return request.render('spc_portal.template_spc_customer_dashboard', {
+            all_companies = request.env['spc.approved.company'].sudo().search([
+                ('partner_id', '=', customer_id),
+                ('active', '=', True),
+            ], order='company_name asc')
+        if company_id:
+            comp = request.env['spc.approved.company'].sudo().browse(company_id)
+            if comp.exists():
+                selected_company = comp
+        qcontext = {
             'customer': customer,
-        })
+            'selected_company': selected_company,
+            'selected_company_id': company_id,
+            'company_name': selected_company.company_name if selected_company else '',
+            'all_companies': all_companies,
+            'all_records': [],
+            'service': {},
+            'service_type': '',
+            'fee': 0,
+            'steps': [],
+            'current_step': 1,
+            'form_submit_url': '',
+            'pending_docs': [],
+        }
+        return request.render('spc_portal.template_spc_customer_dashboard', qcontext)
+
+    @http.route('/spc/switch-company', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    def switch_company(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        company_id = kw.get('company_id', '')
+        if company_id:
+            request.session['spc_selected_company_id'] = int(company_id)
+        return request.redirect('/spc/customer-dashboard')
 
     # ── ADD CUSTOMER ──
     @http.route('/spc/add-customer', type='http', auth='public', website=True, csrf=False)
@@ -200,6 +238,85 @@ class SpcPortalController(http.Controller):
             return request.redirect('/spc/add-customer?error=Failed+to+create+customer')
 
     # ── LOGOUT ──
+    # ── MY ACCOUNT ──
+    @http.route('/spc/my-account', type='http', auth='public', website=True, csrf=False)
+    def my_account(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        customer_id = request.session.get('spc_selected_customer_id')
+        customer = None
+        if customer_id:
+            rec = request.env['res.partner'].sudo().browse(customer_id)
+            if rec.exists():
+                customer = rec
+        tab = kw.get('tab', 'account_details')
+        return request.render('spc_portal.template_spc_my_account', {
+            'customer': customer,
+            'tab': tab,
+            'company_name': '',
+            'all_companies': [],
+            'selected_company_id': None,
+        })
+
+    @http.route('/spc/my-account/save', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    def my_account_save(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        customer_id = request.session.get('spc_selected_customer_id')
+        if customer_id:
+            rec = request.env['res.partner'].sudo().browse(customer_id)
+            if rec.exists():
+                vals = {}
+                first_name = kw.get('first_name', '').strip()
+                last_name = kw.get('last_name', '').strip()
+                if first_name or last_name:
+                    vals['name'] = f"{first_name} {last_name}".strip()
+                if kw.get('phone'):
+                    vals['phone'] = kw.get('phone', '').strip()
+                if kw.get('street'):
+                    vals['street'] = kw.get('street', '').strip()
+                if kw.get('building'):
+                    vals['street2'] = kw.get('building', '').strip()
+                if kw.get('city'):
+                    vals['city'] = kw.get('city', '').strip()
+                if kw.get('zip'):
+                    vals['zip'] = kw.get('zip', '').strip()
+                if kw.get('area'):
+                    vals['comment'] = kw.get('area', '').strip()
+                # Country
+                country_name = kw.get('country', '').strip()
+                if country_name:
+                    country = request.env['res.country'].sudo().search([('name', 'ilike', country_name)], limit=1)
+                    if country:
+                        vals['country_id'] = country.id
+                # Social
+                if kw.get('twitter'):
+                    vals['website'] = kw.get('twitter', '').strip()
+                if kw.get('instagram'):
+                    vals['instagram'] = kw.get('instagram', '').strip() if hasattr(rec, 'instagram') else None
+                if kw.get('facebook'):
+                    vals['facebook'] = kw.get('facebook', '').strip() if hasattr(rec, 'facebook') else None
+                if kw.get('linkedin'):
+                    vals['linkedin'] = kw.get('linkedin', '').strip() if hasattr(rec, 'linkedin') else None
+                # Remove None values
+                vals = {k: v for k, v in vals.items() if v is not None}
+                if vals:
+                    rec.write(vals)
+        return request.redirect('/spc/my-account?tab=account_details')
+
+    @http.route('/spc/my-account/upload-logo', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    def my_account_upload_logo(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        company_id = request.session.get('spc_selected_company_id')
+        logo_file = request.httprequest.files.get('company_logo')
+        if logo_file and company_id:
+            import base64
+            comp = request.env['spc.approved.company'].sudo().browse(company_id)
+            if comp.exists() and hasattr(comp, 'logo'):
+                comp.write({'logo': base64.b64encode(logo_file.read()).decode('utf-8')})
+        return request.redirect('/spc/my-account?tab=company_logo')
+
     @http.route('/spc/logout', type='http', auth='public', website=True, csrf=False)
     def logout(self, **kw):
         for key in ['spc_email', 'spc_uid', 'spc_otp_verified', 'spc_selected_customer_id']:
@@ -841,9 +958,11 @@ class SpcPortalController(http.Controller):
         s11 = request.session.get('spc_step11_data', {})
         s12 = request.session.get('spc_step12_data', {})
 
+        _logger.info('=== COMPANY ID AT SUBMIT: %s', request.session.get('spc_selected_company_id'))
         try:
             app = request.env['spc.company.application'].sudo().create({
                 'partner_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'service_type': service_type,
                 'state': 'submitted',
                 'current_step': 13,
@@ -1088,42 +1207,278 @@ class SpcPortalController(http.Controller):
             rec = request.env['res.partner'].sudo().browse(customer_id)
             if rec.exists():
                 customer = rec
+        company_id = request.session.get('spc_selected_company_id')
+        selected_company = None
+        all_companies = []
+        if company_id:
+            comp = request.env['spc.approved.company'].sudo().browse(company_id)
+            if comp.exists():
+                selected_company = comp
+        if customer_id:
+            all_companies = request.env['spc.approved.company'].sudo().search([
+                ('partner_id', '=', customer_id), ('active', '=', True),
+            ], order='company_name asc')
         return request.render('spc_portal.template_company_management', {
             'customer': customer,
             'allocated_visa': 1, 'available_visa': 1,
             'used_visa': 0, 'in_progress_visa': 0,
             'employees': 0, 'documents': 27, 'key_stakeholders': 3,
             'service_requests': [],
-        
             'steps': ['Legal type', 'Business activities', 'Company', 'Facility', 'Visa allocation', 'Shareholder(s)', 'Manager(s)', 'Director(s)', 'UBO', 'Nature of business', 'Bank account', 'Documents', 'Review', 'Payment'],
             'current_step': 14,
+            'company_name': selected_company.company_name if selected_company else '',
+            'all_companies': all_companies,
+            'selected_company_id': company_id,
         })
 
+    # ── NEW REQUEST TRACKING ──
     @http.route('/spc/request-tracking', type='http', auth='public', website=True, csrf=False)
     def request_tracking(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
+        partner = request.env.user.partner_id
         customer_id = request.session.get('spc_selected_customer_id')
         customer = None
-        requests_list = []
         if customer_id:
             rec = request.env['res.partner'].sudo().browse(customer_id)
             if rec.exists():
                 customer = rec
-                requests_list = request.env['spc.service.request'].sudo().search([
-                    ('partner_id', '=', customer.id)
-                ], order='create_date desc')
-        pending_docs = []
-        if customer:
-            pending_docs = request.env['spc.pending.details.doc'].sudo().search([
-                ('partner_id', '=', customer.id),
-                ('state', 'in', ['sent', 'submitted']),
-            ], order='create_date desc')
+        target_partner = customer or partner
+
+        CUSTOMER_ID_MODELS = [
+            'spc.license.reissue', 'spc.renewal', 'spc.renewal.amendment',
+            'spc.amendment', 'spc.visa.allocation.amendment',
+            'spc.establishment.card', 'spc.certify', 'spc.business.license',
+            'spc.corporate.letter',
+        ]
+        selected_company_id = request.session.get('spc_selected_company_id')
+        import logging
+        _logger = logging.getLogger(__name__)
+        _logger.info(f"DEBUG company_id from session: {selected_company_id}, target_partner_id: {target_partner.id if target_partner else None}")
+        def fetch(model):
+            try:
+                selected_company_id = request.session.get('spc_selected_company_id')
+                if model in CUSTOMER_ID_MODELS:
+                    domain = [('customer_id', '=', target_partner.id)]
+                else:
+                    fields_list = request.env[model].sudo().fields_get()
+                    if 'partner_id' in fields_list:
+                        domain = [('partner_id', '=', target_partner.id)]
+                    elif 'customer_id' in fields_list:
+                        domain = [('customer_id', '=', target_partner.id)]
+                    else:
+                        return []
+                if 'approved_company_id' in request.env[model].sudo().fields_get() and model != 'spc.document.delivery':
+                    if selected_company_id:
+                        domain.append(('approved_company_id', '=', int(selected_company_id)))
+                    else:
+                        domain.append(('approved_company_id', '=', False))
+                return request.env[model].sudo().search(domain, order='id desc')
+            except Exception as e:
+                _logger.error('FETCH ERROR model=%s error=%s', model, e)
+                return []
+
+        all_records = []
+
+        service_map = [
+            ('spc.company.application',          'Company Formation',          'company',   '/spc/setup-new-company/apply/'),
+            ('spc.nma.media.license',            'NMA Media License',          'company',   '/spc/apply/nma_media_license/'),
+            ('spc.nma.permit',                   'NMA Permit',                 'company',   '/spc/apply/nma_permit/step1'),
+            ('spc.employee.list',                'Employee List',              'employee',  '/spc/apply/employee_list/step1'),
+            ('spc.change.of.status',             'Change of Status',           'employee',  '/spc/apply/change_of_status/step1'),
+            ('spc.facility.management',          'Facility Management',        'facility',  '/spc/facility-management/apply/new'),
+            ('spc.dedicated.account.manager',    'Dedicated Account Manager',  'concierge', '/spc/apply/dam/step1'),
+            ('spc.banking.assistance',           'Banking Assistance',         'concierge', '/spc/apply/banking/step1'),
+            ('spc.driving.license',              'Driving License',            'concierge', '/spc/concierge/driving-license'),
+            ('spc.eid.appointment',              'EID Appointment',            'employee',  '/spc/employee-management/eid-appointment/step1'),
+            ('spc.eid.replacement',              'EID Replacement',            'concierge', '/spc/apply/eid_replacement/step1'),
+            ('spc.lease.document',               'Lease Document',             'concierge', '/spc/apply/lease_document/step1'),
+            ('spc.medical',                      'Medical Service',            'concierge', '/spc/apply/medical/step1'),
+            ('spc.meeting.room',                 'Meeting Room Booking',       'facility',  '/spc/apply/meeting_room/step1'),
+            ('spc.mofa',                         'MOFA Attestation',           'concierge', '/spc/apply/mofa/step1'),
+            ('spc.movement.report',              'Movement Report',            'employee',  '/spc/employee-management/movement-report/step1'),
+            ('spc.phone.answering',              'Phone Answering',            'concierge', '/spc/concierge/phone-answering/step1'),
+            ('spc.po.box',                       'PO Box',                     'concierge', '/spc/concierge/po-box/step1'),
+            ('spc.reentry.permit',               'Re-Entry Permit',            'concierge', '/spc/apply/reentry_permit/step1'),
+            ('spc.vip.medical.eid',              'VIP Medical EID',            'concierge', '/spc/concierge/vip-medical-eid/step1'),
+            ('spc.company.stamp',                'Company Stamp',              'concierge', '/spc/concierge/company-stamp/step1'),
+            ('spc.dependent.visa',               'Dependent Visa',             'concierge', '/spc/concierge/dependent-visa/step1'),
+            ('spc.corporate.letter',             'Corporate Letter',           'company',   '/spc/company-management/corporate-letters/step1'),
+            ('spc.business.license',             'Business License',           'company',   '/spc/company-management/business-license/bl-step1'),
+            ('spc.certify',                      'Certify Document',           'company',   '/spc/company-management/apply/certify-step1/new'),
+            ('spc.license.reissue',              'License Reissue',            'company',   '/spc/company-management/apply/lr-step1/new'),
+            ('spc.renewal',                      'License Renewal',            'company',   '/spc/company-management/apply/rn-step1/new'),
+            ('spc.amendment',                    'Amendment',                  'company',   '/spc/company-management/apply/amd-step1/new'),
+            ('spc.renewal.amendment',            'Renewal Amendment',          'company',   '/spc/company-management/apply/ra-step1/new'),
+            ('spc.visa.allocation.amendment',    'Visa Allocation Amendment',  'company',   '/spc/company-management/apply/va-step1/new'),
+            ('spc.establishment.card',           'Establishment Card',         'company',   '/spc/company-management/apply/ec-new-step1/new'),
+            ('spc.name.reservation',             'Name Reservation',           'company',   '/spc/setup-new-company/apply/name_reservation'),
+            ('spc.pre.approval',                 'Pre Approval',               'company',   '/spc/setup-new-company/apply/pre_approval'),
+            ('spc.uid.merging',                  'UID Merging',                'employee',  '/spc/apply/uid_merging/step1'),
+            ('spc.document.delivery',              'Document Delivery',          'concierge', '/spc/concierge/doc-delivery/courier/step1'),
+        ]
+
+        for model, label, category, resume_url in service_map:
+            for rec in fetch(model):
+                state = getattr(rec, 'state', 'draft')
+                submission_date = getattr(rec, 'submission_date', None)
+                started_date = getattr(rec, 'started_date', None) or getattr(rec, 'create_date', None)
+                current_step = getattr(rec, 'current_step', 1)
+                name = getattr(rec, 'name', '') or label
+
+                # Build resume URL
+                if state == 'draft':
+                    if model == 'spc.nma.media.license':
+                        lt = getattr(rec, 'license_type', 'new')
+                        step = current_step or 1
+                        if step <= 1:
+                            url = '/spc/apply/nma_media_license/%s?resume_id=%d' % (lt, rec.id)
+                        elif step >= 6:
+                            url = '/spc/apply/nma_media_license/%s/step6?resume_id=%d' % (lt, rec.id)
+                        else:
+                            url = '/spc/apply/nma_media_license/%s/step%d?resume_id=%d' % (lt, step, rec.id)
+                    elif model == 'spc.service.request':
+                        step = current_step or 1
+                        service = getattr(rec, 'service_type', 'company_new') or 'company_new'
+                        if step <= 1:
+                            url = '/spc/setup-new-company/apply/%s' % service
+                        else:
+                            url = '/spc/setup-new-company/apply/step%d/%s' % (step, service)
+                    elif model == 'spc.license.reissue':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'license_reissue') or 'license_reissue'
+                        url = '/spc/company-management/apply/lr-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.renewal':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'renewal') or 'renewal'
+                        url = '/spc/company-management/apply/rn-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.renewal.amendment':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'renewal_amendment') or 'renewal_amendment'
+                        url = '/spc/company-management/apply/ra-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.amendment':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'amendment') or 'amendment'
+                        url = '/spc/company-management/apply/amd-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.visa.allocation.amendment':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'visa_allocation_amendment') or 'visa_allocation_amendment'
+                        url = '/spc/company-management/apply/va-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.establishment.card':
+                        url = '/spc/company-management/apply/ec-new-step1/new?resume_id=%d' % rec.id
+                    elif model == 'spc.certify':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'certify') or 'certify'
+                        url = '/spc/company-management/apply/certify-step%d/%s?resume_id=%d' % (min(step, 2), st, rec.id)
+                    elif model == 'spc.business.license':
+                        url = '/spc/company-management/business-license/bl-step%d?resume_id=%d' % (min(current_step or 2, 10), rec.id)
+                    elif model == 'spc.corporate.letter':
+                        url = '/spc/company-management/corporate-letters/step%d?resume_id=%d' % (min(current_step or 2, 2), rec.id)
+                    elif model == 'spc.license.reissue':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'license_reissue') or 'license_reissue'
+                        url = '/spc/company-management/apply/lr-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.renewal':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'renewal') or 'renewal'
+                        url = '/spc/company-management/apply/rn-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.renewal.amendment':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'renewal_amendment') or 'renewal_amendment'
+                        url = '/spc/company-management/apply/ra-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.amendment':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'amendment') or 'amendment'
+                        url = '/spc/company-management/apply/amd-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.visa.allocation.amendment':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'visa_allocation_amendment') or 'visa_allocation_amendment'
+                        url = '/spc/company-management/apply/va-step%d/%s?resume_id=%d' % (min(step, 4), st, rec.id)
+                    elif model == 'spc.establishment.card':
+                        url = '/spc/company-management/apply/ec-new-step1/new?resume_id=%d' % rec.id
+                    elif model == 'spc.certify':
+                        step = current_step or 2
+                        st = getattr(rec, 'service_type', 'certify') or 'certify'
+                        url = '/spc/company-management/apply/certify-step%d/%s?resume_id=%d' % (min(step, 2), st, rec.id)
+                    elif model == 'spc.business.license':
+                        url = '/spc/company-management/business-license/bl-step%d?resume_id=%d' % (min(current_step or 2, 10), rec.id)
+                    elif model == 'spc.corporate.letter':
+                        url = '/spc/company-management/corporate-letters/step%d?resume_id=%d' % (min(current_step or 2, 2), rec.id)
+                    elif model == 'spc.change.of.status':
+                        url = '/spc/apply/change_of_status/step%d?resume_id=%d' % (min(current_step or 1, 4), rec.id)
+                    else:
+                        url = resume_url
+                else:
+                    url = None
+
+                all_records.append({
+                    'id': rec.id,
+                    'name': name,
+                    'label': label,
+                    'category': category,
+                    'state': state,
+                    'submission_date': submission_date,
+                    'started_date': started_date,
+                    'current_step': current_step,
+                    'resume_url': url,
+                    'fees': getattr(rec, 'total_amount', 0.0) or 0.0,
+                    'detail_url': '/spc/request-tracking/detail/%s/%d' % (model.replace('.', '_'), rec.id) if state != 'draft' else None,
+                })
+
+        # Sort by started_date desc
+        all_records.sort(key=lambda x: x['started_date'] or '', reverse=True)
+
+        pending_docs = request.env['spc.pending.details.doc'].sudo().search([
+            ('partner_id', '=', target_partner.id),
+            ('state', 'in', ['sent', 'submitted']),
+        ], order='create_date desc')
+
+        company_id = request.session.get('spc_selected_company_id')
+        selected_company = None
+        all_companies = []
+        if customer_id:
+            all_companies = request.env['spc.approved.company'].sudo().search([
+                ('partner_id', '=', customer_id), ('active', '=', True),
+            ], order='company_name asc')
+        if company_id:
+            comp = request.env['spc.approved.company'].sudo().browse(company_id)
+            if comp.exists():
+                selected_company = comp
         return request.render('spc_portal.template_request_tracking', {
-            'customer': customer,
-            'requests': requests_list,
+            'customer': target_partner,
+            'all_records': all_records,
             'pending_docs': pending_docs,
+            'company_name': selected_company.company_name if selected_company else '',
+            'all_companies': all_companies,
+            'selected_company_id': company_id,
         })
+
+    # ── OLD REQUEST TRACKING (commented out - replaced by new system) ──
+    # @http.route('/spc/request-tracking', type='http', auth='public', website=True, csrf=False)
+    # def request_tracking(self, **kw):
+    #     if not self._check_spc_session():
+    #         return request.redirect('/spc/login')
+    #     customer_id = request.session.get('spc_selected_customer_id')
+    #     customer = None
+    #     requests_list = []
+    #     if customer_id:
+    #         rec = request.env['res.partner'].sudo().browse(customer_id)
+    #         if rec.exists():
+    #             customer = rec
+    #             requests_list = request.env['spc.service.request'].sudo().search([
+    #                 ('partner_id', '=', customer.id)
+    #             ], order='create_date desc')
+    #     pending_docs = []
+    #     if customer:
+    #         pending_docs = request.env['spc.pending.details.doc'].sudo().search([
+    #             ('partner_id', '=', customer.id),
+    #             ('state', 'in', ['sent', 'submitted']),
+    #         ], order='create_date desc')
+    #     return request.render('spc_portal.template_request_tracking', {
+    #         'customer': customer,
+    #         'requests': requests_list,
+    #         'pending_docs': pending_docs,
+    #     })
 
     # ── NR STEPS ──
     @http.route('/spc/setup-new-company/apply/nr-step2/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -1223,6 +1578,7 @@ class SpcPortalController(http.Controller):
             activity_names = activity_data.get('activity_names', [])
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'activity_names': ', '.join(activity_names) if activity_names else '',
                 'name_reserved': step2_data.get('name_reserved', 'no'),
@@ -1233,6 +1589,7 @@ class SpcPortalController(http.Controller):
                 'translation_method': step2_data.get('translation_method', ''),
                 'declaration_accepted': bool(step3_data.get('declaration_accepted')),
                 'declarant_name': step3_data.get('declarant_name', ''),
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'fee': 500.0,
                 'payment_status': 'pending',
             }
@@ -1469,6 +1826,7 @@ class SpcPortalController(http.Controller):
             step5_data = request.session.get('pa_step5_data') or {}
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'activity_names': ', '.join(activity_names) if activity_names else '',
                 'name_reserved': step3_data.get('name_reserved', 'no'),
@@ -1488,6 +1846,7 @@ class SpcPortalController(http.Controller):
                 'sh_percent': float(step4_data.get('sh_1_percent', 0) or 0),
                 'declaration_accepted': bool(step5_data.get('declaration_accepted')),
                 'declarant_name': step5_data.get('declarant_name', ''),
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'fee': 640.0,
 
                 'payment_method': kw.get('payment_method', ''),
@@ -1604,6 +1963,18 @@ class SpcPortalController(http.Controller):
             'idn_company_id': kw.get('idn_company_id', ''),
             'idn_number': kw.get('idn_number', ''),
         }
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _vals = {'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft', 'idn_number': kw.get('idn_number', '')}
+            if kw.get('idn_company_id'):
+                try: _vals['idn_company_id'] = int(kw.get('idn_company_id'))
+                except: pass
+            _lr = request.env['spc.license.reissue'].sudo().create(_vals)
+            request.session['lr_draft_id'] = _lr.id
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"LR draft create error: {e}", exc_info=True)
         return request.redirect('/spc/company-management/apply/lr-step2/' + service_type)
 
     @http.route('/spc/company-management/apply/lr-step2/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -1718,6 +2089,7 @@ class SpcPortalController(http.Controller):
             idn_company_id = step1.get('idn_company_id')
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'idn_number': step1.get('idn_number', ''),
                 'legal_type': step2.get('legal_type', ''),
@@ -1733,10 +2105,18 @@ class SpcPortalController(http.Controller):
                     vals['idn_company_id'] = int(idn_company_id)
                 except:
                     pass
-            lr = request.env['spc.license.reissue'].sudo().create(vals)
+            draft_id = request.session.get('lr_draft_id')
+            if draft_id:
+                lr = request.env['spc.license.reissue'].sudo().browse(draft_id)
+                if lr.exists():
+                    lr.sudo().write(vals)
+                else:
+                    lr = request.env['spc.license.reissue'].sudo().create(vals)
+            else:
+                lr = request.env['spc.license.reissue'].sudo().create(vals)
             if activity_ids:
                 lr.business_activity_ids = [(6, 0, activity_ids)]
-            for key in ['lr_step1_data', 'lr_step2_data', 'lr_step3_data']:
+            for key in ['lr_step1_data', 'lr_step2_data', 'lr_step3_data', 'lr_draft_id']:
                 request.session.pop(key, None)
         except Exception as e:
             import logging
@@ -1770,6 +2150,17 @@ class SpcPortalController(http.Controller):
             'company_id': kw.get('company_id', ''),
             'company_name': kw.get('company_name', ''),
         }
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _vals = {'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft'}
+            if kw.get('company_id'):
+                try: _vals['license_company_id'] = int(kw.get('company_id'))
+                except: pass
+            _rn = request.env['spc.renewal'].sudo().create(_vals)
+            request.session['rn_draft_id'] = _rn.id
+        except Exception as e:
+            import logging; logging.getLogger(__name__).error("RN CREATE ERROR: %s", e)
         return request.redirect('/spc/company-management/apply/rn-step2/' + service_type)
 
     @http.route('/spc/company-management/apply/rn-step2/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -1787,7 +2178,6 @@ class SpcPortalController(http.Controller):
             'service_type': service_type,
             'fee': 0,
             'steps': ['Choose license', 'Legal details', 'Business activities', 'Application details', 'Review application', 'Payment'],
-            'current_step': 2,
             'form_submit_url': '/spc/company-management/apply/rn-step2/submit',
         })
 
@@ -1926,6 +2316,7 @@ class SpcPortalController(http.Controller):
             import base64
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'license_company_name': step1.get('company_name', ''),
                 'legal_type': step2.get('legal_type', ''),
@@ -1948,10 +2339,18 @@ class SpcPortalController(http.Controller):
                 vals['document_file'] = doc['data']
                 vals['document_filename'] = doc.get('filename', '')
                 vals['document_name'] = doc.get('filename', '')
-            rn = request.env['spc.renewal'].sudo().create(vals)
+            draft_id = request.session.get('rn_draft_id')
+            if draft_id:
+                rn = request.env['spc.renewal'].sudo().browse(draft_id)
+                if rn.exists():
+                    rn.sudo().write(vals)
+                else:
+                    rn = request.env['spc.renewal'].sudo().create(vals)
+            else:
+                rn = request.env['spc.renewal'].sudo().create(vals)
             if activity_ids:
                 rn.business_activity_ids = [(6, 0, activity_ids)]
-            for key in ['rn_step1_data', 'rn_step2_data', 'rn_step3_data', 'rn_step4_data', 'rn_doc']:
+            for key in ['rn_step1_data', 'rn_step2_data', 'rn_step3_data', 'rn_step4_data', 'rn_doc', 'rn_draft_id']:
                 request.session.pop(key, None)
         except Exception as e:
             import logging
@@ -1991,6 +2390,17 @@ class SpcPortalController(http.Controller):
             'company_id': kw.get('company_id', ''),
             'company_name': kw.get('company_name', ''),
         }
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _vals = {'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft'}
+            if kw.get('company_id'):
+                try: _vals['company_id'] = int(kw.get('company_id'))
+                except: pass
+            _ra = request.env['spc.renewal.amendment'].sudo().create(_vals)
+            request.session['ra_draft_id'] = _ra.id
+        except Exception as _e:
+            import logging; logging.getLogger(__name__).error("DRAFT CREATE ERROR [%d]: %s", 1, _e)
         return request.redirect('/spc/company-management/apply/ra-step2/' + service_type)
 
 
@@ -2643,6 +3053,7 @@ class SpcPortalController(http.Controller):
             amendment_list = [k.replace('amendment_', '') for k, v in step2.items() if k.startswith('amendment_') and v == 'yes']
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'company_name': step1.get('company_name', ''),
                 'renewal_type': 'with_amendment',
@@ -2676,7 +3087,15 @@ class SpcPortalController(http.Controller):
             if board_doc.get('data'):
                 vals['board_resolution_file'] = board_doc['data']
                 vals['board_resolution_filename'] = board_doc.get('filename', '')
-            ra = request.env['spc.renewal.amendment'].sudo().create(vals)
+            draft_id = request.session.get('ra_draft_id')
+            if draft_id:
+                ra = request.env['spc.renewal.amendment'].sudo().browse(draft_id)
+                if not ra.exists():
+                    ra = request.env['spc.renewal.amendment'].sudo().create(vals)
+                else:
+                    ra.sudo().write(vals)
+            else:
+                ra = request.env['spc.renewal.amendment'].sudo().create(vals)
             if activity_ids:
                 ra.business_activity_ids = [(6, 0, activity_ids)]
 
@@ -2861,7 +3280,7 @@ class SpcPortalController(http.Controller):
                 })
             for key in ['ra_step1_data', 'ra_step2_data', 'ra_step3_data', 'ra_step4_data',
                         'ra_step5_data', 'ra_step6_data', 'ra_step7_data', 'ra_step8_data',
-                        'ra_step9_data', 'ra_step10_data', 'ra_doc', 'ra_board_doc']:
+                        'ra_step9_data', 'ra_step10_data', 'ra_doc', 'ra_board_doc', 'ra_draft_id']:
                 request.session.pop(key, None)
         except Exception as e:
             import logging
@@ -2919,6 +3338,17 @@ class SpcPortalController(http.Controller):
             'company_id': kw.get('company_id', ''),
             'company_name': kw.get('company_name', ''),
         }
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _vals = {'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft'}
+            if kw.get('company_id'):
+                try: _vals['company_id'] = int(kw.get('company_id'))
+                except: pass
+            _amd = request.env['spc.amendment'].sudo().create(_vals)
+            request.session['amd_draft_id'] = _amd.id
+        except Exception as e:
+            import logging; logging.getLogger(__name__).error('AMD CREATE ERROR: %s', e)
         return request.redirect('/spc/company-management/apply/amd-step2/' + service_type)
 
     @http.route('/spc/company-management/apply/amd-step2/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -2928,7 +3358,6 @@ class SpcPortalController(http.Controller):
         return request.render('spc_portal.template_amd_step2', {
             'service_type': service_type,
             'steps': ['Company', 'Company amendment(s)', 'Nature of business', 'Supporting Document', 'Review application', 'Payment'],
-            'current_step': 2,
         })
 
     @http.route('/spc/company-management/apply/amd-step2/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -3313,6 +3742,7 @@ class SpcPortalController(http.Controller):
 
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'company_name': step1.get('company_name', ''),
                 'amendment_types': ', '.join(amendment_list),
@@ -3364,7 +3794,15 @@ class SpcPortalController(http.Controller):
                 'company_info_notes': ci_data.get('company_info_notes', ''),
                 'facility_type': ft_data.get('facility_type', '') or ft_data.get('facility_type', ''),
             })
-            amd = request.env['spc.amendment'].sudo().create(vals)
+            draft_id = request.session.get('amd_draft_id')
+            if draft_id:
+                amd = request.env['spc.amendment'].sudo().browse(draft_id)
+                if not amd.exists():
+                    amd = request.env['spc.amendment'].sudo().create(vals)
+                else:
+                    amd.sudo().write(vals)
+            else:
+                amd = request.env['spc.amendment'].sudo().create(vals)
             # Business Activities
             if ba_data.get('activity_ids'):
                 try:
@@ -3499,7 +3937,7 @@ class SpcPortalController(http.Controller):
                         'file_name': doc.get('filename', ''),
                         'file_data': doc['data'],
                     })
-            for key in ['amd_step1_data', 'amd_step2_data', 'amd_step3_data', 'amd_step4_data', 'amd_board_doc']:
+            for key in ['amd_step1_data', 'amd_step2_data', 'amd_step3_data', 'amd_step4_data', 'amd_board_doc', 'amd_draft_id']:
                 request.session.pop(key, None)
         except Exception as e:
             import logging
@@ -3592,13 +4030,25 @@ class SpcPortalController(http.Controller):
             'confirm_echannel': kw.get('confirm_echannel', ''),
             'echannel_validity': kw.get('echannel_validity', ''),
         }
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _ec = request.env['spc.establishment.card'].sudo().create({
+                'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft',
+                'confirm_establishment_card': kw.get('confirm_establishment_card', ''),
+                'establishment_card_validity': kw.get('establishment_card_validity', ''),
+                'confirm_echannel': kw.get('confirm_echannel', ''),
+                'echannel_validity': kw.get('echannel_validity', ''),
+            })
+            request.session['ec_draft_id'] = _ec.id
+        except Exception as _e:
+            import logging; logging.getLogger(__name__).error("DRAFT CREATE ERROR [%d]: %s", 2, _e)
         steps = ['Application details', 'Declaration', 'Review application', 'Payment']
         return request.render('spc_portal.template_ec_declaration', {
             'service_type': service_type,
             'page_title': 'New',
             'form_action': '/spc/company-management/apply/ec-declaration/submit',
             'steps': steps,
-            'current_step': 2,
         })
 
     @http.route('/spc/company-management/apply/ec-declaration/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -3688,8 +4138,16 @@ class SpcPortalController(http.Controller):
                     vals['company_id'] = int(company_data['company_id'])
                 except:
                     pass
-            request.env['spc.establishment.card'].sudo().create(vals)
-            for key in ['ec_step1_data', 'ec_company_data', 'ec_decl_data']:
+            draft_id = request.session.get('ec_draft_id')
+            if draft_id:
+                ec = request.env['spc.establishment.card'].sudo().browse(draft_id)
+                if not ec.exists():
+                    request.env['spc.establishment.card'].sudo().create(vals)
+                else:
+                    ec.sudo().write(vals)
+            else:
+                request.env['spc.establishment.card'].sudo().create(vals)
+            for key in ['ec_step1_data', 'ec_company_data', 'ec_decl_data', 'ec_draft_id']:
                 request.session.pop(key, None)
         except Exception as e:
             import logging
@@ -3822,7 +4280,6 @@ class SpcPortalController(http.Controller):
             'page_title': 'Cancellation',
             'form_action': '/spc/company-management/apply/ec-declaration/submit',
             'steps': steps,
-            'current_step': 2,
         })
 
     # ============================================================
@@ -3860,6 +4317,17 @@ class SpcPortalController(http.Controller):
             'document_names': kw.get('document_names', ''),
             'remarks': kw.get('remarks', ''),
         }
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _c = request.env['spc.certify'].sudo().create({
+                'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft',
+                'document_names': kw.get('document_names', ''),
+                'remarks': kw.get('remarks', ''),
+            })
+            request.session['certify_draft_id'] = _c.id
+        except Exception as _e:
+            import logging; logging.getLogger(__name__).error("DRAFT CREATE ERROR [%d]: %s", 3, _e)
         return request.redirect('/spc/company-management/apply/certify-step2/' + service_type)
 
     @http.route('/spc/company-management/apply/certify-step2/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -3902,6 +4370,7 @@ class SpcPortalController(http.Controller):
             step2 = request.session.get('certify_step2_data', {}) or {}
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'document_names': step1.get('document_names', ''),
                 'remarks': step1.get('remarks', ''),
@@ -3910,8 +4379,16 @@ class SpcPortalController(http.Controller):
                 'payment_status': 'paid',
                 'fee': float(kw.get('amount', 0)) or 0.0,
             }
-            request.env['spc.certify'].sudo().create(vals)
-            for key in ['certify_step1_data', 'certify_step2_data']:
+            draft_id = request.session.get('certify_draft_id')
+            if draft_id:
+                draft = request.env['spc.certify'].sudo().browse(draft_id)
+                if draft.exists():
+                    draft.sudo().write(vals)
+                else:
+                    request.env['spc.certify'].sudo().create(vals)
+            else:
+                request.env['spc.certify'].sudo().create(vals)
+            for key in ['certify_step1_data', 'certify_step2_data', 'certify_draft_id']:
                 request.session.pop(key, None)
         except Exception as e:
             import logging
@@ -3970,6 +4447,17 @@ class SpcPortalController(http.Controller):
             'company_id': company_id,
             'company_name': company_name,
         }
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _vals = {'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft', 'company_name': company_name}
+            if company_id:
+                try: _vals['company_id'] = int(company_id)
+                except: pass
+            _va = request.env['spc.visa.allocation.amendment'].sudo().create(_vals)
+            request.session['va_draft_id'] = _va.id
+        except Exception as _e:
+            import logging; logging.getLogger(__name__).error("DRAFT CREATE ERROR [%d]: %s", 4, _e)
         return request.redirect('/spc/company-management/apply/va-step2/' + service_type)
 
     @http.route('/spc/company-management/apply/va-step2/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -4096,6 +4584,7 @@ class SpcPortalController(http.Controller):
             step5 = request.session.get('va_step5_data', {}) or {}
             vals = {
                 'customer_id': customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state': 'submitted',
                 'company_name': step1.get('company_name', ''),
                 'package_type': step2.get('package_type', ''),
@@ -4121,8 +4610,16 @@ class SpcPortalController(http.Controller):
                     vals['company_id'] = int(step2['company_id'])
                 except:
                     pass
-            request.env['spc.visa.allocation.amendment'].sudo().create(vals)
-            for key in ['va_step1_data', 'va_step2_data', 'va_step3_data', 'va_step4_data', 'va_step5_data', 'va_step6_data']:
+            draft_id = request.session.get('va_draft_id')
+            if draft_id:
+                va = request.env['spc.visa.allocation.amendment'].sudo().browse(draft_id)
+                if not va.exists():
+                    request.env['spc.visa.allocation.amendment'].sudo().create(vals)
+                else:
+                    va.sudo().write(vals)
+            else:
+                request.env['spc.visa.allocation.amendment'].sudo().create(vals)
+            for key in ['va_step1_data', 'va_step2_data', 'va_step3_data', 'va_step4_data', 'va_step5_data', 'va_step6_data', 'va_draft_id']:
                 request.session.pop(key, None)
         except Exception as e:
             import logging
@@ -4285,6 +4782,16 @@ class SpcPortalController(http.Controller):
         d['license_type'] = post.get('license_type', '')
         request.session['bl_data'] = d
         request.session.modified = True
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _bl = request.env['spc.business.license'].sudo().create({
+                'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft',
+                'license_type': post.get('license_type', ''),
+            })
+            request.session['bl_draft_id'] = _bl.id
+        except Exception as _e:
+            import logging; logging.getLogger(__name__).error("DRAFT CREATE ERROR [%d]: %s", 5, _e)
         return request.redirect('/spc/company-management/business-license/bl-step2')
 
     # ── Step 2 GET ─────────────────────────────────────────
@@ -4768,6 +5275,7 @@ class SpcPortalController(http.Controller):
 
             vals = {
                 'customer_id':              customer_id,
+                'approved_company_id': request.session.get('spc_selected_company_id'),
                 'state':                    'submitted',
                 # Package
                 'license_type':             s1.get('license_type', ''),
@@ -4822,7 +5330,15 @@ class SpcPortalController(http.Controller):
             if act_ids:
                 vals['business_activity_ids'] = [(6, 0, act_ids)]
 
-            bl_record = request.env['spc.business.license'].sudo().create(vals)
+            draft_id = request.session.get('bl_draft_id')
+            if draft_id:
+                bl_record = request.env['spc.business.license'].sudo().browse(draft_id)
+                if not bl_record.exists():
+                    bl_record = request.env['spc.business.license'].sudo().create(vals)
+                else:
+                    bl_record.sudo().write(vals)
+            else:
+                bl_record = request.env['spc.business.license'].sudo().create(vals)
             # Create structured document lines from pre-saved attachments
             _att_ids = s7.get('att_ids', [])
             if _att_ids:
@@ -4856,7 +5372,7 @@ class SpcPortalController(http.Controller):
                 bl_record.sudo().write({'document_ids': [(6, 0, att_ids)]})
             for k in ['bl_data','bl_step1_data','bl_step2_data','bl_step3_data',
                        'bl_step4_data','bl_step5_data','bl_step6_data','bl_step7_data',
-                       'bl_step8_data','bl_step9_data','bl_step10_data']:
+                       'bl_step8_data','bl_step9_data','bl_step10_data','bl_draft_id']:
                 request.session.pop(k, None)
         except Exception as e:
             import logging
@@ -4949,6 +5465,17 @@ class SpcPortalController(http.Controller):
             'remarks':               post.get('remarks', '') or post.get('general_remarks', ''),
         }
         request.session.modified = True
+        try:
+            from odoo.fields import Datetime
+            _cid = request.session.get('spc_selected_customer_id')
+            _cl = request.env['spc.corporate.letter'].sudo().create({
+                'customer_id': _cid, 'approved_company_id': request.session.get('spc_selected_company_id'), 'state': 'draft',
+                'letter_type': post.get('letter_type', ''),
+                'remarks': post.get('remarks', '') or post.get('general_remarks', ''),
+            })
+            request.session['cl_draft_id'] = _cl.id
+        except Exception as _e:
+            import logging; logging.getLogger(__name__).error("DRAFT CREATE ERROR [%d]: %s", 6, _e)
         return request.redirect('/spc/company-management/corporate-letters/step2')
 
     @http.route('/spc/company-management/corporate-letters/step2',
@@ -5044,8 +5571,16 @@ class SpcPortalController(http.Controller):
             if s1.get('vehicle_reg_data'):
                 vals['vehicle_reg_copy'] = s1.get('vehicle_reg_data')
                 vals['vehicle_reg_filename'] = s1.get('vehicle_reg_name', '')
-            cl_rec = request.env['spc.corporate.letter'].sudo().create(vals)
-            for k in ['cl_step1_data', 'cl_step2_data']:
+            draft_id = request.session.get('cl_draft_id')
+            if draft_id:
+                cl_rec = request.env['spc.corporate.letter'].sudo().browse(draft_id)
+                if not cl_rec.exists():
+                    cl_rec = request.env['spc.corporate.letter'].sudo().create(vals)
+                else:
+                    cl_rec.sudo().write(vals)
+            else:
+                cl_rec = request.env['spc.corporate.letter'].sudo().create(vals)
+            for k in ['cl_step1_data', 'cl_step2_data', 'cl_draft_id']:
                 request.session.pop(k, None)
         except Exception as e:
             import logging
@@ -5157,12 +5692,49 @@ class SpcPortalController(http.Controller):
             }
             request.session['nma_step1_data'] = data
             request.session['nma_license_type'] = license_type
+            draft_id = request.session.get('nma_draft_id')
+            if draft_id:
+                request.env['spc.nma.media.license'].sudo().browse(int(draft_id)).write({
+                    'company_name': data.get('company_name',''),
+                    'manager_first_name': data.get('manager_first_name',''),
+                    'manager_last_name': data.get('manager_last_name',''),
+                })
             return request.redirect('/spc/apply/nma_media_license/%s/step2' % license_type)
         step1_data = request.session.get('nma_step1_data', {})
         partner = request.env.user.partner_id
         companies = request.env['res.partner'].sudo().search([
             ('parent_id', '=', partner.id), ('is_company', '=', True)
         ])
+        resume_id = kw.get('resume_id')
+        if resume_id:
+            request.session['nma_draft_id'] = int(resume_id)
+            # Redirect to correct step
+            draft_rec = request.env['spc.nma.media.license'].sudo().browse(int(resume_id))
+            if draft_rec.exists() and draft_rec.current_step > 1:
+                step = draft_rec.current_step
+                if step >= 6:
+                    return request.redirect('/spc/apply/nma_media_license/%s/step6' % license_type)
+                return request.redirect('/spc/apply/nma_media_license/%s/step%d' % (license_type, step))
+        if not request.session.get('nma_draft_id'):
+            # Check existing draft in DB first
+            existing = request.env['spc.nma.media.license'].sudo().search([
+                ('partner_id', '=', partner.id),
+                ('license_type', '=', license_type),
+                ('state', '=', 'draft'),
+            ], order='id desc', limit=1)
+            if existing:
+                request.session['nma_draft_id'] = existing.id
+            else:
+                from odoo import fields as odoo_fields
+                rec = request.env['spc.nma.media.license'].sudo().create({
+                    'license_type': license_type,
+                    'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+                    'state': 'draft',
+                    'current_step': 1,
+                    'started_date': odoo_fields.Datetime.now(),
+                })
+                request.session['nma_draft_id'] = rec.id
         return request.render('spc_portal.template_nma_step1', {
             'license_type': license_type,
             'step1_data': step1_data,
@@ -5185,6 +5757,9 @@ class SpcPortalController(http.Controller):
                 'business_plan': kw.get('business_plan', ''),
             }
             request.session['nma_step2_data'] = data
+            draft_id = request.session.get('nma_draft_id')
+            if draft_id:
+                request.env['spc.nma.media.license'].sudo().browse(draft_id).write({'current_step': 3})
             return request.redirect('/spc/apply/nma_media_license/%s/step3' % license_type)
         step2_data = request.session.get('nma_step2_data', {})
         return request.render('spc_portal.template_nma_step2', {
@@ -5212,6 +5787,9 @@ class SpcPortalController(http.Controller):
                     files_data[field] = base64.b64encode(f.read()).decode('utf-8')
                     files_data[field + '_name'] = f.filename
             request.session['nma_step3_files'] = files_data
+            draft_id = request.session.get('nma_draft_id')
+            if draft_id:
+                request.env['spc.nma.media.license'].sudo().browse(draft_id).write({'current_step': 4})
             return request.redirect('/spc/apply/nma_media_license/%s/step4' % license_type)
         step3_data = request.session.get('nma_step3_data', {})
         partner = request.env.user.partner_id
@@ -5234,6 +5812,9 @@ class SpcPortalController(http.Controller):
                 'declaration_accepted': kw.get('declaration_accepted', 'off') == 'on',
             }
             request.session['nma_step4_data'] = data
+            draft_id = request.session.get('nma_draft_id')
+            if draft_id:
+                request.env['spc.nma.media.license'].sudo().browse(draft_id).write({'current_step': 5})
             return request.redirect('/spc/apply/nma_media_license/%s/step5' % license_type)
         step4_data = request.session.get('nma_step4_data', {})
         return request.render('spc_portal.template_nma_step4', {
@@ -5249,6 +5830,9 @@ class SpcPortalController(http.Controller):
         if request.httprequest.method == 'POST':
             data = {'additional_remarks': kw.get('additional_remarks', '')}
             request.session['nma_step5_data'] = data
+            draft_id = request.session.get('nma_draft_id')
+            if draft_id:
+                request.env['spc.nma.media.license'].sudo().browse(draft_id).write({'current_step': 6})
             return request.redirect('/spc/apply/nma_media_license/%s/step6' % license_type)
         step5_data = request.session.get('nma_step5_data', {})
         return request.render('spc_portal.template_nma_step5', {
@@ -5294,6 +5878,7 @@ class SpcPortalController(http.Controller):
         vals = {
             'license_type': license_type,
             'partner_id': request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'submitted',
             'submission_date': odoo_fields.Datetime.now(),
             'company_name': step1.get('company_name', ''),
@@ -5338,7 +5923,16 @@ class SpcPortalController(http.Controller):
                 vals[f] = step3_files[f]
             if step3_files.get(f + '_name'):
                 vals[f + '_name'] = step3_files[f + '_name']
-        record = request.env['spc.nma.media.license'].sudo().create(vals)
+        draft_id = request.session.pop('nma_draft_id', None)
+        if draft_id:
+            rec = request.env['spc.nma.media.license'].sudo().browse(draft_id)
+            if rec.exists():
+                rec.write(vals)
+                record = rec
+            else:
+                record = request.env['spc.nma.media.license'].sudo().create(vals)
+        else:
+            record = request.env['spc.nma.media.license'].sudo().create(vals)
         for key in ['nma_step1_data', 'nma_step2_data', 'nma_step3_data',
                     'nma_step3_files', 'nma_step4_data', 'nma_step5_data',
                     'nma_license_type']:
@@ -5414,6 +6008,23 @@ class SpcPortalController(http.Controller):
             request.session['nma_permit_step1'] = data
             return request.redirect('/spc/apply/nma_permit/step2')
         step1_data = request.session.get('nma_permit_step1', {})
+        if not request.session.get('nma_permit_draft_id'):
+            _partner_id = request.env.user.partner_id.id
+            existing = request.env['spc.nma.permit'].sudo().search([
+                ('partner_id', '=', _partner_id),
+                ('state', '=', 'draft'),
+            ], order='id desc', limit=1)
+            if existing:
+                request.session['nma_permit_draft_id'] = existing.id
+            else:
+                from odoo import fields as odoo_fields
+                rec = request.env['spc.nma.permit'].sudo().create({
+                    'partner_id': _partner_id,
+                    'approved_company_id': request.session.get('spc_selected_company_id'),
+                    'state': 'draft', 'current_step': 1,
+                    'started_date': odoo_fields.Datetime.now(),
+                })
+                request.session['nma_permit_draft_id'] = rec.id
         return request.render('spc_portal.template_nma_permit_step1', {
             'step1_data': step1_data,
         })
@@ -5480,6 +6091,7 @@ class SpcPortalController(http.Controller):
         step3 = request.session.get('nma_permit_step3', {})
         vals = {
             'partner_id': request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'submitted',
             'submission_date': odoo_fields.Datetime.now(),
             'permit_type': step1.get('permit_type', '') or False,
@@ -5515,7 +6127,16 @@ class SpcPortalController(http.Controller):
                 vals[f] = step2_files[f]
             if step2_files.get(f + '_name'):
                 vals[f + '_name'] = step2_files[f + '_name']
-        record = request.env['spc.nma.permit'].sudo().create(vals)
+        draft_id = request.session.pop('nma_permit_draft_id', None)
+        if draft_id:
+            rec = request.env['spc.nma.permit'].sudo().browse(draft_id)
+            if rec.exists():
+                rec.write(vals)
+                record = rec
+            else:
+                record = request.env['spc.nma.permit'].sudo().create(vals)
+        else:
+            record = request.env['spc.nma.permit'].sudo().create(vals)
         for key in ['nma_permit_step1', 'nma_permit_step2_files', 'nma_permit_step3']:
             request.session.pop(key, None)
         return request.render('spc_portal.template_nma_permit_success', {
@@ -5554,6 +6175,23 @@ class SpcPortalController(http.Controller):
             request.session['el_step1'] = data
             return request.redirect('/spc/apply/employee_list/step2')
         step1 = request.session.get('el_step1', {})
+        if not request.session.get('el_draft_id'):
+            _partner_id = request.env.user.partner_id.id
+            existing = request.env['spc.employee.list'].sudo().search([
+                ('partner_id', '=', _partner_id),
+                ('state', '=', 'draft'),
+            ], order='id desc', limit=1)
+            if existing:
+                request.session['el_draft_id'] = existing.id
+            else:
+                from odoo import fields as odoo_fields
+                rec = request.env['spc.employee.list'].sudo().create({
+                    'partner_id': _partner_id,
+                    'approved_company_id': request.session.get('spc_selected_company_id'),
+                    'state': 'draft', 'current_step': 1,
+                    'started_date': odoo_fields.Datetime.now(),
+                })
+                request.session['el_draft_id'] = rec.id
         return request.render('spc_portal.template_el_step1', {
             'step1': step1,
         })
@@ -5583,12 +6221,22 @@ class SpcPortalController(http.Controller):
         step1 = request.session.get('el_step1', {})
         vals = {
             'partner_id': request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'submitted',
             'submission_date': odoo_fields.Datetime.now(),
             'declaration_accepted': step1.get('declaration_accepted', False),
             'total_amount': 385.0,
         }
-        record = request.env['spc.employee.list'].sudo().create(vals)
+        draft_id = request.session.pop('el_draft_id', None)
+        if draft_id:
+            rec = request.env['spc.employee.list'].sudo().browse(draft_id)
+            if rec.exists():
+                rec.write(vals)
+                record = rec
+            else:
+                record = request.env['spc.employee.list'].sudo().create(vals)
+        else:
+            record = request.env['spc.employee.list'].sudo().create(vals)
         request.session.pop('el_step1', None)
         return request.render('spc_portal.template_el_success', {
             'record': record,
@@ -5651,6 +6299,7 @@ class SpcPortalController(http.Controller):
         step1 = request.session.get('el_step1', {})
         vals = {
             'partner_id': request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'submitted',
             'submission_date': odoo_fields.Datetime.now(),
             'declaration_accepted': step1.get('declaration_accepted', False),
@@ -5667,7 +6316,28 @@ class SpcPortalController(http.Controller):
     def employee_management(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_employee_management', {})
+        customer_id = request.session.get('spc_selected_customer_id')
+        company_id = request.session.get('spc_selected_company_id')
+        customer = None
+        selected_company = None
+        all_companies = []
+        if customer_id:
+            rec = request.env['res.partner'].sudo().browse(customer_id)
+            if rec.exists():
+                customer = rec
+            all_companies = request.env['spc.approved.company'].sudo().search([
+                ('partner_id', '=', customer_id), ('active', '=', True),
+            ], order='company_name asc')
+        if company_id:
+            comp = request.env['spc.approved.company'].sudo().browse(company_id)
+            if comp.exists():
+                selected_company = comp
+        return request.render('spc_portal.template_employee_management', {
+            'customer': customer,
+            'company_name': selected_company.company_name if selected_company else '',
+            'all_companies': all_companies,
+            'selected_company_id': company_id,
+        })
 
     @http.route('/spc/employee-management/service/<string:service_type>', type='http', auth='public', website=True, csrf=False)
     def employee_management_service(self, service_type, **kw):
@@ -5687,7 +6357,28 @@ class SpcPortalController(http.Controller):
     def facility_management(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_facility_management', {})
+        customer_id = request.session.get('spc_selected_customer_id')
+        company_id = request.session.get('spc_selected_company_id')
+        customer = None
+        selected_company = None
+        all_companies = []
+        if customer_id:
+            rec = request.env['res.partner'].sudo().browse(customer_id)
+            if rec.exists():
+                customer = rec
+            all_companies = request.env['spc.approved.company'].sudo().search([
+                ('partner_id', '=', customer_id), ('active', '=', True),
+            ], order='company_name asc')
+        if company_id:
+            comp = request.env['spc.approved.company'].sudo().browse(company_id)
+            if comp.exists():
+                selected_company = comp
+        return request.render('spc_portal.template_facility_management', {
+            'customer': customer,
+            'company_name': selected_company.company_name if selected_company else '',
+            'all_companies': all_companies,
+            'selected_company_id': company_id,
+        })
 
     @http.route('/spc/facility-management/service/<string:service_type>', type='http', auth='public', website=True, csrf=False)
     def facility_management_service(self, service_type, **kw):
@@ -5725,6 +6416,23 @@ class SpcPortalController(http.Controller):
                     'doc_image_name': f.filename,
                 }
             return request.redirect('/spc/facility-management/step2')
+        if not request.session.get('fm_draft_id'):
+            _partner_id = request.env.user.partner_id.id
+            existing = request.env['spc.facility.management'].sudo().search([
+                ('partner_id', '=', _partner_id),
+                ('state', '=', 'draft'),
+            ], order='id desc', limit=1)
+            if existing:
+                request.session['fm_draft_id'] = existing.id
+            else:
+                from odoo import fields as odoo_fields
+                rec = request.env['spc.facility.management'].sudo().create({
+                    'partner_id': _partner_id,
+                    'approved_company_id': request.session.get('spc_selected_company_id'),
+                    'state': 'draft', 'current_step': 1,
+                    'started_date': odoo_fields.Datetime.now(),
+                })
+                request.session['fm_draft_id'] = rec.id
         return request.render('spc_portal.template_fm_step1', {
             'step1': request.session.get('fm_step1', {}),
         })
@@ -5736,7 +6444,28 @@ class SpcPortalController(http.Controller):
     def concierge_services(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_concierge_services', {})
+        customer_id = request.session.get('spc_selected_customer_id')
+        company_id = request.session.get('spc_selected_company_id')
+        customer = None
+        selected_company = None
+        all_companies = []
+        if customer_id:
+            rec = request.env['res.partner'].sudo().browse(customer_id)
+            if rec.exists():
+                customer = rec
+            all_companies = request.env['spc.approved.company'].sudo().search([
+                ('partner_id', '=', customer_id), ('active', '=', True),
+            ], order='company_name asc')
+        if company_id:
+            comp = request.env['spc.approved.company'].sudo().browse(company_id)
+            if comp.exists():
+                selected_company = comp
+        return request.render('spc_portal.template_concierge_services', {
+            'customer': customer,
+            'company_name': selected_company.company_name if selected_company else '',
+            'all_companies': all_companies,
+            'selected_company_id': company_id,
+        })
 
     @http.route('/spc/concierge-services/service/<string:service_type>', type='http', auth='public', website=True, csrf=False)
     def concierge_service_detail(self, service_type, **kw):
@@ -6053,6 +6782,35 @@ Important Notes:
             'step1': request.session.get('fm_step1', {}),
         })
 
+    @http.route('/spc/facility-management/save-exit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    def fm_save_exit(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        import base64
+        step = kw.get('current_step', '1')
+        if step == '1':
+            data = {
+                'complaint_category': kw.get('complaint_category', ''),
+                'incident_type': kw.get('incident_type', ''),
+                'office_number': kw.get('office_number', ''),
+                'contact_name': kw.get('contact_name', ''),
+                'contact_number': kw.get('contact_number', ''),
+                'complaint_description': kw.get('complaint_description', ''),
+            }
+            request.session['fm_step1'] = data
+            f = request.httprequest.files.get('doc_image')
+            if f and f.filename:
+                request.session['fm_step1_files'] = {
+                    'doc_image': base64.b64encode(f.read()).decode('utf-8'),
+                    'doc_image_name': f.filename,
+                }
+        elif step == '2':
+            request.session['fm_step2'] = {
+                'declaration_accepted': kw.get('declaration_accepted', 'off') == 'on',
+            }
+        request.session.modified = True
+        return request.redirect('/spc/facility-management')
+
     @http.route('/spc/facility-management/step2',
                 type='http', auth='public', website=True, methods=['GET', 'POST'])
     def fm_step2(self, **kw):
@@ -6093,6 +6851,7 @@ Important Notes:
         step2 = request.session.get('fm_step2', {})
         vals = {
             'partner_id': request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'submitted',
             'submission_date': odoo_fields.Datetime.now(),
             'complaint_category': step1.get('complaint_category', '') or False,
@@ -6108,7 +6867,16 @@ Important Notes:
             vals['doc_image'] = step1_files['doc_image']
         if step1_files.get('doc_image_name'):
             vals['doc_image_name'] = step1_files['doc_image_name']
-        record = request.env['spc.facility.management'].sudo().create(vals)
+        draft_id = request.session.pop('fm_draft_id', None)
+        if draft_id:
+            rec = request.env['spc.facility.management'].sudo().browse(draft_id)
+            if rec.exists():
+                rec.write(vals)
+                record = rec
+            else:
+                record = request.env['spc.facility.management'].sudo().create(vals)
+        else:
+            record = request.env['spc.facility.management'].sudo().create(vals)
         for key in ['fm_step1', 'fm_step1_files', 'fm_step2']:
             request.session.pop(key, None)
         return request.render('spc_portal.template_fm_success', {'record': record})
@@ -6123,6 +6891,39 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         return request.render('spc_portal.template_cos_main', {})
+
+    @http.route('/spc/employee-management/change-of-status/save-exit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    def cos_save_exit(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        import base64
+        step = kw.get('current_step', '1')
+        if step == '1':
+            data = {
+                'applicant_name': kw.get('applicant_name', ''),
+                'visa_status': kw.get('visa_status', ''),
+                'remarks': kw.get('remarks', ''),
+            }
+            request.session['cos_step1'] = data
+            files_data = {}
+            for field in ['doc_cancelled_visa', 'doc_valid_visa']:
+                f = request.httprequest.files.get(field)
+                if f and f.filename:
+                    files_data[field] = base64.b64encode(f.read()).decode('utf-8')
+                    files_data[field + '_name'] = f.filename
+            if files_data:
+                request.session['cos_step1_files'] = files_data
+        elif step == '2':
+            request.session['cos_step2'] = {
+                'first_name': kw.get('first_name', ''),
+                'last_name': kw.get('last_name', ''),
+            }
+        elif step == '3':
+            request.session['cos_step3'] = {
+                'declaration_accepted': kw.get('declaration_accepted', 'off') == 'on',
+            }
+        request.session.modified = True
+        return request.redirect('/spc/employee-management')
 
     @http.route('/spc/apply/change_of_status/step1',
                 type='http', auth='public', website=True, methods=['GET', 'POST'])
@@ -6146,6 +6947,23 @@ Important Notes:
             request.session['cos_step1_files'] = files_data
             return request.redirect('/spc/apply/change_of_status/step2')
         step1 = request.session.get('cos_step1', {})
+        if not request.session.get('cos_draft_id'):
+            _partner_id = request.session.get('spc_selected_customer_id') or request.env.user.partner_id.id
+            existing = request.env['spc.change.of.status'].sudo().search([
+                ('partner_id', '=', _partner_id),
+                ('state', '=', 'draft'),
+            ], order='id desc', limit=1)
+            if existing:
+                request.session['cos_draft_id'] = existing.id
+            else:
+                from odoo import fields as odoo_fields
+                rec = request.env['spc.change.of.status'].sudo().create({
+                    'partner_id': _partner_id,
+                    'approved_company_id': request.session.get('spc_selected_company_id'),
+                    'state': 'draft', 'current_step': 1,
+                    'started_date': odoo_fields.Datetime.now(),
+                })
+                request.session['cos_draft_id'] = rec.id
         applicants = request.env['res.partner'].sudo().search([
             ('parent_id', '=', request.env.user.partner_id.id)
         ])
@@ -6223,8 +7041,10 @@ Important Notes:
         step1_files = request.session.get('cos_step1_files', {})
         step2 = request.session.get('cos_step2', {})
         step3 = request.session.get('cos_step3', {})
+        _cos_customer_id = request.session.get('spc_selected_customer_id')
         vals = {
-            'partner_id': request.env.user.partner_id.id,
+            'partner_id': _cos_customer_id or request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'submitted',
             'submission_date': odoo_fields.Datetime.now(),
             'applicant_name': step1.get('applicant_name', ''),
@@ -6240,7 +7060,16 @@ Important Notes:
                 vals[f] = step1_files[f]
             if step1_files.get(f + '_name'):
                 vals[f + '_name'] = step1_files[f + '_name']
-        record = request.env['spc.change.of.status'].sudo().create(vals)
+        draft_id = request.session.pop('cos_draft_id', None)
+        if draft_id:
+            rec = request.env['spc.change.of.status'].sudo().browse(draft_id)
+            if rec.exists():
+                rec.write(vals)
+                record = rec
+            else:
+                record = request.env['spc.change.of.status'].sudo().create(vals)
+        else:
+            record = request.env['spc.change.of.status'].sudo().create(vals)
         for key in ['cos_step1', 'cos_step1_files', 'cos_step2', 'cos_step3']:
             request.session.pop(key, None)
         return request.render('spc_portal.template_cos_success', {'record': record})
@@ -6248,6 +7077,29 @@ Important Notes:
     # ══════════════════════════════════════════════════
     # DEDICATED ACCOUNT MANAGER
     # ══════════════════════════════════════════════════
+
+    @http.route('/spc/apply/dam/save-exit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    def dam_save_exit(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        step = kw.get('current_step', '1')
+        if step == '1':
+            request.session['dam_step1'] = {
+                'is_existing_stakeholder': kw.get('is_existing_stakeholder', ''),
+                'employee_list': kw.get('employee_list', ''),
+                'first_name': kw.get('first_name', ''),
+                'last_name': kw.get('last_name', ''),
+                'contact_number': kw.get('contact_number', ''),
+                'email': kw.get('email', ''),
+                'designation': kw.get('designation', ''),
+                'language_preference': kw.get('language_preference', ''),
+            }
+        elif step == '2':
+            request.session['dam_step2'] = {'number_of_stakeholders': kw.get('number_of_stakeholders', '')}
+        elif step == '3':
+            request.session['dam_step3'] = {'number_of_years': kw.get('number_of_years', '')}
+        request.session.modified = True
+        return request.redirect('/spc/concierge-services')
 
     @http.route('/spc/apply/dam/step1',
                 type='http', auth='public', website=True, methods=['GET', 'POST'])
@@ -6266,6 +7118,23 @@ Important Notes:
                 'language_preference': kw.get('language_preference', ''),
             }
             return request.redirect('/spc/apply/dam/step2')
+        if not request.session.get('dam_draft_id'):
+            _partner_id = request.env.user.partner_id.id
+            existing = request.env['spc.dedicated.account.manager'].sudo().search([
+                ('partner_id', '=', _partner_id),
+                ('state', '=', 'draft'),
+            ], order='id desc', limit=1)
+            if existing:
+                request.session['dam_draft_id'] = existing.id
+            else:
+                from odoo import fields as odoo_fields
+                rec = request.env['spc.dedicated.account.manager'].sudo().create({
+                    'partner_id': _partner_id,
+                    'approved_company_id': request.session.get('spc_selected_company_id'),
+                    'state': 'draft', 'current_step': 1,
+                    'started_date': odoo_fields.Datetime.now(),
+                })
+                request.session['dam_draft_id'] = rec.id
         return request.render('spc_portal.template_dam_step1', {
             'step1': request.session.get('dam_step1', {}),
         })
@@ -6327,6 +7196,7 @@ Important Notes:
         step3 = request.session.get('dam_step3', {})
         vals = {
             'partner_id': request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'submitted',
             'submission_date': odoo_fields.Datetime.now(),
             'is_existing_stakeholder': step1.get('is_existing_stakeholder', '') or False,
@@ -6341,7 +7211,16 @@ Important Notes:
             'number_of_years': step3.get('number_of_years', '') or False,
             'total_amount': 3000.0,
         }
-        record = request.env['spc.dedicated.account.manager'].sudo().create(vals)
+        draft_id = request.session.pop('dam_draft_id', None)
+        if draft_id:
+            rec = request.env['spc.dedicated.account.manager'].sudo().browse(draft_id)
+            if rec.exists():
+                rec.write(vals)
+                record = rec
+            else:
+                record = request.env['spc.dedicated.account.manager'].sudo().create(vals)
+        else:
+            record = request.env['spc.dedicated.account.manager'].sudo().create(vals)
         for key in ['dam_step1', 'dam_step2', 'dam_step3']:
             request.session.pop(key, None)
         return request.render('spc_portal.template_dam_success', {'record': record})
@@ -6397,6 +7276,8 @@ Important Notes:
         partner = request.env.user.partner_id
         record = request.env['spc.eid.replacement'].sudo().create({
             'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+            'started_date': __import__('odoo').fields.Datetime.now(),
             'visa_type': visa_type,
             'state': 'draft',
         })
@@ -6622,6 +7503,8 @@ Important Notes:
         partner = request.env.user.partner_id
         record = request.env['spc.reentry.permit'].sudo().create({
             'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+            'started_date': __import__('odoo').fields.Datetime.now(),
             'applicant_name': kwargs.get('applicant_name',''),
             'first_name': kwargs.get('first_name',''),
             'last_name': kwargs.get('last_name',''),
@@ -6743,6 +7626,8 @@ Important Notes:
         partner = request.env.user.partner_id
         record = request.env['spc.lease.document'].sudo().create({
             'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+            'started_date': __import__('odoo').fields.Datetime.now(),
             'lease_type': kwargs.get('lease_type', 'new'),
             'company_name': kwargs.get('company_name', ''),
             'manager_first_name': kwargs.get('manager_first_name', ''),
@@ -6858,6 +7743,8 @@ Important Notes:
         partner = request.env.user.partner_id
         record = request.env['spc.medical'].sudo().create({
             'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+            'started_date': __import__('odoo').fields.Datetime.now(),
             'medical_type': kwargs.get('medical_type', 'new_residency'),
             'applicant_name': kwargs.get('applicant_name', ''),
             'visa_type': kwargs.get('visa_type', ''),
@@ -6941,6 +7828,8 @@ Important Notes:
         partner = request.env.user.partner_id
         record = request.env['spc.meeting.room'].sudo().create({
             'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+            'started_date': __import__('odoo').fields.Datetime.now(),
             'booking_date': kwargs.get('booking_date') or False,
             'booking_start_time': kwargs.get('booking_start_time', ''),
             'meeting_duration': kwargs.get('meeting_duration', ''),
@@ -6999,6 +7888,8 @@ Important Notes:
         inv_count = _int(kwargs.get('invoice_doc_count', 0))
         record = request.env['spc.mofa'].sudo().create({
             'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+            'started_date': __import__('odoo').fields.Datetime.now(),
             'doc_type_individual': kwargs.get('doc_type_individual') == '1',
             'doc_type_commercial': kwargs.get('doc_type_commercial') == '1',
             'doc_type_invoice': kwargs.get('doc_type_invoice') == '1',
@@ -7089,13 +7980,16 @@ Important Notes:
         partner = request.env.user.partner_id
         account_type = kwargs.get('account_type', '')
         amount = 2000.0 if account_type == 'corporate' else 1000.0
+        from odoo import fields as odoo_fields
         record = request.env['spc.banking.assistance'].sudo().create({
             'partner_id': partner.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'banking_type': kwargs.get('banking_type', 'new'),
             'account_type': account_type,
             'preferred_bank': kwargs.get('preferred_bank', ''),
             'amount': amount,
             'state': 'draft',
+            'started_date': odoo_fields.Datetime.now(),
         })
         if account_type == 'corporate':
             return request.redirect('/spc/apply/banking/corp/step1/%d' % record.id)
@@ -7178,7 +8072,8 @@ Important Notes:
             partner = request.env.user.partner_id
             co_list = request.env['spc.license.reissue'].sudo().search([('partner_id','=',partner.id)], limit=10)
             companies = [{'name': c.company_name} for c in co_list if c.company_name]
-        except Exception: pass
+        except Exception as _e:
+            import logging; logging.getLogger(__name__).error("DRAFT CREATE ERROR [%d]: %s", 7, _e)
         return request.render('spc_portal.banking_step1_corp', {'record': record, 'companies': companies})
 
     @http.route('/spc/apply/banking/corp/step1/submit', type='http', auth='user', website=True, methods=['POST'])
@@ -7270,6 +8165,7 @@ Important Notes:
     def banking_old_start(self, **kwargs):
         record = request.env['spc.banking.assistance'].sudo().create({
             'partner_id': request.env.user.partner_id.id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'banking_type': 'old',
             'amount': 2010.0,
         })
@@ -7402,6 +8298,7 @@ Important Notes:
         partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'applicant_select': kw.get('applicant_select',''),
             'first_name': kw.get('first_name',''),
             'last_name': kw.get('last_name',''),
@@ -7476,6 +8373,7 @@ Important Notes:
         partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'license_number': kw.get('license_number',''),
             'company_name': kw.get('company_name',''),
             'remarks': kw.get('remarks',''),
@@ -7539,6 +8437,7 @@ Important Notes:
         partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'sponsor_has_spc_visa': kw.get('sponsor_has_spc_visa',''),
             'sponsor_type': kw.get('sponsor_type',''),
             'sponsor_gender': kw.get('sponsor_gender',''),
@@ -7775,6 +8674,7 @@ Important Notes:
         }
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'license_type': dl_type,
             'first_name': first_name,
             'last_name': last_name,
@@ -7786,8 +8686,13 @@ Important Notes:
             'license_country': kw.get('license_country',''),
             'country_in_transfer_list': kw.get('country_in_transfer_list',''),
             'amount': fee_map.get(dl_type, 0),
+            'partner_id': request.session.get('spc_selected_customer_id'),
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'state': 'draft',
         }
+        from odoo import fields as odoo_fields
+        if 'started_date' not in vals:
+            vals['started_date'] = odoo_fields.Datetime.now()
         record = request.env['spc.driving.license'].sudo().create(vals)
         for fname, fkey in [
             ('doc_passport','passport'),('doc_emirates_id','emirates_id'),
@@ -7956,6 +8861,7 @@ Important Notes:
         partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'company_brand_name': kw.get('company_brand_name', ''),
             'contact_first_name': kw.get('contact_first_name', ''),
             'contact_last_name': kw.get('contact_last_name', ''),
@@ -7971,6 +8877,9 @@ Important Notes:
             'amount': 10.0,
             'state': 'draft',
         }
+        from odoo import fields as odoo_fields
+        if 'started_date' not in vals:
+            vals['started_date'] = odoo_fields.Datetime.now()
         record = request.env['spc.phone.answering'].sudo().create(vals)
         return request.redirect('/spc/concierge/phone-answering/step2/%d' % record.id)
 
@@ -8062,6 +8971,7 @@ Important Notes:
         fee_map = {'light': 1500.0, 'bronze': 3000.0}
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'service_type': kw.get('service_type', 'new'),
             'package_type': package,
             'prev_pobox_number': kw.get('prev_pobox_number', ''),
@@ -8074,6 +8984,9 @@ Important Notes:
             'amount': fee_map.get(package, 1500.0),
             'state': 'draft',
         }
+        from odoo import fields as odoo_fields
+        if 'started_date' not in vals:
+            vals['started_date'] = odoo_fields.Datetime.now()
         record = request.env['spc.po.box'].sudo().create(vals)
         return request.redirect('/spc/concierge/po-box/declaration/%d' % record.id)
 
@@ -8139,6 +9052,7 @@ Important Notes:
 
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'first_name': kw.get('first_name', ''),
             'last_name': kw.get('last_name', ''),
             'passport_number': kw.get('passport_number', ''),
@@ -8155,6 +9069,9 @@ Important Notes:
         if passport_data:
             vals['passport_copy'] = passport_data
             vals['passport_copy_filename'] = passport_fname
+        from odoo import fields as odoo_fields
+        if 'started_date' not in vals:
+            vals['started_date'] = odoo_fields.Datetime.now()
         record = request.env['spc.movement.report'].sudo().create(vals)
         return request.redirect('/spc/employee-management/movement-report/declaration/%d' % record.id)
 
@@ -8191,6 +9108,158 @@ Important Notes:
         record = request.env['spc.movement.report'].sudo().browse(record_id)
         return request.render('spc_portal.movement_report_payment', {'record': record})
 
+
+
+
+    # ══════════════════════════════════════════════════
+    # GENERIC TRACKING DETAIL
+    # ══════════════════════════════════════════════════
+    @http.route('/spc/request-tracking/detail/<string:model_key>/<int:record_id>', type='http', auth='public', website=True, csrf=False)
+    def tracking_detail_generic(self, model_key, record_id, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        model_name = model_key.replace('_', '.', model_key.count('_') - model_key.replace('spc_','').count('_'))
+        # Convert model_key back to model name: spc_license_reissue -> spc.license.reissue
+        model_name = model_key.replace('_', '.', 1)
+        # Actually replace all underscores after spc
+        parts = model_key.split('_')
+        model_name = parts[0] + '.' + '.'.join(parts[1:])
+        try:
+            record = request.env[model_name].sudo().browse(record_id)
+            if not record.exists():
+                return request.redirect('/spc/request-tracking')
+            return request.render('spc_portal.tracking_detail_generic', {
+                'record': record,
+                'model_name': model_name,
+                'getattr': getattr,
+            })
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error('tracking_detail_generic error: %s', e, exc_info=True)
+            return request.redirect('/spc/request-tracking')
+
+    # ══════════════════════════════════════════════════
+    # LR TRACKING DETAIL
+    # ══════════════════════════════════════════════════
+    @http.route('/spc/request-tracking/lr-detail/<int:record_id>', type='http', auth='public', website=True, csrf=False)
+    def lr_tracking_detail(self, record_id, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        record = request.env['spc.license.reissue'].sudo().browse(record_id)
+        if not record.exists():
+            return request.redirect('/spc/request-tracking')
+        return request.render('spc_portal.lr_tracking_detail', {'record': record, 'getattr': getattr})
+
+    # ══════════════════════════════════════════════════
+    # UID MERGING
+    # ══════════════════════════════════════════════════
+    @http.route('/spc/employee-management/uid-merging/detail', type='http', auth='public', website=True, csrf=False)
+    def uid_merging_detail(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        return request.render('spc_portal.uid_merging_detail', {})
+
+    @http.route('/spc/employee-management/uid-merging/step1', type='http', auth='public', website=True, csrf=False)
+    def uid_merging_step1(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
+        partners = []
+        if partner_id:
+            partners = request.env['res.partner'].sudo().browse(partner_id).child_ids
+        return request.render('spc_portal.uid_merging_step1', {'partners': partners})
+
+    @http.route('/spc/employee-management/uid-merging/step1/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
+    def uid_merging_step1_submit(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
+        import base64
+        passport_file = request.httprequest.files.get('passport_copy')
+        passport_data = False
+        passport_fname = False
+        if passport_file and passport_file.filename:
+            passport_data = base64.b64encode(passport_file.read())
+            passport_fname = passport_file.filename
+        visa_doc = request.httprequest.files.get('visa_cancellation_doc')
+        visa_data = False
+        visa_fname = False
+        if visa_doc and visa_doc.filename:
+            visa_data = base64.b64encode(visa_doc.read())
+            visa_fname = visa_doc.filename
+        from odoo import fields as odoo_fields
+        employee_id = kw.get('employee_id', '')
+        vals = {
+            'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
+            'first_name': kw.get('first_name', ''),
+            'last_name': kw.get('last_name', ''),
+            'contact_number': kw.get('contact_number', ''),
+            'phone_code': kw.get('phone_code', '+971'),
+            'email': kw.get('email', ''),
+            'date_of_birth': kw.get('date_of_birth') or False,
+            'visa_application_number': kw.get('visa_application_number', ''),
+            'comments': kw.get('comments', ''),
+            'manual_employee_name': kw.get('manual_employee_name', ''),
+            'amount': 400.0,
+            'state': 'draft',
+            'started_date': odoo_fields.Datetime.now(),
+        }
+        if employee_id and str(employee_id).isdigit():
+            vals['employee_id'] = int(employee_id)
+        if passport_data:
+            vals['passport_copy'] = passport_data
+            vals['passport_copy_filename'] = passport_fname
+        if visa_data:
+            vals['visa_cancellation_doc'] = visa_data
+            vals['visa_cancellation_doc_filename'] = visa_fname
+        vals['approved_company_id'] = request.session.get('spc_selected_company_id')
+        record = request.env['spc.uid.merging'].sudo().create(vals)
+        return request.redirect('/spc/employee-management/uid-merging/declaration/%d' % record.id)
+
+    @http.route('/spc/employee-management/uid-merging/declaration/<int:record_id>', type='http', auth='public', website=True, csrf=False)
+    def uid_merging_declaration(self, record_id, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        record = request.env['spc.uid.merging'].sudo().browse(record_id)
+        return request.render('spc_portal.uid_merging_declaration', {'record': record})
+
+    @http.route('/spc/employee-management/uid-merging/declaration/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
+    def uid_merging_declaration_submit(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        record_id = int(kw.get('record_id', 0))
+        record = request.env['spc.uid.merging'].sudo().browse(record_id)
+        record.sudo().write({'declaration_accepted': kw.get('terms_agreed') == 'yes'})
+        return request.redirect('/spc/employee-management/uid-merging/review/%d' % record.id)
+
+    @http.route('/spc/employee-management/uid-merging/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)
+    def uid_merging_review(self, record_id, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        record = request.env['spc.uid.merging'].sudo().browse(record_id)
+        return request.render('spc_portal.uid_merging_review', {'record': record})
+
+    @http.route('/spc/employee-management/uid-merging/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
+    def uid_merging_payment(self, record_id, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        record = request.env['spc.uid.merging'].sudo().browse(record_id)
+        return request.render('spc_portal.uid_merging_payment', {'record': record})
+
+    @http.route('/spc/employee-management/uid-merging/payment/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
+    def uid_merging_payment_submit(self, **kw):
+        if not self._check_spc_session():
+            return request.redirect('/spc/login')
+        record_id = int(kw.get('record_id', 0))
+        record = request.env['spc.uid.merging'].sudo().browse(record_id)
+        record.sudo().write({
+            'state': 'submitted',
+            'payment_method': kw.get('payment_method', ''),
+            'payment_status': 'paid',
+        })
+        return request.redirect('/spc/company-management/apply/success/uid_merging')
+
     # ══════════════════════════════════════════════════
     # EID APPOINTMENT
     # ══════════════════════════════════════════════════
@@ -8226,6 +9295,7 @@ Important Notes:
         partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
         vals = {
             'partner_id': partner_id,
+            'approved_company_id': request.session.get('spc_selected_company_id'),
             'applicant_type': kw.get('applicant_type', ''),
             'first_name': kw.get('first_name', ''),
             'last_name': kw.get('last_name', ''),
@@ -8246,6 +9316,9 @@ Important Notes:
         if inv_id and inv_id.isdigit(): vals['investor_profile_id'] = int(inv_id)
         if par_id and par_id.isdigit(): vals['partner_profile_id'] = int(par_id)
         if stu_id and stu_id.isdigit(): vals['student_profile_id'] = int(stu_id)
+        from odoo import fields as odoo_fields
+        if 'started_date' not in vals:
+            vals['started_date'] = odoo_fields.Datetime.now()
         record = request.env['spc.eid.appointment'].sudo().create(vals)
         return request.redirect('/spc/employee-management/eid-appointment/declaration/%d' % record.id)
 
@@ -8281,3 +9354,34 @@ Important Notes:
             return request.redirect('/spc/login')
         record = request.env['spc.eid.appointment'].sudo().browse(record_id)
         return request.render('spc_portal.eid_appointment_payment', {'record': record})
+
+    @http.route('/spc/notifications', type='json', auth='public', website=True, csrf=False)
+    def get_notifications(self, **kw):
+        if not self._check_spc_session():
+            return {'notifications': [], 'unread_count': 0}
+        partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
+        company_id = request.session.get('spc_selected_company_id')
+        if not partner_id or not company_id:
+            return {'notifications': [], 'unread_count': 0}
+        notifications = request.env['spc.notification'].sudo().search([
+            ('partner_id', '=', partner_id),
+            ('approved_company_id', '=', company_id),
+        ], order='create_date desc', limit=20)
+        result = []
+        for n in notifications:
+            result.append({
+                'id': n.id,
+                'message': n.message,
+                'is_read': n.is_read,
+                'date': n.create_date.strftime('%d %b %Y, %I:%M %p') if n.create_date else '',
+            })
+        unread = len([n for n in result if not n['is_read']])
+        return {'notifications': result, 'unread_count': unread}
+
+    @http.route('/spc/notifications/mark-read', type='json', auth='public', website=True, csrf=False)
+    def mark_notifications_read(self, notification_ids=None, **kw):
+        if not self._check_spc_session():
+            return {'success': False}
+        if notification_ids:
+            request.env['spc.notification'].sudo().browse(notification_ids).write({'is_read': True})
+        return {'success': True}

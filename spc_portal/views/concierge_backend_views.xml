@@ -33,8 +33,18 @@
         <field name="arch" type="xml">
             <form string="Dedicated Account Manager">
                 <header>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','in_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,under_review,approved"/>
+                           statusbar_visible="draft,submitted,under_review,approved,documents_approved,payment_approved,under_process,completed"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -157,8 +167,20 @@
         <field name="arch" type="xml">
             <form string="VIP Medical and EID">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
@@ -252,10 +274,21 @@
         <field name="arch" type="xml">
             <form string="Company Stamp">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','in_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
                 </header>
                 <sheet>
@@ -335,10 +368,21 @@
         <field name="arch" type="xml">
             <form string="Dependent Visa">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','in_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
                 </header>
                 <sheet>
@@ -477,10 +521,21 @@
         <field name="arch" type="xml">
             <form string="Document Delivery">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
                 </header>
                 <sheet>
@@ -582,10 +637,21 @@
         <field name="arch" type="xml">
             <form string="Phone Answering">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','in_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
                 </header>
                 <sheet>
@@ -695,10 +761,21 @@
         <field name="arch" type="xml">
             <form string="PO Box">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','in_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
                 </header>
                 <sheet>
@@ -791,10 +868,21 @@
         <field name="arch" type="xml">
             <form string="Movement Report">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
                 </header>
                 <sheet>
@@ -861,6 +949,119 @@
               action="action_spc_movement_report"
               sequence="1"/>
 
+
+    <!-- UID MERGING BACKEND -->
+    <record id="view_spc_uid_merging_tree" model="ir.ui.view">
+        <field name="name">spc.uid.merging.tree</field>
+        <field name="model">spc.uid.merging</field>
+        <field name="arch" type="xml">
+            <tree string="UID Merging"
+                  decoration-info="state=='draft'"
+                  decoration-warning="state=='submitted'"
+                  decoration-success="state=='approved'"
+                  decoration-danger="state=='rejected'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="email"/>
+                <field name="visa_application_number"/>
+                <field name="amount"/>
+                <field name="state" widget="badge"
+                       decoration-info="state=='draft'"
+                       decoration-warning="state=='submitted'"
+                       decoration-success="state=='approved'"
+                       decoration-danger="state=='rejected'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_spc_uid_merging_form" model="ir.ui.view">
+        <field name="name">spc.uid.merging.form</field>
+        <field name="model">spc.uid.merging</field>
+        <field name="arch" type="xml">
+            <form string="UID Merging">
+                <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
+                    <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
+                    <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="partner_id"/>
+                            <field name="amount"/>
+                            <field name="payment_status"/>
+                            <field name="payment_method"/>
+                        </group>
+                        <group string="Contact Details">
+                            <field name="employee_id"/>
+                            <field name="manual_employee_name"/>
+                            <field name="first_name"/>
+                            <field name="last_name"/>
+                            <field name="email"/>
+                            <field name="contact_number"/>
+                            <field name="date_of_birth"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Application Details">
+                            <group>
+                                <field name="visa_application_number"/>
+                                <field name="comments"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <group>
+                                <field name="passport_copy" filename="passport_copy_filename" widget="binary"/>
+                                <field name="passport_copy_filename" invisible="1"/>
+                                <field name="visa_cancellation_doc" filename="visa_cancellation_doc_filename" widget="binary"/>
+                                <field name="visa_cancellation_doc_filename" invisible="1"/>
+                            </group>
+                        </page>
+                        <page string="Declaration">
+                            <group>
+                                <field name="declaration_accepted"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_spc_uid_merging" model="ir.actions.act_window">
+        <field name="name">UID Merging</field>
+        <field name="res_model">spc.uid.merging</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_uid_merging_parent"
+              name="UID Merging"
+              parent="menu_spc_emp_management_top"
+              sequence="97"/>
+    <menuitem id="menu_spc_uid_merging_list"
+              name="All Applications"
+              parent="menu_spc_uid_merging_parent"
+              action="action_spc_uid_merging"
+              sequence="1"/>
+
     <!-- EID APPOINTMENT BACKEND -->
     <record id="view_spc_eid_appointment_tree" model="ir.ui.view">
         <field name="name">spc.eid.appointment.tree</field>
@@ -892,10 +1093,21 @@
         <field name="arch" type="xml">
             <form string="EID Appointment">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
                     <button name="action_submit" string="Submit" type="object" class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_in_review" string="In Review" type="object" class="btn-primary" invisible="state != 'submitted'"/>
                     <button name="action_approve" string="Approve" type="object" class="btn-success" invisible="state != 'in_review'"/>
                     <button name="action_reject" string="Reject" type="object" class="btn-danger" invisible="state not in ['in_review', 'submitted']"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,submitted,in_review,approved"/>
                 </header>
                 <sheet>

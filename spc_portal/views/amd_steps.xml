@@ -91,7 +91,7 @@
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function showList(){
     document.getElementById("list_sec").style.display="block";
     document.getElementById("manual_sec").style.display="none";
@@ -109,6 +109,7 @@ function syncCompany(sel){
     var opt = sel.options[sel.selectedIndex];
     document.getElementById("company_name_hidden").value = opt.getAttribute("data-name") || "";
 }
+//]]>
 </script>
 </body>
 </html>
@@ -241,7 +242,7 @@ function syncCompany(sel){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 var stepMap = {
     'amendment_legal_type': 'Legal Type',
     'amendment_business_activities': 'Business Activities',
@@ -263,7 +264,7 @@ function updateSteps(){
     var steps = [];
     var seen = {};
     checks.forEach(function(c){
-        if(c.checked &amp;&amp; stepMap[c.name] &amp;&amp; !seen[stepMap[c.name]]){
+        if(c.checked && stepMap[c.name] && !seen[stepMap[c.name]]){
             seen[stepMap[c.name]] = true;
             steps.push(stepMap[c.name]);
         }
@@ -281,6 +282,9 @@ document.querySelectorAll('input[type=checkbox][name^="amendment_"]').forEach(fu
     c.addEventListener('change', updateSteps);
 });
 updateSteps();
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -331,17 +335,20 @@ updateSteps();
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function showFiles(inp){
     var list = document.getElementById("file_list");
     list.innerHTML = "";
-    for(var i=0;i&lt;inp.files.length;i++){
+    for(var i=0;i<inp.files.length;i++){
         var div = document.createElement("div");
         div.className = "uploaded-item";
         div.innerHTML = "&#128196; " + inp.files[i].name;
         list.appendChild(div);
     }
 }
+
+//
+//]]>
 </script>
 </body>
 </html>
@@ -554,12 +561,13 @@ function showFiles(inp){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectCard(el, val){
     document.querySelectorAll('.type-card').forEach(function(c){c.classList.remove('selected')});
     el.classList.add('selected');
     el.querySelector('input').checked = true;
 }
+//]]>
 </script>
 </body>
 </html>
@@ -637,7 +645,7 @@ function selectCard(el, val){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 var selected = {};
 function updateSelected(){
     var checks = document.querySelectorAll('#activity_list input[type=checkbox]');
@@ -672,6 +680,7 @@ function filterActivities(q){
         item.style.display = item.getAttribute('data-name').toLowerCase().includes(q) ? '' : 'none';
     });
 }
+//]]>
 </script>
 </body>
 </html>
@@ -738,12 +747,13 @@ function filterActivities(q){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectFac(el){
     document.querySelectorAll('.fac-card').forEach(function(c){c.classList.remove('selected')});
     el.classList.add('selected');
     el.querySelector('input').checked = true;
 }
+//]]>
 </script>
 </body>
 </html>

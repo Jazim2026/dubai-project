@@ -87,7 +87,7 @@
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function switchMode(mode){
     var sel = document.getElementById('mode_select');
     var man = document.getElementById('mode_manual');
@@ -103,6 +103,7 @@ function switchMode(mode){
         btnSel.style.background='#fff'; btnSel.style.color='#555'; btnSel.style.borderColor='#ddd';
     }
 }
+//]]>
 </script>
 </body>
 </html>
@@ -203,13 +204,14 @@ function switchMode(mode){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function toggleManual(sel, divId){
     var div = document.getElementById(divId);
     if(div) div.style.display = sel.value === 'manual' ? 'block' : 'none';
 }
+//]]>
 </script>
-<script>
+<script>//<![CDATA[
 function s2SwitchMode(mode){
     var sel = document.getElementById('s2_mode_select');
     var man = document.getElementById('s2_mode_manual');
@@ -225,6 +227,7 @@ function s2SwitchMode(mode){
         btnSel.style.background='#fff'; btnSel.style.color='#555'; btnSel.style.borderColor='#ddd';
     }
 }
+//]]>
 </script>
 </body>
 </html>
@@ -428,7 +431,7 @@ function s2SwitchMode(mode){
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function selectNum(btn, val, group){
     if(group === 'add'){
         document.querySelectorAll('#add_visa_grid .num-btn').forEach(function(b){b.classList.remove('active')});
@@ -444,6 +447,7 @@ function selectNum(btn, val, group){
         document.getElementById('additional_visas_input').value = val;
     }
 }
+//]]>
 </script>
 </body>
 </html>

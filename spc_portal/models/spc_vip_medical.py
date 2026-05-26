@@ -8,11 +8,20 @@ class SpcVipMedicalEid(models.Model):
 
     name = fields.Char('Reference', readonly=True, default='New')
     partner_id = fields.Many2one('res.partner', 'Customer')
+    approved_company_id = fields.Many2one('spc.approved.company', string='Company')
     state = fields.Selection([
         ('draft','Draft'),('submitted','Submitted'),
         ('in_review','In Review'),('approved','Approved'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
         ('rejected','Rejected'),
     ], default='draft', string='Status')
+    current_step = fields.Integer(string='Current Step', default=1)
+    started_date = fields.Datetime(string='Started Date', readonly=True)
+
 
     # Step 1 fields
     applicant_select = fields.Char('Select Applicant')
@@ -55,10 +64,42 @@ class SpcVipMedicalEid(models.Model):
     def action_approve(self): self.state = 'approved'
     def action_reject(self): self.state = 'rejected'
     def action_in_review(self): self.state = 'in_review'
+    def action_approve_documents(self): self.state = 'documents_approved'
+    def action_approve_payment(self): self.state = 'payment_approved'
+    def action_approve_complaints(self): self.state = 'complaints_approved'
+    def action_under_process(self): self.state = 'under_process'
+    def action_completed(self): self.state = 'completed'
 
+
+
+    def action_approve_documents(self):
+        self.state = 'documents_approved'
+    def action_approve_payment(self):
+        self.state = 'payment_approved'
+    def action_approve_complaints(self):
+        self.state = 'complaints_approved'
+    def action_under_process(self):
+        self.state = 'under_process'
+    def action_completed(self):
+        self.state = 'completed'
+
+
+    def action_send_notification(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Send Notification',
+            'res_model': 'spc.send.notification.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_source_model': self._name,
+                'default_source_id': self.id,
+            }
+        }
 
 class SpcCompanyStamp(models.Model):
     _name = 'spc.company.stamp'
+    approved_company_id = fields.Many2one('spc.approved.company', string='Company')
     _description = 'Company Stamp Service'
     _rec_name = 'name'
     _order = 'create_date desc'
@@ -67,9 +108,18 @@ class SpcCompanyStamp(models.Model):
     partner_id = fields.Many2one('res.partner', 'Customer')
     state = fields.Selection([
         ('draft','Draft'),('submitted','Submitted'),
-        ('in_review','In Review'),('approved','Approved'),
+        ('in_review','In Review'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
+        ('approved','Approved'),
         ('rejected','Rejected'),
     ], default='draft', string='Status')
+    current_step = fields.Integer(string='Current Step', default=1)
+    started_date = fields.Datetime(string='Started Date', readonly=True)
+
 
     license_number = fields.Char('License Number')
     company_name = fields.Char('Company Name')
@@ -90,21 +140,87 @@ class SpcCompanyStamp(models.Model):
     def action_approve(self): self.state = 'approved'
     def action_reject(self): self.state = 'rejected'
     def action_in_review(self): self.state = 'in_review'
+    def action_approve_documents(self): self.state = 'documents_approved'
+    def action_approve_payment(self): self.state = 'payment_approved'
+    def action_approve_complaints(self): self.state = 'complaints_approved'
+    def action_under_process(self): self.state = 'under_process'
+    def action_completed(self): self.state = 'completed'
+
+    def action_send_notification(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Send Notification',
+            'res_model': 'spc.send.notification.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_source_model': self._name,
+                'default_source_id': self.id,
+            }
+        }
 
 
 class SpcDependentVisa(models.Model):
     _name = 'spc.dependent.visa'
-    _description = 'Dependent Visa Service'
+    approved_company_id = fields.Many2one('spc.approved.company', string='Company')
     _rec_name = 'name'
-    _order = 'create_date desc'
-
-    name = fields.Char('Reference', readonly=True, default='New')
+    name = fields.Char(string='Name', readonly=True)
+    partner_id = fields.Many2one('res.partner', string='Customer')
+    sponsor_first_name = fields.Char(string='Sponsor First Name')
+    sponsor_last_name = fields.Char(string='Sponsor Last Name')
+    sponsor_gender = fields.Selection([('male','Male'),('female','Female')], string='Sponsor Gender')
+    sponsor_type = fields.Selection([('employee','Employee'),('self','Self'),('other','Other')], string='Sponsor Type')
+    designation = fields.Selection([], string='Designation')
+    applicant_location = fields.Selection([], string='Applicant Location')
+    change_of_status = fields.Selection([], string='Change Of Status')
+    current_status = fields.Selection([], string='Current Status')
+    delivery_standard = fields.Selection([('local','Local'),('international','International')], string='Delivery Standard')
+    dep_marital_status = fields.Selection([('single','Single'),('married','Married')], string='Dep Marital Status')
+    dep_religion = fields.Selection([], string='Religion')
+    payment_status = fields.Selection([('pending','Pending'),('paid','Paid')], string='Payment Status', default='pending')
+    sponsor_has_spc_visa = fields.Selection([('yes','Yes'),('no','No')], string='Sponsor Has SPC Visa')
+    sponsor_marital_status = fields.Selection([('single','Single'),('married','Married')], string='Sponsor Marital Status')
+    tenancy_under_sponsor = fields.Selection([('yes','Yes'),('no','No')], string='Tenancy Under Sponsor')
+    amount = fields.Float(string='Amount')
+    delivery_address = fields.Text('Delivery Address')
+    delivery_standard = fields.Selection([('local','Local'),('international','International')], 'Delivery Standard')
+    payment_status = fields.Selection([('pending','Pending'),('paid','Paid')], 'Payment Status', default='pending')
+    declaration_accepted = fields.Boolean('Declaration Accepted')
+    admin_notes = fields.Text('Admin Notes')
+    rejection_reason = fields.Text('Rejection Reason')
+    remarks = fields.Text('Remarks')
+    state = fields.Selection([
+        ('draft','Draft'),('submitted','Submitted'),
+        ('in_review','In Review'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
+        ('approved','Approved'),
+        ('rejected','Rejected'),
+    ], string='Status')
     partner_id = fields.Many2one('res.partner', 'Customer')
     state = fields.Selection([
         ('draft','Draft'),('submitted','Submitted'),
-        ('in_review','In Review'),('approved','Approved'),
+        ('in_review','In Review'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
+        ('approved','Approved'),
         ('rejected','Rejected'),
     ], default='draft', string='Status')
+    current_step = fields.Integer(string='Current Step', default=1)
+    started_date = fields.Datetime(string='Started Date', readonly=True)
+
+    def action_approve_documents(self): self.state = 'documents_approved'
+    def action_approve_payment(self): self.state = 'payment_approved'
+    def action_approve_complaints(self): self.state = 'complaints_approved'
+    def action_under_process(self): self.state = 'under_process'
+    def action_completed(self): self.state = 'completed'
+
 
     # Step 1 - Sponsor details
     sponsor_has_spc_visa = fields.Selection([('yes','Yes'),('no','No')], 'Sponsor has visa with SPC?')
@@ -197,6 +313,30 @@ class SpcDependentVisa(models.Model):
     def action_reject(self): self.state = 'rejected'
     def action_in_review(self): self.state = 'in_review'
 
+    def action_approve_documents(self):
+        self.state = 'documents_approved'
+    def action_approve_payment(self):
+        self.state = 'payment_approved'
+    def action_approve_complaints(self):
+        self.state = 'complaints_approved'
+    def action_under_process(self):
+        self.state = 'under_process'
+    def action_completed(self):
+        self.state = 'completed'
+
+    def action_send_notification(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Send Notification',
+            'res_model': 'spc.send.notification.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_source_model': self._name,
+                'default_source_id': self.id,
+            }
+        }
+
 class SpcDocumentDelivery(models.Model):
     _name = 'spc.document.delivery'
     _description = 'SPC Document Delivery'
@@ -213,19 +353,32 @@ class SpcDocumentDelivery(models.Model):
     delivery_date = fields.Date('Preferred Delivery Date')
     delivery_time_frame = fields.Char('Preferred Delivery Time Frame')
     delivery_address = fields.Text('Delivery Address')
-    # Remarks
+    delivery_standard = fields.Selection([('local','Local'),('international','International')], 'Delivery Standard')
+    amount = fields.Float(string='Amount')
     remarks = fields.Text('Remarks')
-    # Declaration
+    admin_notes = fields.Text('Admin Notes')
+    rejection_reason = fields.Text('Rejection Reason')
+    payment_status = fields.Selection([('pending','Pending'),('paid','Paid')], 'Payment Status', default='pending')
     declaration_accepted = fields.Boolean('Declaration Accepted')
-    # Payment
-    amount = fields.Float('Amount', default=10.0)
-    payment_status = fields.Selection([('pending','Pending'),('paid','Paid')], default='pending')
+    state = fields.Selection([
+        ('draft','Draft'),('submitted','Submitted'),
+        ('in_review','In Review'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
+        ('approved','Approved'),('rejected','Rejected')
+    ], string='Status')
     admin_notes = fields.Text('Admin Notes')
     rejection_reason = fields.Text('Rejection Reason')
     state = fields.Selection([
         ('draft','Draft'),('submitted','Submitted'),
         ('in_review','In Review'),('approved','Approved'),('rejected','Rejected')
     ], default='draft')
+    current_step = fields.Integer(string='Current Step', default=1)
+    started_date = fields.Datetime(string='Started Date', readonly=True)
+
 
     delivery_standard = fields.Selection([('local','Local'),('international','International')], 'Delivery Standard')
     declaration_accepted_courier = fields.Boolean('Declaration Accepted Courier')
@@ -236,3 +389,28 @@ class SpcDocumentDelivery(models.Model):
     def action_approve(self): self.state = 'approved'
     def action_reject(self): self.state = 'rejected'
     def action_in_review(self): self.state = 'in_review'
+
+    def action_approve_documents(self):
+        self.state = 'documents_approved'
+    def action_approve_payment(self):
+        self.state = 'payment_approved'
+    def action_approve_complaints(self):
+        self.state = 'complaints_approved'
+    def action_under_process(self):
+        self.state = 'under_process'
+    def action_completed(self):
+        self.state = 'completed'
+
+    def action_send_notification(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Send Notification',
+            'res_model': 'spc.send.notification.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_source_model': self._name,
+                'default_source_id': self.id,
+            }
+        }
+

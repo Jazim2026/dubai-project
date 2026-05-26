@@ -152,7 +152,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount" id="nma_total_amt">210.00 &#9432;</div></div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -879,12 +879,74 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 
             <div class="spc-nav-buttons">
                 <span></span>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nmaStep1Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
+function nmaStep1Validate(){
+  var valid=true;
+  function showErr(id,msg){var el=document.getElementById(id);if(!el){el=document.createElement('div');el.id=id;el.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';}el.textContent=msg;el.style.display='block';}
+  function hideErr(id){var el=document.getElementById(id);if(el)el.style.display='none';}
+
+  // Permit type
+  var pt=document.querySelector('[name="permit_type"]:checked');
+  if(!pt){if(!document.getElementById('err_permit_type')){var e=document.createElement('div');e.id='err_permit_type';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';document.querySelector('.radio-group').insertAdjacentElement('afterend',e);}showErr('err_permit_type','Please select a permit type.');valid=false;}
+  else{hideErr('err_permit_type');
+    if(pt.value==='printing'){
+      var pub=document.getElementById('pub_type_printing');
+      if(!document.getElementById('err_pub_type')){var ep=document.createElement('div');ep.id='err_pub_type';ep.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';pub.parentElement.parentElement.insertAdjacentElement('afterend',ep);}
+      if(!pub||!pub.value){showErr('err_pub_type','Please select type of publication.');valid=false;}else{hideErr('err_pub_type');
+        if(pub.value==='book'){
+          var bt=document.querySelector('[name="book_title"]');
+          if(!bt||bt.value.trim().length<3){if(!document.getElementById('err_book_title')){var e=document.createElement('div');e.id='err_book_title';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';bt.insertAdjacentElement('afterend',e);}showErr('err_book_title','Book title must be 3-50 characters.');valid=false;}else if(bt.value.trim().length>50){showErr('err_book_title','Book title must be 3-50 characters.');valid=false;}else hideErr('err_book_title');
+          var an=document.querySelector('[name="author_name"]');
+          if(!an||an.value.trim().length<3){if(!document.getElementById('err_author_name')){var e=document.createElement('div');e.id='err_author_name';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';an.insertAdjacentElement('afterend',e);}showErr('err_author_name','Author name must be 3-50 characters.');valid=false;}else if(an.value.trim().length>50){showErr('err_author_name','Author name must be 3-50 characters.');valid=false;}else hideErr('err_author_name');
+          var at=document.querySelector('[name="article_type"]:checked');
+          if(!at){if(!document.getElementById('err_article_type')){var e=document.createElement('div');e.id='err_article_type';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';document.querySelector('.radio-group').insertAdjacentElement('afterend',e);}showErr('err_article_type','Please select article type.');valid=false;}else hideErr('err_article_type');
+          var iss=document.querySelector('[name="issue_number"]');
+          if(!iss||!iss.value.trim()||isNaN(iss.value.trim())){if(!document.getElementById('err_issue_number')){var e=document.createElement('div');e.id='err_issue_number';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';iss.insertAdjacentElement('afterend',e);}showErr('err_issue_number','Please enter a valid issue number.');valid=false;}else hideErr('err_issue_number');
+          var pm=document.querySelector('[name="publish_method"]');
+          if(!pm||!pm.value){if(!document.getElementById('err_publish_method')){var e=document.createElement('div');e.id='err_publish_method';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';pm.parentElement.insertAdjacentElement('afterend',e);}showErr('err_publish_method','Please select publish method.');valid=false;}else hideErr('err_publish_method');
+          var ct=document.querySelector('[name="cover_type"]');
+          if(!ct||!ct.value){if(!document.getElementById('err_cover_type')){var e=document.createElement('div');e.id='err_cover_type';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';ct.parentElement.insertAdjacentElement('afterend',e);}showErr('err_cover_type','Please select cover type.');valid=false;}else hideErr('err_cover_type');
+          var sc=document.getElementById('subj_cat_printing');
+          if(!sc||!sc.value){if(!document.getElementById('err_subj_cat')){var e=document.createElement('div');e.id='err_subj_cat';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';sc.parentElement.insertAdjacentElement('afterend',e);}showErr('err_subj_cat','Please select subject category.');valid=false;}else hideErr('err_subj_cat');
+        }
+      }
+    }
+    if(pt.value==='trading'){
+      // trade_format (Pager/Electronic)
+      var tf=document.querySelector('[name="trade_format"]:checked');
+      var tfGroup=document.querySelector('#fields_trading .radio-group');
+      if(!document.getElementById('err_trade_format')){var e=document.createElement('div');e.id='err_trade_format';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';tfGroup.insertAdjacentElement('afterend',e);}
+      if(!tf){showErr('err_trade_format','Please select Pager or Electronic.');valid=false;}else hideErr('err_trade_format');
+      // book_title_trading
+      var bt2=document.querySelector('[name="book_title_trading"]');
+      if(!document.getElementById('err_book_title_t')){var e=document.createElement('div');e.id='err_book_title_t';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';bt2.insertAdjacentElement('afterend',e);}
+      if(!bt2||bt2.value.trim().length<3||bt2.value.trim().length>50){showErr('err_book_title_t','Book title must be 3-50 characters.');valid=false;}else hideErr('err_book_title_t');
+      // author_name_trading
+      var an2=document.querySelector('[name="author_name_trading"]');
+      if(!document.getElementById('err_author_name_t')){var e=document.createElement('div');e.id='err_author_name_t';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';an2.insertAdjacentElement('afterend',e);}
+      if(!an2||an2.value.trim().length<3||an2.value.trim().length>50){showErr('err_author_name_t','Author name must be 3-50 characters.');valid=false;}else hideErr('err_author_name_t');
+      // subject_category_trading
+      var sc2=document.getElementById('subj_cat_trading');
+      if(!document.getElementById('err_subj_cat_t')){var e=document.createElement('div');e.id='err_subj_cat_t';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';sc2.parentElement.parentElement.insertAdjacentElement('afterend',e);}
+      if(!sc2||!sc2.value){showErr('err_subj_cat_t','Please select subject category.');valid=false;}else hideErr('err_subj_cat_t');
+      // print_year
+      var py=document.querySelector('[name="print_year"]');
+      if(!document.getElementById('err_print_year')){var e=document.createElement('div');e.id='err_print_year';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';py.insertAdjacentElement('afterend',e);}
+      if(!py||!py.value.trim()){showErr('err_print_year','Please enter print year.');valid=false;}else hideErr('err_print_year');
+      // distributor_agency
+      var da=document.querySelector('[name="distributor_agency"]');
+      if(!document.getElementById('err_distributor')){var e=document.createElement('div');e.id='err_distributor';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';da.insertAdjacentElement('afterend',e);}
+      if(!da||!da.value.trim()){showErr('err_distributor','Please enter distributor agency.');valid=false;}else hideErr('err_distributor');
+    }
+  }
+  if(valid)document.querySelector('form').submit();
+}
+
 function nmaPermitChange(v){
     ['printing','trading','text','regulatory'].forEach(function(t){
         var el=document.getElementById('fields_'+t);
@@ -910,6 +972,7 @@ function nmaMaterialTypeChange(v){
     document.getElementById('reg_book').style.display=v==='book'?'block':'none';
     document.getElementById('reg_brochures').style.display=v==='brochures_catalogs'?'block':'none';
 }
+//]]>
 </script>
 </body>
 </html>
@@ -974,7 +1037,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount">411.43 &#9432;</div></div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -1049,14 +1112,29 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <a href="/spc/apply/nma_permit/step1" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nmaStep2Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
+function nmaStep2Validate(){
+  var valid=true;
+  var docs=['undertaking','soft_copy','media_license'];
+  docs.forEach(function(key){
+    var inp=document.getElementById('doc_'+key);
+    var errId='err_'+key;
+    if(!inp||!inp.files||inp.files.length===0){
+      var el=document.getElementById(errId);
+      if(!el){el=document.createElement('div');el.id=errId;el.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px;display:flex;align-items:center;gap:4px';document.getElementById('box_'+key).parentElement.insertAdjacentElement('afterend',el);}
+      el.textContent='Please upload this document.';el.style.display='flex';valid=false;
+    }else{var el=document.getElementById(errId);if(el)el.style.display='none';}
+  });
+  if(valid)document.getElementById('nma_doc_form').submit();
+}
+
 function nmaFileSelected(input, key){
-    if(input.files &amp;&amp; input.files[0]){
+    if(input.files && input.files[0]){
         var fname = input.files[0].name;
         document.getElementById('uploaded_'+key).style.display='flex';
         document.getElementById('name_'+key).textContent=fname;
@@ -1071,6 +1149,7 @@ function nmaRemoveFile(key){
     var inp=document.querySelector('#box_'+key+' input[type=file]');
     if(inp) inp.value='';
 }
+//]]>
 </script>
 </body>
 </html>
@@ -1154,7 +1233,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">210.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -1179,11 +1258,26 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <a href="/spc/apply/nma_permit/step2" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nmaDeclValidate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>//<![CDATA[
+function nmaDeclValidate(){
+  var cb=document.querySelector('[name="declaration_accepted"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById('nma_decl_err')){var e=document.createElement('div');e.id='nma_decl_err';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:8px';cb.parentElement.insertAdjacentElement('afterend',e);}
+    document.getElementById('nma_decl_err').textContent='Please accept the declaration to continue.';
+    document.getElementById('nma_decl_err').style.display='block';
+    return;
+  }
+  var el=document.getElementById('nma_decl_err');if(el)el.style.display='none';
+  document.querySelector('form').submit();
+}
+//
+//]]>
+</script>
 </body>
 </html>
 
@@ -1267,7 +1361,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">210.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -1380,7 +1474,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">210.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-permit">CANCEL APPLICATION</a>
         </div>
     </div>

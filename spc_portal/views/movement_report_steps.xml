@@ -137,7 +137,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val">765.00 &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -215,7 +215,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
+<script>//<![CDATA[
 var PHONE_CODES=[
   {c:'+971',n:'AE +971'},{c:'+91',n:'IN +91'},{c:'+1',n:'US +1'},
   {c:'+44',n:'GB +44'},{c:'+92',n:'PK +92'},{c:'+880',n:'BD +880'},
@@ -277,6 +277,7 @@ function mrStep1Validate(){
   if(!ed||!ed.value){showErr("mr_ed_err","Please select end date.");valid=false;}else hideErr("mr_ed_err");
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -329,7 +330,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 765.0)"/> &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -354,7 +355,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
+<script>//<![CDATA[
 function mrDeclValidate(){
   var valid=true;
   var cb=document.querySelector('[name="terms_agreed"]');
@@ -366,6 +367,7 @@ function mrDeclValidate(){
   }else{var el=document.getElementById("mr_decl_err");if(el)el.style.display="none";}
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>

@@ -14,6 +14,11 @@ class SpcPreApproval(models.Model):
         ('under_review', 'Under Review'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
     ], string='Status', default='submitted')
 
     # Step 1: Business Activities
@@ -78,6 +83,21 @@ class SpcPreApproval(models.Model):
 
     def action_reject(self):
         self.state = 'rejected'
+
+    def action_approve_documents(self):
+        self.write({'state': 'documents_approved'})
+
+    def action_approve_payment(self):
+        self.write({'state': 'payment_approved'})
+
+    def action_approve_complaints(self):
+        self.write({'state': 'complaints_approved'})
+
+    def action_under_process(self):
+        self.write({'state': 'under_process'})
+
+    def action_completed(self):
+        self.write({'state': 'completed'})
 
     def action_under_review(self):
         self.state = 'under_review'

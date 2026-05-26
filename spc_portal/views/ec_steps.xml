@@ -104,7 +104,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function toggleValidity(radio){
     var sec = document.getElementById('validity_section');
     if(sec) sec.style.display = radio.value === 'yes' ? 'block' : 'none';
@@ -122,6 +122,7 @@ function ecStep1Validate(){
     }
     document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body>
 </html>
@@ -207,7 +208,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function ecDeclValidate(){
   var cb=document.querySelector('[name="declaration"]');
   if(!cb||!cb.checked){
@@ -219,6 +220,7 @@ function ecDeclValidate(){
   var el=document.getElementById("ec_decl_err");if(el)el.style.display="none";
   document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body>
 </html>
@@ -472,7 +474,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f0f4f8;color:#1a2340}
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 function switchMode(mode){
     var sel = document.getElementById('mode_select');
     var man = document.getElementById('mode_manual');
@@ -498,6 +500,7 @@ function ecCompanyValidate(){
   }}
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body>
 </html>

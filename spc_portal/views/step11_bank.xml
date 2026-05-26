@@ -113,8 +113,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         </form>
     </div>
 </div>
-<script>
-<![CDATA[
+<script>//<![CDATA[
 function toggleBank(val){
     document.getElementById('bank_provider_div').classList.toggle('hidden', val !== 'yes');
 }
@@ -141,9 +140,9 @@ function filterBanks(input){
 }
 document.addEventListener('click', function(e){
     var opts = document.getElementById('bankOptions');
-    if(opts &amp;&amp; !opts.parentElement.contains(e.target)) opts.classList.remove('show');
+    if(opts && !opts.parentElement.contains(e.target)) opts.classList.remove('show');
 });
-]]>
+//]]>
 </script>
 </body>
 </html>

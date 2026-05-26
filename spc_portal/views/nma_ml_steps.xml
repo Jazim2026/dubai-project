@@ -227,7 +227,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">535.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -275,11 +275,29 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <span></span>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nmaStep1Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>//<![CDATA[
+function nmaStep1Validate(){
+  var valid=true;
+  function err(el,id,msg){if(!document.getElementById(id)){var e=document.createElement('div');e.id=id;e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';el.insertAdjacentElement('afterend',e);}document.getElementById(id).textContent=msg;document.getElementById(id).style.display='block';}
+  function ok(id){var e=document.getElementById(id);if(e)e.style.display='none';}
+  var co=document.querySelector('[name="company_name"]');
+  if(!co||!co.value.trim()){err(co,'nma1_co_err','Please enter or select a company.');valid=false;}else ok('nma1_co_err');
+  var fn=document.querySelector('[name="manager_first_name"]');
+  if(!fn||!fn.value.trim()){err(fn,'nma1_fn_err','First name is required.');valid=false;}else ok('nma1_fn_err');
+  var ln=document.querySelector('[name="manager_last_name"]');
+  if(!ln||!ln.value.trim()){err(ln,'nma1_ln_err','Last name is required.');valid=false;}else ok('nma1_ln_err');
+  var dob=document.querySelector('[name="manager_dob"]');
+  if(!dob||!dob.value){err(dob,'nma1_dob_err','Date of birth is required.');valid=false;}else ok('nma1_dob_err');
+  if(valid)document.querySelector('form').submit();
+}
+//
+//]]>
+</script>
 </body>
 </html>
 
@@ -366,7 +384,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">535.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -473,18 +491,50 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <a t-att-href="'/spc/apply/nma_media_license/' + license_type" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nmaStep2Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
+function nmaStep2Validate(){
+  var valid=true;
+  var num=document.getElementById('nma_num');
+  if(!num||!num.value){
+    if(!document.getElementById('nma2_num_err')){var e=document.createElement('div');e.id='nma2_num_err';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';num.parentElement.insertAdjacentElement('afterend',e);}
+    document.getElementById('nma2_num_err').textContent='Please select number of media license activities.';
+    document.getElementById('nma2_num_err').style.display='block';
+    valid=false;
+  } else {
+    var e=document.getElementById('nma2_num_err');if(e)e.style.display='none';
+    var n=parseInt(num.value);
+    for(var i=1;i<=n;i++){
+      var sel=document.querySelector('[name="activity_'+i+'"]');
+      var eid='nma2_act'+i+'_err';
+      if(!sel||!sel.value){
+        if(!document.getElementById(eid)){var er=document.createElement('div');er.id=eid;er.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';sel.parentElement.parentElement.insertAdjacentElement('afterend',er);}
+        document.getElementById(eid).textContent='Please select activity '+i+'.';
+        document.getElementById(eid).style.display='block';
+        valid=false;
+      } else {var er=document.getElementById(eid);if(er)er.style.display='none';}
+    }
+  }
+  var bp=document.querySelector('[name="business_plan"]');
+  if(!bp||!bp.value.trim()){
+    if(!document.getElementById('nma2_bp_err')){var e=document.createElement('div');e.id='nma2_bp_err';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';bp.insertAdjacentElement('afterend',e);}
+    document.getElementById('nma2_bp_err').textContent='Business plan is required.';
+    document.getElementById('nma2_bp_err').style.display='block';
+    valid=false;
+  } else {var e=document.getElementById('nma2_bp_err');if(e)e.style.display='none';}
+  if(valid)document.querySelector('form').submit();
+}
+
 (function(){
     function nmaUpdate(){
         var n = parseInt(document.getElementById('nma_num').value)||0;
-        for(var i=1;i&lt;=5;i++){
+        for(var i=1;i<=5;i++){
             var r=document.getElementById('nma_arow_'+i);
-            if(r) r.style.display=i&lt;=n?'flex':'none';
+            if(r) r.style.display=i<=n?'flex':'none';
         }
     }
     window.nmaUpdate=nmaUpdate;
@@ -500,6 +550,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         if(sel.value){ nmaUpdate(); }
     }
 })();
+//]]>
 </script>
 </body>
 </html>
@@ -587,7 +638,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">535.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -599,17 +650,10 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
                 <div class="sec-num">01</div>
                 <div class="sec-body">
                     <div class="sec-title">Upload documents for each shareholder</div>
-                    <div class="select-wrap" style="max-width:400px;">
-                        <select name="shareholder_name">
-                            <option value="">Select shareholder</option>
-                            <t t-foreach="shareholders" t-as="sh">
-                                <option t-att-value="sh.name"
-                                        t-att-selected="step3_data.get('shareholder_name','') == sh.name and 'selected' or False">
-                                    <t t-esc="sh.name"/>
-                                </option>
-                            </t>
-                        </select>
-                    </div>
+                    <input type="text" name="shareholder_name" class="field-input"
+                           placeholder="Enter shareholder name"
+                           t-att-value="step3_data.get('shareholder_name','')"
+                           style="max-width:400px;"/>
                     <p style="font-size:14px;font-weight:600;margin-bottom:10px;margin-top:8px;">Is shareholder resident of UAE?</p>
                     <div class="radio-group">
                         <label class="radio-label">
@@ -681,12 +725,36 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step2'" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nmaStep3Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
-<script>
+<script>//<![CDATA[
+function nmaStep3Validate(){
+  var valid=true;
+  var sh=document.querySelector('[name="shareholder_name"]');
+  if(!sh||!sh.value){
+    if(!document.getElementById('nma3_sh_err')){var e=document.createElement('div');e.id='nma3_sh_err';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';sh.parentElement.insertAdjacentElement('afterend',e);}
+    document.getElementById('nma3_sh_err').textContent='Please select a shareholder.';
+    document.getElementById('nma3_sh_err').style.display='block';
+    valid=false;
+  } else {var e=document.getElementById('nma3_sh_err');if(e)e.style.display='none';}
+  var res=document.querySelector('[name="shareholder_uae_resident"]:checked');
+  var isYes=res&&res.value==='yes';
+  var docs=isYes?['doc_mro_form','doc_photo','doc_emirates_id','doc_poa_yes','doc_rf_yes']:['doc_poa_no','doc_rf_no'];
+  docs.forEach(function(docId){
+    var inp=document.getElementById(docId);
+    var eid='nma3_'+docId+'_err';
+    if(!inp||!inp.files||inp.files.length===0){
+      if(!document.getElementById(eid)){var e=document.createElement('div');e.id=eid;e.style.cssText='color:#e74c3c;font-size:12px;margin-top:4px';inp.parentElement.insertAdjacentElement('afterend',e);}
+      document.getElementById(eid).textContent='This document is required.';
+      document.getElementById(eid).style.display='block';
+      valid=false;
+    } else {var e=document.getElementById(eid);if(e)e.style.display='none';}
+  });
+  if(valid)document.querySelector('form').submit();
+}
 function nmaSwitchRes(v){
     var yesDiv = document.getElementById('nma_docs_yes');
     var noDiv  = document.getElementById('nma_docs_no');
@@ -706,10 +774,11 @@ function nmaSwitchRes(v){
 (function(){
     var y=document.getElementById('nma_res_yes');
     var n=document.getElementById('nma_res_no');
-    if(y&amp;&amp;y.checked) nmaSwitchRes('yes');
-    else if(n&amp;&amp;n.checked) nmaSwitchRes('no');
+    if(y&&y.checked) nmaSwitchRes('yes');
+    else if(n&&n.checked) nmaSwitchRes('no');
     else nmaSwitchRes('no');
 })();
+//]]>
 </script>
 </body>
 </html>
@@ -797,7 +866,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">535.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -824,11 +893,26 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             </div>
             <div class="spc-nav-buttons">
                 <a t-att-href="'/spc/apply/nma_media_license/' + license_type + '/step3'" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nmaStep4Validate()">NEXT</button>
             </div>
         </form>
     </div>
 </div>
+<script>//<![CDATA[
+function nmaStep4Validate(){
+  var cb=document.querySelector('[name="declaration_accepted"]');
+  if(!cb||!cb.checked){
+    if(!document.getElementById('nma4_decl_err')){var e=document.createElement('div');e.id='nma4_decl_err';e.style.cssText='color:#e74c3c;font-size:12px;margin-top:8px';cb.parentElement.insertAdjacentElement('afterend',e);}
+    document.getElementById('nma4_decl_err').textContent='Please accept the declaration to continue.';
+    document.getElementById('nma4_decl_err').style.display='block';
+    return;
+  }
+  var e=document.getElementById('nma4_decl_err');if(e)e.style.display='none';
+  document.querySelector('form').submit();
+}
+//
+//]]>
+</script>
 </body>
 </html>
 
@@ -915,7 +999,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">535.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -1025,7 +1109,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">535.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -1164,7 +1248,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <div class="amount">535.00 &#9432;</div>
         </div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/company-management">SAVE &amp; EXIT</a>
             <a href="/spc/company-management/nma-media-license">CANCEL APPLICATION</a>
         </div>
     </div>

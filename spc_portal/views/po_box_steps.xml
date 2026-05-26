@@ -227,7 +227,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val" id="feeDisplay">10.00 &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/concierge/po-box/new/detail" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -295,7 +295,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
+<script>//<![CDATA[
 var FEE={'light':'1,500.00','bronze':'3,000.00'};
 function onPkgChange(val){
   document.getElementById('feeDisplay').textContent=(FEE[val]||'10.00')+' ⓘ';
@@ -348,6 +348,7 @@ function poBoxStep1Validate(){
   }}
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -399,7 +400,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 10.0)"/> &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/concierge/po-box/new/detail" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -424,7 +425,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
+<script>//<![CDATA[
 function poBoxDeclValidate(){
   var valid=true;
   var cb=document.querySelector('[name="terms_agreed"]');
@@ -436,6 +437,7 @@ function poBoxDeclValidate(){
   }else{var el=document.getElementById("pb_decl_err");if(el)el.style.display="none";}
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>

@@ -155,7 +155,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step"><div class="step-num" id="pay-n">6</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
         <div class="sidebar-links">
-            <a href="#">SAVE &amp; CONTINUE LATER</a>
+            <a href="/spc/concierge/eid-replacement">SAVE &amp; EXIT</a>
             <a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a>
         </div>
     </div>
@@ -203,6 +203,7 @@ function eidStep1Validate() {
   document.getElementById('visa_type_err').style.display='none';
   document.querySelector('form').submit();
 }
+//
 //]]>
 </script>
 </body></html>
@@ -290,7 +291,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </t>
     <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge/eid-replacement">SAVE &amp; EXIT</a>
       <a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -618,23 +619,23 @@ function eidStep2Validate() {
 
   var fn = document.querySelector('[name="first_name"]');
   var fnv = fn ? fn.value.trim() : '';
-  if (fnv.length &lt; 3 || fnv.length &gt; 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
+  if (fnv.length < 3 || fnv.length > 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
 
   var ln = document.querySelector('[name="last_name"]');
   var lnv = ln ? ln.value.trim() : '';
-  if (lnv.length &lt; 3 || lnv.length &gt; 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
+  if (lnv.length < 3 || lnv.length > 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
 
   var fat = document.querySelector('[name="father_name"]');
   var fatv = fat ? fat.value.trim() : '';
-  if (fatv.length &lt; 3 || fatv.length &gt; 50) { showErr('fatname_err',"Father's name must be 3-50 characters."); valid=false; } else hideErr('fatname_err');
+  if (fatv.length < 3 || fatv.length > 50) { showErr('fatname_err',"Father's name must be 3-50 characters."); valid=false; } else hideErr('fatname_err');
 
   var mot = document.querySelector('[name="mother_name"]');
   var motv = mot ? mot.value.trim() : '';
-  if (motv.length &lt; 3 || motv.length &gt; 50) { showErr('motname_err',"Mother's name must be 3-50 characters."); valid=false; } else hideErr('motname_err');
+  if (motv.length < 3 || motv.length > 50) { showErr('motname_err',"Mother's name must be 3-50 characters."); valid=false; } else hideErr('motname_err');
 
   var ph = document.querySelector('[name="phone"]');
   var phv = ph ? ph.value.trim().replace(/\D/g,'') : '';
-  if (phv.length &lt; 10 || phv.length &gt; 15) { showErr('phone_err','Phone number must be 10-15 digits.'); valid=false; } else hideErr('phone_err');
+  if (phv.length < 10 || phv.length > 15) { showErr('phone_err','Phone number must be 10-15 digits.'); valid=false; } else hideErr('phone_err');
 
   var em = document.querySelector('[name="applicant_email"]');
   var emv = em ? em.value.trim() : '';
@@ -642,11 +643,11 @@ function eidStep2Validate() {
 
   var addr = document.querySelector('[name="address"]');
   var addrv = addr ? addr.value.trim() : '';
-  if (addrv.length &lt; 5 || addrv.length &gt; 500) { showErr('addr_err','Address must be 5-500 characters.'); valid=false; } else hideErr('addr_err');
+  if (addrv.length < 5 || addrv.length > 500) { showErr('addr_err','Address must be 5-500 characters.'); valid=false; } else hideErr('addr_err');
 
   var ct = document.querySelector('[name="city"]');
   var ctv = ct ? ct.value.trim() : '';
-  if (ctv.length &lt; 5 || ctv.length &gt; 500) { showErr('city_err','City must be 5-500 characters.'); valid=false; } else hideErr('city_err');
+  if (ctv.length < 5 || ctv.length > 500) { showErr('city_err','City must be 5-500 characters.'); valid=false; } else hideErr('city_err');
 
   var dob = document.querySelector('[name="dob"]');
   if (!dob || !dob.value) { showErr('dob_err','Please select date of birth.'); valid=false; } else hideErr('dob_err');
@@ -686,6 +687,7 @@ function eidStep2Validate() {
 
   if (valid) document.querySelector('form').submit();
 }
+//
 //]]>
 </script>
 </body></html>
@@ -717,7 +719,7 @@ function eidStep2Validate() {
       <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
     </t>
     <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge/eid-replacement">SAVE &amp; EXIT</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
   </div>
   <div class="main">
     <div class="form-title">New</div>
@@ -922,7 +924,7 @@ function eidStep3Validate() {
       document.querySelectorAll('input[name="biometric_mobile"]').forEach(function(inp){
         if (inp.offsetParent !== null) visibleMobile = inp.value.trim().replace(/\D/g,'');
       });
-      if (visibleMobile.length &lt; 10 || visibleMobile.length &gt; 15) { showErr('bio_phone_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('bio_phone_err');
+      if (visibleMobile.length < 10 || visibleMobile.length > 15) { showErr('bio_phone_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('bio_phone_err');
     } else {
       hideErr('eid_num_err'); hideErr('eid_exp_err');
       hideErr('pobox_err'); hideErr('pobox_num_err');
@@ -937,12 +939,12 @@ function eidStep3Validate() {
       if (!dc || !dc.value) { showErr('del_city_err','Please select delivery city.'); valid=false; } else hideErr('del_city_err');
       var lm = document.querySelector('[name="delivery_landmark"]');
       var lmv = lm ? lm.value.trim() : '';
-      if (lmv.length &lt; 5 || lmv.length &gt; 50) { showErr('del_lmark_err','Landmark must be 5-50 characters.'); valid=false; } else hideErr('del_lmark_err');
+      if (lmv.length < 5 || lmv.length > 50) { showErr('del_lmark_err','Landmark must be 5-50 characters.'); valid=false; } else hideErr('del_lmark_err');
       var da = document.querySelector('[name="delivery_address"]');
       if (!da || !da.value.trim()) { showErr('del_addr_err','Please enter delivery address.'); valid=false; } else hideErr('del_addr_err');
       var dp = document.querySelector('[name="delivery_phone"]');
       var dpv = dp ? dp.value.trim().replace(/\D/g,'') : '';
-      if (dpv.length &lt; 10 || dpv.length &gt; 15) { showErr('del_phone_err','Phone number must be 10-15 digits.'); valid=false; } else hideErr('del_phone_err');
+      if (dpv.length < 10 || dpv.length > 15) { showErr('del_phone_err','Phone number must be 10-15 digits.'); valid=false; } else hideErr('del_phone_err');
     } else {
       hideErr('del_city_err'); hideErr('del_lmark_err');
       hideErr('del_addr_err'); hideErr('del_phone_err');
@@ -963,7 +965,7 @@ function eidStep3Validate() {
 
       var np = document.querySelector('[name="notice_period"]');
       var npv = np ? np.value.trim() : '';
-      if (npv.length &lt; 5 || npv.length &gt; 100) { showErr('notice_err','Notice period must be 5-100 characters.'); valid=false; } else hideErr('notice_err');
+      if (npv.length < 5 || npv.length > 100) { showErr('notice_err','Notice period must be 5-100 characters.'); valid=false; } else hideErr('notice_err');
 
       var sb = document.querySelector('[name="salary_basic"]');
       if (!sb || !sb.value) { showErr('sal_basic_err','Please enter basic salary.'); valid=false; } else hideErr('sal_basic_err');
@@ -993,6 +995,7 @@ function eidStep3Validate() {
 
   if (valid) document.querySelector('form').submit();
 }
+//
 //]]>
 </script>
 </body></html>
@@ -1029,7 +1032,7 @@ function eidStep3Validate() {
       <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
     </t>
     <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge/eid-replacement">SAVE &amp; EXIT</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
   </div>
   <div class="main">
     <div class="form-title">New</div>
@@ -1167,7 +1170,7 @@ function eidStep4Validate(){
       if(!prob){showErr('prob_err','Please select probation period.');valid=false;}else hideErr('prob_err');
       var np=document.querySelector('[name="notice_period"]');
       var npv=np?np.value.trim():'';
-      if(npv.length&lt;5||npv.length&gt;100){showErr('notice_err','Notice period must be 5-100 characters.');valid=false;}else hideErr('notice_err');
+      if(npv.length<5||npv.length>100){showErr('notice_err','Notice period must be 5-100 characters.');valid=false;}else hideErr('notice_err');
       var sb=document.querySelector('[name="salary_basic"]');
       if(!sb||!sb.value){showErr('sal_basic_err','Please enter basic salary.');valid=false;}else hideErr('sal_basic_err');
       var sa=document.querySelector('[name="salary_accommodation"]');
@@ -1189,7 +1192,7 @@ function eidStep4Validate(){
   // File upload validation - at least one file required
   var fileInput = document.querySelector('input[name="doc_contract"]');
   var hasExisting = document.querySelector('.doc-contract-existing');
-  if (fileInput &amp;&amp; fileInput.files.length === 0 &amp;&amp; !hasExisting) {
+  if (fileInput && fileInput.files.length === 0 && !hasExisting) {
     showErr('doc_contract_err','Please upload at least one contract document.');
     valid=false;
   } else {
@@ -1198,6 +1201,7 @@ function eidStep4Validate(){
 
   if(valid)document.querySelector('form').submit();
 }
+//
 //]]>
 </script>
 </body></html>
@@ -1231,7 +1235,7 @@ function eidStep4Validate(){
       <div class="progress-step"><div class="step-num">6</div><div class="step-label">Payment</div></div>
     </t>
     <div class="total-box">Total AED<div class="amount">560.00 &#9432;</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge/eid-replacement">SAVE &amp; EXIT</a><a href="/spc/concierge/eid-replacement">CANCEL APPLICATION</a></div>
   </div>
   <div class="main">
     <div class="form-title">New</div>
@@ -1273,6 +1277,7 @@ function eidDeclValidate() {
   document.getElementById('eid_decl_err').style.display='none';
   document.querySelector('form').submit();
 }
+//
 //]]>
 </script>
 </body></html>

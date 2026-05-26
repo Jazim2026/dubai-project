@@ -139,7 +139,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val">360.00 &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -240,7 +240,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
+<script>//<![CDATA[
 function onTypeChange(type){
   document.querySelectorAll('.dynamic-section').forEach(function(s){s.classList.remove('show');});
   if(type==='employee') document.getElementById('empSection').classList.add('show');
@@ -297,6 +297,7 @@ function eidApptStep1Validate(){
 
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>
@@ -349,7 +350,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 360.0)"/> &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -374,7 +375,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
+<script>//<![CDATA[
 function eidApptDeclValidate(){
   var valid=true;
   var cb=document.querySelector('[name="terms_agreed"]');
@@ -386,6 +387,7 @@ function eidApptDeclValidate(){
   }else{var el=document.getElementById("ea_decl_err");if(el)el.style.display="none";}
   if(valid)document.querySelector("form").submit();
 }
+//]]>
 </script>
 </body></html>
 </template>

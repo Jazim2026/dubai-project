@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<template id="template_request_tracking" name="SPC Request Tracking">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Request Tracking | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa}
+.cd-nav{height:56px;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:100}
+.cd-nav-logo-brand{font-size:20px;font-weight:700;color:#1a3c6e}
+.cd-sidebar{width:220px;background:white;border-right:1px solid #e5e7eb;position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;padding:16px 0}
+.cd-sidebar-item{display:flex;align-items:center;gap:12px;padding:11px 20px;font-size:13px;font-weight:500;color:#374151;text-decoration:none}
+.cd-sidebar-item:hover{background:#f0f4ff;color:#1a3c6e}
+.cd-sidebar-item.active{background:#f0f4ff;color:#1a3c6e;border-left:3px solid #1a3c6e;font-weight:600}
+.cd-sidebar-divider{height:1px;background:#f3f4f6;margin:8px 16px}
+.cd-main{margin-left:220px;margin-top:56px;padding:32px}
+.page-title{font-size:24px;font-weight:700;color:#1abc9c;margin-bottom:4px}
+.page-sub{font-size:13px;color:#6b7280;margin-bottom:24px}
+.filter-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.filter-btn{padding:6px 16px;border-radius:20px;border:1px solid #e5e7eb;background:white;font-size:12px;font-weight:600;color:#6b7280;cursor:pointer}
+.filter-btn.active{background:#1a3c6e;color:white;border-color:#1a3c6e}
+.table-wrap{background:white;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:32px}
+.table-header{padding:16px 20px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between}
+.table-header-title{font-size:15px;font-weight:700;color:#1a2340}
+.table-count{background:#f3f4f6;color:#6b7280;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.5px;border-bottom:1px solid #f3f4f6;text-transform:uppercase;background:#fafafa}
+td{padding:13px 16px;font-size:13px;color:#374151;border-bottom:1px solid #f9fafb;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f9fafb}
+.req-name{font-weight:600;color:#1a2340;font-size:13px}
+.req-id{font-size:11px;color:#9ca3af;margin-top:2px}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.s-draft{background:#fef3c7;color:#92400e}
+.s-submitted{background:#dbeafe;color:#1e40af}
+.s-under_review{background:#ede9fe;color:#5b21b6}
+.s-approved{background:#d1fae5;color:#065f46}
+.s-completed{background:#d1fae5;color:#065f46}
+.s-rejected{background:#fee2e2;color:#991b1b}
+.s-pending{background:#fef3c7;color:#92400e}
+.resume-btn{display:inline-flex;align-items:center;gap:5px;background:#1a3c6e;color:white;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none}
+.resume-btn:hover{background:#2a5298}
+.view-btn{display:inline-flex;align-items:center;gap:5px;background:#f3f4f6;color:#374151;padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none}
+.cat-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase}
+.cat-company{background:#dbeafe;color:#1e40af}
+.cat-employee{background:#d1fae5;color:#065f46}
+.cat-facility{background:#ede9fe;color:#5b21b6}
+.cat-concierge{background:#fce7f3;color:#9d174d}
+.empty-state{text-align:center;padding:48px 20px;color:#9ca3af}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.pending-section{margin-top:8px}
+.pending-card{background:white;border-radius:12px;padding:20px 24px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.pending-title{font-size:14px;font-weight:700;color:#1a2340}
+.pending-sub{font-size:12px;color:#6b7280;margin-top:2px}
+.submit-btn{background:#1abc9c;color:white;padding:7px 20px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;border:none;cursor:pointer}
+    </style>
+</head>
+<body>
+<nav class="cd-nav">
+    <div style="display:flex;align-items:center;gap:10px">
+        <span class="cd-nav-logo-brand">SPC <span style="font-weight:300">| Free Zone</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px">
+        <div style="position:relative;display:inline-block">
+            <div onclick="toggleCDCompanyDropdown()" style="display:flex;align-items:center;gap:8px;background:#f3f4f6;border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:#374151;cursor:pointer;user-select:none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"/></svg>
+                <span><t t-esc="company_name if company_name else 'My Company'"/></span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div id="cdCompanyDropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:white;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);min-width:200px;z-index:9999;padding:6px 0;">
+                <t t-foreach="all_companies or []" t-as="comp">
+                    <form method="post" action="/spc/switch-company" style="margin:0">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="company_id" t-att-value="comp.id"/>
+                        <button type="submit" t-att-style="'width:100%;text-align:left;padding:10px 16px;border:none;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;background:' + ('#f0f9ff' if comp.id == selected_company_id else 'none') + ';color:' + ('#1d6fa4' if comp.id == selected_company_id else '#111827')">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"/></svg>
+                            <t t-esc="comp.company_name"/>
+                            <t t-if="comp.id == selected_company_id">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#1d6fa4" stroke-width="3" style="margin-left:auto"><path d="M20 6L9 17l-5-5"/></svg>
+                            </t>
+                        </button>
+                    </form>
+                </t>
+                <t t-if="not all_companies">
+                    <div style="padding:10px 16px;font-size:13px;color:#6b7280;">No companies found</div>
+                </t>
+            </div>
+        </div>
+        <script><![CDATA[
+        function toggleCDCompanyDropdown() {
+            var d = document.getElementById('cdCompanyDropdown');
+            d.style.display = d.style.display === 'none' ? 'block' : 'none';
+        }
+        document.addEventListener('click', function(e) {
+            var sw = document.getElementById('cdCompanyDropdown');
+            if (sw && !sw.parentElement.contains(e.target)) sw.style.display = 'none';
+        });
+        ]]></script>
+        <span style="font-size:13px;color:#374151;font-weight:500;"><t t-esc="customer.name if customer else ''"/></span>
+    </div>
+</nav>
+<aside class="cd-sidebar">
+    <a href="/spc/customer-dashboard" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+    </a>
+    <a href="/spc/request-tracking" class="cd-sidebar-item active">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Request Tracking
+    </a>
+    <a href="/spc/company-management" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0h2M5 21H3"/></svg>
+        Company Management
+    </a>
+    <a href="/spc/employee-management" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Employee Management
+    </a>
+    <a href="/spc/facility-management" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        Facility Management
+    </a>
+    <a href="/spc/concierge-services" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        Concierge Services
+    </a>
+    <a href="/spc/facility-bookings" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Facility Bookings
+    </a>
+    <div class="cd-sidebar-divider"/>
+    <a href="#" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+        KYC Report
+    </a>
+    <a href="#" class="cd-sidebar-item">
+        <svg class="db-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
+        Zone Bank Details
+    </a>
+    <div class="cd-sidebar-divider"/>
+    <a href="/spc/logout" class="cd-sidebar-item" style="color:#ef4444">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        Log out
+    </a>
+</aside>
+<main class="cd-main">
+    <div class="page-title">Request Tracking</div>
+    <div class="page-sub"><t t-esc="len(all_records)"/> total requests</div>
+
+    <!-- Filter buttons -->
+    <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterRT('all',this)">All</button>
+        <button class="filter-btn" onclick="filterRT('draft',this)">Unsubmitted</button>
+        <button class="filter-btn" onclick="filterRT('submitted',this)">Submitted</button>
+        <button class="filter-btn" onclick="filterRT('completed',this)">Completed</button>
+        <button class="filter-btn" onclick="filterRT('company',this)">Company Mgmt</button>
+        <button class="filter-btn" onclick="filterRT('employee',this)">Employee Mgmt</button>
+        <button class="filter-btn" onclick="filterRT('facility',this)">Facility</button>
+        <button class="filter-btn" onclick="filterRT('concierge',this)">Concierge</button>
+    </div>
+
+    <!-- Main Table -->
+    <div class="table-wrap">
+        <div class="table-header">
+            <span class="table-header-title">All Applications</span>
+            <span class="table-count" id="rt-count"><t t-esc="len(all_records)"/> requests</span>
+        </div>
+        <t t-if="all_records">
+        <table id="rt-table">
+            <thead>
+                <tr>
+                    <th>Request</th>
+                    <th>Category</th>
+                    <th>Started Date</th>
+                    <th>Submission Date</th>
+                    <th>Fees (AED)</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="all_records" t-as="rec">
+                <tr t-att-data-state="rec['state']" t-att-data-cat="rec['category']">
+                    <td>
+                        <t t-if="rec.get('detail_url')">
+                            <a t-att-href="rec['detail_url']" style="text-decoration:none;">
+                                <div class="req-name" style="cursor:pointer;color:#1a3c6e;"><t t-esc="rec['label']"/></div>
+                            </a>
+                        </t>
+                        <t t-else="">
+                            <div class="req-name"><t t-esc="rec['label']"/></div>
+                        </t>
+                        <div class="req-id"><t t-esc="rec['name']"/></div>
+                    </td>
+                    <td>
+                        <span t-att-class="'cat-badge cat-' + rec['category']">
+                            <t t-esc="rec['category'].title()"/>
+                        </span>
+                    </td>
+                    <td>
+                        <t t-if="rec['started_date']">
+                            <t t-esc="rec['started_date'].strftime('%d/%m/%Y') if rec['started_date'] else '-'"/>
+                        </t>
+                        <t t-else="">-</t>
+                    </td>
+                    <td>
+                        <t t-if="rec['submission_date']">
+                            <t t-esc="rec['submission_date'].strftime('%d/%m/%Y')"/>
+                        </t>
+                        <t t-else="">-</t>
+                    </td>
+                    <td>
+                        <t t-if="rec['fees']">
+                            <t t-esc="'%.2f' % rec['fees']"/>
+                        </t>
+                        <t t-else="">-</t>
+                    </td>
+                    <td>
+                        <t t-if="rec['state'] == 'draft'">
+                            <span class="status-badge s-draft">&#9679; Unsubmitted</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'submitted'">
+                            <span class="status-badge s-submitted">&#9679; Submitted</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'under_review'">
+                            <span class="status-badge s-under_review">&#9679; Under Review</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'approved'">
+                            <span class="status-badge s-approved">&#9679; Approved</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'documents_approved'">
+                            <span class="status-badge s-under_review">&#9679; Documents Approved</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'payment_approved'">
+                            <span class="status-badge s-under_review">&#9679; Payment Approved</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'complaints_approved'">
+                            <span class="status-badge s-under_review">&#9679; Complaints Approved</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'under_process'">
+                            <span class="status-badge s-submitted">&#9679; Under Process</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'completed'">
+                            <span class="status-badge s-completed">&#9679; Completed</span>
+                        </t>
+                        <t t-elif="rec['state'] == 'rejected'">
+                            <span class="status-badge s-rejected">&#9679; Rejected</span>
+                        </t>
+                        <t t-else="">
+                            <span class="status-badge s-pending">&#9679; <t t-esc="rec['state'].title()"/></span>
+                        </t>
+                    </td>
+                    <td>
+                        <t t-if="rec['resume_url'] and rec['state'] == 'draft'">
+                            <a t-att-href="rec['resume_url']" class="resume-btn">&#9654; Resume</a>
+                        </t>
+                        <t t-else="">
+                            <span style="color:#9ca3af;font-size:12px;">-</span>
+                        </t>
+                    </td>
+                </tr>
+                </t>
+            </tbody>
+        </table>
+        </t>
+        <t t-else="">
+        <div class="empty-state">
+            <div class="empty-icon">&#128203;</div>
+            <div style="font-size:15px;font-weight:600;margin-bottom:6px">No requests yet</div>
+            <div style="font-size:13px">Start a new application from any service section</div>
+        </div>
+        </t>
+    </div>
+
+    <!-- Pending Docs -->
+    <t t-if="pending_docs">
+    <div class="pending-section">
+        <div style="font-size:16px;font-weight:700;color:#1a2340;margin-bottom:14px">&#128203; Pending Document Requests</div>
+        <t t-foreach="pending_docs" t-as="pdoc">
+        <div class="pending-card">
+            <div>
+                <div class="pending-title"><t t-esc="pdoc.pending_doc_name_type or 'Pending Document Request'"/></div>
+                <div class="pending-sub">
+                    <t t-if="pdoc.is_submitted">Submitted</t>
+                    <t t-else="">Awaiting your documents</t>
+                </div>
+            </div>
+            <t t-if="not pdoc.is_submitted">
+                <a t-attf-href="/spc/pending-docs/submit/#{pdoc.id}" class="submit-btn">Upload Documents</a>
+            </t>
+            <t t-else="">
+                <span class="status-badge s-submitted">&#10003; Submitted</span>
+            </t>
+        </div>
+        </t>
+    </div>
+    </t>
+</main>
+<script>//<![CDATA[
+function filterRT(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    var rows = document.querySelectorAll('#rt-table tbody tr');
+    var count = 0;
+    rows.forEach(function(row) {
+        var state = row.getAttribute('data-state');
+        var cat = row.getAttribute('data-cat');
+        var show = type === 'all'
+            || state === type
+            || cat === type
+            || (type === 'completed' && (state === 'completed' || state === 'approved'));
+        row.style.display = show ? '' : 'none';
+        if(show) count++;
+    });
+    document.getElementById('rt-count').textContent = count + ' requests';
+}
+//
+//]]>
+</script>
+</body>
+</html>
+</template>
+</data>
+</odoo>

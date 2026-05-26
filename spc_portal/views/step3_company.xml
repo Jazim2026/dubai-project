@@ -238,12 +238,12 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </div>
 </div>
 
-<script type="text/javascript">
-    (function() {
+<script>//<![CDATA[
+(function() {
         var yesRadio = document.getElementById('nameReservedYes');
         var noRadio  = document.getElementById('nameReservedNo');
-        if (yesRadio &amp;&amp; yesRadio.checked) toggleNameSection('yes');
-        if (noRadio  &amp;&amp; noRadio.checked)  toggleNameSection('no');
+        if (yesRadio && yesRadio.checked) toggleNameSection('yes');
+        if (noRadio  && noRadio.checked)  toggleNameSection('no');
     })();
 
     function toggleNameSection(value) {
@@ -257,10 +257,11 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
 
     function showFileName(input, labelId) {
         var label = document.getElementById(labelId);
-        if (input.files &amp;&amp; input.files[0]) {
+        if (input.files && input.files[0]) {
             label.textContent = input.files[0].name;
         }
     }
+//]]>
 </script>
 </body>
 </html>

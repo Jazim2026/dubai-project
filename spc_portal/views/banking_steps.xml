@@ -84,7 +84,7 @@
     </div>
     <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -129,7 +129,7 @@
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function checkAccountType(v) {
     document.getElementById('personal-bank-wrap').style.display = v === 'personal' ? 'block' : 'none';
     updateSidebar(v, 1);
@@ -165,13 +165,14 @@ function baValidateStep1() {
   function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
   var at = document.querySelector('input[name="account_type"]:checked');
   if (!at) { showErr('actype_err','Please select Personal or Corporate.'); valid=false; } else hideErr('actype_err');
-  if (at &amp;&amp; at.value === 'personal') {
+  if (at && at.value === 'personal') {
     var pb = document.querySelector('[name="preferred_bank"]');
     if (!pb || !pb.value) { showErr('pbank_err','Please select a bank account.'); valid=false; } else hideErr('pbank_err');
   }
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -192,7 +193,7 @@ function baValidateStep1() {
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">1,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -234,7 +235,7 @@ function baValidateStep1() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function baValidateStep2() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -250,7 +251,8 @@ function baValidateStep2() {
   });
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -284,7 +286,7 @@ function baValidateStep2() {
     </t>
     <div class="total-box">Total AED<div class="amount">1,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -334,7 +336,7 @@ function baValidateStep2() {
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function checkBankReq(v) {
     document.getElementById('bank-provider-wrap').style.display = v === 'yes' ? 'block' : 'none';
 }
@@ -345,13 +347,14 @@ function baValidateStep3() {
   function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
   var br = document.querySelector('input[name="need_bank_account"]:checked');
   if (!br) { showErr('bankreq_err','Please select Yes or No.'); valid=false; } else hideErr('bankreq_err');
-  if (br &amp;&amp; br.value === 'yes') {
+  if (br && br.value === 'yes') {
     var fp = document.querySelector('[name="preferred_financial_provider"]');
     if (!fp || !fp.value) { showErr('finprov_err','Please select a preferred financial assistance service provider.'); valid=false; } else hideErr('finprov_err');
   }
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -513,7 +516,7 @@ function baValidateStep3() {
     </div>
     <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -601,7 +604,7 @@ function baValidateStep3() {
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function checkSpcReg(v) {
     document.getElementById('spc-yes-wrap').style.display = v === 'yes' ? 'block' : 'none';
     document.getElementById('spc-no-wrap').style.display = v === 'no' ? 'block' : 'none';
@@ -648,7 +651,7 @@ function updateCorpSidebar(shCount) {
 
 window.addEventListener('DOMContentLoaded', function() {
     var sc = document.getElementById('sh-count-sel');
-    if(sc &amp;&amp; sc.value) renderShareholderInputs(sc.value);
+    if(sc && sc.value) renderShareholderInputs(sc.value);
     var ms = document.querySelector('input[name="multi_shareholder"]:checked');
     if(ms) checkMultiShareholder(ms.value);
     var spc = document.querySelector('input[name="company_registered_spc"]:checked');
@@ -668,41 +671,42 @@ function baValidateStep1Corp() {
 
   var spc = document.querySelector('input[name="company_registered_spc"]:checked');
   if (!spc) { showErr('spcreg_err','Please select Yes or No.'); valid=false; } else hideErr('spcreg_err');
-  if (spc &amp;&amp; spc.value === 'yes') {
+  if (spc && spc.value === 'yes') {
     var cn = document.getElementById('company-name-input');
     var cnv = cn ? cn.value.trim() : '';
-    if (cnv.length &lt; 3 || cnv.length &gt; 50) { showErr('cname_spc_err','Company name must be 3-50 characters.'); valid=false; } else hideErr('cname_spc_err');
+    if (cnv.length < 3 || cnv.length > 50) { showErr('cname_spc_err','Company name must be 3-50 characters.'); valid=false; } else hideErr('cname_spc_err');
   }
-  if (spc &amp;&amp; spc.value === 'no') {
+  if (spc && spc.value === 'no') {
     var cm = document.querySelector('[name="company_name_manual"]');
     var cmv = cm ? cm.value.trim() : '';
-    if (cmv.length &lt; 3 || cmv.length &gt; 50) { showErr('cname_man_err','Type of company must be 3-50 characters.'); valid=false; } else hideErr('cname_man_err');
+    if (cmv.length < 3 || cmv.length > 50) { showErr('cname_man_err','Type of company must be 3-50 characters.'); valid=false; } else hideErr('cname_man_err');
   }
 
   var ms = document.querySelector('input[name="multi_shareholder"]:checked');
   if (!ms) { showErr('multish_err','Please select Yes or No.'); valid=false; } else hideErr('multish_err');
 
-  if (ms &amp;&amp; ms.value === 'yes') {
+  if (ms && ms.value === 'yes') {
     var sc = document.getElementById('sh-count-sel');
     if (!sc || !sc.value) { showErr('shcount_err','Please select number of shareholders.'); valid=false; } else hideErr('shcount_err');
-    if (sc &amp;&amp; sc.value) {
+    if (sc && sc.value) {
       var n = parseInt(sc.value);
       for(var i=1; i<=n; i++) {
         var sf = document.querySelector('[name="shareholder_'+i+'_name"]');
         var sfv = sf ? sf.value.trim() : '';
-        if (sfv.length &lt; 3 || sfv.length &gt; 50) { showErr('sh'+i+'name_err','Shareholder '+i+' name must be 3-50 characters.'); valid=false; } else hideErr('sh'+i+'name_err');
+        if (sfv.length < 3 || sfv.length > 50) { showErr('sh'+i+'name_err','Shareholder '+i+' name must be 3-50 characters.'); valid=false; } else hideErr('sh'+i+'name_err');
       }
     }
   }
-  if (ms &amp;&amp; ms.value === 'no') {
+  if (ms && ms.value === 'no') {
     var s1 = document.querySelector('[name="shareholder_1_name"]');
     var s1v = s1 ? s1.value.trim() : '';
-    if (s1v.length &lt; 3 || s1v.length &gt; 50) { showErr('sh1name_err','Shareholder name must be 3-50 characters.'); valid=false; } else hideErr('sh1name_err');
+    if (s1v.length < 3 || s1v.length > 50) { showErr('sh1name_err','Shareholder name must be 3-50 characters.'); valid=false; } else hideErr('sh1name_err');
   }
 
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -728,7 +732,7 @@ function baValidateStep1Corp() {
     <div class="progress-step"><div class="step-num"><t t-esc="6 + sh_count"/></div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -784,7 +788,7 @@ function baValidateStep1Corp() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function baValidateCorpDocs() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -802,7 +806,8 @@ function baValidateCorpDocs() {
   });
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -831,7 +836,7 @@ function baValidateCorpDocs() {
     <div class="progress-step"><div class="step-num"><t t-esc="6 + sh_count"/></div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -890,7 +895,7 @@ function baValidateCorpDocs() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function baValidateShDocs() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -907,7 +912,8 @@ function baValidateShDocs() {
   });
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -973,7 +979,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -1145,7 +1151,7 @@ textarea.remarks-field{width:100%;max-width:650px;border:none;border-bottom:2px 
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function baOldValidateStep1() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -1165,7 +1171,8 @@ function baOldValidateStep1() {
   });
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1222,7 +1229,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -1270,7 +1277,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function toggleBank(v) {
     document.getElementById('bank-wrap').style.display = v === 'yes' ? 'flex' : 'none';
 }
@@ -1281,13 +1288,14 @@ function baOldValidateStep2() {
   function hideErr(id) { var el=document.getElementById(id); if(el) el.style.display='none'; }
   var br = document.querySelector('input[name="need_bank_account_old"]:checked');
   if (!br) { showErr('bankreq_old_err','Please select Yes or No.'); valid=false; } else hideErr('bankreq_old_err');
-  if (br &amp;&amp; br.value === 'yes') {
+  if (br && br.value === 'yes') {
     var fp = document.querySelector('[name="preferred_financial_provider_old"]');
     if (!fp || !fp.value) { showErr('finprov_old_err','Please select a preferred bank account.'); valid=false; } else hideErr('finprov_old_err');
   }
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1340,7 +1348,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">2,010.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -1369,7 +1377,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function baOldValidateDecl() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -1378,7 +1386,8 @@ function baOldValidateDecl() {
   if (!decl || !decl.checked) { showErr('decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('decl_err');
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 

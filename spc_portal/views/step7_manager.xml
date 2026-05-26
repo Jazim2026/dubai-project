@@ -536,7 +536,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     </div>
 </div>
 
-<script type="text/javascript">
+<script>//<![CDATA[
 <![CDATA[
 /* ---- Manager accordion ---- */
 function toggleMgrAccordion(n) {
@@ -552,9 +552,9 @@ function toggleMgrDefine(n, val) {
     var spc = document.getElementById('mgr_' + n + '_spc_sh_section');
     var an  = document.getElementById('mgr_' + n + '_add_new_section');
     [sh, spc, an].forEach(function(el) { if (el) el.classList.add('hidden'); });
-    if (val === 'shareholder' &amp;&amp; sh)  sh.classList.remove('hidden');
-    if (val === 'spc_shareholder' &amp;&amp; spc) spc.classList.remove('hidden');
-    if (val === 'add_new' &amp;&amp; an)  an.classList.remove('hidden');
+    if (val === 'shareholder' && sh)  sh.classList.remove('hidden');
+    if (val === 'spc_shareholder' && spc) spc.classList.remove('hidden');
+    if (val === 'add_new' && an)  an.classList.remove('hidden');
 }
 
 /* ---- UAE resident toggle ---- */
@@ -595,7 +595,7 @@ function setMgrFlag(n, flag, code) {
 }
 document.addEventListener('click', function(e) {
     document.querySelectorAll('[id$="_flag_menu"]').forEach(function(m) {
-        if (!m.classList.contains('hidden') &amp;&amp; !m.parentElement.contains(e.target)) m.classList.add('hidden');
+        if (!m.classList.contains('hidden') && !m.parentElement.contains(e.target)) m.classList.add('hidden');
     });
 });
 
@@ -633,7 +633,7 @@ function updateManagerList(count) {
     var list = document.getElementById('managerList');
     var existing = list.querySelectorAll('.accordion').length;
     if (count > existing) {
-        for (var i = existing + 1; i &lt;= count; i++) {
+        for (var i = existing + 1; i <= count; i++) {
             var div = document.createElement('div');
             div.className = 'accordion';
             div.id = 'mgr_acc_' + i;
@@ -660,7 +660,7 @@ function updateManagerList(count) {
         }
     }
 }
-]]>
+//]]>
 </script>
 </body>
 </html>

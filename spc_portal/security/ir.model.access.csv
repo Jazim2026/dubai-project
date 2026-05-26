@@ -31,39 +31,29 @@ access_model_spc_amd_manager,spc.amd.manager access,model_spc_amd_manager,base.g
 access_model_spc_amd_director,spc.amd.director access,model_spc_amd_director,base.group_user,1,1,1,1
 access_model_spc_visa_allocation_amendment,spc.visa.allocation.amendment access,model_spc_visa_allocation_amendment,base.group_user,1,1,1,1
 access_model_spc_certify,spc.certify access,model_spc_certify,base.group_user,1,1,1,1
-access_model_spc_establishment_card,spc.establishment.card access,model_spc_establishment_card,base.group_user,1,1,1,
-access_spc_business_license,spc.business.license,model_spc_business_license,base.group_user,1,1,1,0
-access_spc_bl_document,spc.bl.document,model_spc_bl_document,base.group_user,1,1,1,1
+access_model_spc_establishment_card,spc.establishment.card access,model_spc_establishment_card,base.group_user,1,1,1,1
+access_spc_facility_management,spc.facility.management,model_spc_facility_management,base.group_user,1,1,1,1
+access_spc_employee_list,spc.employee.list,model_spc_employee_list,base.group_user,1,1,1,1
+access_spc_dedicated_account_manager,spc.dedicated.account.manager,model_spc_dedicated_account_manager,base.group_user,1,1,1,1
+access_spc_vip_medical_eid,spc.vip.medical.eid,model_spc_vip_medical_eid,base.group_user,1,1,1,1
+access_spc_company_stamp,spc.company.stamp,model_spc_company_stamp,base.group_user,1,1,1,1
+access_spc_dependent_visa,spc.dependent.visa,model_spc_dependent_visa,base.group_user,1,1,1,1
+access_spc_document_delivery,spc.document.delivery,model_spc_document_delivery,base.group_user,1,1,1,1
+access_spc_driving_license,spc.driving.license,model_spc_driving_license,base.group_user,1,1,1,1
+access_spc_po_box,spc.po.box,model_spc_po_box,base.group_user,1,1,1,1
+access_spc_medical,spc.medical,model_spc_medical,base.group_user,1,1,1,1
+access_spc_meeting_room,spc.meeting.room,model_spc_meeting_room,base.group_user,1,1,1,1
+access_spc_mofa,spc.mofa,model_spc_mofa,base.group_user,1,1,1,1
+access_spc_banking_assistance,spc.banking.assistance,model_spc_banking_assistance,base.group_user,1,1,1,1
+access_spc_movement_report,spc.movement.report,model_spc_movement_report,base.group_user,1,1,1,1
+access_spc_phone_answering,spc.phone.answering,model_spc_phone_answering,base.group_user,1,1,1,1
+access_spc_reentry_permit,spc.reentry.permit,model_spc_reentry_permit,base.group_user,1,1,1,1
+access_spc_lease_document,spc.lease.document,model_spc_lease_document,base.group_user,1,1,1,1
+access_spc_eid_replacement,spc.eid.replacement,model_spc_eid_replacement,base.group_user,1,1,1,1
+access_spc_eid_appointment,spc.eid.appointment,model_spc_eid_appointment,base.group_user,1,1,1,1
+access_spc_change_of_status,spc.change.of.status,model_spc_change_of_status,base.group_user,1,1,1,1
+access_spc_uid_merging,spc.uid.merging,model_spc_uid_merging,base.group_user,1,1,1,1
 access_spc_corporate_letter,spc.corporate.letter,model_spc_corporate_letter,base.group_user,1,1,1,1
-access_spc_nma_media_license,access_spc_nma_media_license,model_spc_nma_media_license,base.group_user,1,1,1,1
-access_spc_nma_permit,access_spc_nma_permit,model_spc_nma_permit,base.group_user,1,1,1,1
-access_spc_employee_list,access_spc_employee_list,model_spc_employee_list,base.group_user,1,1,1,1
-access_spc_facility_management,access_spc_facility_management,model_spc_facility_management,base.group_user,1,1,1,1
-access_spc_change_of_status,access_spc_change_of_status,model_spc_change_of_status,base.group_user,1,1,1,1
-access_spc_dam,access_spc_dam,model_spc_dedicated_account_manager,base.group_user,1,1,1,1
-access_spc_eid_replacement,spc.eid.replacement,model_spc_eid_replacement,base.group_user,1,1,1,0
-access_spc_reentry_permit,spc.reentry.permit,model_spc_reentry_permit,base.group_user,1,1,1,0
-access_spc_lease_document,spc.lease.document,model_spc_lease_document,base.group_user,1,1,1,0
-access_spc_medical,spc.medical,model_spc_medical,base.group_user,1,1,1,0
-access_spc_meeting_room,spc.meeting.room,model_spc_meeting_room,base.group_user,1,1,1,0
-access_spc_mofa,spc.mofa,model_spc_mofa,base.group_user,1,1,1,0
-access_spc_banking_assistance,spc.banking.assistance,model_spc_banking_assistance,base.group_user,1,1,1,0
-spc_portal.access_spc_vip_medical_eid,access_spc_vip_medical_eid,spc_portal.model_spc_vip_medical_eid,,1,1,1,1
-spc_portal.access_spc_company_stamp,access_spc_company_stamp,spc_portal.model_spc_company_stamp,,1,1,1,1
-spc_portal.access_spc_dependent_visa,access_spc_dependent_visa,spc_portal.model_spc_dependent_visa,,1,1,1,1
-
-spc_portal.access_spc_document_delivery,access_spc_document_delivery,spc_portal.model_spc_document_delivery,,1,1,1,1
-access_spc_driving_license,spc.driving.license,model_spc_driving_license,base.group_public,1,1,1,1
-access_spc_driving_license_user,spc.driving.license user,model_spc_driving_license,base.group_user,1,1,1,1
-spc_portal.access_spc_phone_answering,access_spc_phone_answering,spc_portal.model_spc_phone_answering,base.group_user,1,1,1,0
-
-spc_portal.access_spc_po_box,access_spc_po_box,spc_portal.model_spc_po_box,base.group_user,1,1,1,0
-
-spc_portal.access_spc_movement_report,access_spc_movement_report,spc_portal.model_spc_movement_report,base.group_user,1,1,1,0
-
-spc_portal.access_spc_eid_appointment,access_spc_eid_appointment,spc_portal.model_spc_eid_appointment,base.group_user,1,1,1,0
-
-spc_pending_details_doc_access,spc.pending.details.doc access,model_spc_pending_details_doc,base.group_user,1,1,1,1
-spc_pending_doc_line_access,spc.pending.doc.line access,model_spc_pending_doc_line,base.group_user,1,1,1,1
-spc_received_details_access,spc.received.details access,model_spc_received_details,base.group_user,1,1,1,1
-spc_received_doc_line_access,spc.received.doc.line access,model_spc_received_doc_line,base.group_user,1,1,1,1
+access_spc_notification,spc.notification,model_spc_notification,base.group_user,1,1,1,1
+access_spc_send_notification_wizard,spc.send.notification.wizard,model_spc_send_notification_wizard,base.group_user,1,1,1,1
+access_spc_approved_company_admin,spc.approved.company admin,model_spc_approved_company,base.group_user,1,1,1,1

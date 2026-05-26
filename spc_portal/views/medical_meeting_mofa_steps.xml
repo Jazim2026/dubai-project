@@ -93,7 +93,7 @@
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -255,7 +255,7 @@
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 function medFillApplicant(val) {
     var wrap = document.getElementById('med-manual-wrap');
     wrap.style.display = val === '__manual__' ? 'block' : 'none';
@@ -288,9 +288,9 @@ function medValidateStep1() {
   // Applicant name
   var apSel = document.getElementById('med_applicant_sel');
   var manName = document.getElementById('med_manual_name');
-  if (apSel &amp;&amp; apSel.value === '__manual__') {
+  if (apSel && apSel.value === '__manual__') {
     var mv = manName ? manName.value.trim() : '';
-    if (mv.length &lt; 3 || mv.length &gt; 50) { showErr('ap_name_err','Applicant name must be 3-50 characters.'); valid=false; } else hideErr('ap_name_err');
+    if (mv.length < 3 || mv.length > 50) { showErr('ap_name_err','Applicant name must be 3-50 characters.'); valid=false; } else hideErr('ap_name_err');
   } else {
     if (!apSel || !apSel.value) { showErr('ap_name_err','Please select or enter applicant name.'); valid=false; } else hideErr('ap_name_err');
   }
@@ -302,17 +302,17 @@ function medValidateStep1() {
   // First name
   var fn = document.querySelector('[name="first_name"]');
   var fnv = fn ? fn.value.trim() : '';
-  if (fnv.length &lt; 3 || fnv.length &gt; 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
+  if (fnv.length < 3 || fnv.length > 50) { showErr('fname_err','First name must be 3-50 characters.'); valid=false; } else hideErr('fname_err');
 
   // Last name
   var ln = document.querySelector('[name="last_name"]');
   var lnv = ln ? ln.value.trim() : '';
-  if (lnv.length &lt; 3 || lnv.length &gt; 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
+  if (lnv.length < 3 || lnv.length > 50) { showErr('lname_err','Last name must be 3-50 characters.'); valid=false; } else hideErr('lname_err');
 
   // Mother name
   var mn = document.querySelector('[name="mother_name"]');
   var mnv = mn ? mn.value.trim() : '';
-  if (mnv.length &lt; 3 || mnv.length &gt; 50) { showErr('mname_err','Mother\'s name must be 3-50 characters.'); valid=false; } else hideErr('mname_err');
+  if (mnv.length < 3 || mnv.length > 50) { showErr('mname_err','Mother\'s name must be 3-50 characters.'); valid=false; } else hideErr('mname_err');
 
   // Email
   var em = document.querySelector('[name="email"]');
@@ -322,7 +322,7 @@ function medValidateStep1() {
   // Mobile
   var mob = document.querySelector('[name="mobile"]');
   var mobv = mob ? mob.value.trim().replace(/\D/g,'') : '';
-  if (mobv.length &lt; 10 || mobv.length &gt; 15) { showErr('mobile_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('mobile_err');
+  if (mobv.length < 10 || mobv.length > 15) { showErr('mobile_err','Mobile number must be 10-15 digits.'); valid=false; } else hideErr('mobile_err');
 
   // DOB
   var dob = document.querySelector('[name="dob"]');
@@ -350,7 +350,8 @@ function medValidateStep1() {
 
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -369,7 +370,7 @@ function medValidateStep1() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
   </div>
   <div class="main">
     <div class="form-title">Medical</div>
@@ -396,7 +397,7 @@ function medValidateStep1() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function medValidateDecl() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -405,7 +406,8 @@ function medValidateDecl() {
   if (!decl || !decl.checked) { showErr('med_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('med_decl_err');
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -569,7 +571,7 @@ function medValidateDecl() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -612,7 +614,7 @@ function medValidateDecl() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function mrValidateStep1() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -625,7 +627,8 @@ function mrValidateStep1() {
   if (!dur || !dur.value) { showErr('bdur_err','Please select a duration.'); valid=false; } else hideErr('bdur_err');
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -800,7 +803,7 @@ function mrValidateStep1() {
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
     <div class="sidebar-links">
-      <a href="#">SAVE &amp; CONTINUE LATER</a>
+      <a href="/spc/concierge-services">SAVE &amp; EXIT</a>
       <a href="/spc/concierge-services">CANCEL APPLICATION</a>
     </div>
   </div>
@@ -937,7 +940,7 @@ function mrValidateStep1() {
     </form>
   </div>
 </div>
-<script><![CDATA[
+<script>//<![CDATA[
 var checked = {ind: false, com: false, inv: false};
 function toggleCheck(key) {
     checked[key] = !checked[key];
@@ -1011,7 +1014,7 @@ function hideErr(id) { var el=document.getElementById(id); if(el) el.style.displ
 function mofaValidateStep1() {
     var valid = true;
     // At least one doc type selected
-    if (!checked.ind &amp;&amp; !checked.com &amp;&amp; !checked.inv) {
+    if (!checked.ind && !checked.com && !checked.inv) {
         showErr('doctype_err','Please select at least one document type.');
         valid = false;
     } else {
@@ -1046,7 +1049,8 @@ function mofaValidateStep1() {
     });
     if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 
@@ -1065,7 +1069,7 @@ function mofaValidateStep1() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
     <div class="total-box">Total AED<div class="amount">10.00 &#9432;</div></div>
-    <div class="sidebar-links"><a href="#">SAVE &amp; CONTINUE LATER</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
+    <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="/spc/concierge-services">CANCEL APPLICATION</a></div>
   </div>
   <div class="main">
     <div class="form-title">MOFA Attestation</div>
@@ -1092,7 +1096,7 @@ function mofaValidateStep1() {
       </div>
     </form>
   </div>
-</div><script><![CDATA[
+</div><script>//<![CDATA[
 function mofaValidateDecl() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -1101,7 +1105,8 @@ function mofaValidateDecl() {
   if (!decl || !decl.checked) { showErr('mofa_decl_err','Please agree to the declaration to proceed.'); valid=false; } else hideErr('mofa_decl_err');
   if (valid) document.querySelector('form').submit();
 }
-]]></script>
+//]]>
+</script>
 </body></html>
 </template>
 

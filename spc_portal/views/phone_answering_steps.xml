@@ -168,7 +168,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val">10.00 &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/concierge/phone-answering/new/detail" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -240,8 +240,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
-<![CDATA[
+<script>//<![CDATA[
 function paValidateStep1() {
   var valid = true;
   function showErr(id, msg) {
@@ -256,47 +255,47 @@ function paValidateStep1() {
   // Company Name - min 10, max 50
   var company = document.querySelector('[name="company_brand_name"]');
   var cv = company ? company.value.trim() : '';
-  if (cv.length &lt; 10 || cv.length &gt; 50) { showErr('company_err', 'Company name must be 10-50 characters.'); valid = false; } else hideErr('company_err');
+  if (cv.length < 10 || cv.length > 50) { showErr('company_err', 'Company name must be 10-50 characters.'); valid = false; } else hideErr('company_err');
 
   // First Name - min 2, max 50
   var fn = document.querySelector('[name="contact_first_name"]');
   var fnv = fn ? fn.value.trim() : '';
-  if (fnv.length &lt; 2 || fnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(fnv)) { showErr('fn_err', 'First name must be 2-50 characters (letters only).'); valid = false; } else hideErr('fn_err');
+  if (fnv.length < 2 || fnv.length > 50 || !/^[A-Za-z ]+$/.test(fnv)) { showErr('fn_err', 'First name must be 2-50 characters (letters only).'); valid = false; } else hideErr('fn_err');
 
   // Last Name - min 2, max 50
   var ln = document.querySelector('[name="contact_last_name"]');
   var lnv = ln ? ln.value.trim() : '';
-  if (lnv.length &lt; 2 || lnv.length &gt; 50 || !/^[A-Za-z ]+$/.test(lnv)) { showErr('ln_err', 'Last name must be 2-50 characters (letters only).'); valid = false; } else hideErr('ln_err');
+  if (lnv.length < 2 || lnv.length > 50 || !/^[A-Za-z ]+$/.test(lnv)) { showErr('ln_err', 'Last name must be 2-50 characters (letters only).'); valid = false; } else hideErr('ln_err');
 
   // Phone - exactly 15 digits
   var ph = document.querySelector('[name="contact_phone"]');
   var phv = ph ? ph.value.trim() : '';
-  if (phv.length &lt; 10 || phv.length &gt; 15 || !/^[0-9]+$/.test(phv)) { showErr('ph_err', 'Phone number must be 10-15 digits.'); valid = false; } else hideErr('ph_err');
+  if (phv.length < 10 || phv.length > 15 || !/^[0-9]+$/.test(phv)) { showErr('ph_err', 'Phone number must be 10-15 digits.'); valid = false; } else hideErr('ph_err');
 
   // Preferred Greeting - min 10, max 1000
   var greet = document.querySelector('[name="preferred_greeting"]');
   var gv = greet ? greet.value.trim() : '';
-  if (gv.length &lt; 10 || gv.length &gt; 1000) { showErr('greet_err', 'Preferred greeting must be 10-1000 characters.'); valid = false; } else hideErr('greet_err');
+  if (gv.length < 10 || gv.length > 1000) { showErr('greet_err', 'Preferred greeting must be 10-1000 characters.'); valid = false; } else hideErr('greet_err');
 
   // Call Instructions - min 5, max 500
   var call = document.querySelector('[name="call_instructions"]');
   var callv = call ? call.value.trim() : '';
-  if (callv.length &lt; 5 || callv.length &gt; 500) { showErr('call_err', 'Call instructions must be 5-500 characters.'); valid = false; } else hideErr('call_err');
+  if (callv.length < 5 || callv.length > 500) { showErr('call_err', 'Call instructions must be 5-500 characters.'); valid = false; } else hideErr('call_err');
 
   // Address Line 1 - min 15, max 100
   var addr1 = document.querySelector('[name="address_line1"]');
   var a1v = addr1 ? addr1.value.trim() : '';
-  if (a1v.length &lt; 15 || a1v.length &gt; 100) { showErr('addr1_err', 'Address line 1 must be 15-100 characters.'); valid = false; } else hideErr('addr1_err');
+  if (a1v.length < 15 || a1v.length > 100) { showErr('addr1_err', 'Address line 1 must be 15-100 characters.'); valid = false; } else hideErr('addr1_err');
 
   // Address Line 2 - min 15, max 100
   var addr2 = document.querySelector('[name="address_line2"]');
   var a2v = addr2 ? addr2.value.trim() : '';
-  if (a2v.length &lt; 15 || a2v.length &gt; 100) { showErr('addr2_err', 'Address line 2 must be 15-100 characters.'); valid = false; } else hideErr('addr2_err');
+  if (a2v.length < 15 || a2v.length > 100) { showErr('addr2_err', 'Address line 2 must be 15-100 characters.'); valid = false; } else hideErr('addr2_err');
 
   // City - min 3, max 50
   var city = document.querySelector('[name="city"]');
   var cityv = city ? city.value.trim() : '';
-  if (cityv.length &lt; 3 || cityv.length &gt; 50) { showErr('city_err', 'City must be 3-50 characters.'); valid = false; } else hideErr('city_err');
+  if (cityv.length < 3 || cityv.length > 50) { showErr('city_err', 'City must be 3-50 characters.'); valid = false; } else hideErr('city_err');
 
   // Email
   var em = document.querySelector('[name="contact_email"]');
@@ -358,7 +357,7 @@ var COUNTRIES=['Afghanistan','Albania','Algeria','Andorra','Angola','Argentina',
     o.value=c; o.textContent=c; cs.appendChild(o);
   });
 })();
-]]>
+//]]>
 </script>
 </body></html>
 </template>
@@ -434,7 +433,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val" id="feeDisplay">10.00 &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/concierge/phone-answering/new/detail" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -497,8 +496,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
-<![CDATA[
+<script>//<![CDATA[
 function paValidateStep2() {
   var valid = true;
   function showErr(id, msg) { var el=document.getElementById(id); if(el){el.textContent=msg;el.style.display='block';} }
@@ -511,7 +509,7 @@ function paValidateStep2() {
   // Working days - 5-100 chars, letters/numbers/dots only
   var wd = document.querySelector('[name="working_days"]');
   var wdv = wd ? wd.value.trim() : '';
-  if (wdv.length &lt; 5 || wdv.length &gt; 100 || !/^[A-Za-z0-9. ]+$/.test(wdv)) { showErr('wdays_err','Working days must be 5-100 characters (letters, numbers, dots only).'); valid=false; } else hideErr('wdays_err');
+  if (wdv.length < 5 || wdv.length > 100 || !/^[A-Za-z0-9. ]+$/.test(wdv)) { showErr('wdays_err','Working days must be 5-100 characters (letters, numbers, dots only).'); valid=false; } else hideErr('wdays_err');
 
   // Working hours from - required time
   var wfrom = document.querySelector('[name="working_hours_from"]');
@@ -528,7 +526,7 @@ function updateFee(v){
   var d=document.getElementById('feeDisplay');
   d.textContent=(FEE_MAP[v]||'10.00')+' ⓘ';
 }
-]]>
+//]]>
 </script>
 </body></html>
 </template>
@@ -583,7 +581,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     <div class="ps-total-lbl">Total AED</div>
     <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 10.0)"/> &#9432;</div>
   </div>
-  <button class="ps-link">SAVE &amp; CONTINUE LATER</button>
+  <a href="/spc/concierge/phone-answering/new/detail" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
 </div>
 <div class="form-main">
@@ -610,7 +608,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
     </div>
   </form>
 </div>
-<script>
+<script>//<![CDATA[
 function paValidateDecl() {
   var chk = document.getElementById('termsChk');
   var err = document.getElementById('terms_err');
@@ -621,6 +619,7 @@ function paValidateDecl() {
   if (err) err.style.display = 'none';
   document.querySelector('form').submit();
 }
+//]]>
 </script>
 </body></html>
 </template>

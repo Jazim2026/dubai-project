@@ -26,11 +26,17 @@ class SpcNmaMediaLicense(models.Model):
         ('draft', 'Draft'),
         ('submitted', 'Submitted'),
         ('under_review', 'Under Review'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
     ], string='Status', default='draft')
 
     partner_id = fields.Many2one('res.partner', string='Applicant')
+    approved_company_id = fields.Many2one('spc.approved.company', string='Company')
     submission_date = fields.Datetime(string='Submission Date', readonly=True)
 
     # Step 1
@@ -73,9 +79,23 @@ class SpcNmaMediaLicense(models.Model):
     additional_remarks = fields.Text(string='Additional Remarks')
 
     total_amount = fields.Float(string='Total Amount (AED)', default=535.0)
+    current_step = fields.Integer(string='Current Step', default=1)
+    started_date = fields.Datetime(string='Started Date', readonly=True)
 
     @api.model
     def create(self, vals):
         if vals.get('name', 'New') == 'New':
             vals['name'] = self.env['ir.sequence'].next_by_code('spc.nma.media.license') or 'New'
         return super().create(vals)
+
+    def action_approve_documents(self):
+        self.state = 'documents_approved'
+    def action_approve_payment(self):
+        self.state = 'payment_approved'
+    def action_approve_complaints(self):
+        self.state = 'complaints_approved'
+    def action_under_process(self):
+        self.state = 'under_process'
+    def action_completed(self):
+        self.state = 'completed'
+

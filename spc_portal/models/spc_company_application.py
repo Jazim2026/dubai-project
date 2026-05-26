@@ -21,6 +21,11 @@ class SpcCompanyApplication(models.Model):
         ('under_review', 'Under Review'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected'),
+        ('documents_approved', 'Documents Approved'),
+        ('payment_approved', 'Payment Approved'),
+        ('complaints_approved', 'Complaints Approved'),
+        ('under_process', 'Under Process'),
+        ('completed', 'Completed'),
     ], default='draft', string='Status', tracking=True)
 
     # ── STEP 1: Legal Type ──────────────────────────────────────────
@@ -126,26 +131,6 @@ class SpcCompanyApplication(models.Model):
 
     def action_approve(self):
         self.write({'state': 'approved'})
-        # Auto-create approved company record
-        company_name = (
-            self.reserved_name or
-            self.name_preference_1 or
-            self.name_preference_2 or
-            self.name_preference_3 or
-            (self.partner_id.name + ' Company')
-        )
-        existing = self.env['spc.approved.company'].sudo().search([
-            ('application_id', '=', self.id)
-        ], limit=1)
-        if not existing:
-            self.env['spc.approved.company'].sudo().create({
-                'partner_id': self.partner_id.id,
-                'company_name': company_name,
-                'application_id': self.id,
-                'legal_type': self.legal_type or '',
-                'package_type': self.package_type or '',
-                'reference': self.reference or '',
-            })
 
     def action_reject(self):
         return {
@@ -156,6 +141,21 @@ class SpcCompanyApplication(models.Model):
             'target': 'new',
             'context': {'default_application_id': self.id},
         }
+
+    def action_approve_documents(self):
+        self.write({'state': 'documents_approved'})
+
+    def action_approve_complaints(self):
+        self.write({'state': 'complaints_approved'})
+
+    def action_under_process(self):
+        self.write({'state': 'under_process'})
+
+    def action_completed(self):
+        self.write({'state': 'completed'})
+
+    def action_approve_payment(self):
+        self.write({'state': 'payment_approved'})
 
     def action_reset_draft(self):
         self.write({'state': 'draft'})
@@ -309,18 +309,3 @@ class SpcRejectionWizard(models.TransientModel):
             'state': 'rejected',
             'rejection_reason': self.reason,
         })
-
-
-class SpcApprovedCompany(models.Model):
-    _name = 'spc.approved.company'
-    _description = 'SPC Approved Company'
-    _rec_name = 'company_name'
-    _order = 'create_date desc'
-
-    partner_id = fields.Many2one('res.partner', string='Customer', required=True, ondelete='cascade')
-    company_name = fields.Char(string='Company Name', required=True)
-    application_id = fields.Many2one('spc.company.application', string='Source Application', ondelete='set null')
-    legal_type = fields.Char(string='Legal Type')
-    package_type = fields.Char(string='Package Type')
-    reference = fields.Char(string='Reference')
-    active = fields.Boolean(default=True)

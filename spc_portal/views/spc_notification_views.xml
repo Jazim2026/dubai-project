@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Notification Wizard View -->
+        <record id="view_spc_send_notification_wizard" model="ir.ui.view">
+            <field name="name">spc.send.notification.wizard.form</field>
+            <field name="model">spc.send.notification.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Send Notification">
+                    <group>
+                        <field name="partner_id" 
+                               options="{'no_create': True, 'no_open': True}"/>
+                        <field name="approved_company_id" options="{'no_create': True}"/>
+                        <field name="message" placeholder="Enter notification message..."/>
+                        <field name="source_model" invisible="1"/>
+                        <field name="source_id" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_send" type="object" string="Send" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Notification List View (Backend) -->
+        <record id="view_spc_notification_tree" model="ir.ui.view">
+            <field name="name">spc.notification.tree</field>
+            <field name="model">spc.notification</field>
+            <field name="arch" type="xml">
+                <tree string="Notifications">
+                    <field name="partner_id"/>
+                    <field name="approved_company_id"/>
+                    <field name="message"/>
+                    <field name="is_read"/>
+                    <field name="sent_by"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_spc_notification_form" model="ir.ui.view">
+            <field name="name">spc.notification.form</field>
+            <field name="model">spc.notification</field>
+            <field name="arch" type="xml">
+                <form string="Notification">
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="approved_company_id"/>
+                        <field name="message"/>
+                        <field name="is_read"/>
+                        <field name="sent_by"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_spc_notification" model="ir.actions.act_window">
+            <field name="name">Notifications</field>
+            <field name="res_model">spc.notification</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Send Notification Action (Wizard) -->
+        <record id="action_spc_send_notification_wizard" model="ir.actions.act_window">
+            <field name="name">Send Notification</field>
+            <field name="res_model">spc.send.notification.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Facility Management — Add Send Notification Button -->
+        <record id="view_spc_facility_mgmt_form_inherit_notif" model="ir.ui.view">
+            <field name="name">spc.facility.management.form.notif</field>
+            <field name="model">spc.facility.management</field>
+            <field name="inherit_id" ref="spc_portal.view_spc_facility_mgmt_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_send_notification" type="object"
+                            string="Send Notification"
+                            class="btn-primary"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Notification Menu -->
+        <menuitem id="menu_spc_notifications"
+                  name="Notifications"
+                  parent="menu_spc_root"
+                  action="action_spc_notification"
+                  sequence="100"/>
+
+    </data>
+</odoo>

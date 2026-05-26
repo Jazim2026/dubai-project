@@ -68,7 +68,7 @@
     </form>
 </div>
 </div>
-<script>
+<script>//<![CDATA[
 var selectedDocs = [];
 function toggleDropdown(){
     var dd = document.getElementById('doc_dropdown');
@@ -94,10 +94,13 @@ function renderTags(){
 }
 document.addEventListener('click', function(e){
     var wrap = document.querySelector('.doc-select-wrap');
-    if(wrap &amp;&amp; !wrap.contains(e.target)){
+    if(wrap && !wrap.contains(e.target)){
         document.getElementById('doc_dropdown').classList.remove('open');
     }
 });
+
+//
+//]]>
 </script>
 </body></html>
 </template>

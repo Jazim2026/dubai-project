@@ -31,6 +31,17 @@
         <field name="arch" type="xml">
             <form string="Change of Status">
                 <header>
+                    <button name="action_send_notification" string="Send Notification" type="object" class="btn-secondary"/>
+                    <button name="action_approve_documents" string="Approve Documents" type="object"
+                            invisible="state not in ['submitted','under_review']" class="btn-primary"/>
+                    <button name="action_approve_payment" string="Payment Approval" type="object"
+                            invisible="state != 'documents_approved'" class="btn-primary"/>
+                    <button name="action_approve_complaints" string="Complaints" type="object"
+                            invisible="state != 'payment_approved'" class="btn-primary"/>
+                    <button name="action_under_process" string="Under Process" type="object"
+                            invisible="state != 'complaints_approved'" class="btn-primary"/>
+                    <button name="action_completed" string="Completed Application" type="object"
+                            invisible="state != 'under_process'" class="btn-success"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,submitted,under_review,approved"/>
                 </header>

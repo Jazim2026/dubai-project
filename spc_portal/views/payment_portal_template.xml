@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- PAYMENT PAGE -->
+<template id="template_payment_page" name="SPC Payment Page">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Payment | SPC Free Zone</title>
+    <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh}
+.pay-wrap{max-width:600px;margin:60px auto;padding:0 16px}
+.pay-logo{text-align:center;margin-bottom:32px}
+.pay-logo-text{font-size:24px;font-weight:700;color:#1a3c6e}
+.pay-logo-sub{font-size:12px;color:#1abc9c;letter-spacing:1px}
+.pay-card{background:white;border-radius:16px;padding:32px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.pay-title{font-size:20px;font-weight:700;color:#1a3c6e;margin-bottom:8px}
+.pay-subtitle{font-size:13px;color:#6b7280;margin-bottom:24px}
+.pay-amount-box{background:#f0fdf4;border:2px solid #1abc9c;border-radius:12px;padding:20px;text-align:center;margin-bottom:24px}
+.pay-amount-label{font-size:13px;color:#6b7280;margin-bottom:4px}
+.pay-amount-value{font-size:36px;font-weight:800;color:#1a3c6e}
+.pay-amount-currency{font-size:16px;font-weight:600;color:#1abc9c;margin-right:4px}
+.pay-divider{height:1px;background:#f3f4f6;margin:24px 0}
+.pay-method-title{font-size:14px;font-weight:600;color:#374151;margin-bottom:16px}
+.pay-method-options{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.pay-method-option{border:2px solid #e5e7eb;border-radius:10px;padding:16px;cursor:pointer;transition:all .2s}
+.pay-method-option:hover{border-color:#1abc9c}
+.pay-method-option.active{border-color:#1abc9c;background:#f0fdf4}
+.pay-method-label{font-size:14px;font-weight:600;color:#1a3c6e;display:flex;align-items:center;gap:8px}
+.pay-method-desc{font-size:12px;color:#6b7280;margin-top:4px}
+.pay-btn{width:100%;padding:16px;background:#1abc9c;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.5px;margin-top:8px}
+.pay-btn:hover{background:#0e9e82}
+.bank-details{background:#f8fafc;border-radius:10px;padding:16px;margin-top:12px;display:none}
+.bank-details.show{display:block}
+.bank-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:13px}
+.bank-row:last-child{border-bottom:none}
+.bank-label{color:#6b7280}
+.bank-value{font-weight:600;color:#1a3c6e}
+.proof-upload{margin-top:12px}
+.proof-upload input{width:100%;padding:10px;border:2px dashed #e5e7eb;border-radius:8px;font-size:13px}
+.pay-secure{text-align:center;font-size:12px;color:#9ca3af;margin-top:16px}
+#razorpay-section{display:block}
+#bank-section{display:none}
+    </style>
+</head>
+<body>
+<div class="pay-wrap">
+    <div class="pay-logo">
+        <div class="pay-logo-text">SPC Free Zone</div>
+        <div class="pay-logo-sub">SECURE PAYMENT</div>
+    </div>
+    <div class="pay-card">
+        <div class="pay-title">Complete Your Payment</div>
+        <div class="pay-subtitle">
+            Service: <t t-esc="dict([
+                ('facility_management','Facility Management'),
+                ('eid_replacement','EID Replacement'),
+                ('medical_new','Medical - New Residency'),
+                ('medical_renewal','Medical - Renewal'),
+                ('driving_license','Driving License'),
+                ('reentry_permit','Re-Entry Permit'),
+                ('lease_document','Lease Documents'),
+                ('mofa','MOFA Attestation'),
+                ('banking_assistance','Banking Assistance'),
+                ('dedicated_account_manager','Dedicated Account Manager'),
+                ('movement_report','Movement Report'),
+                ('uid_merging','UID Merging'),
+                ('eid_appointment','EID Appointment'),
+            ]).get(service_type, service_type)"/>
+        </div>
+
+        <!-- Amount Box -->
+        <div class="pay-amount-box">
+            <div class="pay-amount-label">Amount Due</div>
+            <div>
+                <span class="pay-amount-currency">AED</span>
+                <span class="pay-amount-value"><t t-esc="'%.2f' % amount"/></span>
+            </div>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div class="pay-method-title">Choose Payment Method</div>
+        <div class="pay-method-options">
+            <div class="pay-method-option active" id="opt_razorpay" onclick="selectMethod('razorpay')">
+                <div class="pay-method-label">
+                    💳 Pay with Card (Razorpay)
+                </div>
+                <div class="pay-method-desc">Pay securely using Credit/Debit card via Razorpay</div>
+            </div>
+            <div class="pay-method-option" id="opt_bank" onclick="selectMethod('bank')">
+                <div class="pay-method-label">
+                    🏦 Bank Transfer
+                </div>
+                <div class="pay-method-desc">Transfer to our bank account and upload proof</div>
+            </div>
+        </div>
+
+        <!-- Razorpay Section -->
+        <div id="razorpay-section">
+            <button class="pay-btn" onclick="startRazorpayPayment()">
+                PAY AED <t t-esc="'%.2f' % amount"/>
+            </button>
+        </div>
+
+        <!-- Bank Transfer Section -->
+        <div id="bank-section">
+            <div class="bank-details show">
+                <div class="bank-row">
+                    <span class="bank-label">Bank Name</span>
+                    <span class="bank-value">Emirates NBD</span>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">Account Name</span>
+                    <span class="bank-value">SPC Free Zone</span>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">IBAN</span>
+                    <span class="bank-value">AE07 0331 2345 6789 0123 456</span>
+                </div>
+                <div class="bank-row">
+                    <span class="bank-label">Amount</span>
+                    <span class="bank-value">AED <t t-esc="'%.2f' % amount"/></span>
+                </div>
+            </div>
+            <form method="post" action="/spc/payment/bank-transfer" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <input type="hidden" name="service_type" t-att-value="service_type"/>
+                <input type="hidden" name="record_id" t-att-value="record_id"/>
+                <div class="proof-upload" style="margin-top:16px">
+                    <label style="font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:8px">Upload Payment Proof</label>
+                    <input type="file" name="proof_file" accept="image/*,.pdf" required="required"/>
+                </div>
+                <button type="submit" class="pay-btn" style="margin-top:16px;background:#1a3c6e">
+                    SUBMIT PROOF
+                </button>
+            </form>
+        </div>
+
+        <div class="pay-secure">🔒 Secured by SPC Free Zone</div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"/>
+<script><![CDATA[
+var serviceType = document.querySelector('input[name="service_type"]') ?
+    document.querySelector('input[name="service_type"]').value : '';
+
+function selectMethod(method) {
+    document.getElementById('opt_razorpay').classList.remove('active');
+    document.getElementById('opt_bank').classList.remove('active');
+    document.getElementById('opt_' + method).classList.add('active');
+    document.getElementById('razorpay-section').style.display =
+        method === 'razorpay' ? 'block' : 'none';
+    document.getElementById('bank-section').style.display =
+        method === 'bank' ? 'block' : 'none';
+}
+
+async function startRazorpayPayment() {
+    var btn = document.querySelector('#razorpay-section .pay-btn');
+    btn.textContent = 'Processing...';
+    btn.disabled = true;
+
+    try {
+        const res = await fetch('/spc/payment/create-order', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                jsonrpc: '2.0',
+                method: 'call',
+                params: {
+                    service_type: ']]><t t-esc="service_type"/><![CDATA[',
+                    record_id: ]]><t t-esc="record_id"/><![CDATA[
+                }
+            })
+        });
+        const data = await res.json();
+        const result = data.result;
+
+        if (!result.success) {
+            alert('Error: ' + result.error);
+            btn.textContent = 'PAY AED ]]><t t-esc="'%.2f' % amount"/><![CDATA[';
+            btn.disabled = false;
+            return;
+        }
+
+        var options = {
+            key: ']]><t t-esc="razorpay_key_id"/><![CDATA[',
+            amount: result.amount,
+            currency: 'INR',
+            name: 'SPC Free Zone',
+            description: 'Service Payment',
+            order_id: result.order_id,
+            handler: async function(response) {
+                const verifyRes = await fetch('/spc/payment/verify', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        jsonrpc: '2.0',
+                        method: 'call',
+                        params: {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                            payment_id: result.payment_id
+                        }
+                    })
+                });
+                const verifyData = await verifyRes.json();
+                if (verifyData.result && verifyData.result.success) {
+                    window.location.href = '/spc/payment/success';
+                } else {
+                    window.location.href = '/spc/payment/failed';
+                }
+            },
+            prefill: {
+                name: ']]><t t-esc="partner.name if partner else ''"/><![CDATA[',
+                email: ']]><t t-esc="partner.email if partner else ''"/><![CDATA['
+            },
+            theme: { color: '#1abc9c' }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.on('payment.failed', function(response) {
+            window.location.href = '/spc/payment/failed';
+        });
+        rzp.open();
+    } catch(e) {
+        alert('Something went wrong. Please try again.');
+    }
+    btn.textContent = 'PAY AED ]]><t t-esc="'%.2f' % amount"/><![CDATA[';
+    btn.disabled = false;
+}
+]]></script>
+</body>
+</html>
+</template>
+
+<!-- PAYMENT SUCCESS -->
+<template id="template_payment_success" name="SPC Payment Success">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Payment Success | SPC Free Zone</title>
+    <style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.success-card{background:white;border-radius:16px;padding:48px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.08);max-width:440px;width:90%}
+.success-icon{width:80px;height:80px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px}
+.success-title{font-size:24px;font-weight:700;color:#1a3c6e;margin-bottom:12px}
+.success-msg{font-size:14px;color:#6b7280;margin-bottom:32px;line-height:1.6}
+.success-btn{display:inline-block;padding:14px 32px;background:#1abc9c;color:white;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px}
+    </style>
+</head>
+<body>
+<div class="success-card">
+    <div class="success-icon">✅</div>
+    <div class="success-title">Payment Successful!</div>
+    <div class="success-msg">
+        <t t-if="method == 'bank_transfer'">
+            Your payment proof has been submitted successfully. Our team will verify and confirm within 1-2 business days.
+        </t>
+        <t t-else="">
+            Your payment has been processed successfully. Thank you!
+        </t>
+    </div>
+    <a href="/spc/customer-dashboard" class="success-btn">GO TO DASHBOARD</a>
+</div>
+</body>
+</html>
+</template>
+
+<!-- PAYMENT FAILED -->
+<template id="template_payment_failed" name="SPC Payment Failed">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Payment Failed | SPC Free Zone</title>
+    <style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f5f6fa;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.failed-card{background:white;border-radius:16px;padding:48px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.08);max-width:440px;width:90%}
+.failed-icon{width:80px;height:80px;background:#fff1f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px}
+.failed-title{font-size:24px;font-weight:700;color:#ef4444;margin-bottom:12px}
+.failed-msg{font-size:14px;color:#6b7280;margin-bottom:32px;line-height:1.6}
+.failed-btn{display:inline-block;padding:14px 32px;background:#1a3c6e;color:white;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px}
+    </style>
+</head>
+<body>
+<div class="failed-card">
+    <div class="failed-icon">❌</div>
+    <div class="failed-title">Payment Failed</div>
+    <div class="failed-msg">Your payment could not be processed. Please try again or choose bank transfer option.</div>
+    <a href="/spc/customer-dashboard" class="failed-btn">GO TO DASHBOARD</a>
+</div>
+</body>
+</html>
+</template>
+
+</data>
+</odoo>

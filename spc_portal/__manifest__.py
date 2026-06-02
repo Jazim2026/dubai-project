@@ -21,6 +21,7 @@
         'data/spc_uid_merging_sequences.xml',
         'data/spc_eid_appointment_sequences.xml',
         'data/sequence_data.xml',
+        'data/spc_payment_sequences.xml',
         'data/spc_vip_medical_sequences.xml',
         'data/spc_driving_license_sequences.xml',
         'data/mail_template_data.xml',
@@ -82,6 +83,9 @@
         'views/medical_meeting_mofa_backend.xml',
         'views/medical_meeting_mofa_steps.xml',
         'views/banking_steps.xml',
+        'views/payment_backend_views.xml',
+        'views/option_price_backend_views.xml',
+        'views/payment_portal_template.xml',
     ],
     'assets': {
         'web.assets_frontend': [

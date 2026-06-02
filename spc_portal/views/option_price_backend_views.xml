@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="spc_option_group_form" model="ir.ui.view">
+        <field name="name">spc.option.group.form</field>
+        <field name="model">spc.option.group</field>
+        <field name="arch" type="xml">
+            <form string="Option Pricing">
+                <sheet>
+                    <group>
+                        <group string="Service Info">
+                            <field name="service_type"/>
+                            <field name="step_name"/>
+                            <field name="step_label"/>
+                            <field name="is_active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Options">
+                            <field name="option_line_ids">
+                                <tree editable="bottom">
+                                    <field name="option_key"/>
+                                    <field name="option_label"/>
+                                    <field name="amount"/>
+                                    <field name="is_active"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_option_group_tree" model="ir.ui.view">
+        <field name="name">spc.option.group.tree</field>
+        <field name="model">spc.option.group</field>
+        <field name="arch" type="xml">
+            <tree string="Option Pricing">
+                <field name="service_type"/>
+                <field name="step_name"/>
+                <field name="step_label"/>
+                <field name="is_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_spc_option_group" model="ir.actions.act_window">
+        <field name="name">Option Pricing</field>
+        <field name="res_model">spc.option.group</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_spc_option_price"
+              name="Option Pricing"
+              parent="menu_spc_config_root"
+              action="action_spc_option_group"
+              sequence="2"/>
+
+</data>
+</odoo>

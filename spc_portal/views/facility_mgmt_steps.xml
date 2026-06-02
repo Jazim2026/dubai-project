@@ -23,6 +23,7 @@
         </div>
         <div id="fm_sidebar_save1_holder" style="display:none">
             <span id="sb_csrf" t-att-data-csrf="request.csrf_token()"></span>
+            <input type="hidden" id="fm_base_price" t-att-value="str(base_price) if base_price else '0'"/>
             <span id="sb_complaint_category"></span>
             <span id="sb_incident_type"></span>
             <span id="sb_office_number"></span>
@@ -64,7 +65,7 @@
                         <div class="sec-title">Select incident type</div>
                         <div class="select-row">
                             <div class="select-wrap">
-                                <select name="incident_type" id="fm_incident">
+                                <select name="incident_type" id="fm_incident" onchange="fmIncidentChange(this.value)">
                                     <option value="">Incident type</option>
                                 </select>
                             </div>
@@ -159,6 +160,46 @@ function fmCatChange(v){
     } else {
         section.style.display = 'none';
     }
+    // Fetch option price and update total
+    fmUpdateTotal();
+}
+function fmIncidentChange(v){
+    fmUpdateTotal();
+}
+function fmUpdateTotal(){
+    var cat = document.getElementById('fm_cat') ? document.getElementById('fm_cat').value : '';
+    var inc = document.getElementById('fm_incident') ? document.getElementById('fm_incident').value : '';
+    var keys = [];
+    if(cat) keys.push(cat);
+    if(inc) keys.push(inc);
+    if(keys.length === 0){
+        fmSetTotal(0);
+        return;
+    }
+    fetch('/spc/option-price/get', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({jsonrpc:'2.0', method:'call', params:{
+            service_type: 'facility_management',
+            option_keys: keys
+        }})
+    })
+    .then(r => r.json())
+    .then(data => {
+        var result = data.result || {};
+        if(result.success){
+            fmSetTotal(result.total_options);
+        }
+    })
+    .catch(function(){});
+}
+function fmSetTotal(optionAmount){
+    // Get base price from hidden field or default 0
+    var base = parseFloat(document.getElementById('fm_base_price') ? 
+                document.getElementById('fm_base_price').value : 0) || 0;
+    var total = base + optionAmount;
+    var amountEls = document.querySelectorAll('.amount');
+    amountEls.forEach(function(el){ el.textContent = total.toFixed(2); });
 }
 function fmFileSelected(input){
     if(input.files && input.files[0]){
@@ -197,6 +238,15 @@ function fmStep1Validate(){
 }
 
 //
+// On page load, calculate initial total
+window.addEventListener('load', function(){
+    var cat = document.getElementById('fm_cat');
+    if(cat && cat.value){
+        fmUpdateTotal();
+    } else {
+        fmSetTotal(0);
+    }
+});
 //]]>
 </script>
 </body></html>
@@ -385,6 +435,12 @@ function fmSaveExitStep4(){
                 <button type="submit" class="spc-btn-next">SUBMIT APPLICATION</button>
             </div>
         </form>
+        <div style="margin-top:16px;text-align:right">
+            <a t-att-href="'/spc/payment/facility_management/' + str(record.id) if record else '/spc/payment/facility_management/0'"
+               style="display:inline-block;padding:14px 32px;background:#1abc9c;color:white;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;">
+                PROCEED TO PAYMENT →
+            </a>
+        </div>
 
     </div>
 </div>

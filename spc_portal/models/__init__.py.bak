@@ -38,7 +38,3 @@ from . import spc_uid_merging
 
 from . import spc_eid_appointment
 from . import pending_details_doc
-
-from . import spc_service_price
-from . import spc_payment
-from . import spc_option_price

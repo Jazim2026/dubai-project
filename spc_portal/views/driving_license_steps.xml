@@ -821,7 +821,7 @@ function spcValidateDecl() {
     return;
   }
   if (err) err.style.display = 'none';
-  document.querySelector('form#mainForm').submit();
+  document.querySelector('form#declForm').submit();
 }
 var FEE_MAP2={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
 var STEPS2={

@@ -1194,7 +1194,7 @@ class SpcPortalController(http.Controller):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         service_type = kw.get('service_type', 'company_new')
-        return request.redirect('/spc/setup-new-company/apply/success/' + service_type)
+        return request.redirect('/spc/payment/' + service_type)
 
     # ── COMPANY MANAGEMENT ──
     @http.route('/spc/company-management', type='http', auth='public', website=True, csrf=False)
@@ -1791,22 +1791,9 @@ class SpcPortalController(http.Controller):
     def pa_payment(self, service_type, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        customer_id = request.session.get('spc_selected_customer_id')
-        customer = None
-        if customer_id:
-            rec = request.env['res.partner'].sudo().browse(customer_id)
-            if rec.exists():
-                customer = rec
-        return request.render('spc_portal.template_pa_payment', {
-            'service_type': service_type,
-            'customer': customer,
-            'fee': 640,
-            'steps': ['Business activities', 'Company name', 'Shareholder details', 'Declaration', 'Review application', 'Payment'],
-            'current_step': 6,
-            'payment_action': '/spc/setup-new-company/apply/pa-payment/submit',
-        })
+        return request.redirect('/spc/setup-new-company/apply/pa-payment/submit?service_type=' + service_type)
 
-    @http.route('/spc/setup-new-company/apply/pa-payment/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
+    @http.route('/spc/setup-new-company/apply/pa-payment/submit', type='http', auth='public', website=True, csrf=False, methods=['POST', 'GET'])
     def pa_payment_submit(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
@@ -1851,7 +1838,7 @@ class SpcPortalController(http.Controller):
 
                 'payment_method': kw.get('payment_method', ''),
                 'payment_status': 'paid',
-                'fee': float(kw.get('amount', 0)) or 0.0,
+                'fee': float(kwargs.get('amount', 0)) or 0.0,
             }
             pa = request.env['spc.pre.approval'].sudo().create(vals)
             if activity_ids:
@@ -1883,13 +1870,13 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"PA save error: {e}")
-        return request.redirect('/spc/setup-new-company/apply/pa-success/' + service_type)
+        return request.redirect('/spc/payment/' + service_type + '/' + str(pa.id if pa else 0))
 
     @http.route('/spc/setup-new-company/apply/pa-success/<string:service_type>', type='http', auth='public', website=True, csrf=False)
     def pa_success(self, service_type, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_pa_success', {'service_type': service_type})
+        return request.redirect('/spc/payment/' + service_type)
 
     # ══ LICENSE REISSUE FLOW ══
     @http.route('/spc/company-management/service/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -2121,7 +2108,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"LR save error: {e}")
-        return request.redirect('/spc/company-management/apply/success/' + service_type)
+        return request.redirect('/spc/payment/' + service_type)
 
     # ══ RENEWAL FLOW ══
     @http.route('/spc/company-management/apply/rn-step1/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -2355,7 +2342,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"RN save error: {e}")
-        return request.redirect('/spc/company-management/apply/success/' + service_type)
+        return request.redirect('/spc/payment/' + service_type)
 
     @http.route('/spc/company-management/apply/success/<string:service_type>', type='http', auth='public', website=True, csrf=False)
     def company_mgmt_success(self, service_type, **kw):
@@ -2678,7 +2665,7 @@ class SpcPortalController(http.Controller):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         service_type = kw.get('service_type', 'renewal_amendment')
-        return request.redirect('/spc/company-management/apply/ra-review/' + service_type)
+        return request.redirect('/spc/payment/' + service_type)
 
     @http.route('/spc/company-management/apply/ra-step5/<string:service_type>', type='http', auth='public', website=True, csrf=False)
     def ra_step5(self, service_type, **kw):
@@ -3285,7 +3272,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"RA save error: {e}")
-        return request.redirect('/spc/company-management/apply/success/renewal_amendment')
+        return request.redirect('/spc/payment/renewal_amendment')
 
 
     # ══ AMENDMENT FLOW ══
@@ -3942,7 +3929,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"AMD save error: {e}")
-        return request.redirect('/spc/company-management/apply/success/amendment')
+        return request.redirect('/spc/payment/amendment')
 
 
 
@@ -4049,6 +4036,7 @@ class SpcPortalController(http.Controller):
             'page_title': 'New',
             'form_action': '/spc/company-management/apply/ec-declaration/submit',
             'steps': steps,
+            'current_step': 2,
         })
 
     @http.route('/spc/company-management/apply/ec-declaration/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -4103,12 +4091,7 @@ class SpcPortalController(http.Controller):
             'cancellation': ['Company', 'Declaration', 'Review application', 'Payment'],
         }
         steps = steps_map.get(sub_type, steps_map['new'])
-        return request.render('spc_portal.template_ec_payment', {
-            'service_type': service_type,
-            'sub_type': sub_type,
-            'steps': steps,
-            'current_step': len(steps),
-        })
+        return request.redirect('/spc/payment/establishment_card_' + sub_type)
 
     @http.route('/spc/company-management/apply/ec-final-submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def ec_final_submit(self, **kw):
@@ -4152,7 +4135,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"EC save error: {e}")
-        return request.redirect('/spc/company-management/apply/success/ec_' + kw.get('sub_type', 'new'))
+        return request.redirect('/spc/payment/establishment_card_' + kw.get('sub_type', 'new'))
 
     # --- EC RENEWAL ---
     @http.route('/spc/company-management/apply/ec-renewal-company/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -4280,6 +4263,7 @@ class SpcPortalController(http.Controller):
             'page_title': 'Cancellation',
             'form_action': '/spc/company-management/apply/ec-declaration/submit',
             'steps': steps,
+            'current_step': 2,
         })
 
     # ============================================================
@@ -4393,7 +4377,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"Certify save error: {e}")
-        return request.redirect('/spc/company-management/apply/success/certify')
+        return request.redirect('/spc/payment/certify')
 
     # ============================================================
     # VISA ALLOCATION AMENDMENT ROUTES
@@ -4624,7 +4608,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"VA save error: {e}")
-        return request.redirect('/spc/company-management/apply/success/visa_allocation_amendment')
+        return request.redirect('/spc/payment/visa_allocation_amendment')
 
     # ════════════════════════════════════════════════════════
     #  BUSINESS LICENSE
@@ -5377,7 +5361,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"BL final submit error: {e}")
-        return request.redirect('/spc/company-management/apply/success/business_license')
+        return request.redirect('/spc/payment/business_license')
 
     # ══════════════════════════════════════════════════
     # CORPORATE LETTERS
@@ -5585,7 +5569,7 @@ class SpcPortalController(http.Controller):
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"CL submit error: {e}")
-        return request.redirect('/spc/company-management/apply/success/corporate_letters')
+        return request.redirect('/spc/payment/corporate_letters')
 
     @http.route('/spc/company-management/corporate-letters/save-later',
                 type='http', auth='public', website=True)
@@ -5886,17 +5870,6 @@ class SpcPortalController(http.Controller):
             'manager_first_name': step1.get('manager_first_name', ''),
             'manager_last_name': step1.get('manager_last_name', ''),
             'step1_remarks': step1.get('step1_remarks', ''),
-            'trade_format': step1.get('trade_format', '') or False,
-            'print_year': step1.get('print_year', ''),
-            'distributor_agency': step1.get('distributor_agency', ''),
-            'national_depository_number': step1.get('national_depository_number', ''),
-            'isbn': step1.get('isbn', ''),
-            'version_number': step1.get('version_number', ''),
-            'how_obtained': step1.get('how_obtained', '') or False,
-            'text_publication_type': step1.get('text_publication_type', '') or False,
-            'material_type': step1.get('material_type', '') or False,
-            'number_of_title': step1.get('reg_number_of_title', ''),
-            'reg_title': step1.get('reg_title', ''),
             'num_activities': step2.get('num_activities', '') or False,
             'activity_1': step2.get('activity_1', '') or False,
             'activity_2': step2.get('activity_2', '') or False,
@@ -5937,10 +5910,7 @@ class SpcPortalController(http.Controller):
                     'nma_step3_files', 'nma_step4_data', 'nma_step5_data',
                     'nma_license_type']:
             request.session.pop(key, None)
-        return request.render('spc_portal.template_nma_success', {
-            'license_type': license_type,
-            'record': record,
-        })
+        return request.redirect('/spc/payment/nma_media_license/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # NMA PERMIT
@@ -6139,9 +6109,7 @@ class SpcPortalController(http.Controller):
             record = request.env['spc.nma.permit'].sudo().create(vals)
         for key in ['nma_permit_step1', 'nma_permit_step2_files', 'nma_permit_step3']:
             request.session.pop(key, None)
-        return request.render('spc_portal.template_nma_permit_success', {
-            'record': record,
-        })
+        return request.redirect('/spc/payment/nma_permit/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # EMPLOYEE LIST
@@ -6238,9 +6206,7 @@ class SpcPortalController(http.Controller):
         else:
             record = request.env['spc.employee.list'].sudo().create(vals)
         request.session.pop('el_step1', None)
-        return request.render('spc_portal.template_el_success', {
-            'record': record,
-        })
+        return request.redirect('/spc/payment/employee_list/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # EMPLOYEE LIST
@@ -6307,7 +6273,7 @@ class SpcPortalController(http.Controller):
         }
         record = request.env['spc.employee.list'].sudo().create(vals)
         request.session.pop('el_step1', None)
-        return request.render('spc_portal.template_el_success', {'record': record})
+        return request.redirect('/spc/payment/employee_list/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # EMPLOYEE MANAGEMENT
@@ -6433,8 +6399,15 @@ class SpcPortalController(http.Controller):
                     'started_date': odoo_fields.Datetime.now(),
                 })
                 request.session['fm_draft_id'] = rec.id
+
+        _fm_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'facility_management'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _fm_base = _fm_price.amount if _fm_price else 0.0
         return request.render('spc_portal.template_fm_step1', {
             'step1': request.session.get('fm_step1', {}),
+            'base_price': _fm_base,
         })
 
     # ══════════════════════════════════════════════════
@@ -6778,8 +6751,15 @@ Important Notes:
                 }
                 request.session['fm_step1_files'] = files_data
             return request.redirect('/spc/facility-management/step2')
+
+        _fm_price2 = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'facility_management'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _fm_base2 = _fm_price2.amount if _fm_price2 else 0.0
         return request.render('spc_portal.template_fm_step1', {
             'step1': request.session.get('fm_step1', {}),
+            'base_price': _fm_base2,
         })
 
     @http.route('/spc/facility-management/save-exit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -6879,7 +6859,7 @@ Important Notes:
             record = request.env['spc.facility.management'].sudo().create(vals)
         for key in ['fm_step1', 'fm_step1_files', 'fm_step2']:
             request.session.pop(key, None)
-        return request.render('spc_portal.template_fm_success', {'record': record})
+        return request.redirect('/spc/payment/facility_management/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # CHANGE OF STATUS
@@ -7072,7 +7052,7 @@ Important Notes:
             record = request.env['spc.change.of.status'].sudo().create(vals)
         for key in ['cos_step1', 'cos_step1_files', 'cos_step2', 'cos_step3']:
             request.session.pop(key, None)
-        return request.render('spc_portal.template_cos_success', {'record': record})
+        return request.redirect('/spc/payment/change_of_status/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # DEDICATED ACCOUNT MANAGER
@@ -7223,7 +7203,7 @@ Important Notes:
             record = request.env['spc.dedicated.account.manager'].sudo().create(vals)
         for key in ['dam_step1', 'dam_step2', 'dam_step3']:
             request.session.pop(key, None)
-        return request.render('spc_portal.template_dam_success', {'record': record})
+        return request.redirect('/spc/payment/dedicated_account_manager/' + str(record.id))
 
     @http.route('/spc/concierge-services/service/account_manager',
                 type='http', auth='public', website=True)
@@ -7454,7 +7434,7 @@ Important Notes:
         record = request.env['spc.eid.replacement'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/apply/eid_replacement/step1')
-        return request.render('spc_portal.eid_replacement_payment', {'record': record})
+        return request.redirect('/spc/payment/eid_replacement/' + str(record_id))
 
     @http.route('/spc/apply/eid_replacement/payment/submit', type='http', auth='user', website=True, methods=['POST'])
     def eid_replacement_payment_submit(self, **kwargs):
@@ -7465,9 +7445,9 @@ Important Notes:
         record.sudo().write({
             'state': 'submitted',
             'payment_status': 'paid',
-                'fee': float(kw.get('amount', 0)) or 0.0,
+                'fee': float(kwargs.get('amount', 0)) or 0.0,
         })
-        return request.render('spc_portal.eid_replacement_success', {'record': record})
+        return request.redirect('/spc/payment/eid_replacement/' + str(record.id))
 
 
     # ═══════════════════════════════════════════════
@@ -7582,7 +7562,7 @@ Important Notes:
         if not record.exists():
             return request.redirect('/spc/apply/reentry_permit/step1')
         record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
-        return request.render('spc_portal.reentry_permit_success', {'record': record})
+        return request.redirect('/spc/payment/reentry_permit/' + str(record.id))
 
     # ═══════════════════════════════════════════════
     #  LEASE DOCUMENT ROUTES
@@ -7695,7 +7675,7 @@ Important Notes:
         if not record.exists():
             return request.redirect('/spc/concierge-services')
         record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
-        return request.render('spc_portal.lease_document_success', {'record': record})
+        return request.redirect('/spc/payment/lease_document/' + str(record.id))
 
     # MEDICAL ROUTES
     @http.route('/spc/concierge/medical', type='http', auth='user', website=True)
@@ -7808,7 +7788,7 @@ Important Notes:
         record = request.env['spc.medical'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
         record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
-        return request.render('spc_portal.medical_success', {'record': record})
+        return request.redirect('/spc/payment/medical_new/' + str(record.id))
 
     # MEETING ROOM ROUTES
     @http.route('/spc/concierge/meeting-room', type='http', auth='user', website=True)
@@ -7859,7 +7839,7 @@ Important Notes:
         record = request.env['spc.meeting.room'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
         record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
-        return request.render('spc_portal.meeting_room_success', {'record': record})
+        return request.redirect('/spc/payment/meeting_room/' + str(record.id))
 
     # MOFA ROUTES
     @http.route('/spc/concierge/mofa-attestation', type='http', auth='user', website=True)
@@ -7948,7 +7928,7 @@ Important Notes:
         record = request.env['spc.mofa'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
         record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
-        return request.render('spc_portal.mofa_success', {'record': record})
+        return request.redirect('/spc/payment/mofa/' + str(record.id))
 
     # BANKING ASSISTANCE ROUTES
     @http.route('/spc/concierge/banking', type='http', auth='user', website=True)
@@ -8060,7 +8040,7 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
         record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
-        return request.render('spc_portal.banking_success', {'record': record})
+        return request.redirect('/spc/payment/banking_assistance/' + str(record.id))
 
     # BANKING CORPORATE ROUTES
     @http.route('/spc/apply/banking/corp/step1/<int:record_id>', type='http', auth='user', website=True)
@@ -8271,7 +8251,7 @@ Important Notes:
         if not record.exists():
             return request.redirect('/spc/concierge-services')
         record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
-        return request.render('spc_portal.banking_old_success', {'record': record})
+        return request.redirect('/spc/payment/banking_assistance_old/' + str(record.id))
 
 
     # ══════════════════════════════════════════════════
@@ -8347,7 +8327,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.vip.medical.eid'].sudo().browse(record_id)
-        return request.render('spc_portal.vip_medical_eid_payment', {'record': record})
+        return request.redirect('/spc/payment/vip_medical_eid/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # COMPANY STAMP
@@ -8410,7 +8390,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.company.stamp'].sudo().browse(record_id)
-        return request.render('spc_portal.company_stamp_payment', {'record': record})
+        return request.redirect('/spc/payment/company_stamp/' + str(record.id))
 
     # ══════════════════════════════════════════════════
     # DEPENDENT VISA
@@ -8568,7 +8548,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.dependent.visa'].sudo().browse(record_id)
-        return request.render('spc_portal.dependent_visa_payment', {'record': record})
+        return request.redirect('/spc/payment/dependent_visa/' + str(record.id))
 
     @http.route('/spc/concierge/doc-delivery/driver/detail', type='http', auth='public', website=True, csrf=False)
     def doc_delivery_driver_detail(self, **kw):
@@ -8628,7 +8608,7 @@ Important Notes:
     @http.route('/spc/concierge/doc-delivery/payment/<int:record_id>', type='http', auth='public', website=False)
     def doc_delivery_payment(self, record_id, **kw):
         record = request.env['spc.document.delivery'].sudo().browse(record_id)
-        return request.render('spc_portal.doc_delivery_payment', {'record': record})
+        return request.redirect('/spc/payment/document_delivery/' + str(record_id))
 
 
     # ══════════════════════════════════════════════════
@@ -8762,7 +8742,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.driving.license'].sudo().browse(record_id)
-        return request.render('spc_portal.driving_license_payment', {'record': record, 'dl_type': dl_type})
+        return request.redirect('/spc/payment/driving_license/' + str(record_id))
 
     @http.route('/spc/concierge/doc-delivery/courier/step1', type='http', auth='public', website=True, csrf=False)
     def doc_delivery_courier_step1(self, **kw):
@@ -8834,7 +8814,7 @@ Important Notes:
     @http.route('/spc/concierge/doc-delivery/courier/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def doc_delivery_courier_payment(self, record_id, **kw):
         record = request.env['spc.document.delivery'].sudo().browse(record_id)
-        return request.render('spc_portal.doc_delivery_courier_payment', {'record': record})
+        return request.redirect('/spc/payment/document_delivery_courier/' + str(record_id))
 
 
     # ══════════════════════════════════════════════════
@@ -8937,8 +8917,7 @@ Important Notes:
     def phone_answering_payment(self, record_id, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        record = request.env['spc.phone.answering'].sudo().browse(record_id)
-        return request.render('spc_portal.phone_answering_payment', {'record': record})
+        return request.redirect('/spc/payment/phone_answering/' + str(record_id))
 
     # ══════════════════════════════════════════════════
     # PO BOX
@@ -9014,7 +8993,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.po.box'].sudo().browse(record_id)
-        return request.render('spc_portal.po_box_payment', {'record': record})
+        return request.redirect('/spc/payment/po_box/' + str(record_id))
 
     # ══════════════════════════════════════════════════
     # MOVEMENT REPORT
@@ -9106,7 +9085,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.movement.report'].sudo().browse(record_id)
-        return request.render('spc_portal.movement_report_payment', {'record': record})
+        return request.redirect('/spc/payment/movement_report/' + str(record_id))
 
 
 
@@ -9245,7 +9224,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.uid.merging'].sudo().browse(record_id)
-        return request.render('spc_portal.uid_merging_payment', {'record': record})
+        return request.redirect('/spc/payment/uid_merging/' + str(record_id))
 
     @http.route('/spc/employee-management/uid-merging/payment/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def uid_merging_payment_submit(self, **kw):
@@ -9258,7 +9237,7 @@ Important Notes:
             'payment_method': kw.get('payment_method', ''),
             'payment_status': 'paid',
         })
-        return request.redirect('/spc/company-management/apply/success/uid_merging')
+        return request.redirect('/spc/payment/uid_merging')
 
     # ══════════════════════════════════════════════════
     # EID APPOINTMENT
@@ -9353,7 +9332,7 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.eid.appointment'].sudo().browse(record_id)
-        return request.render('spc_portal.eid_appointment_payment', {'record': record})
+        return request.redirect('/spc/payment/eid_appointment/' + str(record_id))
 
     @http.route('/spc/notifications', type='json', auth='public', website=True, csrf=False)
     def get_notifications(self, **kw):

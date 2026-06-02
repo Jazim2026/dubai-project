@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <!-- SERVICE PRICE VIEWS -->
+    <record id="spc_service_price_form" model="ir.ui.view">
+        <field name="name">spc.service.price.form</field>
+        <field name="model">spc.service.price</field>
+        <field name="arch" type="xml">
+            <form string="Service Price">
+                <sheet>
+                    <group>
+                        <field name="service_type"/>
+                        <field name="amount"/>
+                        <field name="is_active"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_service_price_tree" model="ir.ui.view">
+        <field name="name">spc.service.price.tree</field>
+        <field name="model">spc.service.price</field>
+        <field name="arch" type="xml">
+            <tree string="Service Pricing">
+                <field name="service_type"/>
+                <field name="amount"/>
+                <field name="is_active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_spc_service_price" model="ir.actions.act_window">
+        <field name="name">Service Pricing</field>
+        <field name="res_model">spc.service.price</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- PAYMENT VIEWS -->
+    <record id="spc_payment_form" model="ir.ui.view">
+        <field name="name">spc.payment.form</field>
+        <field name="model">spc.payment</field>
+        <field name="arch" type="xml">
+            <form string="Payment">
+                <header>
+                    <button name="action_approve"
+                            string="Approve"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state not in ['pending_approval']"/>
+                    <button name="action_reject"
+                            string="Reject"
+                            type="object"
+                            class="btn-danger"
+                            invisible="state not in ['pending_approval']"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,pending_approval,approved,paid"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Payment Info">
+                            <field name="name"/>
+                            <field name="service_type"/>
+                            <field name="amount"/>
+                            <field name="payment_method"/>
+                            <field name="state"/>
+                            <field name="payment_date"/>
+                        </group>
+                        <group string="Customer Info">
+                            <field name="customer_id"/>
+                            <field name="approved_company_id"/>
+                        </group>
+                    </group>
+                    <group string="Razorpay Details"
+                           invisible="payment_method != 'razorpay'">
+                        <field name="razorpay_order_id"/>
+                        <field name="razorpay_payment_id"/>
+                    </group>
+                    <group string="Bank Transfer"
+                           invisible="payment_method != 'bank_transfer'">
+                        <field name="proof_filename"/>
+                        <field name="proof_data" widget="binary"/>
+                    </group>
+                    <group string="Admin Note">
+                        <field name="admin_note" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="spc_payment_tree" model="ir.ui.view">
+        <field name="name">spc.payment.tree</field>
+        <field name="model">spc.payment</field>
+        <field name="arch" type="xml">
+            <tree string="Payments"
+                  decoration-success="state in ['paid','approved']"
+                  decoration-danger="state in ['failed','rejected']"
+                  decoration-warning="state == 'pending_approval'"
+                  decoration-muted="state == 'pending'">
+                <field name="name"/>
+                <field name="customer_id"/>
+                <field name="approved_company_id"/>
+                <field name="service_type"/>
+                <field name="amount"/>
+                <field name="payment_method"/>
+                <field name="state"/>
+                <field name="payment_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_spc_payment" model="ir.actions.act_window">
+        <field name="name">Payments</field>
+        <field name="res_model">spc.payment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- MENU ITEMS -->
+    <menuitem id="menu_spc_payment_root"
+              name="Payments"
+              parent="menu_spc_root"
+              action="action_spc_payment"
+              sequence="50"/>
+
+    <menuitem id="menu_spc_config_root"
+              name="Configuration"
+              parent="menu_spc_root"
+              sequence="99"/>
+
+    <menuitem id="menu_spc_service_price"
+              name="Service Pricing"
+              parent="menu_spc_config_root"
+              action="action_spc_service_price"
+              sequence="1"/>
+
+</data>
+</odoo>

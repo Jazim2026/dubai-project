@@ -166,7 +166,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
   </div>
   <div class="ps-total">
     <div class="ps-total-lbl">Total AED</div>
-    <div class="ps-total-val">10.00 &#9432;</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
   </div>
   <a href="/spc/concierge/phone-answering/new/detail" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>

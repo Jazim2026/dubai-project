@@ -161,7 +161,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
             <p>The Medical Fitness Test is a mandatory examination the UAE government requires for individuals applying for residency visas. The objective is to ensure all applicants are free from communicable and infectious diseases. A successful outcome will generate a certificate of good health, &#8220;Fit.&#8221; The examination includes an X-ray and blood test.</p>
             <p style="margin-top:12px;font-weight:700">Emirates ID:</p>
             <p>The Emirates Identity Card (EID) is a mandatory identification card issued to citizens and residents of the United Arab Emirates (UAE). It allows access to government services, banking, obtaining a mobile number, and many other related services.</p>
-            <p style="margin-top:12px;font-weight:700">Pricing: AED 3025.00</p>
+            <p style="margin-top:12px;font-weight:700">Pricing: AED <t t-esc="'%.2f' % (base_price or 0)"/></p>
             <p style="margin-top:12px;font-weight:700">Input Details:</p>
             <p>&#183; Passport copy</p>
             <p>&#183; Entry visa with Change of Status / Entry stamp copy</p>
@@ -192,7 +192,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
     <div class="progress-step"><div class="step-num">2</div><div class="step-label">Upload Documents</div></div>
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -294,7 +294,7 @@ function vipMedStep1Validate(){
     <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Upload Documents</div></div>
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -352,7 +352,7 @@ function vipMedStep2Validate(){
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Upload Documents</div></div>
     <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -392,14 +392,14 @@ function vipMedStep2Validate(){
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Upload Documents</div></div>
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
     <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">3,025.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
     <div class="pay-card">
         <div class="pay-title">Payment Summary</div>
-        <div class="pay-row"><span style="color:#555">VIP Medical and EID Service Fee</span><span style="font-weight:600">AED 3,025.00</span></div>
-        <div class="pay-row pay-total"><span>Total</span><span>AED 3,025.00</span></div>
+        <div class="pay-row"><span style="color:#555">VIP Medical and EID Service Fee</span><span style="font-weight:600">AED <t t-esc="'%.2f' % (base_price or 0)"/></span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED <t t-esc="'%.2f' % (base_price or 0)"/></span></div>
         <div class="pay-method-title">Select payment method</div>
         <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
         <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
@@ -458,7 +458,7 @@ function vipMedStep2Validate(){
     <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -526,7 +526,7 @@ function csValidateStep1() {
     <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -584,7 +584,7 @@ function csValidateStep2() {
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
     <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -618,14 +618,14 @@ function csValidateStep2() {
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
     <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">260.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
     <div class="pay-card">
         <div class="pay-title">Payment Summary</div>
-        <div class="pay-row"><span style="color:#555">Company Stamp Service Fee</span><span style="font-weight:600">AED 260.00</span></div>
-        <div class="pay-row pay-total"><span>Total</span><span>AED 260.00</span></div>
+        <div class="pay-row"><span style="color:#555">Company Stamp Service Fee</span><span style="font-weight:600">AED <t t-esc="'%.2f' % (base_price or 0)"/></span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED <t t-esc="'%.2f' % (base_price or 0)"/></span></div>
         <div class="pay-method-title">Select payment method</div>
         <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
         <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
@@ -699,7 +699,7 @@ function csValidateStep2() {
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -960,7 +960,7 @@ function dvValidateStep1() {
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
     <div class="progress-step active"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -997,7 +997,7 @@ function dvValidateStep1() {
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
     <div class="progress-step active"><div class="step-num">7</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">New</div>
@@ -1039,7 +1039,7 @@ function dvValidateStep1() {
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1212,7 +1212,7 @@ function dvValidateStep2() {
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1334,7 +1334,7 @@ function dvValidateStep3() {
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1408,7 +1408,7 @@ function dvValidateStep4() {
     <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">6</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">7</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">5,010.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1549,7 +1549,7 @@ function dvValidateStep5() {
     <div class="progress-step"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1643,7 +1643,7 @@ function ddValidateStep1() {
     <div class="progress-step active"><div class="step-num">2</div><div class="step-label">Declaration</div></div>
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1704,7 +1704,7 @@ function ddValidateDecl() {
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
     <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title" style="text-transform:capitalize"><t t-esc="(record.delivery_type or 'driver').title()"/></div>
@@ -1744,14 +1744,14 @@ function ddValidateDecl() {
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Declaration</div></div>
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
     <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title" style="text-transform:capitalize"><t t-esc="(record.delivery_type or 'driver').title()"/></div>
     <div class="pay-card">
         <div class="pay-title">Payment Summary</div>
         <div class="pay-row"><span style="color:#555">Document Delivery Fee</span><span style="font-weight:600">AED 10.00</span></div>
-        <div class="pay-row pay-total"><span>Total</span><span>AED 10.00</span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED <t t-esc="'%.2f' % (base_price or 0)"/></span></div>
         <div class="pay-method-title">Select payment method</div>
         <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
         <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>
@@ -1786,7 +1786,7 @@ function ddValidateDecl() {
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Additional Remarks</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount" id="total_amt">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount" id="total_amt"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1920,7 +1920,7 @@ window.addEventListener('DOMContentLoaded', function(){
     <div class="progress-step"><div class="step-num">3</div><div class="step-label">Additional Remarks</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -1982,7 +1982,7 @@ function ddcValidateDecl() {
     <div class="progress-step active"><div class="step-num">3</div><div class="step-label">Additional Remarks</div></div>
     <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
     <div class="sidebar-links"><a href="/spc/concierge-services">SAVE &amp; EXIT</a><a href="#" style="color:#f87171">CANCEL APPLICATION</a></div>
 </div>
 <div class="main">
@@ -2036,7 +2036,7 @@ function vipMedStep2Validate(){
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Additional Remarks</div></div>
     <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
     <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">Courier</div>
@@ -2071,14 +2071,14 @@ function vipMedStep2Validate(){
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Additional Remarks</div></div>
     <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
     <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
-    <div class="total-box">Total AED<div class="amount">10.00</div></div>
+    <div class="total-box">Total AED<div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/></div></div>
 </div>
 <div class="main">
     <div class="form-title">Courier</div>
     <div class="pay-card">
         <div class="pay-title">Payment Summary</div>
         <div class="pay-row"><span style="color:#555">Document Delivery (Courier) Fee</span><span style="font-weight:600">AED 10.00</span></div>
-        <div class="pay-row pay-total"><span>Total</span><span>AED 10.00</span></div>
+        <div class="pay-row pay-total"><span>Total</span><span>AED <t t-esc="'%.2f' % (base_price or 0)"/></span></div>
         <div class="pay-method-title">Select payment method</div>
         <label class="pay-option"><input type="radio" name="payment_method" value="card"/> Credit / Debit Card</label>
         <label class="pay-option"><input type="radio" name="payment_method" value="transfer"/> Online Bank Transfer</label>

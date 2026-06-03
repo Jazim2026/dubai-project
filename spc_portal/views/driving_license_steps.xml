@@ -462,7 +462,9 @@ window.onload = function() {
 //]]>
 </script>
 <script>//<![CDATA[
-var FEE_MAP = {new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var base_price = <t t-esc="base_price or 0"/>;
+var _bp = base_price > 0 ? base_price.toFixed(2) : '1,890.00';
+var FEE_MAP = {new:_bp,amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
 var STEP_LABELS = {
   new:['Application details','Declaration','Review application','Payment'],
   amendment:['Application details','Declaration','Review application','Payment'],
@@ -823,7 +825,7 @@ function spcValidateDecl() {
   if (err) err.style.display = 'none';
   document.querySelector('form#declForm').submit();
 }
-var FEE_MAP2={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var FEE_MAP2={new:_bp,amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
 var STEPS2={
   new:['Application details','Declaration','Review application','Payment'],
   amendment:['Application details','Declaration','Review application','Payment'],
@@ -896,7 +898,7 @@ document.getElementById('prevBtn').href=dlType==='transfer'
 </div>
 </div>
 <script>//<![CDATA[
-var FEE_MAP3={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var FEE_MAP3={new:_bp,amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
 var STEPS3={new:['Application details','Declaration','Review application','Payment'],
   amendment:['Application details','Declaration','Review application','Payment'],
   duplicate:['Application details','Declaration','Review application','Payment'],
@@ -955,7 +957,7 @@ document.getElementById('nextBtn2').href='/spc/concierge/driving-license/'+dlTyp
 </div>
 </div>
 <script>//<![CDATA[
-var FEE_MAP4={new:'1,890.00',amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
+var FEE_MAP4={new:_bp,amendment:'378.00',duplicate:'1,285.00',renewal:'1,285.00',transfer:'1,010.00'};
 var STEPS4={new:['Application details','Declaration','Review application','Payment'],
   amendment:['Application details','Declaration','Review application','Payment'],
   duplicate:['Application details','Declaration','Review application','Payment'],

@@ -142,7 +142,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
   <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
   <div class="ps-total">
     <div class="ps-total-lbl">Total AED</div>
-    <div class="ps-total-val">410.00 &#9432;</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
   </div>
   <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
@@ -324,7 +324,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
   <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
   <div class="ps-total">
     <div class="ps-total-lbl">Total AED</div>
-    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 400.0)"/> &#9432;</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (base_price or record.amount or 0)"/> &#9432;</div>
   </div>
   <a href="/spc/employee-management" class="ps-link">SAVE &amp; EXIT</a>
   <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
@@ -414,7 +414,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
   <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Payment</div></div>
   <div class="ps-total">
     <div class="ps-total-lbl">Total AED</div>
-    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 400.0)"/> &#9432;</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (base_price or record.amount or 0)"/> &#9432;</div>
   </div>
 </div>
 <div class="form-main">
@@ -489,7 +489,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
   <div class="progress-step"><div class="ps-num active">4</div><div class="ps-label active">Payment</div></div>
   <div class="ps-total">
     <div class="ps-total-lbl">Total AED</div>
-    <div class="ps-total-val"><t t-esc="'%.2f' % (record.amount or 400.0)"/> &#9432;</div>
+    <div class="ps-total-val"><t t-esc="'%.2f' % (base_price or record.amount or 0)"/> &#9432;</div>
   </div>
 </div>
 <div class="form-main">
@@ -501,11 +501,11 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
       <div class="pay-title">Payment Summary</div>
       <div class="pay-row">
         <span style="color:#555">UID Merging Service Fee</span>
-        <span style="color:#1a2340;font-weight:600">AED <t t-esc="'%.2f' % (record.amount or 400.0)"/></span>
+        <span style="color:#1a2340;font-weight:600">AED <t t-esc="'%.2f' % (base_price or record.amount or 0)"/></span>
       </div>
       <div class="pay-row">
         <span>Total</span>
-        <span>AED <t t-esc="'%.2f' % (record.amount or 400.0)"/></span>
+        <span>AED <t t-esc="'%.2f' % (base_price or record.amount or 0)"/></span>
       </div>
       <div class="pay-method-title">Select payment method</div>
       <label class="pay-option"><input type="radio" name="payment_method" value="card"/> <span style="font-size:14px">Credit / Debit Card</span></label>

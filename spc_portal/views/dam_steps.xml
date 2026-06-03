@@ -59,7 +59,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">10.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="damSaveExit1();return false;">SAVE &amp; EXIT</a>
@@ -313,7 +313,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">10.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="damSaveExit2();return false;">SAVE &amp; EXIT</a>
@@ -426,7 +426,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">10.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="damSaveExit3();return false;">SAVE &amp; EXIT</a>
@@ -539,7 +539,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">10.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="damSaveExit4();return false;">SAVE &amp; EXIT</a>
@@ -647,7 +647,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;color:#333}
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
         <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">10.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="damSaveExit5();return false;">SAVE &amp; EXIT</a>

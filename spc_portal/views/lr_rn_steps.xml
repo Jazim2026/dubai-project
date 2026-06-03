@@ -229,12 +229,13 @@
                                 <option t-att-value="company['id']" t-att-data-name="company['name']"><t t-esc="company['name']"/></option>
                             </t>
                         </select>
-                        <input type="text" class="field-input" name="idn_number" id="idnText" placeholder="Or enter IDN number manually"/>
+                        <input type="text" class="field-input" name="idn_number" id="idnText" placeholder="Or enter IDN number manually" maxlength="15"/>
+                        <div id="idn_err" style="display:none;color:#ef4444;font-size:12px;margin-top:4px;"></div>
                     </div>
                 </div>
             </div>
             <div class="spc-nav-buttons">
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="lrStep1Validate()">NEXT</button>
             </div>
         </form>
     </div>
@@ -245,6 +246,34 @@ function updateIdnText(sel) {
     if (opt.value) {
         document.getElementById('idnText').value = opt.getAttribute('data-name') || opt.value;
     }
+}
+function lrStep1Validate() {
+    var idn = document.getElementById('idnText');
+    var err = document.getElementById('idn_err');
+    var val = idn ? idn.value.trim() : '';
+    var pattern = /^[A-Z0-9]+$/;
+    if (!val) {
+        err.textContent = 'Please enter IDN number.';
+        err.style.display = 'block';
+        return;
+    }
+    if (val.length < 5) {
+        err.textContent = 'IDN number must be at least 5 characters.';
+        err.style.display = 'block';
+        return;
+    }
+    if (val.length > 15) {
+        err.textContent = 'IDN number must not exceed 15 characters.';
+        err.style.display = 'block';
+        return;
+    }
+    if (!pattern.test(val)) {
+        err.textContent = 'IDN number must contain only uppercase letters and numbers.';
+        err.style.display = 'block';
+        return;
+    }
+    err.style.display = 'none';
+    document.getElementById('lrStep1Form').submit();
 }
 //]]>
 </script>

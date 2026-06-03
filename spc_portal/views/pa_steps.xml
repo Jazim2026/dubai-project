@@ -190,7 +190,7 @@ body{font-family:'Segoe UI',sans-serif;background:#f5f6fa;display:flex;min-heigh
         <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="form-main">
-        <div class="form-title">Company New</div>
+        <div class="form-title">Pre-Approval - New</div>
         <form action="/spc/setup-new-company/apply/pa-step4/submit" method="post" enctype="multipart/form-data" id="step6Form">
             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
             <input type="hidden" name="service_type" t-att-value="service_type"/>

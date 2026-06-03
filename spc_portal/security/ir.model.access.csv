@@ -59,6 +59,5 @@ access_spc_send_notification_wizard,spc.send.notification.wizard,model_spc_send_
 access_spc_approved_company_admin,spc.approved.company admin,model_spc_approved_company,base.group_user,1,1,1,1
 access_spc_service_price,spc.service.price,model_spc_service_price,base.group_user,1,1,1,1
 access_spc_payment,spc.payment,model_spc_payment,base.group_user,1,1,1,1
-access_spc_option_price,spc.option.price,model_spc_option_price,base.group_user,1,1,1,1
 access_spc_option_group,spc.option.group,model_spc_option_group,base.group_user,1,1,1,1
 access_spc_option_line,spc.option.line,model_spc_option_line,base.group_user,1,1,1,1

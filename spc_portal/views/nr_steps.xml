@@ -10,6 +10,24 @@
     <title>Company Name | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
 <style>
+
+.sidebar{width:280px;background:#1a3c6e;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.progress-logo{font-size:20px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c}
+.ps-subtitle{font-size:12px;opacity:.6;margin-bottom:32px}
+.progress-step-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3) !important;background:transparent !important;color:white !important;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.progress-step-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
+.progress-step-num.done{background:white;border-color:white;color:#1a2340}
+.progress-step-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.progress-step-label.active{opacity:1;font-weight:700;font-size:14px}
+.progress-total{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.15)}
+.progress-total-label{font-size:11px;opacity:.6;margin-bottom:4px}
+.progress-total-val{font-size:22px;font-weight:700}
+.progress-save{display:block;color:rgba(255,255,255,.6);font-size:12px;text-decoration:none;margin-top:12px;background:none;border:none;cursor:pointer;padding:0;text-align:left}
+.ps-link:hover{color:white}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.progress-title{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
 .declaration-box{background:#f8f9fa;border-radius:10px;padding:20px;font-size:13px;color:#374151;line-height:1.8;margin-bottom:16px}
 .note-box{background:#fff8e1;border-left:3px solid #f59e0b;padding:12px 16px;border-radius:6px;margin-top:12px}
 .note-icon{font-size:16px}
@@ -39,17 +57,17 @@
 <body>
 <div style="display:flex;min-height:100vh">
     <div class="sidebar">
-        <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+        <div class="progress-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
         <div class="ps-subtitle">Free Zone</div>
         <div class="progress-title">Your progress</div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Business activities</div></div>
-        <div class="progress-step"><div class="ps-num active">2</div><div class="ps-label">Company name</div></div>
-        <div class="progress-step"><div class="ps-num">3</div><div class="ps-label">Declaration</div></div>
-        <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Review application</div></div>
-        <div class="progress-step"><div class="ps-num">5</div><div class="ps-label">Payment</div></div>
-        <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
-        <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Business activities</div></div>
+        <div class="progress-step"><div class="progress-step-num active">2</div><div class="progress-step-label">Company name</div></div>
+        <div class="progress-step"><div class="progress-step-num">3</div><div class="progress-step-label">Declaration</div></div>
+        <div class="progress-step"><div class="progress-step-num">4</div><div class="progress-step-label">Review application</div></div>
+        <div class="progress-step"><div class="progress-step-num">5</div><div class="progress-step-label">Payment</div></div>
+        <div class="progress-total"><div class="progress-total-label">Total AED</div><div class="progress-total-val">510.00 &#9432;</div></div>
+        <a href="/spc/setup-new-company" class="progress-save">SAVE &amp; EXIT</a>
+        <button class="progress-save" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
         <div class="form-title">Name Reservation - New</div>
@@ -115,7 +133,7 @@
                 <div style="font-size:16px;font-weight:700;color:#1a2340;margin-bottom:16px">02 &#160; Applicant's details</div>
                 <input type="text" class="field-input" name="applicant_first_name" placeholder="Applicant first name"/>
                 <input type="text" class="field-input" name="applicant_last_name" placeholder="Applicant last name"/>
-                <input type="text" class="field-input" name="applicant_arabic_name" placeholder="Applicant full name (Arabic)"/>
+                <input type="text" class="field-input" name="applicant_arabic_name" placeholder="الاسم الكامل بالعربي" dir="rtl" lang="ar" style="font-family:Arial,sans-serif;text-align:right;"/>
                 <div style="margin-bottom:16px">
                     <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:8px">Applicant's passport copy</div>
                     <label style="border:2px dashed #1abc9c;border-radius:8px;padding:20px;text-align:center;cursor:pointer;display:inline-block;min-width:200px">
@@ -136,10 +154,123 @@
 
             <div class="spc-nav-buttons">
                 <a t-att-href="'/spc/setup-new-company/apply/' + service_type" class="spc-btn-previous">PREVIOUS</a>
-                <button type="submit" class="spc-btn-next">NEXT</button>
+                <button type="button" class="spc-btn-next" onclick="nrStep2Validate()">NEXT</button>
             </div>
         </form>
     </div>
+<script>//<![CDATA[
+function nrStep2Validate() {
+    var valid = true;
+    function showErr(id, msg) {
+        var el = document.getElementById(id);
+        if (!el) {
+            el = document.createElement('div');
+            el.id = id;
+            el.style.cssText = 'color:#ef4444;font-size:12px;margin-top:4px;';
+        }
+        el.textContent = msg;
+        el.style.display = 'block';
+        return el;
+    }
+    function hideErr(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    }
+    function insertErr(field, id) {
+        if (field && !document.getElementById(id)) {
+            var el = document.createElement('div');
+            el.id = id;
+            el.style.cssText = 'color:#ef4444;font-size:12px;margin-top:4px;';
+            field.insertAdjacentElement('afterend', el);
+        }
+    }
+
+    // Name preference 1 (required, min 3, max 50)
+    var nameReserved = document.querySelector('[name="name_reserved"]:checked');
+    if (!nameReserved || nameReserved.value === 'no') {
+        var p1 = document.querySelector('[name="name_preference_1"]');
+        insertErr(p1, 'nr_p1_err');
+        if (!p1 || !p1.value.trim()) {
+            showErr('nr_p1_err', 'First preference is required.');
+            valid = false;
+        } else if (p1.value.trim().length < 3) {
+            showErr('nr_p1_err', 'Minimum 3 characters required.');
+            valid = false;
+        } else if (p1.value.trim().length > 50) {
+            showErr('nr_p1_err', 'Maximum 50 characters allowed.');
+            valid = false;
+        } else { hideErr('nr_p1_err'); }
+
+        // Name preference 2 (optional but if filled, min 3 max 50)
+        var p2 = document.querySelector('[name="name_preference_2"]');
+        insertErr(p2, 'nr_p2_err');
+        if (p2 && p2.value.trim() && p2.value.trim().length < 3) {
+            showErr('nr_p2_err', 'Minimum 3 characters required.');
+            valid = false;
+        } else if (p2 && p2.value.trim().length > 50) {
+            showErr('nr_p2_err', 'Maximum 50 characters allowed.');
+            valid = false;
+        } else { hideErr('nr_p2_err'); }
+
+        // Name preference 3 (optional but if filled, min 3 max 50)
+        var p3 = document.querySelector('[name="name_preference_3"]');
+        insertErr(p3, 'nr_p3_err');
+        if (p3 && p3.value.trim() && p3.value.trim().length < 3) {
+            showErr('nr_p3_err', 'Minimum 3 characters required.');
+            valid = false;
+        } else if (p3 && p3.value.trim().length > 50) {
+            showErr('nr_p3_err', 'Maximum 50 characters allowed.');
+            valid = false;
+        } else { hideErr('nr_p3_err'); }
+    }
+
+    // Applicant first name (min 3, max 50)
+    var fn = document.querySelector('[name="applicant_first_name"]');
+    insertErr(fn, 'nr_fn_err');
+    if (!fn || !fn.value.trim()) {
+        showErr('nr_fn_err', 'Applicant name is required.');
+        valid = false;
+    } else if (fn.value.trim().length < 3) {
+        showErr('nr_fn_err', 'Minimum 3 characters required.');
+        valid = false;
+    } else if (fn.value.trim().length > 50) {
+        showErr('nr_fn_err', 'Maximum 50 characters allowed.');
+        valid = false;
+    } else { hideErr('nr_fn_err'); }
+
+    // Applicant last name (min 3, max 50)
+    var ln = document.querySelector('[name="applicant_last_name"]');
+    insertErr(ln, 'nr_ln_err');
+    if (!ln || !ln.value.trim()) {
+        showErr('nr_ln_err', 'Applicant last name is required.');
+        valid = false;
+    } else if (ln.value.trim().length < 3) {
+        showErr('nr_ln_err', 'Minimum 3 characters required.');
+        valid = false;
+    } else if (ln.value.trim().length > 50) {
+        showErr('nr_ln_err', 'Maximum 50 characters allowed.');
+        valid = false;
+    } else { hideErr('nr_ln_err'); }
+
+    // Passport upload validation
+    var passport = document.querySelector('[name="applicant_passport"]');
+    insertErr(passport ? passport.closest('label') : null, 'nr_passport_err');
+    if (!passport || !passport.files || passport.files.length === 0) {
+        showErr('nr_passport_err', 'Applicant passport copy is required.');
+        valid = false;
+    } else {
+        var allowed = ['pdf','jpg','jpeg','png'];
+        var fname = passport.files[0].name.toLowerCase();
+        var ext = fname.split('.').pop();
+        if (!allowed.includes(ext)) {
+            showErr('nr_passport_err', 'Only PDF, JPG, JPEG, PNG allowed.');
+            valid = false;
+        } else { hideErr('nr_passport_err'); }
+    }
+
+    if (valid) document.getElementById('nrStep2Form').submit();
+}
+]]></script>
 </div>
 <script>//<![CDATA[
 function toggleReserved(val) {
@@ -159,22 +290,41 @@ function toggleReserved(val) {
     <meta charset="utf-8"/>
     <title>Declaration | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.sidebar{width:280px;background:#1a3c6e;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.progress-logo{font-size:20px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c}
+.ps-subtitle{font-size:12px;opacity:.6;margin-bottom:32px}
+.progress-step-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3) !important;background:transparent !important;color:white !important;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.progress-step-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
+.progress-step-num.done{background:white;border-color:white;color:#1a2340}
+.progress-step-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.progress-step-label.active{opacity:1;font-weight:700;font-size:14px}
+.progress-total{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.15)}
+.progress-total-label{font-size:11px;opacity:.6;margin-bottom:4px}
+.progress-total-val{font-size:22px;font-weight:700}
+.progress-save{display:block;color:rgba(255,255,255,.6);font-size:12px;text-decoration:none;margin-top:12px;background:none;border:none;cursor:pointer;padding:0;text-align:left}
+.ps-link:hover{color:white}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.progress-title{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+</style>
     
 </head>
 <body>
 <div style="display:flex;min-height:100vh">
     <div class="sidebar">
-        <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+        <div class="progress-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
         <div class="ps-subtitle">Free Zone</div>
         <div class="progress-title">Your progress</div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Business activities</div></div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Company name</div></div>
-        <div class="progress-step"><div class="ps-num active">3</div><div class="ps-label">Declaration</div></div>
-        <div class="progress-step"><div class="ps-num">4</div><div class="ps-label">Review application</div></div>
-        <div class="progress-step"><div class="ps-num">5</div><div class="ps-label">Payment</div></div>
-        <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
-        <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Business activities</div></div>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Company name</div></div>
+        <div class="progress-step"><div class="progress-step-num active">3</div><div class="progress-step-label">Declaration</div></div>
+        <div class="progress-step"><div class="progress-step-num">4</div><div class="progress-step-label">Review application</div></div>
+        <div class="progress-step"><div class="progress-step-num">5</div><div class="progress-step-label">Payment</div></div>
+        <div class="progress-total"><div class="progress-total-label">Total AED</div><div class="progress-total-val">510.00 &#9432;</div></div>
+        <a href="/spc/setup-new-company" class="progress-save">SAVE &amp; EXIT</a>
+        <button class="progress-save" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
         <div class="form-title">Name Reservation - New</div>
@@ -216,22 +366,41 @@ function toggleReserved(val) {
     <meta charset="utf-8"/>
     <title>Review Application | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.sidebar{width:280px;background:#1a3c6e;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.progress-logo{font-size:20px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c}
+.ps-subtitle{font-size:12px;opacity:.6;margin-bottom:32px}
+.progress-step-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3) !important;background:transparent !important;color:white !important;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.progress-step-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
+.progress-step-num.done{background:white;border-color:white;color:#1a2340}
+.progress-step-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.progress-step-label.active{opacity:1;font-weight:700;font-size:14px}
+.progress-total{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.15)}
+.progress-total-label{font-size:11px;opacity:.6;margin-bottom:4px}
+.progress-total-val{font-size:22px;font-weight:700}
+.progress-save{display:block;color:rgba(255,255,255,.6);font-size:12px;text-decoration:none;margin-top:12px;background:none;border:none;cursor:pointer;padding:0;text-align:left}
+.ps-link:hover{color:white}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.progress-title{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+</style>
     
 </head>
 <body>
 <div style="display:flex;min-height:100vh">
     <div class="sidebar">
-        <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+        <div class="progress-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
         <div class="ps-subtitle">Free Zone</div>
         <div class="progress-title">Your progress</div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Business activities</div></div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Company name</div></div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Declaration</div></div>
-        <div class="progress-step"><div class="ps-num active">4</div><div class="ps-label">Review application</div></div>
-        <div class="progress-step"><div class="ps-num">5</div><div class="ps-label">Payment</div></div>
-        <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
-        <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Business activities</div></div>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Company name</div></div>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Declaration</div></div>
+        <div class="progress-step"><div class="progress-step-num active">4</div><div class="progress-step-label">Review application</div></div>
+        <div class="progress-step"><div class="progress-step-num">5</div><div class="progress-step-label">Payment</div></div>
+        <div class="progress-total"><div class="progress-total-label">Total AED</div><div class="progress-total-val">510.00 &#9432;</div></div>
+        <a href="/spc/setup-new-company" class="progress-save">SAVE &amp; EXIT</a>
+        <button class="progress-save" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
         <div class="form-title">Name Reservation - New</div>
@@ -318,22 +487,41 @@ function toggleReserved(val) {
     <meta charset="utf-8"/>
     <title>Payment | SPC Free Zone</title>
 <t t-call="spc_portal.spc_new_modules_shared_css"/>
+<style>
+.sidebar{width:280px;background:#1a3c6e;color:white;padding:32px 24px;position:fixed;top:0;left:0;bottom:0;overflow-y:auto}
+.progress-logo{font-size:20px;font-weight:700;margin-bottom:4px}
+.ps-diamond{color:#1abc9c}
+.ps-subtitle{font-size:12px;opacity:.6;margin-bottom:32px}
+.progress-step-num{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3) !important;background:transparent !important;color:white !important;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;position:relative}
+.progress-step-num.active::after{content:'';position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid rgba(26,188,156,.4);top:-4px;left:-4px}
+.progress-step-num.active{background:#1abc9c;border-color:#1abc9c}
+.progress-step-num.done{background:white;border-color:white;color:#1a2340}
+.progress-step-label{font-size:13px;opacity:.6;font-weight:500;padding-top:4px}
+.progress-step-label.active{opacity:1;font-weight:700;font-size:14px}
+.progress-total{margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.15)}
+.progress-total-label{font-size:11px;opacity:.6;margin-bottom:4px}
+.progress-total-val{font-size:22px;font-weight:700}
+.progress-save{display:block;color:rgba(255,255,255,.6);font-size:12px;text-decoration:none;margin-top:12px;background:none;border:none;cursor:pointer;padding:0;text-align:left}
+.ps-link:hover{color:white}
+.progress-step{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.progress-title{font-size:11px;opacity:.6;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+</style>
     
 </head>
 <body>
 <div style="display:flex;min-height:100vh">
     <div class="sidebar">
-        <div class="ps-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
+        <div class="progress-logo"><span class="ps-diamond">&#9670;</span> K SPC</div>
         <div class="ps-subtitle">Free Zone</div>
         <div class="progress-title">Your progress</div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Business activities</div></div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Company name</div></div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Declaration</div></div>
-        <div class="progress-step"><div class="ps-num done">&#10003;</div><div class="ps-label">Review application</div></div>
-        <div class="progress-step"><div class="ps-num active">5</div><div class="ps-label">Payment</div></div>
-        <div class="ps-total"><div class="ps-total-lbl">Total AED</div><div class="ps-total-val">510.00 &#9432;</div></div>
-        <a href="/spc/setup-new-company" class="ps-link">SAVE &amp; EXIT</a>
-        <button class="ps-link" style="color:#f87171">CANCEL APPLICATION</button>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Business activities</div></div>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Company name</div></div>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Declaration</div></div>
+        <div class="progress-step"><div class="progress-step-num done">&#10003;</div><div class="progress-step-label">Review application</div></div>
+        <div class="progress-step"><div class="progress-step-num active">5</div><div class="progress-step-label">Payment</div></div>
+        <div class="progress-total"><div class="progress-total-label">Total AED</div><div class="progress-total-val">510.00 &#9432;</div></div>
+        <a href="/spc/setup-new-company" class="progress-save">SAVE &amp; EXIT</a>
+        <button class="progress-save" style="color:#f87171">CANCEL APPLICATION</button>
     </div>
     <div class="main">
         <div class="form-title">Name Reservation - New</div>

@@ -102,7 +102,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">710.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="cosSaveExit1();return false;">SAVE &amp; EXIT</a>
@@ -351,7 +351,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">710.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="cosSaveExit2();return false;">SAVE &amp; EXIT</a>
@@ -467,7 +467,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         <div class="progress-step"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">710.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="cosSaveExit3();return false;">SAVE &amp; EXIT</a>
@@ -584,7 +584,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         <div class="progress-step active"><div class="step-num">4</div><div class="step-label">Review application</div></div>
         <div class="progress-step"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">710.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="cosSaveExit4();return false;">SAVE &amp; EXIT</a>
@@ -690,7 +690,7 @@ textarea.field-input{resize:vertical;padding-top:8px}
         <div class="progress-step done"><div class="step-num">&#10003;</div><div class="step-label">Review application</div></div>
         <div class="progress-step active"><div class="step-num">5</div><div class="step-label">Payment</div></div>
         <div class="total-box">Total AED
-            <div class="amount">710.00 &#9432;</div>
+            <div class="amount"><t t-esc="'%.2f' % (base_price or 0)"/> &#9432;</div>
         </div>
         <div class="sidebar-links">
             <a href="#" onclick="cosSaveExit5();return false;">SAVE &amp; EXIT</a>

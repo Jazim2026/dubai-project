@@ -477,6 +477,10 @@ class SpcPortalController(http.Controller):
             nr_steps = ['Business activities', 'Company name', 'Shareholder details', 'Declaration', 'Review application', 'Payment']
         else:
             nr_steps = ['Legal type', 'Business activities', 'Company', 'Facility', 'Visa allocation', 'Shareholder(s)', 'Manager(s)', 'Director(s)', 'UBO', 'Nature of business', 'Bank account', 'Documents', 'Review', 'Payment']
+        title_map = {
+            'pre_approval': 'Pre-Approval - New',
+            'name_reservation': 'Name Reservation - New',
+        }
         return request.render('spc_portal.template_setup_company_step2', {
             'service_type': service_type,
             'activities_data': activities_data,
@@ -484,6 +488,7 @@ class SpcPortalController(http.Controller):
             'fee': fees_map.get(service_type, 0),
             'steps': nr_steps,
             'current_step': 1 if service_type in ('name_reservation', 'pre_approval') else 2,
+            'form_title': title_map.get(service_type, 'New Application'),
         })
 
     @http.route('/spc/setup-new-company/apply/step2/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
@@ -1608,7 +1613,7 @@ class SpcPortalController(http.Controller):
     def nr_step5(self, service_type, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_nr_step5', {'service_type': service_type})
+        return request.redirect('/spc/payment/' + service_type)
 
     # ══ PRE-APPROVAL FLOW ══
 
@@ -1798,6 +1803,7 @@ class SpcPortalController(http.Controller):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         service_type = kw.get('service_type', 'pre_approval')
+        pa = None
         try:
             customer_id = request.session.get('spc_selected_customer_id')
             step2_data = request.session.get('pa_step2_data') or {}
@@ -6433,11 +6439,30 @@ class SpcPortalController(http.Controller):
             comp = request.env['spc.approved.company'].sudo().browse(company_id)
             if comp.exists():
                 selected_company = comp
+        # Fetch service prices for concierge cards
+        def get_price(service_type):
+            p = request.env['spc.service.price'].sudo().search([
+                ('service_type', '=', service_type),
+                ('is_active', '=', True)
+            ], limit=1)
+            return p.amount if p else 0.0
+
         return request.render('spc_portal.template_concierge_services', {
             'customer': customer,
             'company_name': selected_company.company_name if selected_company else '',
             'all_companies': all_companies,
             'selected_company_id': company_id,
+            'price_vip_medical_eid': get_price('vip_medical_eid'),
+            'price_company_stamp': get_price('company_stamp'),
+            'price_dependent_visa': get_price('dependent_visa'),
+            'price_medical_new': get_price('medical_new'),
+            'price_medical_renewal': get_price('medical_renewal'),
+            'price_meeting_room': get_price('meeting_room'),
+            'price_mofa': get_price('mofa'),
+            'price_po_box': get_price('po_box'),
+            'price_phone_answering': get_price('phone_answering'),
+            'price_document_delivery': get_price('document_delivery'),
+            'price_document_delivery_courier': get_price('document_delivery_courier'),
         })
 
     @http.route('/spc/concierge-services/service/<string:service_type>', type='http', auth='public', website=True, csrf=False)
@@ -6947,9 +6972,16 @@ Important Notes:
         applicants = request.env['res.partner'].sudo().search([
             ('parent_id', '=', request.env.user.partner_id.id)
         ])
+
+        _price_change_of_status = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'change_of_status'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_change_of_status = _price_change_of_status.amount if _price_change_of_status else 0.0
         return request.render('spc_portal.template_cos_step1', {
             'step1': step1,
             'applicants': applicants,
+            'base_price': _base_change_of_status,
         })
 
     @http.route('/spc/apply/change_of_status/step2',
@@ -6973,10 +7005,17 @@ Important Notes:
             parts = applicant_name.split(' ', 1)
             applicant_first = parts[0]
             applicant_last = parts[1] if len(parts) > 1 else ''
+
+        _price_change_of_status = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'change_of_status'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_change_of_status = _price_change_of_status.amount if _price_change_of_status else 0.0
         return request.render('spc_portal.template_cos_step2', {
             'step2': step2,
             'applicant_first': applicant_first,
             'applicant_last': applicant_last,
+            'base_price': _base_change_of_status,
         })
 
     @http.route('/spc/apply/change_of_status/step3',
@@ -6989,8 +7028,15 @@ Important Notes:
                 'declaration_accepted': kw.get('declaration_accepted', 'off') == 'on',
             }
             return request.redirect('/spc/apply/change_of_status/step4')
+
+        _price_change_of_status = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'change_of_status'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_change_of_status = _price_change_of_status.amount if _price_change_of_status else 0.0
         return request.render('spc_portal.template_cos_step3', {
             'step3': request.session.get('cos_step3', {}),
+            'base_price': _base_change_of_status,
         })
 
     @http.route('/spc/apply/change_of_status/step4',
@@ -6998,10 +7044,17 @@ Important Notes:
     def cos_step4(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
+
+        _price_change_of_status = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'change_of_status'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_change_of_status = _price_change_of_status.amount if _price_change_of_status else 0.0
         return request.render('spc_portal.template_cos_step4', {
             'step1': request.session.get('cos_step1', {}),
             'step2': request.session.get('cos_step2', {}),
             'step3': request.session.get('cos_step3', {}),
+            'base_price': _base_change_of_status,
         })
 
     @http.route('/spc/apply/change_of_status/step5',
@@ -7009,7 +7062,13 @@ Important Notes:
     def cos_step5(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_cos_step5', {})
+
+        _price_change_of_status = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'change_of_status'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_change_of_status = _price_change_of_status.amount if _price_change_of_status else 0.0
+        return request.render('spc_portal.template_cos_step5', {'base_price': _base_change_of_status})
 
     @http.route('/spc/apply/change_of_status/final-submit',
                 type='http', auth='public', website=True, methods=['POST'])
@@ -7115,8 +7174,15 @@ Important Notes:
                     'started_date': odoo_fields.Datetime.now(),
                 })
                 request.session['dam_draft_id'] = rec.id
+
+        _dam_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dedicated_account_manager'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dam_base = _dam_price.amount if _dam_price else 0.0
         return request.render('spc_portal.template_dam_step1', {
             'step1': request.session.get('dam_step1', {}),
+            'base_price': _dam_base,
         })
 
     @http.route('/spc/apply/dam/step2',
@@ -7129,8 +7195,15 @@ Important Notes:
                 'number_of_stakeholders': kw.get('number_of_stakeholders', ''),
             }
             return request.redirect('/spc/apply/dam/step3')
+
+        _dam_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dedicated_account_manager'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dam_base = _dam_price.amount if _dam_price else 0.0
         return request.render('spc_portal.template_dam_step2', {
             'step2': request.session.get('dam_step2', {}),
+            'base_price': _dam_base,
         })
 
     @http.route('/spc/apply/dam/step3',
@@ -7143,8 +7216,15 @@ Important Notes:
                 'number_of_years': kw.get('number_of_years', ''),
             }
             return request.redirect('/spc/apply/dam/step4')
+
+        _dam_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dedicated_account_manager'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dam_base = _dam_price.amount if _dam_price else 0.0
         return request.render('spc_portal.template_dam_step3', {
             'step3': request.session.get('dam_step3', {}),
+            'base_price': _dam_base,
         })
 
     @http.route('/spc/apply/dam/step4',
@@ -7152,10 +7232,17 @@ Important Notes:
     def dam_step4(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
+
+        _dam_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dedicated_account_manager'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dam_base = _dam_price.amount if _dam_price else 0.0
         return request.render('spc_portal.template_dam_step4', {
             'step1': request.session.get('dam_step1', {}),
             'step2': request.session.get('dam_step2', {}),
             'step3': request.session.get('dam_step3', {}),
+            'base_price': _dam_base,
         })
 
     @http.route('/spc/apply/dam/step5',
@@ -7163,7 +7250,13 @@ Important Notes:
     def dam_step5(self, **kw):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
-        return request.render('spc_portal.template_dam_step5', {})
+
+        _dam_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dedicated_account_manager'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dam_base = _dam_price.amount if _dam_price else 0.0
+        return request.render('spc_portal.template_dam_step5', {'base_price': _dam_base})
 
     @http.route('/spc/apply/dam/final-submit',
                 type='http', auth='public', website=True, methods=['POST'])
@@ -7702,10 +7795,19 @@ Important Notes:
                     employees.append({'name': (e.first_name or '') + ' ' + (e.last_name or '')})
         except Exception:
             pass
+
+        _med_type = medical_type if 'medical_type' in dir() else 'new_residency'
+        _med_stype = 'medical_new' if _med_type == 'new_residency' else 'medical_renewal'
+        _med_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', _med_stype),
+            ('is_active', '=', True)
+        ], limit=1)
+        _med_base = _med_price.amount if _med_price else 0.0
         return request.render('spc_portal.medical_step1', {
             'medical_type': medical_type,
             'medical_title': titles.get(medical_type, 'Medical'),
             'employees': employees,
+            'base_price': _med_base,
         })
 
     @http.route('/spc/apply/medical/step1/<int:record_id>', type='http', auth='user', website=True)
@@ -7758,7 +7860,15 @@ Important Notes:
     @http.route('/spc/apply/medical/declaration/<int:record_id>', type='http', auth='user', website=True)
     def medical_declaration(self, record_id, **kwargs):
         record = request.env['spc.medical'].sudo().browse(record_id)
-        return request.render('spc_portal.medical_declaration', {'record': record}) if record.exists() else request.redirect('/spc/concierge-services')
+
+        _med_type = record.medical_type if record.exists() else 'new_residency'
+        _med_stype = 'medical_new' if _med_type == 'new_residency' else 'medical_renewal'
+        _med_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', _med_stype),
+            ('is_active', '=', True)
+        ], limit=1)
+        _med_base = _med_price.amount if _med_price else 0.0
+        return request.render('spc_portal.medical_declaration', {'record': record, 'base_price': _med_base}) if record.exists() else request.redirect('/spc/concierge-services')
 
     @http.route('/spc/apply/medical/declaration/submit', type='http', auth='user', website=True, methods=['POST'])
     def medical_declaration_submit(self, **kwargs):
@@ -7770,7 +7880,15 @@ Important Notes:
     @http.route('/spc/apply/medical/review/<int:record_id>', type='http', auth='user', website=True)
     def medical_review(self, record_id, **kwargs):
         record = request.env['spc.medical'].sudo().browse(record_id)
-        return request.render('spc_portal.medical_review', {'record': record}) if record.exists() else request.redirect('/spc/concierge-services')
+
+        _med_type = record.medical_type if record.exists() else 'new_residency'
+        _med_stype = 'medical_new' if _med_type == 'new_residency' else 'medical_renewal'
+        _med_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', _med_stype),
+            ('is_active', '=', True)
+        ], limit=1)
+        _med_base = _med_price.amount if _med_price else 0.0
+        return request.render('spc_portal.medical_review', {'record': record, 'base_price': _med_base}) if record.exists() else request.redirect('/spc/concierge-services')
 
     @http.route('/spc/apply/medical/review/submit', type='http', auth='user', website=True, methods=['POST'])
     def medical_review_submit(self, **kwargs):
@@ -7797,11 +7915,21 @@ Important Notes:
 
     @http.route('/spc/apply/meeting_room/step1', type='http', auth='user', website=True)
     def meeting_room_step1(self, **kwargs):
-        return request.render('spc_portal.meeting_room_step1_v2', {})
+        _mr_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'meeting_room'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _mr_base = _mr_price.amount if _mr_price else 0.0
+        return request.render('spc_portal.meeting_room_step1_v2', {'base_price': _mr_base})
 
     @http.route('/spc/apply/meeting_room/step1/<int:record_id>', type='http', auth='user', website=True)
     def meeting_room_step1_edit(self, record_id, **kwargs):
-        return request.render('spc_portal.meeting_room_step1_v2', {})
+        _mr_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'meeting_room'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _mr_base = _mr_price.amount if _mr_price else 0.0
+        return request.render('spc_portal.meeting_room_step1_v2', {'base_price': _mr_base})
 
     @http.route('/spc/apply/meeting_room/step1/submit', type='http', auth='user', website=True, methods=['POST'])
     def meeting_room_step1_submit(self, **kwargs):
@@ -7821,7 +7949,13 @@ Important Notes:
     @http.route('/spc/apply/meeting_room/review/<int:record_id>', type='http', auth='user', website=True)
     def meeting_room_review(self, record_id, **kwargs):
         record = request.env['spc.meeting.room'].sudo().browse(record_id)
-        return request.render('spc_portal.meeting_room_review', {'record': record}) if record.exists() else request.redirect('/spc/concierge-services')
+
+        _mr_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'meeting_room'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _mr_base = _mr_price.amount if _mr_price else 0.0
+        return request.render('spc_portal.meeting_room_review', {'record': record, 'base_price': _mr_base}) if record.exists() else request.redirect('/spc/concierge-services')
 
     @http.route('/spc/apply/meeting_room/review/submit', type='http', auth='user', website=True, methods=['POST'])
     def meeting_room_review_submit(self, **kwargs):
@@ -7849,7 +7983,13 @@ Important Notes:
     @http.route('/spc/apply/mofa/step1', type='http', auth='user', website=True)
     def mofa_step1(self, **kwargs):
         countries = request.env['res.country'].sudo().search([], order='name asc')
-        return request.render('spc_portal.mofa_step1', {'countries': countries})
+
+        _price_mofa = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'mofa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_mofa = _price_mofa.amount if _price_mofa else 0.0
+        return request.render('spc_portal.mofa_step1', {'countries': countries, 'base_price': _base_mofa})
 
     @http.route('/spc/apply/mofa/step1/<int:record_id>', type='http', auth='user', website=True)
     def mofa_step1_edit(self, record_id, **kwargs):
@@ -7898,7 +8038,13 @@ Important Notes:
     @http.route('/spc/apply/mofa/declaration/<int:record_id>', type='http', auth='user', website=True)
     def mofa_declaration(self, record_id, **kwargs):
         record = request.env['spc.mofa'].sudo().browse(record_id)
-        return request.render('spc_portal.mofa_declaration', {'record': record}) if record.exists() else request.redirect('/spc/concierge-services')
+
+        _price_mofa = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'mofa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_mofa = _price_mofa.amount if _price_mofa else 0.0
+        return request.render('spc_portal.mofa_declaration', {'record': record, 'base_price': _base_mofa}) if record.exists() else request.redirect('/spc/concierge-services')
 
     @http.route('/spc/apply/mofa/declaration/submit', type='http', auth='user', website=True, methods=['POST'])
     def mofa_declaration_submit(self, **kwargs):
@@ -7910,7 +8056,13 @@ Important Notes:
     @http.route('/spc/apply/mofa/review/<int:record_id>', type='http', auth='user', website=True)
     def mofa_review(self, record_id, **kwargs):
         record = request.env['spc.mofa'].sudo().browse(record_id)
-        return request.render('spc_portal.mofa_review', {'record': record}) if record.exists() else request.redirect('/spc/concierge-services')
+
+        _price_mofa = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'mofa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_mofa = _price_mofa.amount if _price_mofa else 0.0
+        return request.render('spc_portal.mofa_review', {'record': record, 'base_price': _base_mofa}) if record.exists() else request.redirect('/spc/concierge-services')
 
     @http.route('/spc/apply/mofa/review/submit', type='http', auth='user', website=True, methods=['POST'])
     def mofa_review_submit(self, **kwargs):
@@ -7945,7 +8097,13 @@ Important Notes:
     @http.route('/spc/apply/banking/step1', type='http', auth='user', website=True)
     def banking_step1(self, **kwargs):
         banking_type = kwargs.get('type', 'new')
-        return request.render('spc_portal.banking_step1', {'banking_type': banking_type})
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_step1', {'banking_type': banking_type, 'base_price': _base_banking_assistance})
 
     @http.route('/spc/apply/banking/step1/<int:record_id>', type='http', auth='user', website=True)
     def banking_step1_edit(self, record_id, **kwargs):
@@ -7980,7 +8138,13 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        return request.render('spc_portal.banking_step2', {'record': record})
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_step2', {'record': record, 'base_price': _base_banking_assistance})
 
     @http.route('/spc/apply/banking/step2/submit', type='http', auth='user', website=True, methods=['POST'])
     def banking_step2_submit(self, **kwargs):
@@ -8006,7 +8170,13 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        return request.render('spc_portal.banking_step3', {'record': record})
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_step3', {'record': record, 'base_price': _base_banking_assistance})
 
     @http.route('/spc/apply/banking/step3/submit', type='http', auth='user', website=True, methods=['POST'])
     def banking_step3_submit(self, **kwargs):
@@ -8022,7 +8192,13 @@ Important Notes:
     @http.route('/spc/apply/banking/review/<int:record_id>', type='http', auth='user', website=True)
     def banking_review(self, record_id, **kwargs):
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
-        return request.render('spc_portal.banking_review', {'record': record}) if record.exists() else request.redirect('/spc/concierge-services')
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_review', {'record': record, 'base_price': _base_banking_assistance}) if record.exists() else request.redirect('/spc/concierge-services')
 
     @http.route('/spc/apply/banking/review/submit', type='http', auth='user', website=True, methods=['POST'])
     def banking_review_submit(self, **kwargs):
@@ -8156,7 +8332,13 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        return request.render('spc_portal.banking_old_step1', {'record': record})
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_old_step1', {'record': record, 'base_price': _base_banking_assistance})
 
     @http.route('/spc/apply/banking/old/docs/submit', type='http', auth='user', website=True, methods=['POST'])
     def banking_old_docs_submit(self, **kwargs):
@@ -8195,7 +8377,13 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        return request.render('spc_portal.banking_old_step2', {'record': record})
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_old_step2', {'record': record, 'base_price': _base_banking_assistance})
 
     @http.route('/spc/apply/banking/old/corp/submit', type='http', auth='user', website=True, methods=['POST'])
     def banking_old_corp_submit(self, **kwargs):
@@ -8214,7 +8402,13 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        return request.render('spc_portal.banking_old_declaration', {'record': record})
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_old_declaration', {'record': record, 'base_price': _base_banking_assistance})
 
     @http.route('/spc/apply/banking/old/declaration/submit', type='http', auth='user', website=True, methods=['POST'])
     def banking_old_declaration_submit(self, **kwargs):
@@ -8230,7 +8424,13 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        return request.render('spc_portal.banking_old_review', {'record': record})
+
+        _price_banking_assistance = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'banking_assistance'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_banking_assistance = _price_banking_assistance.amount if _price_banking_assistance else 0.0
+        return request.render('spc_portal.banking_old_review', {'record': record, 'base_price': _base_banking_assistance})
 
     @http.route('/spc/apply/banking/old/review/submit', type='http', auth='user', website=True, methods=['POST'])
     def banking_old_review_submit(self, **kwargs):
@@ -8269,7 +8469,13 @@ Important Notes:
             return request.redirect('/spc/login')
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.vip.medical.eid'].sudo().browse(record_id) if record_id else None
-        return request.render('spc_portal.vip_medical_eid_step1', {'record': record})
+
+        _vip_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'vip_medical_eid'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _vip_base = _vip_price.amount if _vip_price else 0.0
+        return request.render('spc_portal.vip_medical_eid_step1', {'record': record, 'base_price': _vip_base})
 
     @http.route('/spc/concierge/vip-medical-eid/step1/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def vip_medical_eid_step1_submit(self, **kw):
@@ -8298,7 +8504,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.vip.medical.eid'].sudo().browse(record_id)
-        return request.render('spc_portal.vip_medical_eid_step2', {'record': record})
+
+        _vip_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'vip_medical_eid'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _vip_base = _vip_price.amount if _vip_price else 0.0
+        return request.render('spc_portal.vip_medical_eid_step2', {'record': record, 'base_price': _vip_base})
 
     @http.route('/spc/concierge/vip-medical-eid/step2/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def vip_medical_eid_step2_submit(self, **kw):
@@ -8320,7 +8532,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.vip.medical.eid'].sudo().browse(record_id)
-        return request.render('spc_portal.vip_medical_eid_review', {'record': record})
+
+        _vip_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'vip_medical_eid'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _vip_base = _vip_price.amount if _vip_price else 0.0
+        return request.render('spc_portal.vip_medical_eid_review', {'record': record, 'base_price': _vip_base})
 
     @http.route('/spc/concierge/vip-medical-eid/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def vip_medical_eid_payment(self, record_id, **kw):
@@ -8344,7 +8562,13 @@ Important Notes:
             return request.redirect('/spc/login')
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.company.stamp'].sudo().browse(record_id) if record_id else None
-        return request.render('spc_portal.company_stamp_step1', {'record': record})
+
+        _cs_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'company_stamp'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _cs_base = _cs_price.amount if _cs_price else 0.0
+        return request.render('spc_portal.company_stamp_step1', {'record': record, 'base_price': _cs_base})
 
     @http.route('/spc/concierge/company-stamp/step1/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def company_stamp_step1_submit(self, **kw):
@@ -8367,7 +8591,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.company.stamp'].sudo().browse(record_id)
-        return request.render('spc_portal.company_stamp_step2', {'record': record})
+
+        _cs_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'company_stamp'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _cs_base = _cs_price.amount if _cs_price else 0.0
+        return request.render('spc_portal.company_stamp_step2', {'record': record, 'base_price': _cs_base})
 
     @http.route('/spc/concierge/company-stamp/step2/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def company_stamp_step2_submit(self, **kw):
@@ -8383,7 +8613,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.company.stamp'].sudo().browse(record_id)
-        return request.render('spc_portal.company_stamp_review', {'record': record})
+
+        _cs_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'company_stamp'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _cs_base = _cs_price.amount if _cs_price else 0.0
+        return request.render('spc_portal.company_stamp_review', {'record': record, 'base_price': _cs_base})
 
     @http.route('/spc/concierge/company-stamp/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def company_stamp_payment(self, record_id, **kw):
@@ -8407,7 +8643,13 @@ Important Notes:
             return request.redirect('/spc/login')
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.dependent.visa'].sudo().browse(record_id) if record_id else None
-        return request.render('spc_portal.dependent_visa_step1', {'record': record})
+
+        _dv_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dependent_visa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dv_base = _dv_price.amount if _dv_price else 0.0
+        return request.render('spc_portal.dependent_visa_step1', {'record': record, 'base_price': _dv_base})
 
     @http.route('/spc/concierge/dependent-visa/step1/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def dependent_visa_step1_submit(self, **kw):
@@ -8449,7 +8691,13 @@ Important Notes:
     @http.route('/spc/concierge/dependent-visa/step2/<int:record_id>', type='http', auth='user', website=True)
     def dependent_visa_step2(self, record_id, **kw):
         record = request.env['spc.dependent.visa'].sudo().browse(record_id)
-        return request.render('spc_portal.dependent_visa_step2', {'record': record})
+
+        _dv_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dependent_visa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dv_base = _dv_price.amount if _dv_price else 0.0
+        return request.render('spc_portal.dependent_visa_step2', {'record': record, 'base_price': _dv_base})
 
     @http.route('/spc/concierge/dependent-visa/step2/submit', type='http', auth='user', website=True, methods=['POST'])
     def dependent_visa_step2_submit(self, **kw):
@@ -8480,7 +8728,13 @@ Important Notes:
     @http.route('/spc/concierge/dependent-visa/step3/<int:record_id>', type='http', auth='user', website=True)
     def dependent_visa_step3(self, record_id, **kw):
         record = request.env['spc.dependent.visa'].sudo().browse(record_id)
-        return request.render('spc_portal.dependent_visa_step3', {'record': record})
+
+        _dv_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dependent_visa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dv_base = _dv_price.amount if _dv_price else 0.0
+        return request.render('spc_portal.dependent_visa_step3', {'record': record, 'base_price': _dv_base})
 
     @http.route('/spc/concierge/dependent-visa/step3/submit', type='http', auth='user', website=True, methods=['POST'])
     def dependent_visa_step3_submit(self, **kw):
@@ -8505,7 +8759,13 @@ Important Notes:
     @http.route('/spc/concierge/dependent-visa/step4/<int:record_id>', type='http', auth='user', website=True)
     def dependent_visa_step4(self, record_id, **kw):
         record = request.env['spc.dependent.visa'].sudo().browse(record_id)
-        return request.render('spc_portal.dependent_visa_step4', {'record': record})
+
+        _dv_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dependent_visa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dv_base = _dv_price.amount if _dv_price else 0.0
+        return request.render('spc_portal.dependent_visa_step4', {'record': record, 'base_price': _dv_base})
 
     @http.route('/spc/concierge/dependent-visa/step4/submit', type='http', auth='user', website=True, methods=['POST'])
     def dependent_visa_step4_submit(self, **kw):
@@ -8527,7 +8787,13 @@ Important Notes:
     @http.route('/spc/concierge/dependent-visa/step5/<int:record_id>', type='http', auth='user', website=True)
     def dependent_visa_step5(self, record_id, **kw):
         record = request.env['spc.dependent.visa'].sudo().browse(record_id)
-        return request.render('spc_portal.dependent_visa_step5', {'record': record})
+
+        _dv_price = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'dependent_visa'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _dv_base = _dv_price.amount if _dv_price else 0.0
+        return request.render('spc_portal.dependent_visa_step5', {'record': record, 'base_price': _dv_base})
 
     @http.route('/spc/concierge/dependent-visa/step5/submit', type='http', auth='user', website=True, methods=['POST'])
     def dependent_visa_step5_submit(self, **kw):
@@ -8562,7 +8828,13 @@ Important Notes:
     def doc_delivery_driver_step1(self, **kw):
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.document.delivery'].sudo().browse(record_id) if record_id else None
-        return request.render('spc_portal.doc_delivery_step1', {'dtype': 'driver', 'record': record})
+
+        _price_document_delivery = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'document_delivery'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_document_delivery = _price_document_delivery.amount if _price_document_delivery else 0.0
+        return request.render('spc_portal.doc_delivery_step1', {'dtype': 'driver', 'record': record, 'base_price': _base_document_delivery})
 
     @http.route('/spc/concierge/doc-delivery/step1/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def doc_delivery_step1_submit(self, **kw):
@@ -8591,7 +8863,13 @@ Important Notes:
     @http.route('/spc/concierge/doc-delivery/step2/<int:record_id>', type='http', auth='public', website=False)
     def doc_delivery_step2(self, record_id, **kw):
         record = request.env['spc.document.delivery'].sudo().browse(record_id)
-        return request.render('spc_portal.doc_delivery_step2', {'record': record})
+
+        _price_document_delivery = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'document_delivery'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_document_delivery = _price_document_delivery.amount if _price_document_delivery else 0.0
+        return request.render('spc_portal.doc_delivery_step2', {'record': record, 'base_price': _base_document_delivery})
 
     @http.route('/spc/concierge/doc-delivery/step2/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def doc_delivery_step2_submit(self, **kw):
@@ -8603,7 +8881,13 @@ Important Notes:
     @http.route('/spc/concierge/doc-delivery/review/<int:record_id>', type='http', auth='public', website=False)
     def doc_delivery_review(self, record_id, **kw):
         record = request.env['spc.document.delivery'].sudo().browse(record_id)
-        return request.render('spc_portal.doc_delivery_review', {'record': record})
+
+        _price_document_delivery = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'document_delivery'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_document_delivery = _price_document_delivery.amount if _price_document_delivery else 0.0
+        return request.render('spc_portal.doc_delivery_review', {'record': record, 'base_price': _base_document_delivery})
 
     @http.route('/spc/concierge/doc-delivery/payment/<int:record_id>', type='http', auth='public', website=False)
     def doc_delivery_payment(self, record_id, **kw):
@@ -8631,7 +8915,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         saved = request.session.get('dl_step1_%s' % dl_type, {})
-        return request.render('spc_portal.driving_license_step1', {'dl_type': dl_type, 'saved': saved})
+
+        _price_driving_license = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'driving_license'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_driving_license = _price_driving_license.amount if _price_driving_license else 0.0
+        return request.render('spc_portal.driving_license_step1', {'dl_type': dl_type, 'saved': saved, 'base_price': _base_driving_license})
 
     @http.route('/spc/concierge/driving-license/<string:dl_type>/step1/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def driving_license_step1_submit(self, dl_type, **kw):
@@ -8719,7 +9009,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.driving.license'].sudo().browse(record_id)
-        return request.render('spc_portal.driving_license_declaration', {'record': record, 'dl_type': dl_type})
+
+        _price_driving_license = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'driving_license'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_driving_license = _price_driving_license.amount if _price_driving_license else 0.0
+        return request.render('spc_portal.driving_license_declaration', {'record': record, 'dl_type': dl_type, 'base_price': _base_driving_license})
 
     @http.route('/spc/concierge/driving-license/<string:dl_type>/declaration/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def driving_license_declaration_submit(self, dl_type, **kw):
@@ -8735,7 +9031,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.driving.license'].sudo().browse(record_id)
-        return request.render('spc_portal.driving_license_review', {'record': record, 'dl_type': dl_type})
+
+        _price_driving_license = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'driving_license'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_driving_license = _price_driving_license.amount if _price_driving_license else 0.0
+        return request.render('spc_portal.driving_license_review', {'record': record, 'dl_type': dl_type, 'base_price': _base_driving_license})
 
     @http.route('/spc/concierge/driving-license/<string:dl_type>/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def driving_license_payment(self, dl_type, record_id, **kw):
@@ -8748,7 +9050,13 @@ Important Notes:
     def doc_delivery_courier_step1(self, **kw):
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.document.delivery'].sudo().browse(record_id) if record_id else None
-        return request.render('spc_portal.doc_delivery_courier_step1', {'record': record})
+
+        _price_document_delivery_courier = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'document_delivery_courier'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_document_delivery_courier = _price_document_delivery_courier.amount if _price_document_delivery_courier else 0.0
+        return request.render('spc_portal.doc_delivery_courier_step1', {'record': record, 'base_price': _base_document_delivery_courier})
 
     @http.route('/spc/concierge/doc-delivery/courier/step1/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def doc_delivery_courier_step1_submit(self, **kw):
@@ -8778,7 +9086,13 @@ Important Notes:
     @http.route('/spc/concierge/doc-delivery/courier/step2/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def doc_delivery_courier_step2(self, record_id, **kw):
         record = request.env['spc.document.delivery'].sudo().browse(record_id)
-        return request.render('spc_portal.doc_delivery_courier_step2', {'record': record})
+
+        _price_document_delivery_courier = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'document_delivery_courier'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_document_delivery_courier = _price_document_delivery_courier.amount if _price_document_delivery_courier else 0.0
+        return request.render('spc_portal.doc_delivery_courier_step2', {'record': record, 'base_price': _base_document_delivery_courier})
 
     @http.route('/spc/concierge/doc-delivery/courier/step2/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def doc_delivery_courier_step2_submit(self, **kw):
@@ -8790,7 +9104,13 @@ Important Notes:
     @http.route('/spc/concierge/doc-delivery/courier/step3/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def doc_delivery_courier_step3(self, record_id, **kw):
         record = request.env['spc.document.delivery'].sudo().browse(record_id)
-        return request.render('spc_portal.doc_delivery_courier_step3', {'record': record})
+
+        _price_document_delivery_courier = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'document_delivery_courier'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_document_delivery_courier = _price_document_delivery_courier.amount if _price_document_delivery_courier else 0.0
+        return request.render('spc_portal.doc_delivery_courier_step3', {'record': record, 'base_price': _base_document_delivery_courier})
 
     @http.route('/spc/concierge/doc-delivery/courier/step3/submit', type='http', auth='public', website=True, csrf=False, methods=['POST'])
     def doc_delivery_courier_step3_submit(self, **kw):
@@ -8809,7 +9129,13 @@ Important Notes:
     @http.route('/spc/concierge/doc-delivery/courier/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def doc_delivery_courier_review(self, record_id, **kw):
         record = request.env['spc.document.delivery'].sudo().browse(record_id)
-        return request.render('spc_portal.doc_delivery_courier_review', {'record': record})
+
+        _price_document_delivery_courier = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'document_delivery_courier'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_document_delivery_courier = _price_document_delivery_courier.amount if _price_document_delivery_courier else 0.0
+        return request.render('spc_portal.doc_delivery_courier_review', {'record': record, 'base_price': _base_document_delivery_courier})
 
     @http.route('/spc/concierge/doc-delivery/courier/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def doc_delivery_courier_payment(self, record_id, **kw):
@@ -8832,7 +9158,13 @@ Important Notes:
             return request.redirect('/spc/login')
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.phone.answering'].sudo().browse(record_id) if record_id else None
-        return request.render('spc_portal.phone_answering_step1', {'record': record})
+
+        _price_phone_answering = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'phone_answering'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_phone_answering = _price_phone_answering.amount if _price_phone_answering else 0.0
+        return request.render('spc_portal.phone_answering_step1', {'record': record, 'base_price': _base_phone_answering})
 
     @http.route('/spc/concierge/phone-answering/step1/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def phone_answering_step1_submit(self, **kw):
@@ -8868,7 +9200,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.phone.answering'].sudo().browse(record_id)
-        return request.render('spc_portal.phone_answering_step2', {'record': record})
+
+        _price_phone_answering = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'phone_answering'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_phone_answering = _price_phone_answering.amount if _price_phone_answering else 0.0
+        return request.render('spc_portal.phone_answering_step2', {'record': record, 'base_price': _base_phone_answering})
 
     @http.route('/spc/concierge/phone-answering/step2/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def phone_answering_step2_submit(self, **kw):
@@ -8895,7 +9233,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.phone.answering'].sudo().browse(record_id)
-        return request.render('spc_portal.phone_answering_declaration', {'record': record})
+
+        _price_phone_answering = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'phone_answering'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_phone_answering = _price_phone_answering.amount if _price_phone_answering else 0.0
+        return request.render('spc_portal.phone_answering_declaration', {'record': record, 'base_price': _base_phone_answering})
 
     @http.route('/spc/concierge/phone-answering/declaration/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def phone_answering_declaration_submit(self, **kw):
@@ -8911,7 +9255,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.phone.answering'].sudo().browse(record_id)
-        return request.render('spc_portal.phone_answering_review', {'record': record})
+
+        _price_phone_answering = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'phone_answering'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_phone_answering = _price_phone_answering.amount if _price_phone_answering else 0.0
+        return request.render('spc_portal.phone_answering_review', {'record': record, 'base_price': _base_phone_answering})
 
     @http.route('/spc/concierge/phone-answering/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def phone_answering_payment(self, record_id, **kw):
@@ -8939,7 +9289,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         stype = kw.get('type', 'new')
-        return request.render('spc_portal.po_box_step1', {'stype': stype})
+
+        _price_po_box = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'po_box'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_po_box = _price_po_box.amount if _price_po_box else 0.0
+        return request.render('spc_portal.po_box_step1', {'stype': stype, 'base_price': _base_po_box})
 
     @http.route('/spc/concierge/po-box/step1/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def po_box_step1_submit(self, **kw):
@@ -8974,7 +9330,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.po.box'].sudo().browse(record_id)
-        return request.render('spc_portal.po_box_declaration', {'record': record})
+
+        _price_po_box = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'po_box'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_po_box = _price_po_box.amount if _price_po_box else 0.0
+        return request.render('spc_portal.po_box_declaration', {'record': record, 'base_price': _base_po_box})
 
     @http.route('/spc/concierge/po-box/declaration/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def po_box_declaration_submit(self, **kw):
@@ -9014,7 +9376,13 @@ Important Notes:
         partner_id = request.session.get('spc_selected_customer_id') or request.session.get('spc_partner_id')
         if partner_id:
             partners = request.env['res.partner'].sudo().browse(partner_id).child_ids
-        return request.render('spc_portal.movement_report_step1', {'record': record, 'partners': partners})
+
+        _price_movement_report = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'movement_report'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_movement_report = _price_movement_report.amount if _price_movement_report else 0.0
+        return request.render('spc_portal.movement_report_step1', {'record': record, 'partners': partners, 'base_price': _base_movement_report})
 
     @http.route('/spc/employee-management/movement-report/step1/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def movement_report_step1_submit(self, **kw):
@@ -9059,7 +9427,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.movement.report'].sudo().browse(record_id)
-        return request.render('spc_portal.movement_report_declaration', {'record': record})
+
+        _price_movement_report = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'movement_report'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_movement_report = _price_movement_report.amount if _price_movement_report else 0.0
+        return request.render('spc_portal.movement_report_declaration', {'record': record, 'base_price': _base_movement_report})
 
     @http.route('/spc/employee-management/movement-report/declaration/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def movement_report_declaration_submit(self, **kw):
@@ -9146,7 +9520,13 @@ Important Notes:
         partners = []
         if partner_id:
             partners = request.env['res.partner'].sudo().browse(partner_id).child_ids
-        return request.render('spc_portal.uid_merging_step1', {'partners': partners})
+
+        _price_uid_merging = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'uid_merging'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_uid_merging = _price_uid_merging.amount if _price_uid_merging else 0.0
+        return request.render('spc_portal.uid_merging_step1', {'partners': partners, 'base_price': _base_uid_merging})
 
     @http.route('/spc/employee-management/uid-merging/step1/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def uid_merging_step1_submit(self, **kw):
@@ -9201,7 +9581,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.uid.merging'].sudo().browse(record_id)
-        return request.render('spc_portal.uid_merging_declaration', {'record': record})
+
+        _price_uid_merging = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'uid_merging'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_uid_merging = _price_uid_merging.amount if _price_uid_merging else 0.0
+        return request.render('spc_portal.uid_merging_declaration', {'record': record, 'base_price': _base_uid_merging})
 
     @http.route('/spc/employee-management/uid-merging/declaration/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def uid_merging_declaration_submit(self, **kw):
@@ -9217,7 +9603,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.uid.merging'].sudo().browse(record_id)
-        return request.render('spc_portal.uid_merging_review', {'record': record})
+
+        _price_uid_merging = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'uid_merging'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_uid_merging = _price_uid_merging.amount if _price_uid_merging else 0.0
+        return request.render('spc_portal.uid_merging_review', {'record': record, 'base_price': _base_uid_merging})
 
     @http.route('/spc/employee-management/uid-merging/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def uid_merging_payment(self, record_id, **kw):
@@ -9261,10 +9653,17 @@ Important Notes:
             employees = partner.child_ids.filtered(lambda p: p.active)
             investors = partner.child_ids.filtered(lambda p: p.active)
             students = partner.child_ids.filtered(lambda p: p.active)
+
+        _price_eid_appointment = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'eid_appointment'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_eid_appointment = _price_eid_appointment.amount if _price_eid_appointment else 0.0
         return request.render('spc_portal.eid_appointment_step1', {
             'employees': employees,
             'investors': investors,
             'students': students,
+            'base_price': _base_eid_appointment,
         })
 
     @http.route('/spc/employee-management/eid-appointment/step1/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
@@ -9306,7 +9705,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.eid.appointment'].sudo().browse(record_id)
-        return request.render('spc_portal.eid_appointment_declaration', {'record': record})
+
+        _price_eid_appointment = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'eid_appointment'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_eid_appointment = _price_eid_appointment.amount if _price_eid_appointment else 0.0
+        return request.render('spc_portal.eid_appointment_declaration', {'record': record, 'base_price': _base_eid_appointment})
 
     @http.route('/spc/employee-management/eid-appointment/declaration/submit', type='http', auth='public', website=False, csrf=False, methods=['POST'])
     def eid_appointment_declaration_submit(self, **kw):
@@ -9325,7 +9730,13 @@ Important Notes:
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         record = request.env['spc.eid.appointment'].sudo().browse(record_id)
-        return request.render('spc_portal.eid_appointment_review', {'record': record})
+
+        _price_eid_appointment = request.env['spc.service.price'].sudo().search([
+            ('service_type', '=', 'eid_appointment'),
+            ('is_active', '=', True)
+        ], limit=1)
+        _base_eid_appointment = _price_eid_appointment.amount if _price_eid_appointment else 0.0
+        return request.render('spc_portal.eid_appointment_review', {'record': record, 'base_price': _base_eid_appointment})
 
     @http.route('/spc/employee-management/eid-appointment/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
     def eid_appointment_payment(self, record_id, **kw):

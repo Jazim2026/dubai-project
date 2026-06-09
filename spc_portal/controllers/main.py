@@ -7,6 +7,53 @@ from odoo.http import request, Response
 _logger = logging.getLogger(__name__)
 
 
+
+def _get_all_records(request, company_id):
+    if not company_id:
+        return []
+    all_records = []
+    services = [
+        ('spc.banking.assistance', 'Banking Assistance', 'concierge'),
+        ('spc.change.of.status', 'Change of Status', 'visa'),
+        ('spc.dedicated.account.manager', 'DAM', 'concierge'),
+        ('spc.driving.license', 'Driving License', 'concierge'),
+        ('spc.eid.appointment', 'EID Appointment', 'concierge'),
+        ('spc.eid.replacement', 'EID Replacement', 'concierge'),
+        ('spc.employee.list', 'Employee List', 'employee'),
+        ('spc.facility.management', 'Facility Management', 'facility'),
+        ('spc.lease.document', 'Lease Document', 'facility'),
+        ('spc.medical', 'Medical', 'concierge'),
+        ('spc.meeting.room', 'Meeting Room', 'concierge'),
+        ('spc.mofa', 'MOFA Attestation', 'concierge'),
+        ('spc.movement.report', 'Movement Report', 'concierge'),
+        ('spc.nma.media.license', 'NMA Media License', 'license'),
+        ('spc.nma.permit', 'NMA Permit', 'license'),
+        ('spc.phone.answering', 'Phone Answering', 'concierge'),
+        ('spc.po.box', 'PO Box', 'concierge'),
+        ('spc.reentry.permit', 'Reentry Permit', 'visa'),
+        ('spc.uid.merging', 'UID Merging', 'concierge'),
+        ('spc.vip.medical', 'VIP Medical', 'concierge'),
+    ]
+    for model, label, category in services:
+        try:
+            recs = request.env[model].sudo().search([('approved_company_id', '=', company_id)], order='id desc')
+            for r in recs:
+                all_records.append({
+                    'label': label,
+                    'name': getattr(r, 'name', None) or getattr(r, 'reference', '') or '',
+                    'category': category,
+                    'state': getattr(r, 'state', 'submitted') or 'submitted',
+                    'started_date': r.create_date,
+                    'submission_date': r.write_date,
+                    'fees': getattr(r, 'amount', 0) or 0,
+                    'detail_url': '',
+                    'resume_url': '',
+                })
+        except Exception:
+            continue
+    all_records.sort(key=lambda x: x['started_date'] or '', reverse=True)
+    return all_records
+
 class SpcPortalController(http.Controller):
 
     def _check_spc_session(self):
@@ -173,7 +220,7 @@ class SpcPortalController(http.Controller):
             'selected_company_id': company_id,
             'company_name': selected_company.company_name if selected_company else '',
             'all_companies': all_companies,
-            'all_records': [],
+            'all_records': _get_all_records(request, company_id),
             'service': {},
             'service_type': '',
             'fee': 0,
@@ -1199,7 +1246,128 @@ class SpcPortalController(http.Controller):
         if not self._check_spc_session():
             return request.redirect('/spc/login')
         service_type = kw.get('service_type', 'company_new')
-        return request.redirect('/spc/payment/' + service_type)
+        # Prevent duplicate records
+        import logging as _lg
+        _lg.getLogger(__name__).info('STEP14 s1=%s', request.session.get('spc_apply_step1', {}))
+        _lg.getLogger(__name__).info('STEP14 s3=%s', request.session.get('spc_step3_data', {}))
+        _lg.getLogger(__name__).info('STEP14 s6=%s', str(request.session.get('spc_step6_data', {}))[:300])
+        _lg.getLogger(__name__).info('STEP14 s7=%s', str(request.session.get('spc_step7_data', {}))[:300])
+        existing_id = request.session.get('spc_company_app_id')
+        if existing_id:
+            rec = request.env['spc.company.application'].sudo().browse(existing_id)
+            if rec.exists():
+                return request.redirect('/spc/payment/' + service_type + '/' + str(rec.id))
+        try:
+            customer_id = request.session.get('spc_selected_customer_id')
+            s1 = request.session.get('spc_apply_step1', {})
+            s3 = request.session.get('spc_step3_data', {})
+            s4 = request.session.get('spc_step4_data', {})
+            s5 = request.session.get('spc_step5_data', {})
+            s6 = request.session.get('spc_step6_data', {})
+            s7 = request.session.get('spc_step7_data', {})
+            s8 = request.session.get('spc_step8_data', {})
+            s9 = request.session.get('spc_step9_data', {})
+            s10 = request.session.get('spc_step10_data', {})
+            s11 = request.session.get('spc_step11_data', {})
+            s12 = request.session.get('spc_step12_data', {})
+            vals = {
+                'partner_id': customer_id,
+                'service_type': service_type,
+                'state': 'submitted',
+                'current_step': 14,
+                'legal_type': s1.get('legal_type', ''),
+                'package_type': s1.get('package_type', ''),
+                'name_preference_1': s3.get('name_preference_1', ''),
+                'name_preference_2': s3.get('name_preference_2', ''),
+                'name_preference_3': s3.get('name_preference_3', ''),
+                'facility_type': s4.get('facility_type', '') if s4 else '',
+                'coworking_location_en': s4.get('coworking_location_en', '') if s4 else '',
+                'visa_count': int(s5.get('visa_count', 0) or 0) if s5 else 0,
+                'shareholder_count': int(s6.get('shareholder_count', 0) or 0),
+                'total_shares': int(s6.get('total_shares', 0) or 0),
+                'value_per_share': float(s6.get('value_per_share', 0) or 0),
+                'manager_count': int(s7.get('manager_count', 0) or 0),
+                'director_count': int(s8.get('director_count', 0) or 0),
+                # 'nature_of_business': s10.get('nature_of_business', ''),  # field not in model
+                'need_bank': s11.get('need_bank', '') or False,
+                'bank_provider': s11.get('bank_provider', ''),
+            }
+            rec = request.env['spc.company.application'].sudo().create(vals)
+            # Shareholders
+            for sh in s6.get('shareholders', []):
+                request.env['spc.app.shareholder'].sudo().create({
+                    'application_id': rec.id,
+                    'shareholder_type': sh.get('type', 'individual'),
+                    'is_spc_user': sh.get('is_spc_user', 'no') or 'no',
+                    'first_name': sh.get('first_name', ''),
+                    'last_name': sh.get('last_name', ''),
+                    'passport_no': sh.get('passport_no', ''),
+                    'nationality': sh.get('nationality', ''),
+                    'mobile': sh.get('mobile', ''),
+                    'email': sh.get('email', ''),
+                    'has_uae_visa': sh.get('uae_resident', 'no') or 'no',
+                    'visa_no': sh.get('visa_no', ''),
+                    'emirates_id': sh.get('eid_no', ''),
+                    'uid': sh.get('uid', ''),
+                    'shares_allocated': int(sh.get('shares_allocated', 0) or sh.get('shares', 0) or 0),
+                    'share_value': float(s6.get('value_per_share', 0) or 0),
+                    'entity_name': sh.get('entity_name', ''),
+                    'entity_reg_no': sh.get('entity_reg_no', ''),
+                    'entity_country': sh.get('entity_country', ''),
+                })
+            # Managers
+            for mgr in s7.get('managers', []):
+                fn = mgr.get('first_name', '')
+                ln = mgr.get('last_name', '')
+                request.env['spc.app.manager'].sudo().create({
+                    'application_id': rec.id,
+                    'full_name': (fn + ' ' + ln).strip() or fn,
+                    'email': mgr.get('email', ''),
+                    'nationality': mgr.get('nationality', ''),
+                    'mobile': mgr.get('mobile', ''),
+                    'passport_no': mgr.get('passport_no', ''),
+                    'has_uae_residence': mgr.get('uae_resident', 'no') or 'no',
+                })
+            # Directors
+            for dr in s8.get('directors', []):
+                fn = dr.get('first_name', '')
+                ln = dr.get('last_name', '')
+                request.env['spc.app.director'].sudo().create({
+                    'application_id': rec.id,
+                    'full_name': (fn + ' ' + ln).strip() or fn,
+                    'email': dr.get('email', ''),
+                    'nationality': dr.get('nationality', ''),
+                    'mobile': dr.get('mobile', ''),
+                    'passport_no': dr.get('passport_no', ''),
+                    'has_uae_residence': dr.get('uae_resident', 'no') or 'no',
+                })
+            # UBOs
+            for ubo in s9.get('ubos', []):
+                fn = ubo.get('first_name', '')
+                ln = ubo.get('last_name', '')
+                request.env['spc.app.ubo'].sudo().create({
+                    'application_id': rec.id,
+                    'full_name': (fn + ' ' + ln).strip() or fn,
+                    'nationality': ubo.get('nationality', ''),
+                    'passport_no': ubo.get('passport_no', ''),
+                    'has_uae_residence': ubo.get('uae_resident', 'no') or 'no',
+                })
+            # Documents
+            for doc in s12.get('documents', []):
+                if doc.get('data'):
+                    request.env['spc.app.document'].sudo().create({
+                        'application_id': rec.id,
+                        'doc_type': doc.get('doc_type', ''),
+                        'filename': doc.get('filename', ''),
+                        'file': doc.get('data', ''),
+                        'step': 12,
+                    })
+            request.session['spc_company_app_id'] = rec.id
+            return request.redirect('/spc/payment/' + service_type + '/' + str(rec.id))
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error("step14 save error: %s", str(e))
+            return request.redirect('/spc/payment/' + service_type)
 
     # ── COMPANY MANAGEMENT ──
     @http.route('/spc/company-management', type='http', auth='public', website=True, csrf=False)
@@ -1309,7 +1477,7 @@ class SpcPortalController(http.Controller):
             ('spc.company.stamp',                'Company Stamp',              'concierge', '/spc/concierge/company-stamp/step1'),
             ('spc.dependent.visa',               'Dependent Visa',             'concierge', '/spc/concierge/dependent-visa/step1'),
             ('spc.corporate.letter',             'Corporate Letter',           'company',   '/spc/company-management/corporate-letters/step1'),
-            ('spc.business.license',             'Business License',           'company',   '/spc/company-management/business-license/bl-step1'),
+            # ('spc.business.license', 'Business License', 'company', '/spc/company-management/business-license/bl-step1'),  # model not found
             ('spc.certify',                      'Certify Document',           'company',   '/spc/company-management/apply/certify-step1/new'),
             ('spc.license.reissue',              'License Reissue',            'company',   '/spc/company-management/apply/lr-step1/new'),
             ('spc.renewal',                      'License Renewal',            'company',   '/spc/company-management/apply/rn-step1/new'),
@@ -6872,19 +7040,8 @@ Important Notes:
             vals['doc_image'] = step1_files['doc_image']
         if step1_files.get('doc_image_name'):
             vals['doc_image_name'] = step1_files['doc_image_name']
-        draft_id = request.session.pop('fm_draft_id', None)
-        if draft_id:
-            rec = request.env['spc.facility.management'].sudo().browse(draft_id)
-            if rec.exists():
-                rec.write(vals)
-                record = rec
-            else:
-                record = request.env['spc.facility.management'].sudo().create(vals)
-        else:
-            record = request.env['spc.facility.management'].sudo().create(vals)
-        for key in ['fm_step1', 'fm_step1_files', 'fm_step2']:
-            request.session.pop(key, None)
-        return request.redirect('/spc/payment/facility_management/' + str(record.id))
+        # Record will be created after payment success
+        return request.redirect('/spc/payment/facility_management/0')
 
     # ══════════════════════════════════════════════════
     # CHANGE OF STATUS
@@ -7099,19 +7256,8 @@ Important Notes:
                 vals[f] = step1_files[f]
             if step1_files.get(f + '_name'):
                 vals[f + '_name'] = step1_files[f + '_name']
-        draft_id = request.session.pop('cos_draft_id', None)
-        if draft_id:
-            rec = request.env['spc.change.of.status'].sudo().browse(draft_id)
-            if rec.exists():
-                rec.write(vals)
-                record = rec
-            else:
-                record = request.env['spc.change.of.status'].sudo().create(vals)
-        else:
-            record = request.env['spc.change.of.status'].sudo().create(vals)
-        for key in ['cos_step1', 'cos_step1_files', 'cos_step2', 'cos_step3']:
-            request.session.pop(key, None)
-        return request.redirect('/spc/payment/change_of_status/' + str(record.id))
+        # Record will be created after payment success
+        return request.redirect('/spc/payment/change_of_status/0')
 
     # ══════════════════════════════════════════════════
     # DEDICATED ACCOUNT MANAGER
@@ -7284,19 +7430,8 @@ Important Notes:
             'number_of_years': step3.get('number_of_years', '') or False,
             'total_amount': 3000.0,
         }
-        draft_id = request.session.pop('dam_draft_id', None)
-        if draft_id:
-            rec = request.env['spc.dedicated.account.manager'].sudo().browse(draft_id)
-            if rec.exists():
-                rec.write(vals)
-                record = rec
-            else:
-                record = request.env['spc.dedicated.account.manager'].sudo().create(vals)
-        else:
-            record = request.env['spc.dedicated.account.manager'].sudo().create(vals)
-        for key in ['dam_step1', 'dam_step2', 'dam_step3']:
-            request.session.pop(key, None)
-        return request.redirect('/spc/payment/dedicated_account_manager/' + str(record.id))
+        # Record will be created after payment success
+        return request.redirect('/spc/payment/dedicated_account_manager/0')
 
     @http.route('/spc/concierge-services/service/account_manager',
                 type='http', auth='public', website=True)
@@ -7654,7 +7789,7 @@ Important Notes:
         record = request.env['spc.reentry.permit'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/apply/reentry_permit/step1')
-        record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/payment/reentry_permit/' + str(record.id))
 
     # ═══════════════════════════════════════════════
@@ -7767,7 +7902,7 @@ Important Notes:
         record = request.env['spc.lease.document'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/payment/lease_document/' + str(record.id))
 
     # MEDICAL ROUTES
@@ -7905,7 +8040,7 @@ Important Notes:
     def medical_payment_submit(self, **kwargs):
         record = request.env['spc.medical'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
-        record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/payment/medical_new/' + str(record.id))
 
     # MEETING ROOM ROUTES
@@ -7972,7 +8107,7 @@ Important Notes:
     def meeting_room_payment_submit(self, **kwargs):
         record = request.env['spc.meeting.room'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
-        record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/payment/meeting_room/' + str(record.id))
 
     # MOFA ROUTES
@@ -8079,7 +8214,7 @@ Important Notes:
     def mofa_payment_submit(self, **kwargs):
         record = request.env['spc.mofa'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
-        record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/payment/mofa/' + str(record.id))
 
     # BANKING ASSISTANCE ROUTES
@@ -8215,7 +8350,7 @@ Important Notes:
     def banking_payment_submit(self, **kwargs):
         record = request.env['spc.banking.assistance'].sudo().browse(int(kwargs.get('record_id', 0)))
         if not record.exists(): return request.redirect('/spc/concierge-services')
-        record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/payment/banking_assistance/' + str(record.id))
 
     # BANKING CORPORATE ROUTES
@@ -8450,7 +8585,7 @@ Important Notes:
         record = request.env['spc.banking.assistance'].sudo().browse(record_id)
         if not record.exists():
             return request.redirect('/spc/concierge-services')
-        record.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/payment/banking_assistance_old/' + str(record.id))
 
 
@@ -8524,7 +8659,7 @@ Important Notes:
             f = request.httprequest.files.get(fkey)
             if f and f.filename:
                 record.write({fname: base64.b64encode(f.read()), fname+'_name': f.filename})
-        record.write({'state': 'submitted'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/concierge/vip-medical-eid/review/%d' % record_id)
 
     @http.route('/spc/concierge/vip-medical-eid/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)
@@ -8605,7 +8740,8 @@ Important Notes:
             return request.redirect('/spc/login')
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.company.stamp'].sudo().browse(record_id)
-        record.write({'declaration_accepted': bool(kw.get('terms_agreed')), 'state': 'submitted'})
+        record.write({'declaration_accepted': bool(kw.get('terms_agreed'))})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/concierge/company-stamp/review/%d' % record_id)
 
     @http.route('/spc/concierge/company-stamp/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)
@@ -9023,7 +9159,8 @@ Important Notes:
             return request.redirect('/spc/login')
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.driving.license'].sudo().browse(record_id)
-        record.write({'declaration_accepted': bool(kw.get('terms_agreed')), 'state': 'submitted'})
+        record.write({'declaration_accepted': bool(kw.get('terms_agreed'))})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/concierge/driving-license/%s/review/%d' % (dl_type, record_id))
 
     @http.route('/spc/concierge/driving-license/<string:dl_type>/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)
@@ -9247,7 +9384,8 @@ Important Notes:
             return request.redirect('/spc/login')
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.phone.answering'].sudo().browse(record_id)
-        record.sudo().write({'declaration_accepted': kw.get('terms_agreed') == 'yes', 'state': 'submitted'})
+        record.sudo().write({'declaration_accepted': kw.get('terms_agreed') == 'yes'})
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/concierge/phone-answering/review/%d' % record.id)
 
     @http.route('/spc/concierge/phone-answering/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)
@@ -9346,8 +9484,8 @@ Important Notes:
         record = request.env['spc.po.box'].sudo().browse(record_id)
         record.sudo().write({
             'declaration_accepted': kw.get('terms_agreed') == 'yes',
-            'state': 'submitted',
         })
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/concierge/po-box/payment/%d' % record.id)
 
     @http.route('/spc/concierge/po-box/payment/<int:record_id>', type='http', auth='public', website=True, csrf=False)
@@ -9443,8 +9581,8 @@ Important Notes:
         record = request.env['spc.movement.report'].sudo().browse(record_id)
         record.sudo().write({
             'declaration_accepted': kw.get('terms_agreed') == 'yes',
-            'state': 'submitted',
         })
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/employee-management/movement-report/review/%d' % record.id)
 
     @http.route('/spc/employee-management/movement-report/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)
@@ -9625,11 +9763,10 @@ Important Notes:
         record_id = int(kw.get('record_id', 0))
         record = request.env['spc.uid.merging'].sudo().browse(record_id)
         record.sudo().write({
-            'state': 'submitted',
             'payment_method': kw.get('payment_method', ''),
-            'payment_status': 'paid',
         })
-        return request.redirect('/spc/payment/uid_merging')
+        # State will be updated to submitted after payment success
+        return request.redirect('/spc/payment/uid_merging/' + str(record_id))
 
     # ══════════════════════════════════════════════════
     # EID APPOINTMENT
@@ -9721,8 +9858,8 @@ Important Notes:
         record = request.env['spc.eid.appointment'].sudo().browse(record_id)
         record.sudo().write({
             'declaration_accepted': kw.get('terms_agreed') == 'yes',
-            'state': 'submitted',
         })
+        # State will be updated to submitted after payment success
         return request.redirect('/spc/employee-management/eid-appointment/review/%d' % record.id)
 
     @http.route('/spc/employee-management/eid-appointment/review/<int:record_id>', type='http', auth='public', website=True, csrf=False)

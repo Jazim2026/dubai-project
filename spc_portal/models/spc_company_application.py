@@ -131,6 +131,23 @@ class SpcCompanyApplication(models.Model):
 
     def action_approve(self):
         self.write({'state': 'approved'})
+        for rec in self:
+            existing = self.env['spc.approved.company'].sudo().search([
+                ('application_id', '=', rec.id)
+            ], limit=1)
+            if not existing:
+                company_name = (
+                    rec.name_preference_1 or
+                    rec.name_preference_2 or
+                    rec.name_preference_3 or
+                    rec.reference or 'New Company'
+                )
+                self.env['spc.approved.company'].sudo().create({
+                    'company_name': company_name,
+                    'partner_id': rec.partner_id.id,
+                    'application_id': rec.id,
+                    'active': True,
+                })
 
     def action_reject(self):
         return {

@@ -13,6 +13,120 @@ RAZORPAY_KEY_ID = "rzp_test_RkkzKbFGDqSWEJ"
 RAZORPAY_KEY_SECRET = "pGm3aDmOrsWkFlkl0cU4sBeD"
 
 
+
+def _save_facility_management(request):
+    try:
+        from odoo import fields as odoo_fields
+        step1 = request.session.get('fm_step1', {})
+        step1_files = request.session.get('fm_step1_files', {})
+        step2 = request.session.get('fm_step2', {})
+        customer_id = request.session.get('spc_selected_customer_id')
+        company_id = request.session.get('spc_selected_company_id')
+        if not customer_id:
+            return None
+        vals = {
+            'partner_id': customer_id,
+            'approved_company_id': company_id,
+            'state': 'submitted',
+            'submission_date': odoo_fields.Datetime.now(),
+            'complaint_category': step1.get('complaint_category', '') or False,
+            'incident_type': step1.get('incident_type', ''),
+            'office_number': step1.get('office_number', ''),
+            'contact_name': step1.get('contact_name', ''),
+            'contact_number': step1.get('contact_number', ''),
+            'complaint_description': step1.get('complaint_description', ''),
+            'declaration_accepted': step2.get('declaration_accepted', False),
+            'total_amount': 0.0,
+        }
+        if step1_files.get('doc_image'):
+            vals['doc_image'] = step1_files['doc_image']
+        if step1_files.get('doc_image_name'):
+            vals['doc_image_name'] = step1_files['doc_image_name']
+        record = request.env['spc.facility.management'].sudo().create(vals)
+        for key in ['fm_step1', 'fm_step1_files', 'fm_step2']:
+            request.session.pop(key, None)
+        return record
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error("FM save error: %s", str(e))
+        return None
+
+
+def _save_dam(request):
+    try:
+        from odoo import fields as odoo_fields
+        step1 = request.session.get('dam_step1', {})
+        step2 = request.session.get('dam_step2', {})
+        step3 = request.session.get('dam_step3', {})
+        customer_id = request.session.get('spc_selected_customer_id')
+        company_id = request.session.get('spc_selected_company_id')
+        if not customer_id:
+            return None
+        vals = {
+            'partner_id': customer_id,
+            'approved_company_id': company_id,
+            'state': 'submitted',
+            'submission_date': odoo_fields.Datetime.now(),
+            'is_existing_stakeholder': step1.get('is_existing_stakeholder', '') or False,
+            'employee_list': step1.get('employee_list', ''),
+            'first_name': step1.get('first_name', ''),
+            'last_name': step1.get('last_name', ''),
+            'contact_number': step1.get('contact_number', ''),
+            'email': step1.get('email', ''),
+            'designation': step1.get('designation', ''),
+            'language_preference': step1.get('language_preference', ''),
+            'number_of_stakeholders': step2.get('number_of_stakeholders', '') or False,
+            'number_of_years': step3.get('number_of_years', '') or False,
+            'total_amount': 3000.0,
+        }
+        record = request.env['spc.dedicated.account.manager'].sudo().create(vals)
+        for key in ['dam_step1', 'dam_step2', 'dam_step3']:
+            request.session.pop(key, None)
+        return record
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error("DAM save error: %s", str(e))
+        return None
+
+
+def _save_change_of_status(request):
+    try:
+        from odoo import fields as odoo_fields
+        step1 = request.session.get('cos_step1', {})
+        step1_files = request.session.get('cos_step1_files', {})
+        step2 = request.session.get('cos_step2', {})
+        step3 = request.session.get('cos_step3', {})
+        customer_id = request.session.get('spc_selected_customer_id')
+        company_id = request.session.get('spc_selected_company_id')
+        if not customer_id:
+            return None
+        vals = {
+            'partner_id': customer_id,
+            'approved_company_id': company_id,
+            'state': 'submitted',
+            'submission_date': odoo_fields.Datetime.now(),
+            'applicant_name': step1.get('applicant_name', ''),
+            'visa_status': step1.get('visa_status', '') or False,
+            'remarks': step1.get('remarks', ''),
+            'first_name': step2.get('first_name', ''),
+            'last_name': step2.get('last_name', ''),
+            'declaration_accepted': step3.get('declaration_accepted', False),
+            'total_amount': 710.0,
+        }
+        for f in ['doc_cancelled_visa', 'doc_valid_visa']:
+            if step1_files.get(f):
+                vals[f] = step1_files[f]
+            if step1_files.get(f + '_name'):
+                vals[f + '_name'] = step1_files[f + '_name']
+        record = request.env['spc.change.of.status'].sudo().create(vals)
+        for key in ['cos_step1', 'cos_step1_files', 'cos_step2', 'cos_step3']:
+            request.session.pop(key, None)
+        return record
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error("COS save error: %s", str(e))
+        return None
+
 class SpcPaymentController(http.Controller):
 
     @http.route('/spc/payment/<string:service_type>', 
@@ -123,6 +237,76 @@ class SpcPaymentController(http.Controller):
                 'payment_date': fields.Datetime.now(),
             })
             payment._send_payment_notification('paid')
+            if payment.service_type == 'facility_management':
+                _save_facility_management(request)
+            elif payment.service_type == 'dedicated_account_manager':
+                _save_dam(request)
+            elif payment.service_type == 'reentry_permit':
+                rec = request.env['spc.reentry.permit'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'vip_medical_eid':
+                rec = request.env['spc.vip.medical.eid'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted'})
+            elif payment.service_type == 'lease_document':
+                rec = request.env['spc.lease.document'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'banking_assistance':
+                rec = request.env['spc.banking.assistance'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'banking_assistance_old':
+                rec = request.env['spc.banking.assistance'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type in ('medical_new', 'medical_renewal'):
+                rec = request.env['spc.medical'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'meeting_room':
+                rec = request.env['spc.meeting.room'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'company_stamp':
+                rec = request.env['spc.company.stamp'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'phone_answering':
+                rec = request.env['spc.phone.answering'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'movement_report':
+                rec = request.env['spc.movement.report'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted'})
+            elif payment.service_type == 'uid_merging':
+                rec = request.env['spc.uid.merging'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'change_of_status':
+                _save_change_of_status(request)
+            elif payment.service_type == 'mofa':
+                rec = request.env['spc.mofa'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'eid_appointment':
+                rec = request.env['spc.eid.appointment'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted'})
+            elif payment.service_type == 'driving_license':
+                rec = request.env['spc.driving.license'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'dependent_visa':
+                rec = request.env['spc.dependent.visa'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif payment.service_type == 'po_box':
+                rec = request.env['spc.po.box'].sudo().browse(payment.source_id)
+                if rec.exists():
+                    rec.sudo().write({'state': 'submitted'})
 
             return {'success': True}
         except Exception as e:
@@ -164,6 +348,76 @@ class SpcPaymentController(http.Controller):
                 'state': 'pending_approval',
             })
             payment._send_payment_notification('pending_approval')
+            if service_type == 'facility_management':
+                _save_facility_management(request)
+            elif service_type == 'dedicated_account_manager':
+                _save_dam(request)
+            elif service_type == 'reentry_permit':
+                rec = request.env['spc.reentry.permit'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'vip_medical_eid':
+                rec = request.env['spc.vip.medical.eid'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted'})
+            elif service_type == 'lease_document':
+                rec = request.env['spc.lease.document'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'banking_assistance':
+                rec = request.env['spc.banking.assistance'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'banking_assistance_old':
+                rec = request.env['spc.banking.assistance'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type in ('medical_new', 'medical_renewal'):
+                rec = request.env['spc.medical'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'meeting_room':
+                rec = request.env['spc.meeting.room'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'company_stamp':
+                rec = request.env['spc.company.stamp'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'phone_answering':
+                rec = request.env['spc.phone.answering'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'movement_report':
+                rec = request.env['spc.movement.report'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted'})
+            elif service_type == 'uid_merging':
+                rec = request.env['spc.uid.merging'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'change_of_status':
+                _save_change_of_status(request)
+            elif service_type == 'mofa':
+                rec = request.env['spc.mofa'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'eid_appointment':
+                rec = request.env['spc.eid.appointment'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted'})
+            elif service_type == 'driving_license':
+                rec = request.env['spc.driving.license'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'dependent_visa':
+                rec = request.env['spc.dependent.visa'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted', 'payment_status': 'paid'})
+            elif service_type == 'po_box':
+                rec = request.env['spc.po.box'].sudo().search([('id', '=', int(record_id))], limit=1)
+                if rec:
+                    rec.sudo().write({'state': 'submitted'})
 
             return request.redirect(
                 f'/spc/payment/success?method=bank_transfer'
